@@ -1,0 +1,53 @@
+\ProvidesPackage{beamerthemeDSM}
+
+\definecolor{dsmred}{rgb}{.7,.15,.05}       % warm red with slight orange tint
+\definecolor{dsmblue}{rgb}{.1, .25, .6}    % dark blue with slight turquoise tint
+
+\definecolor{primary}{named}{dsmred}        % primary = tinted red
+\definecolor{secondary}{named}{dsmblue}     % secondary = tinted blue
+\definecolor{counterpoint}{rgb}{.05, .5, .05} % counterpoint = rich dark green that complements red & blue
+\definecolor{foreground}{rgb}{0, 0, 0}      % foreground = black
+\definecolor{light}{rgb}{.45, .45, .45}     % light colour = neutral grey
+\definecolor{standout}{rgb}{.9, 0, .1}      % alert colour = bright red
+
+\definecolor{purered}{rgb}{.7, 0, 0}        % rich pure red, green and blue
+\definecolor{puregreen}{rgb}{0, .5, 0}
+\definecolor{pureblue}{rgb}{0, 0, .7}
+
+\mode<presentation>             % ==========
+
+\useinnertheme{default}
+\useoutertheme{infolines}
+
+% Tills' opinion: should be done in an inner theme, not here.
+\usesubitemizeitemtemplate{%
+    \tiny\raise1.5pt\hbox{\color{beamerstructure}$\blacktriangleright$}%
+}
+\usesubsubitemizeitemtemplate{%
+    \tiny\raise1.5pt\hbox{\color{beamerstructure}$\bigstar$}%
+}
+
+\setbeamersize{text margin left=1cm,text margin right=1cm}
+
+% don't show Logo (bottom right corner) by default, but define commands so user can activate/deactivate it
+%% -- TODO: adapt to new DSM logo
+%\pgfdeclareimage[width=16mm]{uos-logo}{uos-logo-links-col}
+%\newcommand{\showLogo}{\logo{\pgfuseimage{uos-logo}}}
+%\newcommand{\hideLogo}{\logo{}}
+
+\usecolortheme[named=dsmblue]{structure}
+% \usecolortheme{rose} % -- does this do anything useful?
+\setbeamercolor{frametitle}{fg=secondary,bg=white}
+\setbeamercolor{logo}{fg=black,bg=white}
+%% coloured math can be quite annoying (esp. if mixed in displayed formulas with underbraces etc.)
+% \setbeamercolor{math text inlined}{fg=secondary} 
+
+\setbeamercolor*{palette primary}{fg=black,bg=primary!30!white}
+\setbeamercolor*{palette secondary}{fg=white,bg=primary!60!white}
+\setbeamercolor*{palette tertiary}{fg=white,bg=primary!80!white}
+\setbeamercolor*{palette quaternary}{fg=white,bg=black}
+
+
+\mode<all>                      % ==========
+
+

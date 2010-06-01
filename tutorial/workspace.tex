@@ -1,0 +1,33 @@
+%% \documentclass[handout,t]{beamer} % HANDOUT
+%% \documentclass[handout,notes=show,t]{beamer} % NOTES
+\documentclass[t]{beamer} % SLIDES
+
+\usetheme{DSM}
+\usepackage{beamer-tools-dsm}
+
+\input{lib/math}  % basic mathematical notation
+\input{lib/text}  % some useful macros for plain text
+\input{lib/stat}  % notation for probability theory and statistics
+\input{lib/vector}% convenience macros for vectors and matrices
+
+\input{local/config} % local adjustments to configuration and macros
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% \input{pages/new} % -- input only slide set you're currently working on
+\input{pages/naacl_1_intro}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% References (if any)
+
+%% \frame[allowframebreaks]{
+%%   \frametitle{References}
+%%   \bibliographystyle{natbib-stefan}
+%%   \begin{scriptsize}
+%%     \bibliography{dsm}
+%%   \end{scriptsize}
+%% }
+
+\end{document}

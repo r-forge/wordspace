@@ -1,0 +1,47 @@
+%%%
+%%% local configuration adjustments
+%%%
+
+%%% You can change pre-defined colours here, override built-in macros from the
+%%% style definition and standard library, as well as define macros needed by
+%%% all local documents.
+
+%%% e.g. adjust counterpoint (dark green) for data projectors where greens are
+%%% far too bright, as well as green component of light colour and pure green
+%%% (of course, it's a better solution to adjust the gamma settings of your monitor)
+%%
+%% \definecolor{counterpoint}{rgb}{.1, .3, 0}
+%% \definecolor{light}{rgb}{.45, .3, .55}
+%% \definecolor{puregreen}{rgb}{0, .35, 0}
+
+%% ----- extra packages we need to load
+
+\usepackage{tikz}
+\usepackage{alltt}              % code examples with nicely formatted comments
+\usepackage{hieroglf}           % hieroglyph font for the archeology example
+
+%% ----- general copyright message (authors may change between versions of the tutorial)
+\newcommand{\dsmcopyright}{%
+  Copyright \textcopyright\ 2009--2010 Baroni, Evert \& Lenci | 
+  Licensed under CC-by-sa version 3.0}
+
+
+%% ----- automatically show TOC reminder at beginning of each subsection
+\AtBeginSubsection[]
+{
+  \begin{frame}
+    \frametitle{Outline}
+    \tableofcontents[current,currentsubsection]
+  \end{frame}
+}
+
+%% ----- some useful macros for the SIGIL course
+
+%% > plot(x,y)      \REM{this produces a scatterplot}
+\newcommand{\REM}[2][\small]{\textsf{#1\color{primary}\# #2}}
+
+%% nice colour for R output: \begin{Rout} .. \end{Rout}
+%% -- ugly hack: I'm sure theres a better way to do this
+\newenvironment{Rout}[1][\footnotesize]{%
+  \begin{footnotesize}#1\color{osnablue}\bfseries}{%
+  \color{black}\mdseries\end{footnotesize}}

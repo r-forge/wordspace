@@ -1,0 +1,62 @@
+%% \documentclass[handout,t]{beamer} % HANDOUT
+%% \documentclass[handout,notes=show,t]{beamer} % NOTES
+\documentclass[t]{beamer} % SLIDES
+
+\usetheme{DSM}
+\usepackage{beamer-tools-dsm}
+
+\input{lib/math}  % basic mathematical notation
+\input{lib/text}  % some useful macros for plain text
+\input{lib/stat}  % notation for probability theory and statistics
+\input{lib/vector}% convenience macros for vectors and matrices
+
+\input{local/config} % local adjustments to configuration and macros
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Titlepage
+
+\title[DSM Tutorial]{Distributional Semantic Models}
+\subtitle{A tutorial introduction to the theory \& applications of DSM\\
+  --- part X ---}
+\author[\textcopyright\ Evert/Baroni/Lenci]{%
+  Designed by Stefan Evert\inst{1}\\
+  based on material by Marco Baroni\inst{2} and Alessandro Lenci\inst{3}}
+\institute[CC-by-sa]{%
+  \inst{1}University of Osnabrück, Germany
+  \and
+  \inst{2}University of Trento, Italy
+  \and
+  \inst{3}University of Pisa, Italy
+}
+
+\date[wordspace.collocations.de]{
+  \light{\tiny \dsmcopyright}}
+
+\begin{document}
+
+\frame{\titlepage}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section*{Outline}
+\frame{ 
+  \frametitle{Outline}
+  \tableofcontents
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% -- \input slide sets from pages/ subdirectory
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% References (if any)
+
+%% \frame[allowframebreaks]{
+%%   \frametitle{References}
+%%   \bibliographystyle{natbib-stefan}
+%%   \begin{scriptsize}
+%%     \bibliography{dsm}
+%%   \end{scriptsize}
+%% }
+
+\end{document}
