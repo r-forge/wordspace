@@ -1,0 +1,174 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Introduction}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{The distributional hypothesis}
+
+\begin{frame}[c]
+  \frametitle{Meaning \& distribution}
+  % \framesubtitle{}
+
+  \begin{itemize}
+  \item ``Die Bedeutung eines Wortes liegt in seinem Gebrauch.''\\
+    \hfill --- Ludwig Wittgenstein
+  \item[]\pause
+  \item ``You shall know a word by the company it keeps!''\\
+    \hfill --- J.~R.\ Firth
+  \item[]\pause
+  \item Distributional hypothesis \TODO[Zellig Harris 1954?]
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{What is the meaning of ``\textbf{bardiwac}''?}
+  % \framesubtitle{}
+
+  \begin{itemize}
+  \item<2-> He handed her her glass of \primary{bardiwac}.
+  \item<3-> Beef dishes are made to complement the \primary{bardiwacs}.
+  \item<4-> Nigel staggered to his feet, face flushed from too much \primary{bardiwac}.
+  \item<5-> Malbec, one of the lesser-known \primary{bardiwac} grapes, responds well to Australia's sunshine.
+  \item<6-> I dined off bread and cheese and this excellent \primary{bardiwac}.
+  \item<7-> The drinks were delicious: blood-red \primary{bardiwac} as well as light, sweet Rhenish.
+  \item[\hand]<8-> bardiwac is a heavy red alcoholic beverage made from grapes
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[c]
+  \frametitle{Real-life concordance \& word sketch}
+  \framesubtitle{http://beta.sketchengine.co.uk/}
+
+  \begin{center}
+    \includegraphics[width=10cm]{img/SE_bardiwac_conc}
+  \end{center}
+\end{frame}
+
+\begin{frame}[c]
+  \frametitle{Real-life concordance \& word sketch}
+  \framesubtitle{http://beta.sketchengine.co.uk/}
+
+  \begin{center}
+    \ungap[1]
+    \includegraphics[width=10cm]{img/SE_bardiwac_sketch}
+  \end{center}
+\end{frame}
+
+{\newcommand{\hg}[1]{\scriptsize\textpmhg{#1}}
+\begin{frame}<beamer:1-4| handout:1-4>
+  \frametitle{A thought experiment: deciphering hieroglyphs}
+  % \framesubtitle{}
+
+  \begin{center}
+    \setlength{\arrayrulewidth}{1pt}
+    \begin{tabular}{@{\rule{0mm}{1.2em} }lr*{6}{|c}|}
+      && \hg{get} & \hg{sij} & \hg{ius} & \hg{hir} & \hg{iit} & \hg{kil} \\
+      \hline
+      \secondary<beamer:2| handout:2>{(knife)} & \secondary<beamer:2| handout:2>{\hg{naif}} & \secondary<beamer:2| handout:2>{51} & \secondary<beamer:2| handout:2>{20} & \secondary<beamer:2| handout:2>{84} &  \secondary<beamer:2| handout:2>{0} &  \secondary<beamer:2| handout:2>{3} &  \secondary<beamer:2| handout:2>{0} \\
+      \hline
+      \secondary<beamer:4| handout:4>{(cat)}   & \secondary<beamer:4| handout:4>{\hg{ket}}  &  \secondary<beamer:4| handout:4>{52} & \secondary<beamer:4| handout:4>{58} &  \secondary<beamer:4| handout:4>{4} &  \secondary<beamer:4| handout:4>{4} &  \secondary<beamer:4| handout:4>{6} & \secondary<beamer:4| handout:4>{26} \\
+      \hline
+      \h{???} & \h{\hg{dog}} & \primary{115} & \primary{83} & \primary{10} & \primary{42} & \primary{33} & \primary{17} \\
+      \hline
+      (boat)  & \hg{beut} &  59 & 39 & 23 &  4 &  0 &  0 \\
+      \hline
+      (cup)   & \hg{kap}  &  98 & 14 &  6 &  2 &  1 &  0 \\
+      \hline
+      \secondary<beamer:3| handout:3>{(pig)}  & \secondary<beamer:3| handout:3>{\hg{pigij}} &  \secondary<beamer:3| handout:3>{12} & \secondary<beamer:3| handout:3>{17} &  \secondary<beamer:3| handout:3>{3} &  \secondary<beamer:3| handout:3>{2} &  \secondary<beamer:3| handout:3>{9} & \secondary<beamer:3| handout:3>{27} \\
+      \hline
+      (banana) & \hg{nana} & 11 &  2 &  2 &  0 & 18 &  0 \\
+      \hline
+    \end{tabular}
+    
+    \gap[2]\Large
+    \only<beamer:2| handout:2>{%
+      sim(\primary{\hg{dog}}, \secondary{\hg{naif}}) = 0.770 }%
+    \only<beamer:3| handout:3>{%
+      sim(\primary{\hg{dog}}, \secondary{\hg{pigij}}) = 0.939 }%
+    \only<beamer:4| handout:4>{%
+      sim(\primary{\hg{dog}}, \secondary{\hg{ket}}) = 0.961 }%
+  \end{center}
+
+  \addnote{Similarity scores are cosine similarities on sparse log-scaled frequencies ($\log (f+1)$).}%
+\end{frame}
+}
+
+{\newcommand{\hg}[1]{\scriptsize\textpmhg{#1}}
+\begin{frame}
+  \frametitle{English as seen by the computer \ldots}
+  % \framesubtitle{}
+
+  \begin{center}
+    \ungap[1]
+    \setlength{\arrayrulewidth}{1pt}
+    \begin{tabular}{@{\rule{0mm}{1.2em} }l@{ }r*{6}{|c}|}
+      && get & see & use & hear & eat & kill \\
+      && \hg{get} & \hg{sij} & \hg{ius} & \hg{hir} & \hg{iit} & \hg{kil} \\
+      \hline
+      knife & \hg{naif} &  51 & 20 & 84 &  0 &  3 &  0 \\
+      \hline
+      cat   & \hg{ket}  &  52 & 58 &  4 &  4 &  6 & 26 \\
+      \hline
+      \h{dog} & \h{\hg{dog}} & \primary{115} & \primary{83} & \primary{10} & \primary{42} & \primary{33} & \primary{17} \\
+      \hline
+      boat  & \hg{beut} &  59 & 39 & 23 &  4 &  0 &  0 \\
+      \hline
+      cup   & \hg{kap}  &  98 & 14 &  6 &  2 &  1 &  0 \\
+      \hline
+      pig  & \hg{pigij} &  12 & 17 &  3 &  2 &  9 & 27 \\
+      \hline
+      banana & \hg{nana} & 11 &  2 &  2 &  0 & 18 &  0 \\
+      \hline
+    \end{tabular}
+  \end{center}
+  \hfill\light{\footnotesize verb-object counts from British National Corpus}
+\end{frame}
+}
+
+\begin{frame}
+  \frametitle{}
+  % \framesubtitle{}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{}
+
+\begin{frame}
+  \frametitle{}
+  % \framesubtitle{}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{}
+
+\begin{frame}
+  \frametitle{}
+  % \framesubtitle{}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{}
+
+\begin{frame}
+  \frametitle{}
+  % \framesubtitle{}
+
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{}
+  %% \framesubtitle{}
+
+  % \ungap[1]
+  \begin{alltt}
+  \end{alltt}
+\end{frame}
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "../workspace"
+%%% End: 
