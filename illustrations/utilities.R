@@ -43,6 +43,8 @@ am.score <- function (AM=c("frequency", "t-score","z-score","Dice"), M, row.freq
 
   if (log) scores <- sign(scores) * log(abs(scores) + 1) # "signed log" transformation
 
+  rownames(scores) <- rownames(M) # make sure that row and column names are preserved
+  colnames(scores) <- colnames(M)
   return(scores)
 }
 
@@ -78,6 +80,27 @@ cosine <- function (M, M2=M, angles=FALSE, normalised=FALSE) {
 # standardise all features (columns) with scale() according to p-norm
 norm.rows <- function (M, p=2) {
   M / p.norm(M, p)  # faster than sweep(M, 1, p.norm(M, p), "/")
+}
+
+# SVD decomposition to specified number of dimensions
+svd.decomp <- function (M, n=min(dim(M))) {
+	stopifnot(n <= min(dim(M)))
+	SVD <- svd(M, nu=n, nv=n)
+	M.svd <- SVD$u %*% diag(SVD$d[1:n], n, n)
+	M.svd <- norm.rows(M.svd)  # renormalise rows (for cosine calculation later on)
+	rownames(M.svd) <- rownames(M)
+	R2 <- sum(SVD$d[1:n]^2) / sum(SVD$d^2) # proportion of variance "explained" by SVD dimensions
+	list(d=SVD$d, u=SVD$u, v=SVD$v, M=M.svd, R2=R2)
+}
+
+# project matrix into SVD subspace (checks bounds & works correctly for 1-dimensional projection)
+svd.projection <- function (SVD, dims=length(SVD$d), labels=NULL) {
+	n <- length(SVD$d)
+	stopifnot(dims >= 1 & dims <= n)
+	d <- SVD$d[1:dims]
+	M <- SVD$u[, 1:dims, drop=FALSE] %*% diag(d, nrow=dims)
+	if (!missing(labels)) rownames(M) <- labels
+	return(M)
 }
 
 # draw arrow with start/end shortened by configurable amount and optional rotated label
