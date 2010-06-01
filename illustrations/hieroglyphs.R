@@ -5,11 +5,17 @@
 source("utilities.R")
 
 load("data/bnc_vobj_basic.rda") # verb-object DSM for basic English nouns (BNC corpus)
+task <- read.delim("data/concrete_nouns_categories.tbl") # concrete nouns (from ESSLLI 2008 task)
+task <- transform(task, class1=factor(class1, levels=unique(as.character(class1))))
 
 M <- bnc.vobj.basic$M # extract matrix for selected nouns and verbs
 selected.nouns <- c("knife","cat","dog","boat","cup","pig","banana")
 selected.verbs <- c("get","see","use","hear","eat","kill")
 M2 <- M[selected.nouns, selected.verbs]
+
+row.freqs <- bnc.vobj.basic$f1 # extract marginal frequencies and sample size
+col.freqs <- bnc.vobj.basic$f2
+N <- bnc.vobj.basic$N
 
 ## -- the cooccurrence matrix ---
 print(M2)
@@ -59,3 +65,41 @@ text(80,56, expression(alpha == 54.3 * degree), cex=1.5, pos=4)
 dev.copy2pdf(file="img/hieroglyph_2d_5.pdf", bg="white", onefile=FALSE) # -- overlay 5
 
 dev.off()
+
+## -- clustering and semantic map examples --
+M3 <- M[as.character(task$noun), ] # extract full vectors for concrete nouns from ESSLLI task
+M3 <- norm.rows(am.score("t", M3, row.freqs, col.freqs, N, sparse=TRUE, log=FALSE)) # gives nice plot
+M3 <- scale(M3, scale=FALSE) # center columns (for PCA-style dimensionality reduction)
+
+SVD <- svd.decomp(M3) # transform into SVD space
+
+cats <- levels(task$class1)
+cols <- rainbow(length(cats), v=.8)
+
+# font scaling and other size adjustments for Ubuntu Linux (Mac OS X may differ!)
+dev.new(width=8, height=6, bg="white", pointsize=10, type="Xlib") # only Xlib produces sensible PDF copies
+par(cex=1.1, mar=c(2,2,2,1)+.1, xaxs="i", yaxs="i")
+
+plot(svd.projection(SVD, 2), col=cols[task$class1], pch=20, cex=1.5, xlab="SVD dim 1", ylab="SVD dim 2", main="Semantic map (V-Obj from BNC)", xlim=c(-.5, .8), ylim=c(-.5,.6))
+legend("topright", inset=.03, col=cols, pch=20, pt.cex=1.5, legend=cats, bg="white")
+.pos <-c(
+	4,3,1,3,4,1,3,2,3,1, #  1-10
+        3,3,3,3,1,2,4,4,3,3, # 11-20
+	1,3,3,3,3,3,3,3,3,1, # 21-30
+	3,4,4,3,3,3,2,1,3,3, # 31-40
+	1,3,4,4)             # 41-44
+text(svd.projection(SVD, 2), col="black", labels=task$noun, pos=.pos, cex=1.0, font=2)
+dev.copy2pdf(file="img/hieroglyph_semantic_map.pdf", bg="white", onefile=FALSE)
+
+
+M3.dist <- dist(SVD$M[,1:2], method="euclidean") # standard agglomerative clustering with Euclidean distance
+clusters <- hclust(M3.dist, method="complete")
+
+par(cex=1.2, mar=c(1,4,2,1)+.1, xaxs="r")
+plot(clusters, labels=labels(M3.dist), hang=-1, font=2, cex=1.2, main="Word space clustering of concrete nouns (V-Obj from BNC)", xlab="", ylab="Cluster size")
+points(1:44, rep(0,44), pch=20, cex=2.5, col=cols[task$class1[clusters$order]])
+dev.copy2pdf(file="img/hieroglyph_clustering.pdf", bg="white", onefile=FALSE)
+
+dev.off()
+
+
