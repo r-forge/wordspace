@@ -102,4 +102,31 @@ dev.copy2pdf(file="img/hieroglyph_clustering.pdf", bg="white", onefile=FALSE)
 
 dev.off()
 
+## -- nearest neighbours on full matrix, with neighbourhood graph --
+Mx <- norm.rows(am.score("t", M, row.freqs, col.freqs, N, sparse=TRUE, log=FALSE)) # gave nicest semantic map
+Mx <- scale(Mx, scale=FALSE)
+SVDx <- svd.decomp(Mx, n=100)
 
+dev.new(width=6, height=6, bg="white", pointsize=10, type="Xlib") # only Xlib produces sensible PDF copies
+par(cex=1.1, mar=rep(0,4), xaxt="n", yaxt="n", xaxs="i", yaxs="i")
+
+neighbours(Mx, "dog", 40)
+neighbours(SVDx$M, "dog", 30, plot="mds")
+dev.copy2pdf(file="img/neighbourhood_dog.pdf", bg="white")
+
+neighbours(Mx, "coffee", 20, plot="sammon", edges=TRUE)
+dev.copy2pdf(file="img/neighbourhood_coffee.pdf", bg="white")
+
+neighbours(SVDx$M, "hand", 30, plot="sammon", edges=TRUE)
+dev.copy2pdf(file="img/neighbourhood_hand.pdf", bg="white")
+
+neighbours(SVDx$M, "school", 30, plot="sammon", edges=TRUE)
+dev.copy2pdf(file="img/neighbourhood_school.pdf", bg="white")
+
+neighbours(SVDx$M, "trousers", 30, plot="sammon", edges=TRUE)
+dev.copy2pdf(file="img/neighbourhood_trousers.pdf", bg="white")
+
+
+neighbours(SVDx$M, "school", 30, plot="sammon", edges=TRUE, iterate=TRUE)
+neighbours(Mx, "coffee", 20, plot="sammon", iterate=TRUE, edges=TRUE, aspect=1)
+neighbours(SVDx$M, "trousers", 30, plot="sammon", edges=TRUE, iterate=TRUE)
