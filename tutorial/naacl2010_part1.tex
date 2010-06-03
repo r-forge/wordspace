@@ -1,6 +1,6 @@
 %% \documentclass[handout,t]{beamer} % HANDOUT
-%% \documentclass[handout,notes=show,t]{beamer} % NOTES
-\documentclass[t]{beamer} % SLIDES
+\documentclass[handout,notes=show,t]{beamer} % NOTES
+%% \documentclass[t]{beamer} % SLIDES
 
 \usetheme{DSM}
 \usepackage{beamer-tools-dsm}
@@ -51,17 +51,19 @@
 
 % -- \input slide sets from pages/ subdirectory
 \input{pages/naacl_1_intro}
+\input{pages/naacl_2_taxonomy}
+\input{pages/naacl_3_use_evaluation}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% References (if any)
 
-% \frame[allowframebreaks]{
-%   \frametitle{References}
-%   \bibliographystyle{natbib-stefan}
-%   \begin{scriptsize}
-%     \bibliography{dsm}
-%   \end{scriptsize}
-% }
+\frame[allowframebreaks]{
+  \frametitle{References}
+  \bibliographystyle{natbib-stefan}
+  \begin{scriptsize}
+    \bibliography{dsm,stefan-literature,stefan-publications}
+  \end{scriptsize}
+}
 
 \end{document}
