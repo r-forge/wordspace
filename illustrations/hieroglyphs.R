@@ -114,7 +114,8 @@ neighbours(Mx, "dog", 40)
 neighbours(SVDx$M, "dog", 30, plot="mds")
 dev.copy2pdf(file="img/neighbourhood_dog.pdf", bg="white")
 
-neighbours(Mx, "coffee", 20, plot="sammon", edges=TRUE)
+neighbours(SVDx$M, "coffee", 40)
+neighbours(SVDx$M, "coffee", 20, plot="sammon", edges=TRUE)
 dev.copy2pdf(file="img/neighbourhood_coffee.pdf", bg="white")
 
 neighbours(SVDx$M, "hand", 30, plot="sammon", edges=TRUE)
