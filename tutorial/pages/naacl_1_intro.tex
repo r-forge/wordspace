@@ -160,7 +160,7 @@
       \end{small}
 
       \begin{center}
-        \h{co-occurrence matrix} $M$
+        \h{co-occurrence matrix} $\mathbf{M}$
       \end{center}
     \end{column}
   \end{columns}
@@ -280,7 +280,17 @@
   \frametitle{Tutorial overview}
   % \framesubtitle{}
 
-  \TODO[Overview]
+  \begin{enumerate}
+  \item Introduction \& examples
+  \item Taxonomy of DSM parameters
+  \item Usage and evaluation of DSM spaces
+  \item Elements of matrix algebra
+  \item Making sense of DSM
+  \item Current research topics \& future directions
+  \end{enumerate}
+
+  \gap[2]
+  \light{\footnotesize Realistically, we'll get through parts 1--3 today.  But you can find out about matrix algebra and the other advanced topics in the handouts available from the course Web site.}
 \end{frame}
 
 \begin{frame}
@@ -304,6 +314,7 @@
 
   \gap[1]
   \begin{center}
+    \setlength{\fboxrule}{1pt}
     \fbox{\parbox{7cm}{\centering
         This tutorial is based on joint work with Marco Baroni and Alessandro Lenci}}
   \end{center}
@@ -320,7 +331,7 @@
     \begin{itemize}
     \item[\hand] influenced by Latent Semantic Indexing \citep{Dumais:etc:88} and efficient software implementations \citep{Berry:92}
     \end{itemize}
-  \item<2-> Renewed interest in last few years
+  \item<2-> Renewed interest in recent years
     \begin{itemize}
     \item<2-> \primary{2007}: CoSMo Workshop (at Context '07)
     \item<3-> \primary{2008}: ESSLLI Lexical Semantics Workshop \& Shared Task, Special Issue of the Italian Journal of Linguistics
@@ -331,39 +342,118 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{}
+  \frametitle{Some applications in computational linguistics}
   % \framesubtitle{}
 
+  \begin{itemize}
+  \item Unsupervised part-of-speech induction \citep{Schuetze:95}
+  \item Word sense disambiguation \citep{Schuetze:98}
+  \item Query expansion in information retrieval \citep{Grefenstette:94}
+  \item Synonym tasks \& other language tests\\\ \citep{Landauer:Dumais:97,Turney:etc:03}
+  \item Thesaurus compilation \citep{Lin:98b,Rapp:04a}
+  \item Ontology \& wordnet expansion \citep{Pantel:etc:09}
+  \item Attachment disambiguation \citep*{Pantel:Lin:00}
+  \item Probabilistic language models \citep{Bengio:etc:03b}
+  \item Subsymbolic input representation for neural networks
+  \item Many other tasks in computational semantics:\\
+    entailment detection, noun compound interpretation, identification
+    of noncompositional expressions, \ldots
+  \end{itemize}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{}
+\subsection{Three famous DSM examples}
 
 \begin{frame}
-  \frametitle{}
+  \frametitle{Latent Semantic Analysis \citep{Landauer:Dumais:97}}
   % \framesubtitle{}
 
+  \begin{itemize}
+  \item Corpus: 30,473 articles from Grolier's \emph{Academic American Encyclopedia} (4.6 million words in total)
+    \begin{itemize}
+    \item[\hand] articles were limited to first 2,000 characters
+    \end{itemize}
+  \item Word-article frequency matrix for 60,768 words
+    \begin{itemize}
+    \item row vector shows frequency of word in each article
+    \end{itemize}
+  \item Logarithmic frequencies scaled by word entropy
+  \item Reduced to 300 dim.\ by singular value decomposition (SVD)
+    \begin{itemize}
+    \item borrowed from LSI \citep{Dumais:etc:88}
+    \item[\hand] central claim: SVD reveals latent semantic features,\\
+      not just a data reduction technique
+    \end{itemize}
+  \item Evaluated on TOEFL synonym test (80 items)
+    \begin{itemize}
+    \item LSA model achieved 64.4\% correct answers
+    \item also simulation of learning rate based on TOEFL results
+    \end{itemize}
+  \end{itemize}
 \end{frame}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{}
 
 \begin{frame}
-  \frametitle{}
+  \frametitle{Word Space \citep{Schuetze:92,Schuetze:93,Schuetze:98}}
   % \framesubtitle{}
 
+  \begin{itemize}
+  \item Corpus: $\approx 60$ million words of news messages (\emph{New York Times} News Service)
+  \item Word-word co-occurrence matrix
+    \begin{itemize}
+    \item 20,000 target words \& 2,000 context words as features
+    \item row vector records how often each context word occurs close
+      to the target word (co-occurrence)
+    \item co-occurrence window: left/right 50 words \citep{Schuetze:98}\\
+      or $\approx 1000$ characters \citep{Schuetze:92}
+    \end{itemize}
+  \item Rows weighted by inverse document frequency (tf.idf)
+  \item Context vector = centroid of word vectors (bag-of-words)
+    \begin{itemize}
+    \item[\hand] goal: determine ``meaning'' of a context
+    \end{itemize}
+  \item Reduced to 100 SVD dimensions (mainly for efficiency)
+  \item Evaluated on unsupervised word sense induction by clustering
+    of context vectors (for an ambiguous word)
+    \begin{itemize}
+    \item induced word senses improve information retrieval performance
+    \end{itemize}
+  \end{itemize}
 \end{frame}
 
+\begin{frame}
+  \frametitle{HAL \citep{Lund:Burgess:96}}
+  % \framesubtitle{}
 
-
-\begin{frame}[fragile]
-  \frametitle{}
-  %% \framesubtitle{}
-
-  % \ungap[1]
-  \begin{alltt}
-  \end{alltt}
+  \begin{itemize}
+  \item HAL = Hyperspace Analogue to Language
+  \item Corpus: 160 million words from newsgroup postings
+  \item Word-word co-occurrence matrix
+    \begin{itemize}
+    \item same 70,000 words used as targets and features
+    \item co-occurrence window of 1 -- 10 words
+    \end{itemize}
+  \item Separate counts for left and right co-occurrence
+    \begin{itemize}
+    \item i.e.\ the context is \emph{structured}
+    \end{itemize}
+  \item In later work, co-occurrences are weighted by (inverse) distance \citep{Li:Burgess:Lund:00}
+  \item Applications include construction of semantic vocabulary maps
+    by multidimensional scaling to 2 dimensions
+  \end{itemize}
 \end{frame}
+
+\begin{frame}
+  \frametitle{Many parameters \ldots}
+  % \framesubtitle{}
+
+  \begin{itemize}
+  \item Enormous range of DSM parameters and applications
+  \item Examples showed three entirely different models, each tuned to
+    its particular application
+  \item[\So] Need overview of DSM parameters \& understand their effects
+  \end{itemize}
+\end{frame}
+
 
 %%% Local Variables: 
 %%% mode: latex

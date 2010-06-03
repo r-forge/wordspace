@@ -1,0 +1,759 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Usage and evaluation of DSM}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{What to do with DSM distances}
+
+\begin{frame}
+  \frametitle{Nearest neighbours}
+  \framesubtitle{DSM based on verb-object relations from BNC, reduced to 100 dim.\ with SVD}
+  % \framesubtitle{}
+
+  Neighbours of \h{dog} (cosine angle):
+  \begin{itemize}\item[\hand]
+    girl (45.5), boy (46.7), horse(47.0), wife (48.8), baby (51.9),
+    daughter (53.1), side (54.9), mother (55.6), boat (55.7),
+    rest (56.3), night (56.7), cat (56.8), son (57.0), man (58.2), 
+    place (58.4), husband (58.5), thing (58.8), friend (59.6), \ldots
+  \end{itemize}
+
+  \gap
+  Neighbours of \h{school}:
+  \begin{itemize}\item[\hand]
+    country (49.3), church (52.1), hospital (53.1), house (54.4),
+    hotel (55.1), industry (57.0), company (57.0), home (57.7), family
+    (58.4), university (59.0), party (59.4), group (59.5), building
+    (59.8), market (60.3), bank (60.4), business (60.9), area (61.4),
+    department (61.6), club (62.7), town (63.3), library (63.3), 
+    room (63.6), service (64.4), police (64.7), \ldots
+  \end{itemize}
+  \addnote{Neighbours and neighbourhood plots from BNC verb-object DSM, reduced to 100 dimensions by SVD.}%
+\end{frame}
+
+\begin{frame}[c]
+  \frametitle{Nearest neighbours}
+  % \framesubtitle{}
+
+  \begin{center}
+    \includegraphics[width=8cm]{img/neighbourhood_dog}
+  \end{center}
+\end{frame}
+
+\begin{frame}[c]
+  \frametitle{Clustering}
+  % \framesubtitle{}
+
+  \begin{center}
+    \includegraphics[width=100mm]{img/hieroglyph_clustering}
+  \end{center}
+\end{frame}
+
+\begin{frame}[c]
+  \frametitle{Semantic maps}
+  % \framesubtitle{}
+
+  \begin{center}
+    \includegraphics[width=100mm]{img/hieroglyph_semantic_map}
+  \end{center}
+\end{frame}
+
+\begin{frame}[c]
+  \frametitle{Latent dimensions}
+  % \framesubtitle{}
+
+  \begin{center}
+    \includegraphics[width=8cm]{img/3_buy_sell_labels_latent}
+  \end{center}
+\end{frame}
+
+\begin{frame}[c]
+  \frametitle{Semantic similarity graph (topological structure)}
+  % \framesubtitle{}
+
+  \begin{center}
+    \begin{tabular}{@{}cc@{}}
+    \includegraphics[width=55mm]{img/neighbourhood_coffee} &
+    \visible<2->{\includegraphics[width=55mm]{img/neighbourhood_hand}}
+  \end{tabular}
+  \end{center}
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Evaluation: semantic similarity and relatedness}
+
+\begin{frame}
+\frametitle{Distributional similarity as semantic similarity}
+
+\begin{itemize}
+\item DSMs interpret semantic similarity as a \primary{quantitative notion}
+\begin{itemize}
+\item if $\va$ is closer to $\vb$ than to $\Vector{c}$ in the distributional
+vector space, then $a$ is more semantically similar to $b$ than to $c$
+\end{itemize}
+\end{itemize}
+
+\begin{center}
+  \begin{tabular}{l|l|l}
+      \primary{rhino} & \primary{fall} & \primary{rock}\\
+      \hline
+      woodpecker&    rise&         lava\\
+      rhinoceros&    increase&     sand\\
+      swan&          fluctuation&  boulder\\
+      whale&         drop&         ice\\
+      ivory&         decrease&     jazz\\
+      plover&        reduction&    slab\\
+      elephant&      logarithm&    cliff\\
+      bear&          decline&      pop\\
+      satin&         cut&          basalt\\
+      sweatshirt&    hike&         crevice\\
+    \end{tabular}
+  \end{center}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Types of semantic relations in DSMs}
+
+\begin{itemize}
+\item Neighbors in DSMs have different types of
+\primary{semantic relations}
+\end{itemize}
+
+\ungap[1.5]\footnotesize
+ \begin{columns}[t]
+    \column{.5\textwidth}
+    \begin{block}{\emph{car} {\small (InfomapNLP on BNC; n = 2)}}
+      \begin{itemize}
+      \item  van {\color{counterpoint} co-hyponym}
+      \item vehicle {\color{counterpoint} hyperonym}
+      \item truck {\color{counterpoint} co-hyponym}
+      \item motorcycle {\color{counterpoint} co-hyponym}
+      \item driver {\color{counterpoint} related entity}
+      \item motor {\color{counterpoint} part}
+      \item lorry {\color{counterpoint} co-hyponym}
+      \item motorist {\color{counterpoint} related entity}
+      \item cavalier {\color{counterpoint} hyponym}
+      \item bike {\color{counterpoint} co-hyponym}
+\end{itemize}
+\end{block}
+\column{.5\textwidth}
+\begin{block} {\emph{car} {\small (InfomapNLP on BNC; n = 30)}}
+  \begin{itemize}
+  \item drive {\color{counterpoint} function}
+  \item park {\color{counterpoint} typical action}
+  \item bonnet {\color{counterpoint} part}
+  \item windscreen {\color{counterpoint} part}
+  \item hatchback {\color{counterpoint} part}
+\item headlight {\color{counterpoint} part}
+\item jaguar {\color{counterpoint} hyponym}
+\item garage {\color{counterpoint} location}
+\item cavalier {\color{counterpoint} hyponym}
+\item tyre {\color{counterpoint} part}
+\end{itemize}
+\end{block}
+  \end{columns}
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Semantic similarity and relatedness}
+
+\begin{itemize}
+\item \primary{Semantic similarity} - two words sharing a high 
+number of  salient features (attributes)
+\begin{itemize}
+\item synonymy (\emph{car/automobile})
+\item hyperonymy (\emph{car/vehicle)}
+\item co-hyponymy (\emph{car/van/truck})
+\end{itemize}
+\pause
+\item \primary{Semantic relatedness} (Budanitsky \& Hirst 2006) - two words semantically
+associated without being necessarily similar
+\begin{itemize}
+\item function (\emph{car/drive})
+\item meronymy (\emph{car/tyre})
+\item location (\emph{car/road})
+\item attribute (\emph{car/fast})
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Attributional similarity}
+
+\begin{frame}
+  \frametitle{DSMs and semantic similarity}
+  \begin{itemize}
+   \item These models emphasize \primary{paradigmatic} similarity
+   \begin{itemize}
+    \item words that tend to occur in the same contexts
+    \end{itemize}
+  \item Words that share many contexts will correspond to concepts
+    that share many attributes (\primary{attributional similarity}),
+    i.e. concepts that are \primary{taxonomically/ontologically similar}
+    \begin{itemize}
+    \item synonyms (\emph{rhino/rhinoceros})
+    \item antonyms and values on a
+      scale (\emph{good/bad})
+      \item co-hyponyms (\emph{rock/jazz})
+      \item hyper- and hyponyms (\emph{rock/basalt})
+    \end{itemize}
+  \item Taxonomic similarity is seen as the fundamental semantic
+    relation, allowing categorization, generalization, inheritance
+  \end{itemize}
+\end{frame}
+
+
+
+\begin{frame}
+  \frametitle{Evaluation of attributional similarity}
+  
+  \begin{itemize}
+  \item \primary{Synonym identification}
+  \begin{itemize}
+\item TOEFL test
+\end{itemize}
+  \item \primary{Modeling semantic similarity}
+    judgments
+   \begin{itemize}
+\item the Rubenstein/Goodenough norms
+\end{itemize}
+  \item \primary{Noun categorization}
+  \begin{itemize}
+\item the ESSLLI 2008 dataset
+\end{itemize}
+  \item \primary{Semantic priming}
+  \begin{itemize}
+\item the Hodgson  dataset
+\end{itemize}
+
+  \end{itemize}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\subsection{Synonym identification and semantic similarity judgements}
+
+
+\begin{frame}\frametitle{The TOEFL synonym task}
+
+  \begin{itemize}
+  \item The TOEFL dataset
+  \begin{itemize}
+  \item<1-> 80 items
+  \item<1-> Target: \emph{levied}\\
+    Candidates:
+    \emph{\alert<2->{imposed}, believed, requested, correlated}
+    \end{itemize}
+    \item[]
+  \item<3-> DSMs and TOEFL
+  \begin{enumerate}
+\item take vectors of the target ($\Vector{t}$) and of the candidates
+($\Vector{c}_1 \dots \Vector{c}_n$)
+\item measure the distance between $\Vector{t}$ and $\Vector{c}_i$, with
+$1 \leq i \leq n$ 
+\item select $\Vector{c}_i$ with the shortest distance in space from $\Vector{t}$
+\end{enumerate}
+  \end{itemize}
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Human performance on the synonym match task}
+
+  \begin{itemize}
+  \item Average foreign test taker: 64.5\%
+  \item Macquarie University staff (Rapp 2004):
+    \begin{itemize}
+    \item Average of 5 non-natives: 86.75\%
+    \item Average of 5 natives: 97.75\%
+    \end{itemize}
+
+  \end{itemize}
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{DSMs take the TOEFL}
+  \begin{itemize}
+  \item \primary{Humans}
+    \begin{itemize}
+    \item Foreign test takers: 64.5\%
+    \item Macquarie non-natives: 86.75\%
+    \item Macquarie natives: \primary{97.75\%}
+    \end{itemize}
+  \item \primary{Machines}
+    \begin{itemize}
+    \item Classic LSA: 64.4\%
+    \item Padó and Lapata's dependency-based model: 73\%
+    \item Rapp's 2003 SVD-based model trained on lemmatized BNC:
+      \primary{92.5\%}
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Semantic similarity judgments}
+
+  \begin{description}
+  \item [ Dataset] Rubenstein and Goodenough (1965) (R\&G) of\\
+ 65 noun pairs rated by 51 subjects on a 0-4 scale
+    \begin{center}
+    \begin{tabular}{llr}
+      \emph{car} & \emph{automobile} & \primary{3.9}\\
+     \emph{food} &  \emph{fruit}  & \primary{2.7}\\
+      \emph{cord} & \emph{smile} & \primary{0.0}\\
+    \end{tabular}
+      \end{center}
+\end{description}
+\pause
+\begin{itemize}
+\item DSMs \vs\ Rubenstein \& Goodenough
+ \begin{enumerate}
+\item for each test pair $(w_1, w_2)$, take vectors $\Vector{w}_1$ and $\Vector{w}_2$
+\item measure the distance (e.g.\ cosine) between $\Vector{w}_1$ and $\Vector{w}_2$
+\item measure (Pearson) correlation between vector distances and R\&G average judgments \citep{Pado:Lapata:07}
+\end{enumerate}
+\end{itemize}
+  
+    \pause
+    \begin{center}
+      \begin{tabular}{|l|r|}
+      \hline
+      \emph{model} & $r$\\
+      \hline
+      \hline
+      dep-filtered+SVD & 0.8\\
+      \hline
+      dep-filtered    & 0.7\\
+      \hline
+      dep-linked  (DM) & 0.64\\
+      \hline
+      window & 0.63\\
+      \hline
+    \end{tabular}
+      \end{center}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\subsection{Noun categorization}
+
+
+
+\begin{frame}
+\frametitle{Categorization}
+
+\begin{itemize}
+\item In \primary{categorization tasks}, subjects are typically asked to assign experimental items -- objects, images, words -- to a given category or group items belonging to the same category
+\begin{itemize}
+\item categorization requires an understanding of the relationship between the items in a category
+\end {itemize}
+\item Categorization is a basic cognitive operation presupposed by further semantic tasks
+\begin{itemize}
+\item \primary{inference}
+\begin{itemize}
+\item if X is a CAR then X is a VEHICLE
+\end{itemize}
+\item \primary{compositionality}
+\begin{itemize}
+\item $\lambda y:\text{FOOD}\; \lambda x:\text{ANIMATE}; eat(x,y)$
+\end{itemize}
+\end{itemize}
+\item ``Chicken-and-egg'' problem for relationship of categorization and similarity (cf.\ Goodman 1972, Medin et al.\ 1993)
+\end{itemize}
+\end{frame}
+
+
+\frame{
+\frametitle{Noun categorization}
+
+  \begin{description}
+  \item [ Dataset] 44 concrete nouns (ESSLLI 2008 Shared Task)
+   \begin{itemize}
+  \item 24 natural entities
+     \begin{itemize}
+    \item 15 animals:\\
+      7 birds (\emph{eagle}), 8 ground animals (\emph{lion})
+    \item 9 plants: 4 fruits (\emph{banana}), 5 greens (\emph{onion})
+    \end{itemize}
+  \item 20 artifacts
+    \begin{itemize}
+    \item 13 tools (\emph{hammer}), 7 vehicles (\emph{car})
+    \end{itemize}
+  \end{itemize}
+\end{description}
+\pause
+
+\begin{itemize}
+\item DSMs and noun categorization
+\begin{itemize}
+\item categorization can be operationalized as a \primary{clustering task}
+\begin{enumerate}
+\item for each noun $w_i$ in the dataset, take its vector $\vw_i$
+\item use a \primary{clustering method} to group close vectors $\vw_i$
+\item evaluate whether clusters correspond to gold-standard semantic
+  classes (purity, entropy, \ldots)
+\end{enumerate}
+
+\end{itemize}
+
+\end{itemize}
+
+}
+
+
+
+
+\begin{frame}
+\frametitle{Noun categorization}
+\begin{itemize}
+\item Clustering experiments with CLUTO (Karypis 2003)
+\begin{itemize}
+\item repeated bisection algorithm
+\item 6-way (birds, ground animals, fruits, greens,
+tools and vehicles), 3-way (animals, plants and
+artifacts) and 2-way (natural and artificial entities) clusterings
+\end{itemize}
+\pause
+\item Clusters evaluation
+\begin{itemize}
+\item \primary{entropy} -- whether words from different classes are represented in the same cluster (\primary{best = 0})
+\item \primary{purity} -- degree to which a cluster contains words from one class only (\primary{best = 1})
+\item \primary{global score} across the three clustering experiments
+\begin{displaymath}
+\sum_{i=1}^3 \text{Purity}_i -  \sum_{i=1}^3 \text{Entropy}_i
+\end{displaymath}
+
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+
+
+
+\frame{
+\frametitle{Noun categorization: results}
+
+ \begin{center}
+  \begin{tabular}{|l|r|r||r|r||r|r||r|}
+      \hline
+      \emph{model} &\multicolumn{2}{|c||}{\emph{6-way}} &  \multicolumn{2}{|c||}{\emph{3-way}} & \multicolumn{2}{|c||}{\emph{2-way}}&  \multicolumn{1}{|c|}{\emph{global}}\\
+      \cline{2-7}
+      &   \emph{P} & \emph{E}  & \emph{P} & \emph{E}  & \emph{P} & \emph{E} &\\
+      \hline
+      \hline
+      Katrenko & 89 & 13 & 100 & 0 & 80 & 59 & 197\\ 
+      \hline
+      Peirsman+ & 82 & 23 & 84 & 34 & 86 & 55 & 140\\
+      \hline
+      dep-typed (DM) & 77 & 24 & 79 & 38 & 59 & 97 & 56\\
+      \hline
+      dep-filtered & 80 &28 & 75& 51& 61& 95 & 42\\
+      \hline
+      window & 75& 27&  68& 51& 68& 89   &44\\
+      \hline
+      Peirsman$-$ & 73 & 28 & 71 & 54 & 61 & 96 & 27\\
+      \hline
+      Shaoul & 41& 77& 52& 84 & 55& 93& -106\\
+      \hline
+    \end{tabular}
+\end{center}
+
+\begin{center}\footnotesize
+  {\tt Katrenko, Peirsman+/-, Shaoul}: ESSLLI 2008 Shared Task\\
+  {\tt DM}: Baroni \& Lenci (2009)
+\end{center}
+     
+ 
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\
+%\subsection{Semantic priming}
+
+\begin{frame}
+  \frametitle{Semantic priming}
+  \begin{itemize}
+  \item Hearing/reading a ``related'' prime facilitates access to a
+    target in various lexical tasks (naming, lexical decision,
+    reading)
+    \begin{itemize}
+  \item  the word \emph{pear} is recognized/accessed faster if it is
+    heard/read after \emph{apple}
+    \end{itemize}
+    \pause
+  \item Hodgson (1991) single word lexical decision task, 136
+    prime-target pairs (cf.\ Padó \& Lapata 2007)
+    \begin{itemize}
+  \item similar amounts of priming for different
+    semantic relations between primes and targets (approx.~23 pairs
+    per relation):
+    \begin{itemize}
+    \item synonyms (synonym): \emph{to dread/to fear}
+    \item antonyms (antonym): \emph{short/tall}
+    \item coordinates (coord): \emph{train/truck}
+    \item super- and subordinate pairs (supersub): \emph{container/bottle}
+    \item free association pairs (freeass): \emph{dove/peace}
+    \item phrasal associates (phrasacc): \emph{vacant/building}
+    \end{itemize}
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}
+  \frametitle{Simulating semantic priming}
+  \framesubtitle{McDonald \& Brew (2004), Padó \& Lapata (2007)}
+ \begin{itemize}
+ \item DSMs and semantic priming
+  \begin{enumerate}
+  \item for each related prime-target pair, 
+  measure cosine-based similarity between pair items (e.g.,
+    \emph{to dread/to fear})
+    \pause
+  \item to estimate \primary{unrelated primes}, take average of cosine-based similarity of target with other
+    primes from same relation data-set (e.g., \emph{value/to fear})
+    \pause
+  \item similarity between related items should be significantly higher
+    than average similarity between unrelated items
+    \item[]
+  \end{enumerate}
+  \pause
+\item Significant effects ($p < .01$) for all semantic relations 
+  \begin{itemize}
+  \item strongest effects for synonyms, antonyms \& coordinates
+  \end{itemize}
+  \end{itemize}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\
+\subsection{Relational similarity}
+
+
+\begin{frame}
+  \frametitle{Finding and distinguishing semantic relations}
+  \begin{itemize}
+  \item Classic distributional semantic models are based on
+    \primary{attributional} similarity
+    \begin{itemize}
+    \item single words/concepts that share attributes / tend to occur
+      in the same contexts are semantically similar
+    \end{itemize}
+  \item Attributional similarity can be modeled with DSMs that have \primary{single words}
+  as matrix rows
+  \begin{itemize}
+  \item matrix columns represent attributes shared by similar words
+\end{itemize}
+  \end{itemize}
+  \pause
+   \begin{center}
+   \begin{tabular}{l|c|c|c}
+
+         &{\color{counterpoint}die}           &{\color{counterpoint}kill}           &{\color{counterpoint}gun} \\
+\hline
+{\color{blue}teacher}  &109.4         &0.0             &0.0  \\
+{\color{blue}victim}   &1335.2        &22.4            &0.0 \\
+{\color{blue}soldier}  &4547.5        &1306.9        &105.9\\
+{\color{blue}policeman} &68.6          &38.2           &30.5\\
+
+  \end{tabular}
+  \end{center}
+
+  
+  
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Attributional and relational similarity}
+  \framesubtitle{Turney (2006)}
+
+  \begin{itemize}
+  \item \emph{Policeman} is \primary{attributionally} similar to
+    \emph{soldier}
+    \begin{itemize}
+    \item both occur in contexts like:
+    \emph{kill X}, \emph{with gun}, \emph{for security}
+    \end{itemize}
+    \pause
+  \item The pair \emph{policeman-gun} is \primary{relationally}
+    similar to \emph{teacher-book}
+    \begin{itemize}
+    \item both are often connected by \emph{with}, \emph{use},
+      \emph{of} in context
+    \end{itemize}
+    \pause
+    \item It is not always possible to reduce relational similarity to attributional similarity
+    \begin{itemize}
+\item \emph{mason}:\emph{stone} :: \emph{carpenter}:\emph{wood}\\
+  \vs\ \emph{traffic}:\emph{street} :: \emph{water}:\emph{riverbed}
+\begin{itemize}
+\item \emph{mason} - \emph{carpenter} and \emph{stone} - \emph{wood} are attributionally similar
+\item \emph{traffic} - \emph{water} and \emph{street} - \emph{riverbed} are \primary{not} attributionally similar
+\end{itemize}
+\end{itemize}
+
+  \end{itemize}
+\end{frame}
+
+
+
+\begin{frame}
+  \frametitle{Finding and distinguishing semantic relations with DSMs}
+
+  \begin{itemize}
+    \item Find non-taxonomic semantic relations
+      \begin{itemize}
+      \item look at direct co-occurrences of \primary{word pairs} in texts (when
+        we talk about a concept, we are likely to also mention its
+        parts, function, etc.)
+      \end{itemize}
+      \pause
+    \item Distinguish between different semantic relations
+      \begin{itemize}
+      \item use the contexts of pairs to measure pair similarity, and
+        group them into coherent relation types by their contexts
+      \item \emph{pairs} that occur in similar contexts (i.e.\
+   \primary{connected by similar words and structures}) will tend to be
+    related, with the shared contexts acting as a cue to the nature of
+    their relation, i.e., measuring their \emph{relational} similarity
+    (Turney 2006)
+     
+      \end{itemize}
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{DSMs and relational similarity}
+  
+ \begin{description}
+    \item [rows] \primary{word pairs}
+    \item [columns] \primary{syntagmatic links} between the word pairs
+    \end{description}
+
+  \begin{center}
+        \begin{tabular}{ll|c|c|c|c}
+          &        &{\color{counterpoint}in}     &{\color{counterpoint}at}    &{\color{counterpoint}with}&{\color{counterpoint}use}  \\
+          \hline
+          {\color{secondary}teacher}&{\color{primary}school}  &11894.4&7020.1&28.9 &0.0 \\
+          {\color{secondary}teacher}&{\color{primary}handbook}&2.5    &0.0   &3.2  &10.1\\
+          {\color{secondary}soldier}&{\color{primary}gun}     &2.8    &10.3  &105.9&41.0\\
+        \end{tabular}
+      \end{center}
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Recognizing SAT analogies}
+    
+  \begin{itemize}
+\item 374 SAT multiple-choice questions (Turney 2006)
+\item Each question  includes 1 target pair (stem) and 5 answer pairs
+\item the task is to choose the pair most \emph{analogous} to the stem
+  \begin{center}
+  \begin{tabular}{ll}
+    {\color{secondary}mason} & {\color{secondary}stone}\\
+    \hline
+    teacher & chalk\\
+    \h<2->{carpenter} & \h<2->{wood}\\
+    soldier & gun\\
+    photograph & camera\\
+    book & word\\
+  \end{tabular}
+  \end{center}
+\item<3-> Relational analogue to the TOEFL task
+\begin{enumerate}
+\item <4-> for each pair $p$, take its row vector $\Vector{p}$
+\item <5-> for each stem-pair, select the closest answer-pair\\
+  (e.g.\ the one with the highest cosine similarity)
+\end{enumerate}
+\end{itemize}  
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Recognizing SAT analogies: results}
+
+\begin{center}
+ \begin{table}[tbh]
+  \begin{small}
+    \begin{center}
+      \begin{tabular}{|l|r||l|r|}
+        \hline
+        \emph{model} & \emph{\% correct} & \emph{model} & \emph{\% correct} \\
+        \hline
+        \hline
+        LRA & 56.1&KnowBest & 43.0\\
+        \hline
+        PERT & 53.3& DM$-$ & 42.3\\
+        \hline
+        PairClass & 52.1&LSA& 42.0\\
+        \hline
+        VSM & 47.1&AttrMax & 35.0\\
+        \hline
+        DM+ & 45.3&AttrAvg & 31.0\\
+        \hline
+        PairSpace & 44.9&AttrMin & 27.3\\
+        \hline
+        \emph{k}-means & 44.0&\color{primary}{Random} & \color{primary}{20.0}\\
+        \hline
+      \end{tabular}
+         \end{center}
+  \end{small}
+\end{table}
+  \end{center}
+
+
+ \begin{center}
+  \footnotesize
+  {\tt LRA, PERT, PairClass, VSM, KnowBest, LSA}: ACLWiki\\
+  {\tt AttrMax, AttrAvg, AttrMin}: Turney(2006)\\
+  {\tt DM+, DM-}: Baroni \& Lenci (2009)
+\end{center}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Domain analogies}
+
+  \begin{itemize}
+  \item Turney (2008) extends the relational approach to entire
+    analogical \emph{domains}
+    \begin{center}
+      \begin{tabular}{lll}
+        solar system&$\rightarrow$& atom \\
+        sun&$\rightarrow$& nucleus \\
+        planet&$\rightarrow$& electron \\
+        mass&$\rightarrow$& charge \\
+        attracts&$\rightarrow$& attracts \\
+        revolves&$\rightarrow$& revolves \\
+        gravity&$\rightarrow$& electromagnetism \\
+      \end{tabular}
+    \end{center}
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}[c]
+  \begin{center}
+    \textcite{\LARGE Intermission}
+
+    \gap[2]
+    Time for a cup of coffee \ldots
+  \end{center}
+\end{frame}
+
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "../workspace"
+%%% End: 

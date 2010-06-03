@@ -43,5 +43,9 @@
 %% nice colour for R output: \begin{Rout} .. \end{Rout}
 %% -- ugly hack: I'm sure theres a better way to do this
 \newenvironment{Rout}[1][\footnotesize]{%
-  \begin{footnotesize}#1\color{osnablue}\bfseries}{%
+  \begin{footnotesize}#1\color{secondary}\bfseries}{%
   \color{black}\mdseries\end{footnotesize}}
+
+%% symbols for centroid vector and singular value matrix 
+\newcommand{\vmu}[1][]{\boldsymbol{\mu}\ifthenelse{\equal{#1}{}}{}{^{(#1)}}}
+\newcommand{\Msigma}{\boldsymbol{\Sigma}}
