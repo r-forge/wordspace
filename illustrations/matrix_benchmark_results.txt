@@ -111,8 +111,59 @@ euclid() S              2.492  5300.08   1.661
 euclid() small S        0.664  4975.77   0.434
 
 ------------------------------------------------------------------------
+Acer 1810TX, Intel Pentium Dual Core U4100 1.3 GHz, 2MB L2 Cache, 800 MHz FSB, Intel GMA X4500
+Ubuntu Linux 10.04LTS "Lucid Lynx" 64-bit, R 2.11.1, 64-bit, reference BLAS 
+                         Time     MOPS CPUTime
+transpose D             0.204    38.55    0.17
+normalise D             0.493    15.95    0.37
+dist() D               83.884    39.33   83.38
+inner M %*% t(M) D      1.674  7883.58    1.66
+inner tcrossprod D      0.966 13661.61    0.97
+inner crossprod t(M) D 18.672   706.79   18.65
+cosine normalised D     1.157 11419.91    1.06
+cosine general D        1.235 10694.57    1.11
+euclid() D              3.034  4353.26    2.89
+euclid() small D        0.764  4324.49    0.72
+construct S             0.188    41.83    0.19
+construct small S       0.069    56.99    0.07
+transpose S             0.019   413.94    0.02
+normalise S             0.251    31.33    0.25
+dist() S               83.175    39.67   83.08
+inner M %*% t(M) S      1.219 10826.18    1.19
+inner tcrossprod S      1.165 11327.99    1.16
+inner crossprod t(M) S  1.182 11165.07    1.19
+cosine normalised S     1.392  9491.98    1.39
+cosine general S        3.390  3896.10    3.06
+euclid() S              2.871  4600.41    2.78
+euclid() small S        0.737  4482.92    0.74
 
+------------------------------------------------------------------------
+Acer 1810TX, Intel Pentium Dual Core U4100 1.3 GHz, 2MB L2 Cache, 800 MHz FSB, Intel GMA X4500
+Ubuntu Linux 10.04LTS "Lucid Lynx" 64-bit, R 2.11.1, 64-bit, standard Ubuntu ATLAS 
 
+                         Time     MOPS CPUTime
+transpose D             0.200    39.32    0.16
+normalise D             0.475    16.56    0.38
+dist() D               85.256    38.70   84.93
+inner M %*% t(M) D     11.561  1141.52   11.52
+inner tcrossprod D      6.112  2159.21    6.11
+inner crossprod t(M) D  6.141  2149.02    6.07
+cosine normalised D     6.363  2076.51    6.20
+cosine general D        6.388  2067.59    6.27
+euclid() D              8.214  1607.96    8.06
+euclid() small D        2.027  1629.95    1.98
+construct S             0.190    41.39    0.19
+construct small S       0.070    56.18    0.07
+transpose S             0.019   413.94    0.02
+normalise S             0.274    28.70    0.25
+dist() S               90.189    36.58   90.03
+inner M %*% t(M) S      1.201 10988.44    1.20
+inner tcrossprod S      1.193 11062.12    1.19
+inner crossprod t(M) S  1.182 11165.07    1.19
+cosine normalised S     1.404  9410.86    1.40
+cosine general S        3.410  3873.25    3.06
+euclid() S              2.870  4602.02    2.81
+euclid() small S        0.733  4507.39    0.73
 
 ------------------------------------------------------------------------
 
