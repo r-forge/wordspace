@@ -1,0 +1,3 @@
+export(read.dsm)
+export(dsm.score)
+export(cosine)
