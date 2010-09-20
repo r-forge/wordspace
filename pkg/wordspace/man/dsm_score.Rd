@@ -1,6 +1,5 @@
 \name{dsm.score}
 \alias{dsm.score}
-%- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 TODO
 }
@@ -8,30 +7,16 @@ TODO
 %%  ~~ A concise (1-5 lines) description of what the function does. ~~
 }
 \usage{
-am.score(AM = c("frequency", "t-score", "z-score", "Dice"), M, row.freqs, col.freqs, N, sparse = FALSE, log = FALSE)
+dsm.score(model, score=c("frequency", "t-score","z-score","Dice"), sparse=FALSE, transform=c("none", "log", "root", "sigmoid"))
 }
-%- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{AM}{
-%%     ~~Describe \code{AM} here~~
+  \item{model}{
 }
-  \item{M}{
-%%     ~~Describe \code{M} here~~
-}
-  \item{row.freqs}{
-%%     ~~Describe \code{row.freqs} here~~
-}
-  \item{col.freqs}{
-%%     ~~Describe \code{col.freqs} here~~
-}
-  \item{N}{
-%%     ~~Describe \code{N} here~~
+  \item{score}{
 }
   \item{sparse}{
-%%     ~~Describe \code{sparse} here~~
 }
-  \item{log}{
-%%     ~~Describe \code{log} here~~
+  \item{transform}{
 }
 }
 \details{
