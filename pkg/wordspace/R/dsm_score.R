@@ -1,6 +1,7 @@
 dsm.score <- function (model, score=c("frequency", "t-score","z-score","Dice"), sparse=FALSE, transform=c("none", "log", "root", "sigmoid")) {
   score <- match.arg(score)
   transform <- match.arg(transform)
+  stopifnot(inherits(model, "dsm"))
 
   O <- model$M # observed frequencies
   stopifnot(nrow(O) == nrow(model$rows))

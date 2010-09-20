@@ -14,7 +14,7 @@ read.dsm(filename, encoding=getOption("encoding"))
   \item{encoding}{character encoding of the input files, which will automatically be converted to R's internal representation if possible.  See \sQuote{Encoding} in \link{file} for details.}
 }
 \details{
-%%  ~~ If necessary, more details than the description above ~~
+  The \code{encoding} argument currently doesn't work (as of R 2.11.1) if the DSM data are packaged in a ZIP archive.  If you need to work with non-ASCII row/column labels in R (or want them to be displayed properly), unpack the archive first in a subdirectory and specify this directory as \code{filename}.  Keep in mind that individual files may still be compressed with \code{gzip} in order to save disk space.
 }
 \value{
 An object of class \code{dsm}, a list with the following components:
