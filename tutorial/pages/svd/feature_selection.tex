@@ -1,0 +1,38 @@
+\begin{frame}
+  \frametitle{Feature selection}
+  %% \framesubtitle{}
+
+  \begin{itemize}
+  \item Many published models use \h{feature selection} to reduce\\
+    the size of a term-term DSM matrix%
+    \pause
+  \item Selection criteria:
+    \begin{itemize}
+    \item most frequent context terms
+    \item most informative contxt terms (tf.idf)
+    \item most discriminative context terms (variance, entropy)
+    \item term restricted by part of speech (e.g.\ only verbs)
+    \end{itemize}
+    \pause
+  \item Features often selected \emph{before} co-occurrence counts
+    \begin{itemize}
+    \item only a moderately-sized DSM matrix has to be built
+    \item allows simple in-memory algorithm for co-occurrence counts
+    \end{itemize}
+    \pause
+  \item Alternative: build DSM matrix only for relevant target terms
+    \begin{itemize}
+    \item i.e.\ reduce the number of rows instead of number of columns
+    \end{itemize}
+    \pause
+  \item \hh{Disadvantage}: useful information may be discarded
+    \begin{itemize}
+    \item aggressive feature selection is common in the DSM literature
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "../../workspace"
+%%% End: 

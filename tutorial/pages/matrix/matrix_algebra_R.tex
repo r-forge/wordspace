@@ -1,0 +1,207 @@
+\begin{frame}
+  \frametitle{R as a toy DSM laboratory}
+  %% \framesubtitle{}
+
+  \begin{itemize}
+  \item Matrix algebra is a powerful and convenient tool in numerical
+    mathematics \so implement DSM with matrix operations
+  \item Specialised (and highly optimised) libraries are available for various
+    programming languages (C, C++, Perl, Python, \ldots)
+  \item Some numerical programming environments are even based entirely on
+    matrix algebra (Matlab, Octave, NumPy/Sage)
+  \item Statistical software packages like \textbf{R} also support matrices
+  \end{itemize}
+  \pause
+  \begin{columns}[c]
+    \begin{column}{75mm}
+      \begin{itemize}
+      \item \textbf{R} as a \h{DSM laboratory} for toy models\\
+        \url{http://www.r-project.org/}
+      \item Integrates efficient matrix operations with statistical analysis,
+        clustering, machine learning, visualisation, \ldots
+      \end{itemize}
+    \end{column}
+    \begin{column}{20mm}
+      \includegraphics[width=20mm]{img/Rlogo}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{Matrix algebra with R}
+  %% \framesubtitle{}
+
+  Vectors in R:
+  \begin{itemize}
+  \item \counterpoint{\texttt{u1 <- c(3, 0, 2)}}
+  \item \counterpoint{\texttt{u2 <- c(0, 2, 2)}}
+  \item \counterpoint{\texttt{v <- 1:6}}
+  \item \counterpoint{\texttt{print(v)}}
+    \begin{footnotesize}
+\begin{verbatim}
+[1] 1 2 3 4 5 6
+\end{verbatim}
+    \end{footnotesize}
+  \end{itemize}
+   
+  \gap
+  Defining matrices:
+  \begin{itemize}
+  \item \counterpoint{\texttt{A <- matrix(v, nrow=3)}}
+  \item \counterpoint{\texttt{print(A)}}
+    \begin{footnotesize}
+\begin{verbatim}
+     [,1] [,2]
+[1,]    1    4
+[2,]    2    5
+[3,]    3    6
+\end{verbatim}
+    \end{footnotesize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{Matrix algebra in R}
+  %% \framesubtitle{}
+  
+  Matrix of column vectors:
+  \begin{itemize}
+  \item \counterpoint{\texttt{B <- cbind(u1, u2)}}
+  \item \counterpoint{\texttt{print(B)}}
+    \begin{footnotesize}
+\begin{verbatim}
+     u1 u2
+[1,]  3  0
+[2,]  0  2
+[3,]  2  2
+\end{verbatim}
+    \end{footnotesize}
+  \end{itemize}
+
+  \gap
+  Matrix of row vectors:
+  \begin{itemize}
+  \item \counterpoint{\texttt{C <- rbind(u1, u2)}}
+  \item \counterpoint{\texttt{print(C)}}
+    \begin{footnotesize}
+\begin{verbatim}
+   [,1] [,2] [,3]
+u1    3    0    2
+u2    0    2    2
+\end{verbatim}
+    \end{footnotesize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{Matrix algebra in R}
+  %% \framesubtitle{}
+  
+  Matrix multiplication:
+  \begin{itemize}
+  \item \counterpoint{\texttt{A \%*\% C}}
+    \begin{footnotesize}
+\begin{verbatim}
+     [,1] [,2] [,3]
+[1,]    3    8   10
+[2,]    6   10   14
+[3,]    9   12   18
+\end{verbatim}
+    \end{footnotesize}
+  \item NB: \counterpoint{\texttt{*}} does \emph{not} perform matrix
+    multiplication
+  \end{itemize}
+
+  \gap
+  Also for multiplication of matrix with vector:
+  \begin{itemize}
+  \item \counterpoint{\texttt{C \%*\% c(1,1,0)}}
+    \begin{footnotesize}
+\begin{verbatim}
+   [,1]
+u1    3
+u2    2
+\end{verbatim}
+    \end{footnotesize}
+    \itemhand result of multiplication is a column vector (i.e.\ plain vectors
+    are interpreted as column vectors in matrix operations)
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{Matrix algebra in R}
+  %% \framesubtitle{}
+  
+  Transpose of matrix:
+  \begin{itemize}
+  \item \counterpoint{\texttt{t(A)}}
+    \begin{footnotesize}
+\begin{verbatim}
+     [,1] [,2] [,3]
+[1,]    1    2    3
+[2,]    4    5    6
+\end{verbatim}
+    \end{footnotesize}
+  \end{itemize}
+
+  \gap
+  Transposition of vectors:
+  \begin{itemize}
+  \item \counterpoint{\texttt{t(u1)}} (row vector)
+    \begin{footnotesize}
+\begin{verbatim}
+     [,1] [,2] [,3]
+[1,]    3    0    2
+\end{verbatim}
+    \end{footnotesize}
+    \gap
+  \item \counterpoint{\texttt{t(t(u1))}} (explicit column vector)
+    \begin{footnotesize}
+\begin{verbatim}
+     [,1]
+[1,]    3
+[2,]    0
+[3,]    2
+\end{verbatim}
+    \end{footnotesize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{Matrix algebra in R}
+  %% \framesubtitle{}
+  
+  Rank of a matrix:
+  \begin{itemize}
+  \item \counterpoint{\texttt{qr(A)\$rank}}
+    \begin{footnotesize}
+\begin{verbatim}
+2
+\end{verbatim}
+    \end{footnotesize}
+  \item \counterpoint{\texttt{la.rank <- function (A) qr(A)\$rank}}
+  \item \counterpoint{\texttt{la.rank(A)}}
+  \end{itemize}
+  
+  \gap
+  Column rank = row rank:
+  \begin{itemize}
+  \item \counterpoint{\texttt{la.rank(A) == la.rank(t(A))}}
+    \begin{footnotesize}
+\begin{verbatim}
+[1] TRUE
+\end{verbatim}
+    \end{footnotesize}
+  \end{itemize}
+
+  \gap
+  $\mathbf{A}^T\cdot \mathbf{A}$ is symmetric (can you prove this?):
+  \begin{itemize}
+  \item \counterpoint{\texttt{t(A) \%*\% A}}
+  \end{itemize}
+\end{frame}
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "../../workspace"
+%%% End: 

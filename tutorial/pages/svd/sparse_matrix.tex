@@ -1,0 +1,70 @@
+\begin{frame}
+  \frametitle{Sparse matrix representation}
+  %% \framesubtitle{}
+
+  \ungap
+  \begin{itemize}
+  \item Invented example of a \hh{sparsely populated} DSM matrix
+    \begin{center}\footnotesize
+      \begin{tabular}{r | cccccc}
+        & eat & get & hear & kill & see & use \\
+        \midrule
+        boat  &   $\cdot$  & 59  &   $\cdot$  &   $\cdot$  & 39 &  23 \\
+        cat   &   $\cdot$  &  $\cdot$  &   $\cdot$  &  26  & 58 &   $\cdot$ \\
+        cup   &   $\cdot$  & 98  &   $\cdot$  &   $\cdot$  &  $\cdot$ &   $\cdot$ \\
+        dog   &  33  &  $\cdot$  &  42  &   $\cdot$  & 83 &   $\cdot$ \\
+        knife &   $\cdot$  &  $\cdot$  &   $\cdot$  &   $\cdot$  &  $\cdot$ &  84 \\
+        pig   &   9  &  $\cdot$  &   $\cdot$  &  27  &  $\cdot$ &   $\cdot$ 
+      \end{tabular}
+    \end{center}
+    \gap\pause
+  \item Store only non-zero entries in compact \h{sparse matrix format}
+    \begin{center}\footnotesize
+      \begin{tabular}{r|r|r c r|r|r}
+        row & col & value && row & col & value \\
+        \cline{1-3} \cline{5-7}
+        1  &  2  &  59 &&  4  &  1  &  33 \\
+        1  &  5  &  39 &&  4  &  3  &  42 \\
+        1  &  6  &  23 &&  4  &  5  &  83 \\
+        2  &  4  &  26 &&  5  &  6  &  84 \\
+        2  &  5  &  58 &&  6  &  1  &   9 \\
+        3  &  2  &  98 &&  6  &  4  &  27 \\
+       \end{tabular}
+    \end{center}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Working with sparse matrices}
+  %% \framesubtitle{}
+
+  \begin{itemize}
+  \item Compressed format: each row index (or column index) stored only once,
+    followed by non-zero entries in this row (or column)%
+    \begin{itemize}
+    \item convention: \h{column-major} matrix (data stored by columns)
+    \item[]
+    \end{itemize}
+    \pause
+  \item Specialised algorithms for sparse matrix algebra
+    \begin{itemize}
+    \item especially matrix multiplication, solving linear systems, etc.
+    \item take care to avoid operations that create a dense matrix!
+    \item[]
+    \end{itemize}
+    \pause
+  \item \textbf{R} implementation: \texttt{Matrix} package (from CRAN)
+    \begin{itemize}
+    \item can build sparse matrix from (row, column, value) table
+    \item unfortunately, no implementation of sparse SVD so far
+    \item[]
+    \end{itemize}
+    \pause
+  \item Other software packages: Matlab, Octave (recent versions)
+  \end{itemize}
+\end{frame}
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "../../workspace"
+%%% End: 

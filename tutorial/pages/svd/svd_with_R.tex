@@ -1,0 +1,95 @@
+\begin{frame}[fragile]
+  \frametitle{SVD with R}
+  %% \framesubtitle{}
+
+\ungap
+\begin{alltt}\small 
+\REM{As an example, we will use the unscaled matrix \textbf{M} again}
+> M1 <- M[c(1, 2, 4, 6), ]
+> M1 \begin{Rout}       
+        eat get hear kill see use
+  boat    0  59    4    0  39  23
+  cat     6  52    4   26  58   4
+  dog    33 115   42   17  83  10
+  pig     9  12    2   27  17   3 \end{Rout}
+
+\REM{\texttt{svd()} function returns data structure with decomposition}
+> SVD <- svd(M1)
+
+> SVD\$d  \REM{singular values} \begin{Rout}
+[1] 186.57942  34.92487  28.18571  12.03908  \end{Rout}
+\end{alltt}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{SVD with R}
+  %% \framesubtitle{}
+
+\ungap
+\begin{alltt}\small
+\REM{Extract matrices \textbf{U}, \(\Msigma\) and \textbf{V}}
+> Sigma <- diag(SVD\$d)  \REM{reduced to square matrix}
+> U <- SVD\$u  \REM{coordinate transformations \textbf{U} and \textbf{V}}
+> V <- SVD\$v  \REM{recall that \textbf{V} contains the latent dimensions}
+
+\REM{Now reconstruct \textbf{M} from decomposition }
+> round(U \%*\% Sigma \%*\% t(V), 2) \begin{Rout}
+     [,1] [,2] [,3] [,4] [,5] [,6]
+[1,]    0   59    4    0   39   23
+[2,]    6   52    4   26   58    4
+[3,]   33  115   42   17   83   10
+[4,]    9   12    2   27   17    3 \end{Rout}
+
+\end{alltt}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{SVD with R}
+  %% \framesubtitle{}
+
+\ungap
+\begin{alltt}\small
+\REM{Coordinates of target nouns in latent DSM space}
+> U \%*\% Sigma
+
+> M1 \%*\% V  \REM{this version preserves row names}
+             [,1]       [,2]       [,3]       [,4]
+  boat  -69.97214 -12.570114  21.760062  4.4036025
+  cat   -78.87562  21.092424   9.865719 -6.9580067
+  dog  -151.85390  -9.004136 -14.673158  0.1279540
+  pig   -25.19541  23.146798  -2.880942  8.7816522
+\end{alltt}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{SVD with R}
+  %% \framesubtitle{}
+
+\ungap
+\begin{alltt}\small 
+\REM{Compute rank-\(m\) approximations of the original matrix \textbf{M}}
+> svd.approx <- function (m) \{
++   U[,1:m, drop=FALSE] \%*\% Sigma[1:m,1:m, drop=FALSE] \%*\% 
++   t(V)[1:m,, drop=FALSE]
++ \}
+> round(svd.approx(1), 1) \begin{Rout}
+     [,1]  [,2] [,3] [,4] [,5] [,6]
+[1,] 11.5  52.3 14.1 10.7 40.9  7.1
+[2,] 12.9  58.9 15.9 12.0 46.1  8.0
+[3,] 24.9 113.4 30.6 23.2 88.7 15.4
+[4,]  4.1  18.8  5.1  3.8 14.7  2.5 \end{Rout}
+> round(svd.approx(2), 1) \begin{Rout}
+     [,1]  [,2] [,3] [,4] [,5] [,6]
+[1,] 11.1  56.4 17.2  0.2 37.0  9.4
+[2,] 13.6  51.9 10.8 29.7 52.6  4.1
+[3,] 24.6 116.4 32.8 15.6 85.9 17.0
+[4,]  4.8  11.2 -0.6 23.2 21.9 -1.7 \end{Rout}
+\end{alltt}
+\end{frame}
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "../../workspace"
+%%% End: 

@@ -1,0 +1,108 @@
+\begin{frame}[fragile]
+  \frametitle{Feature scaling: log frequencies}
+  %% \framesubtitle{}
+
+\ungap
+\begin{alltt}\small
+\REM{Because of Zipf's law, frequency distributions are highly skewed;}
+\REM{DSM matrix M will be dominated by high-frequency entries}
+
+\REM{Solution 1: transform into logarithmic frequencies}
+> M1 <- log10(M + 1)  \REM{discounted (\texttt{+1}) to avoid \texttt{log(0)}}
+> round(M1, 2) \begin{Rout}
+         eat  get hear kill  see  use
+  boat  0.00 1.78 0.70 0.00 1.60 1.38
+  cat   0.85 1.72 0.70 1.43 1.77 0.70
+  cup   0.30 2.00 0.48 0.00 1.18 0.85
+  dog   1.53 2.06 1.63 1.26 1.92 1.04
+  knife 0.60 1.72 0.00 0.00 1.32 1.93
+  pig   1.00 1.11 0.48 1.45 1.26 0.60
+\end{Rout}
+\end{alltt}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Feature scaling: association measures}
+  %% \framesubtitle{}
+
+  Simple association measures can be expressed in terms of observed ($O$) and
+  expected ($E$) frequencies, e.g.\ \h{t-score}:
+  \[
+  t = \frac{O - E}{\sqrt{O}}
+  \]
+  You can implement any of the equations in (Evert 2008)
+
+\begin{alltt}\small
+> M2 <- (O - E) / sqrt(O + 1)  \REM{discounted to avoid division by 0}
+> round(M2, 2) \begin{Rout}
+           eat    get   hear   kill    see    use
+  boat   -7.03   0.86  -1.48  -9.47   1.23   1.11
+  cat    -0.92  -1.49  -2.13   2.82   2.67  -7.65
+  cup    -4.11   4.76  -2.93  -9.17  -4.20  -4.17
+  dog     2.76  -0.99   3.73  -1.35   0.87  -9.71
+  knife  -2.95  -2.10  -9.23 -11.97  -4.26   6.70
+  pig     1.60  -4.80  -1.21   4.10  -0.12  -3.42 \end{Rout}
+\end{alltt}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Feature scaling: sparse association measures}
+  %% \framesubtitle{}
+
+\ungap
+\begin{alltt}\small
+\REM{``Sparse'' association measures set all negative associations to 0;}
+\REM{this can be done with \texttt{ifelse()}, a vectorised \texttt{if} statement}
+> M3 <- ifelse(O >= E, (O - E) / sqrt(O), 0) 
+> round(M3, 2) \begin{Rout}
+         eat  get hear kill  see  use
+  boat  0.00 0.87 0.00 0.00 1.24 1.13
+  cat   0.00 0.00 0.00 2.87 2.69 0.00
+  cup   0.00 4.78 0.00 0.00 0.00 0.00
+  dog   2.81 0.00 3.78 0.00 0.88 0.00
+  knife 0.00 0.00 0.00 0.00 0.00 6.74
+  pig   1.69 0.00 0.00 4.18 0.00 0.00 \end{Rout}
+
+\REM{Pick your favourite scaling method here!}
+> M <- M2
+\end{alltt}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Visualisation: plot two selected dimensions}
+  %% \framesubtitle{}
+
+\ungap
+\begin{alltt}\small
+> M.2d <- M[, c("get", "use")]
+> round(M.2d, 2) \begin{Rout}
+          get   use
+  boat   0.86  1.11
+  cat   -1.49 -7.65
+  cup    4.76 -4.17
+  dog   -0.99 -9.71
+  knife -2.10  6.70
+  pig   -4.80 -3.42 \end{Rout}
+
+\REM{Two-column matrix automatically interpreted as x- and y-coordinates}
+> plot(M.2d, pch=20, col="red", main="DSM visualisation")
+
+\REM{Add labels: the text strings are the rownames of M}
+> text(M.2d, labels=rownames(M.2d), pos=3)
+\end{alltt}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Visualisation: plot two selected dimensions}
+  %% \framesubtitle{}
+
+  \ungap[2]
+  \begin{center}
+    \includegraphics[width=8cm]{img/dsm_lab_2d_plot}
+  \end{center}
+\end{frame}
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "../../workspace"
+%%% End: 

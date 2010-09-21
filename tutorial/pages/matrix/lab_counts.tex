@@ -1,0 +1,195 @@
+\begin{frame}[fragile]
+  \frametitle{Preliminaries}
+  %% \framesubtitle{}
+  
+\ungap
+\begin{alltt}\small
+\REM{This is a comment: do not type comment lines into R!}
+\REM{You should be able to execute most commands by copy \& paste}
+> (1:10)^2 \begin{Rout}
+[1]   1   4   9  16  25  36  49  64  81 100  \end{Rout}
+
+\REM{The \texttt{>} indicates the R command prompt; it is not part of the input!}
+\REM{Output of an R command is shown in blue below the command}
+
+\REM{Long commands may require continuation lines starting with \texttt{+};}
+\REM{you should enter such commands on a single line, if possible}
+> c(1,
++   2,
++   3) \begin{Rout}
+[1] 1 2 3  
+\end{Rout}
+\end{alltt}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Reading the co-occurrence tokens}
+  %% \framesubtitle{}
+\ungap
+\begin{alltt}\small
+\REM{Load tabular data with \texttt{read.table()}; options save memory and ensure}
+\REM{that strings are loaded correctly; \texttt{gzfile()} decompresses on the fly}
+> tokens <- read.table(gzfile("bnc_vobj_filtered.txt.gz"), 
++                      colClasses="character", quote="", 
++                      col.names=c("verb", "noun"))
+
+\REM{You must first ``change working directory'' to where you have saved the file;}
+\REM{if you can't, then replace filename by \texttt{file.choose()} above}
+
+\REM{If you have problems with the compressed file, then decompress the disk file}
+\REM{(some Web browsers may do this automatically) and load with}
+> tokens <- read.table("bnc_vobj_filtered.txt", 
++                      colClasses="character", quote="", 
++                      col.names=c("verb", "noun"))
+\end{alltt}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Reading the co-occurrence tokens}
+  %% \framesubtitle{}
+
+\ungap
+\begin{alltt}\small
+\REM{The variable \texttt{tokens} now holds co-occurrence tokens as a table}
+\REM{(in R lingo, such tables are called \texttt{data.frame}s)}
+
+\REM{Size of the table (rows, columns) and first 6 rows}
+> dim(tokens) \begin{Rout}
+[1] 3406821       2 \end{Rout}
+
+> head(tokens, 6) \begin{Rout}
+      verb       noun
+1  acquire deficiency
+2   affect       body
+3    fight  infection
+4     face  condition
+5    serve   interest
+6      put       back \end{Rout}
+\end{alltt}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Filtering selected verbs \& nouns}
+  %% \framesubtitle{}
+
+\ungap
+\begin{alltt}\small
+\REM{Example matrix for selected nouns and verbs}
+> selected.nouns <- c("knife","cat","dog","boat","cup","pig")
+> selected.verbs <- c("get","see","use","hear","eat","kill")
+
+\REM{\%in\% operator tests whether value is contained in list;}
+\REM{note the single \& for logical ``and'' (vector operation)}
+> tokens <- subset(tokens, verb \%in\% selected.verbs \&
++                          noun \%in\% selected.nouns)
+
+\REM{How many co-occurrence tokens are left?}
+> dim(tokens) \begin{Rout}
+[1] 924   2 \end{Rout}
+> head(tokens, 5) \begin{Rout}
+      verb  noun
+2813   get knife
+6021   see   pig
+6489   see   cat
+24130  see   cat
+26620  see  boat  \end{Rout}
+\end{alltt}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Co-occurrence counts}
+  %% \framesubtitle{}
+
+\ungap
+\begin{alltt}\small
+\REM{Contstruct matrix of co-occurrence counts (contingency table)}
+> M <- table(tokens\$noun, tokens\$verb)
+> M \begin{Rout}
+        eat get hear kill see use
+  boat    0  59    4    0  39  23
+  cat     6  52    4   26  58   4
+  cup     1  98    2    0  14   6
+  dog    33 115   42   17  83  10
+  knife   3  51    0    0  20  84
+  pig     9  12    2   27  17   3 \end{Rout}
+
+\REM{Use subscripts to extract row and column vectors}
+> M["cat", ] \begin{Rout}
+ eat  get hear kill  see  use 
+   6   52    4   26   58    4  \end{Rout}
+> M[, "use"] \begin{Rout}
+ boat   cat   cup   dog knife   pig 
+   23     4     6    10    84     3 
+\end{Rout}
+\end{alltt}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Marginal frequencies}
+  %% \framesubtitle{}
+
+\ungap
+\begin{alltt}\small
+\REM{For the calculating association scores, we need the marginal frequencies}
+\REM{of the nouns and verbs; for simplicity, we obtain them by summing over the}
+\REM{rows and columns of the table (this is not mathematically correct!)}
+> f.nouns <- rowSums(M)
+> f.verbs <- colSums(M)
+> N <- sum(M)  \REM{sample size (sum over all cells of the table)}
+
+> f.nouns \begin{Rout}
+ boat   cat   cup   dog knife   pig 
+  125   150   121   300   158    70 \end{Rout}
+> f.verbs \begin{Rout}
+ eat  get hear kill  see  use 
+  52  387   54   70  231  130 \end{Rout}
+> N \begin{Rout}
+[1] 924 \end{Rout}
+\end{alltt}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Expected and observed frequencies}
+  %% \framesubtitle{}
+
+Expected frequencies:
+\(\displaystyle
+E_{ij} = \frac{f_i^{\text{(noun)}}\cdot f_j^{\text{(verb)}}}{N}
+\)
+
+\gap 
+can be calculated efficiently with \h{outer product}
+$\Vector[\text{n}]{f}\cdot (\Vector[\text{v}]{f})^T$:
+\[
+\begin{bmatrix}
+  x_1 \\ x_2
+\end{bmatrix}
+\cdot
+\begin{bmatrix}
+  y_1 & y_2 & y_3
+\end{bmatrix}
+=
+\begin{bmatrix}
+  x_1 y_1 & x_1 y_2 & x_1 y_3 \\ 
+  x_2 y_1 & x_2 y_2 & x_2 y_3
+\end{bmatrix}
+\]
+
+\pause
+\begin{alltt}\small
+> E <- f.nouns \%*\% t(f.verbs) / N
+> round(E, 1) \begin{Rout}
+      eat   get hear kill  see  use
+[1,]  7.0  52.4  7.3  9.5 31.2 17.6
+[2,]  8.4  62.8  8.8 11.4 37.5 21.1
+[3,]  6.8  50.7  7.1  9.2 30.2 17.0
+... \end{Rout}
+\REM{Observed frequencies are simply the entries of M}
+> O <- M
+\end{alltt}
+\end{frame}
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "../../workspace"
+%%% End: 

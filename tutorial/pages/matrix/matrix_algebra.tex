@@ -1,0 +1,336 @@
+\begin{frame}
+  \frametitle{Matrix as list of vectors}
+  %% \framesubtitle{}
+
+  \begin{itemize}
+  \item Vector $\vu \in \setR^n$ = list of real numbers (coordinates)%
+    \pause
+  \item List of $k$ vectors = rectangular array of real numbers,\\
+    called a $n\times k$ \h{matrix} (or $k\times n$ row matrix)%
+    \pause
+  \item Example: vectors $\vu, \vv\in \setR^3$
+    \[
+    \vu \equiv
+    \begin{bmatrix}
+      3\\ 0\\ 2
+    \end{bmatrix},\quad
+    \vv \equiv
+    \begin{bmatrix}
+      2\\ 2\\ 1
+    \end{bmatrix}
+    \]
+    form the columns of a matrix $\mathbf{A}$:
+    \[
+    \mathbf{A} = 
+    \begin{bmatrix}
+       \vdots & \vdots \\
+       \vu & \vv \\
+       \vdots & \vdots
+    \end{bmatrix} 
+    =
+    \begin{bmatrix}
+      3 & 2 \\
+      0 & 2 \\
+      2 & 1
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+      a_{11} & a_{12} \\
+      a_{21} & a_{22} \\
+      a_{31} & a_{32}
+    \end{bmatrix}
+    \]
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Matrix = list of vectors}
+  %% \framesubtitle{}
+
+  \begin{itemize}
+  \item $\Rank{\mathbf{A}}$ = rank of the list of column vectors
+  \item Column matrices are a convention in linear algebra
+  \item But DSM matrix often has row vectors for the target terms
+    \pause\gap
+  \item Row rank and column rank of a matrix $A$ are always the same (this is
+    not trivial!)
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Matrices and linear equation systems}
+  %% \framesubtitle{}
+
+  \begin{itemize}
+  \item Matrices are a versatile instrument and a convenient way to express
+    linear operations on sets of numbers
+  \item E.g.\ \h{coefficient matrix} of a \hh{linear system} of equations:
+    \begin{align*}
+      a_{11} x_1 + a_{12} x_2 + \dots + a_{1n} x_n &= b_1 \\
+      a_{21} x_1 + a_{22} x_2 + \dots + a_{2n} x_n &= b_2 \\
+      & \;\vdots \\
+      a_{k1} x_1 + a_{k2} x_2 + \dots + a_{kn} x_n &= b_k \\
+    \end{align*}
+    \pause\ungap[2]
+    \[
+    \text{\So} \quad \mathbf{A} =
+    \begin{bmatrix}
+      a_{11} & \cdots & a_{1n} \\
+      \vdots & & \vdots \\
+      a_{k1} & \cdots & a_{kn}
+    \end{bmatrix}
+    , \quad
+    \vx =
+    \begin{bmatrix}
+      x_1\\ x_2\\ \vdots\\ x_n
+    \end{bmatrix}
+    , \quad
+    \vb =
+    \begin{bmatrix}
+      b_1\\ \vdots\\ b_k
+    \end{bmatrix}
+    \]
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Matrix algebra}
+  %% \framesubtitle{}
+
+  \begin{itemize}
+  \item Concise notation of linear equation system by appropriate definition
+    of \h{matrix-vector multiplication}
+  \end{itemize}
+  \ungap
+  \begin{align*}
+    a_{11} x_1 + a_{12} x_2 + \dots + a_{1n} x_n &= b_1 \\
+    a_{21} x_1 + a_{22} x_2 + \dots + a_{2n} x_n &= b_2 \\
+    & \;\vdots \\
+    a_{k1} x_1 + a_{k2} x_2 + \dots + a_{kn} x_n &= b_k \\
+  \end{align*}
+  \ungap[2]
+  \[
+  \text{\So} \quad
+  \begin{bmatrix}
+    a_{11} & \cdots & a_{1n} \\
+    \vdots & & \vdots \\
+    a_{k1} & \cdots & a_{kn}
+  \end{bmatrix}
+  \cdot
+  \begin{bmatrix}
+    x_1\\ x_2\\ \vdots\\ x_n
+  \end{bmatrix}
+  =
+  \begin{bmatrix}
+    b_1\\ \vdots\\ b_k
+  \end{bmatrix}
+  \]
+  \pause
+  \[
+  \text{\So} \quad \mathbf{A} \cdot \vx = \vb
+  \]
+\end{frame}
+
+\begin{frame}
+  \frametitle{Matrix algebra}
+  %% \framesubtitle{}
+
+  \begin{itemize}
+  \item The set of all real-valued $k\times n$ matrices forms a $(k\cdot
+    n)$-dimensional vector space over $\setR$:
+    \begin{itemize}
+    \item $\mathbf{A} + \mathbf{B}$ is defined by element-wise addition
+    \item $\lambda \mathbf{A}$ is defined by element-wise s-multiplication
+    \item these operations satisfy all vector space axioms
+    \end{itemize}
+    \pause\gap
+  \item Additional operation: \h{matrix multiplication}
+    \begin{itemize}
+    \item two equation systems: $\vz = \mathbf{B}\cdot \vy$ and $\vy = \mathbf{C}\cdot \vx$
+    \item by inserting the expressions for $\vy$ into the first system,\\
+      we can  express $\vz$ directly in terms of $\vx$\\
+      (and use this e.g.\ to solve the equations for $\vx$)
+    \item the result is a linear equation system $\vz = \mathbf{A}\cdot \vx$
+    \itemhand define matrix multiplication such that $\mathbf{A} = \mathbf{B}\cdot \mathbf{C}$
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}<beamer:1-2| handout:0>
+  \frametitle{Matrix multiplication}
+  %% \framesubtitle{}
+
+  \ungap
+  \[
+  \begin{array}{ccccc}
+    \begin{bmatrix}
+      & \only<2>{a_{ij}} & \only<1>{a_{ij}} & \\
+      & & & \\
+      & & &
+    \end{bmatrix}
+    & = &
+    \begin{bmatrix}
+      b_{i1} & \cdots & b_{in} \\
+      & &  \\
+      & &  
+    \end{bmatrix}
+    & \cdot &
+    \begin{bmatrix}
+      & \only<2>{c_{1j}} & \only<1>{c_{1j}} &\\
+      & \only<2>{\vdots} & \only<1>{\vdots} & \\
+      & \only<2>{\vdots} & \only<1>{\vdots} & \\
+      & \only<2>{c_{nj}} & \only<1>{c_{nj}} & 
+    \end{bmatrix} \\
+    \\
+    \mathbf{A} & = & \mathbf{B} & \cdot & \mathbf{C} \\
+    (k\times m) & & (k\times n) & & (n\times m)
+  \end{array}
+  \]
+  \begin{itemize}
+  \item $\mathbf{B}$ and $\mathbf{C}$ must be \h{conformable}%
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Matrix multiplication}
+  %% \framesubtitle{}
+
+  \ungap
+  \[
+  \begin{array}{ccccc}
+    \begin{bmatrix}
+      & & & \\
+      a_{ij} & & & \\
+      & & &
+    \end{bmatrix}
+    & = &
+    \begin{bmatrix}
+      & &  \\
+      b_{i1} & \cdots & b_{in} \\
+      & &  
+    \end{bmatrix}
+    & \cdot &
+    \begin{bmatrix}
+      c_{1j} & & &\\
+      \vdots & & & \\
+      \vdots & & & \\
+      c_{nj} & & & 
+    \end{bmatrix} \\
+    \\
+    \mathbf{A} & = & \mathbf{B} & \cdot & \mathbf{C} \\
+    (k\times m) & & (k\times n) & & (n\times m)
+  \end{array}
+  \]
+  \begin{itemize}
+  \item $\mathbf{B}$ and $\mathbf{C}$ must be \h{conformable}%
+    \pause\gap 
+    \itemhand $\mathbf{A}\cdot \vx$ corresponds to matrix
+    multiplication of $\mathbf{A}$ with a single-column matrix (containing the
+    vector $\vx$)
+    \begin{itemize}
+    \item convention: vector = column matrix
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Matrix multiplication}
+  %% \framesubtitle{}
+
+  \begin{itemize}
+  \item \h{Algebra} = vector space + multiplication operation\\
+    with the following properties:
+    \begin{itemize}
+    \item $\mathbf{A}(\mathbf{BC}) = (\mathbf{AB})\mathbf{C} \eqcolon \mathbf{ABC}$
+    \item $\mathbf{A}(\mathbf{B} + \mathbf{B'}) = \mathbf{AB} + \mathbf{AB'}$
+    \item $(\mathbf{A} + \mathbf{A'})\mathbf{B} = \mathbf{AB} + \mathbf{A'B}$
+    \item $(\lambda \mathbf{A})\mathbf{B} = \mathbf{A}(\lambda \mathbf{B}) = \lambda (\mathbf{AB}) \eqcolon \lambda \mathbf{AB}$
+    \item $\mathbf{A}\cdot \mathbf{0} = \mathbf{0}, \quad \mathbf{0}\cdot \mathbf{B} = \mathbf{0}$
+    \item $\mathbf{A}\cdot \mathbf{I} = \mathbf{A}, \quad \mathbf{I}\cdot \mathbf{B} = \mathbf{B}$
+    \end{itemize}
+    where $\mathbf{A}$, $\mathbf{B}$ and $\mathbf{C}$ are conformable matrices%
+  \item $\mathbf{0}$ is a \h{zero matrix} of arbitrary dimensions
+  \item $\mathbf{I}$ is a square \h{identity matrix} of arbitrary dimensions:
+    \[
+    \mathbf{I} \coloneq
+    \begin{bmatrix}
+      1 & & \\
+      & \ddots & \\
+      & & 1
+    \end{bmatrix}
+    \]
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Transposition}
+  %% \framesubtitle{}
+
+  \begin{itemize}
+  \item The \h{transpose} $\mathbf{A}^T$ of a matrix $\mathbf{A}$ swaps rows and columns:
+    \[
+    \begin{bmatrix}
+      a_1 & b_1 \\
+      a_2 & b_2 \\
+      a_3 & b_3 
+    \end{bmatrix}^T
+    =
+    \begin{bmatrix}
+      a_1 & a_2 & a_3 \\
+      b_1 & b_2 & b_3
+    \end{bmatrix}
+    \]
+    \pause
+  \item Properties of the transpose: 
+    \begin{itemize}
+    \item $(\mathbf{A} + \mathbf{B})^T = \mathbf{A}^T + \mathbf{B}^T$
+    \item $(\lambda \mathbf{A})^T = \lambda (\mathbf{A}^T) \eqcolon \lambda \mathbf{A}^T$
+    \item $(\mathbf{A}\cdot \mathbf{B})^T = \mathbf{B}^T\cdot \mathbf{A}^T$
+      $\quad$ [note the different order of $\mathbf{A}$ and $\mathbf{B}$!]
+    \item $\Rank{\mathbf{A}^T} = \Rank{\mathbf{A}}$
+    \item $\mathbf{I}^T = \mathbf{I}$
+    \end{itemize}
+    \pause
+  \item $\mathbf{A}$ is called \h{symmetric} iff $\mathbf{A}^T = \mathbf{A}$
+    \begin{itemize}
+    \item symmetric matrices have many special properties that will become
+      important later (e.g.\ eigenvalues)
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Vectors and matrices}
+  %% \framesubtitle{}
+
+  \begin{itemize}
+  \item A coordinate vector $\vx\in \setR^n$ can be identified with a $n\times
+    1$ matrix (i.e.\ a single-column matrix):
+    \[
+    \vx =
+    \begin{bmatrix}
+      x_1 \\ \vdots \\ x_n
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+      x_1 & \cdots & x_n
+    \end{bmatrix}^T
+    \]
+    \pause\ungap
+  \item Multiplication of a matrix $\mathbf{A}$ containing the vectors $\va[1], \ldots,
+    \va[k]$ with a vector of coefficients $\lambda_1, \ldots, \lambda_k$\\
+    yields a linear combination of $\va[1], \ldots, \va[k]$:
+    \[
+    \mathbf{A}\cdot
+    \begin{bmatrix}
+      \lambda_1 \\ \vdots \\ \lambda_k
+    \end{bmatrix}
+    = \lambda_1 \va[1] + \cdots + \lambda_k \va[k]
+    \]
+  \end{itemize}
+\end{frame}
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "../../workspace"
+%%% End: 

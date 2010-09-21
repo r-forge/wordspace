@@ -1,0 +1,106 @@
+\begin{frame}
+  \frametitle{Remember PCA?}
+  %% \framesubtitle{}
+
+  \begin{itemize}
+  \item Principal components analysis is based on an \h{eigenvalue
+      decomposition} of the \h{covariance matrix} $\mathbf{C}$ into
+    \[
+    \mathbf{C} = \mathbf{U}\cdot \mathbf{D}\cdot \mathbf{U}^T
+    \]
+    where $\mathbf{U}$ is orthogonal and $\mathbf{D} =
+    \mathop{\text{Diag}}(\lambda_1, \ldots, \lambda_n)$.
+  \item<2-> The columns of $\mathbf{U}$ are \hh{eigenvectors}
+    \begin{center}
+      $\mathbf{C} \va_i = \lambda_i \va_i$
+    \end{center}
+    for the ordered \hh{eigenvalues} $\lambda_1\geq \lambda_2\geq \dots \geq
+    \lambda_n$
+    \gap[.5]
+  \item<3-> Interesting link: $\vu^T \mathbf{C} \vv$ describes a general
+    \h{inner product}
+    \begin{itemize}
+    \item $\sigma_{\vv}$ is the norm of $\vv$ with respect to this general
+      inner product
+    \item the eigenvalue decomposition corresponds to a transformation into
+      Cartesian coordinates where $\mathbf{C}$ has diagonal form
+    \item eigenvalues $\lambda_i$ are the ``squashing factors'' of the unit
+      circle
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Singular value decomposition (SVD)}
+  %% \framesubtitle{}
+
+  \begin{itemize}
+  \item The idea of eigenvalue decomposition can be generalised to an
+    arbitrary (non-symmetric, non-square) matrix $\mathbf{A}$
+    \begin{itemize}
+    \item[\hand] need not have any eigenvalues
+    \end{itemize}
+  \item<2-> \h{Singular value decomposition} (\hh{SVD}) factorises $\mathbf{A}$ into
+    \[
+    \mathbf{A} = \mathbf{U}\cdot \Msigma\cdot \mathbf{V}^T
+    \]
+    where $\mathbf{U}$ and $\mathbf{V}$ are orthogonal coordinate
+    transformations and $\Msigma$ is a rectangular-diagonal matrix of
+    \hh{singular values}\\
+    (with customary ordering $\sigma_1\geq \sigma_2\geq \dots \geq
+    \sigma_n\geq 0$)
+  \item<3-> SVD is an important tool in linear algebra and statistics
+    \begin{itemize}
+    \item[\hand] in particular, PCA can be computed from SVD decomposition
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[c]
+  \frametitle{SVD illustration}
+  %% \framesubtitle{}
+  
+  \begin{equation*}
+    \begin{bmatrix}
+      & & \primary{n} & & \\
+      & & & & \\
+      & & & & \\
+      \primary{k} & & \mathbf{A} & & \\
+      & & & & \\
+      & & & & \\
+      & & & & 
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+      & & & \primary{k} & & & \\
+      & & & & & & \\
+      & & & & & & \\
+      \primary{k} & & & \mathbf{U} & & & \\
+      & & & & & & \\
+      & & & & & & \\
+      & & & & & &
+    \end{bmatrix}
+    \cdot
+    \begin{bmatrix}
+      \sigma_1 & \primary{n} & \\
+      & \ddots & \\
+      & & \sigma_n \\
+      \primary{k} & \Msigma & \\
+      & & \\
+      & & \rule{0mm}{5mm} 
+    \end{bmatrix}
+    \cdot
+    \begin{bmatrix}
+      & & \primary{n} & & \\
+      & & & & \\
+      \primary{n} & & \mathbf{V}^T & & \\
+      & & & & \\
+      & & & &
+    \end{bmatrix}
+  \end{equation*}
+\end{frame}
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "../../workspace"
+%%% End: 
