@@ -1,0 +1,96 @@
+\begin{frame}
+  \frametitle{Orthogonal matrices} 
+  %% \framesubtitle{}
+
+  \begin{itemize}
+  \item A matrix $\mathbf{A}$ whose column vectors are orthonormal is called\\
+    an \h{orthogonal} matrix
+  \item $\mathbf{A}^T$ is orthogonal iff $\mathbf{A}$ is orthogonal%
+    \pause\gap
+  \item The \h{inverse} of an orthogonal matrix is simply its transpose:
+    \[
+    \mathbf{A}^{-1} = \mathbf{A}^T \quad \text{if $\mathbf{A}$ is orthogonal}
+    \]
+    \ungap[1]
+    \begin{itemize}
+    \item it is easy to show $\mathbf{A}^T \mathbf{A} = \mathbf{I}$ by matrix
+      multiplication,\\ since the columns of $\mathbf{A}$ are orthonormal
+    \item since $\mathbf{A}^T$ is also orthogonal, it follows that $\mathbf{A}
+      \mathbf{A}^T = (\mathbf{A}^T)^T \mathbf{A}^T = \mathbf{I}$
+    \item side remark: the transposition operator $\cdot^T$ is called\\
+      an \hh{involution} because $(\mathbf{A}^T)^T = \mathbf{A}$
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Isometric maps} 
+  %% \framesubtitle{}
+
+  \begin{itemize}
+  \item An endomorphism $f: \setR^n \to \setR^n$ is called an \h{isometry} iff
+    $\sprod{f(\vu)}{f(\vv)} = \sprod{\vu}{\vv}$ for all $\vu,\vv\in \setR^n$%
+  \item Geometric interpretation: isometries preserve angles and distances
+    (which are defined in terms of $\sprod{\cdot}{\cdot}$)%
+    \pause
+  \item $f$ is an isometry iff its matrix $\mathbf{A}$ is orthogonal%
+    \pause
+  \item Coordinate transformations between Cartesian systems are isometric
+    (because $\mathbf{B}$ and $\mathbf{B}^{-1} = \mathbf{B}^T$ are orthogonal)%
+    \pause
+  \item Every isometric endomorphism of $\setR^n$ can be written as a
+    combination of \hh{planar rotations} and \hh{axial reflections} in a
+    suitable Cartesian coordinate system
+      \[\footnotesize
+      R_{\phi}^{(1,3)} = 
+      \begin{bmatrix}
+        \cos \phi & 0 & -\sin \phi \\
+        0         & 1 &  0         \\
+        \sin \phi & 0 &  \cos \phi 
+      \end{bmatrix}, 
+      \quad
+      Q^{(2)} = 
+      \begin{bmatrix}
+        1 &  0 & 0 \\
+        0 & -1 & 0 \\
+        0 &  0 & 1
+      \end{bmatrix}
+      \]
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Summary: orthogonal matrices}
+  %% \framesubtitle{}
+
+  \begin{itemize}
+  \item The column vectors of an orthogonal $n\times n$ matrix $\mathbf{B}$
+    form a Cartesian basis $\vb[1],\ldots,\vb[n]$ of $\setR^n$%
+    \pause
+  \item $\mathbf{B}^{-1} = \mathbf{B}^T$, i.e.\ we have $\mathbf{B}^T
+    \mathbf{B} = \mathbf{B} \mathbf{B}^T = \mathbf{I}$%
+    \pause
+  \item The coordinate transformation $\mathbf{B}^T$ into $B$-coordinates is an
+    isometry, i.e.\ all distances and angles are preserved%
+    \pause
+  \item The first $k < n$ columns of $\mathbf{B}$ form a Cartesian basis of a
+    subspace $V = \Span{\vb[1],\ldots,\vb[k]}$ of $\setR^n$%
+    \pause
+  \item The corresponding rectangular matrix $\mathbf{\hat{B}} =
+    \bigl[\vb[1],\ldots,\vb[k]\bigr]$ performs an orthogonal projection into
+    $V$:
+    \begin{align*}
+      P_V \vu  &\:\equiv_{B}\: \mathbf{\hat{B}}^T \vx 
+      \qquad \text{(for } \vu \equiv_E \vx \text{)}\\
+      &\:\equiv_{E}\: \mathbf{\hat{B}} \mathbf{\hat{B}}^T \vx 
+    \end{align*}
+  \item[\So] These properties will become important later today!
+\end{itemize}
+\end{frame}
+
+
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "../../workspace"
+%%% End: 

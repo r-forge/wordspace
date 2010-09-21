@@ -1,0 +1,23 @@
+\begin{frame}
+  \frametitle{Hyperplanes \& normal vectors}
+  \framesubtitle{A hyperplane is the decision boundary of a linear classifier!}
+
+  \begin{itemize}
+  \item A hyperplane $U\subseteq \setR^n$ through the origin $\vnull$ can be
+    characterized by the equation
+    \[ U = \bigsetdef{\vu\in\setR^n}{\sprod{\vu}{\vn} = 0} \]
+    for a suitable $\vn\in\setR^n$ with $\norm{\vn} = 1$
+  \item $\vn$ is called the \h{normal vector} of $U$
+  \item<2-> The orthogonal projection $P_U$ into $U$ is given by
+    \[ P_U \vv \coloneq \vv - \vn \sprod{\vv}{\vn} \]
+  \item<3-> An arbitrary hyperplane $\Gamma\subseteq \setR^n$ can analogously
+    be characterized by
+    \[ \Gamma = \bigsetdef{\vu\in\setR^n}{\sprod{\vu}{\vn} = a} \]
+    where $a\in \setR$ is the (signed) \h{distance} of $\Gamma$ from $\vnull$
+  \end{itemize}
+\end{frame}
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "../../workspace"
+%%% End: 

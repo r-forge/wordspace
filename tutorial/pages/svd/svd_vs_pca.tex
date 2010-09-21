@@ -1,0 +1,147 @@
+\begin{frame}
+  \frametitle{PCA and the DSM matrix}
+  %% \framesubtitle{}
+  \begin{itemize}
+  \item Take a closer look at the covariance matrix
+    \[
+    \mathbf{C} = \tfrac{1}{k-1} \sum_{i=1}^k \vx_i \vx_i^T
+    \]
+  \item<2-> With $\vx_i^T = \bigl[ x_{i1}, \ldots, x_{in} \bigr]$ we find that
+    \[
+    \vx_i \vx_i^T
+    =
+    \begin{bmatrix}
+      x_{i1} \\ \vdots \\ x_{in}
+    \end{bmatrix}
+    \cdot
+    \begin{bmatrix}
+      x_{i1} & \cdots & x_{in}
+    \end{bmatrix}    
+    =
+    \begin{bmatrix}
+      (x_{i1})^2 & x_{i1} x_{i2} & \cdots & x_{i1} x_{in} \\
+      x_{i2} x_{i1} & (x_{i2})^2 & \cdots &  x_{i2} x_{in} \\
+      \vdots & \vdots & \ddots & \vdots \\
+      x_{in} x_{i1} & x_{in} x_{i2} & \cdots & (x_{in})^2
+    \end{bmatrix}
+    \]
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{PCA and the DSM matrix}
+  %% \framesubtitle{}
+  \[
+  \sum_{i=1}^k \vx_i \vx_i^T
+  =
+  \begin{bmatrix}
+    \sum_i (x_{i1})^2 & \sum_i x_{i1} x_{i2} & \cdots & \sum_i x_{i1} x_{in} \\
+    \sum_i x_{i2} x_{i1} & \sum_i (x_{i2})^2 & \cdots & \sum_i x_{i2} x_{in} \\
+    \vdots & \vdots & \ddots & \vdots \\
+    \sum_i x_{in} x_{i1} & \sum_i x_{in} x_{i2} & \cdots & \sum_i (x_{in})^2
+  \end{bmatrix}
+  \]
+  \begin{itemize}
+  \item<2-> If the $\vx_i$ are the \primary{row} vectors of a DSM matrix
+    $\mathbf{M}$, then the sums above are inner products between its
+    \primary{column} vectors 
+  \item<3->[\So] $\mathbf{C}$ can efficiently be computed by matrix multiplication
+    (similar to cosine similarities, but for column vectors)
+    \[
+    \mathbf{C} = \tfrac{1}{k-1} \sum_{i=1}^k \vx_i \vx_i^T
+    = \tfrac{1}{k-1} \mathbf{M}^T \mathbf{M}
+    \]
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{PCA by singular value decomposition}
+  %% \framesubtitle{}
+  \begin{itemize}
+  \item Up to an irrelevant scaling factor $\tfrac{1}{k-1}$, we are thus
+    looking for an eigenvalue decomposition of $\mathbf{M}^T \mathbf{M}$
+    (which is symmetric!)
+  \item Like every matrix, $\mathbf{M}$ has a singular value decomposition
+    \[
+    \mathbf{M} = \mathbf{U} \Msigma \mathbf{V}^T
+    \]
+  \item By inserting the SVD, we obtain
+    \begin{align*}
+      \mathbf{M}^T \mathbf{M}
+      &= \bigl(\mathbf{U} \Msigma \mathbf{V}^T\bigr)^T
+      \mathbf{U} \Msigma \mathbf{V}^T
+      \\
+      &= (\mathbf{V}^T)^T \Msigma^T 
+      \underbrace{ \mathbf{U}^T \mathbf{U} }_{\mathbf{I}}
+      \Msigma \mathbf{V}^T
+      \\
+      &= \mathbf{V} \bigl( 
+      \underbrace{ \Msigma^T \Msigma }_{\mathbf{\Msigma^2}}
+      \bigr) \mathbf{V}^T
+    \end{align*}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{PCA by singular value decomposition}
+  %% \framesubtitle{}
+  \begin{itemize}
+  \item We have found the eigenvalue decomposition
+    \[
+    \mathbf{M}^T \mathbf{M} = \mathbf{V} \Msigma^2 \mathbf{V}^T
+    \]
+    with
+    \[
+    \Msigma^2 = \Msigma^T \Msigma
+    =
+    \begin{bmatrix}
+      (\sigma_1)^2 & \primary{n} & \rule{0mm}{5mm} \\
+      \primary{n} & \ddots & \rule{0mm}{5mm} \\
+      \rule{0mm}{6mm} & & (\sigma_n)^2 
+    \end{bmatrix}
+    \]
+  \item<2-> The column vectors of $\mathbf{V}$ are \h{latent dimensions}
+  \item<3-> The corresponding squared \h{singular values} partition variance:
+    $(\sigma_1)^2 / \sum_i (\sigma_i)^2$ = proportion along first latent
+    dimension
+    \begin{itemize}
+    \item[\hand] intuitively, singular value shows importance of latent dimension
+    \end{itemize}
+  \item<4-> Interpretation of $\mathbf{U}$ is less intuitive (\h{latent families}
+    of words?)
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Transforming the DSM matrix}
+  %% \framesubtitle{}
+
+  \begin{itemize}
+  \item We can directly transform the columns of the DSM matrix $\mathbf{M}$:
+    \[
+    \mathbf{M} \mathbf{V} 
+    = \mathbf{U} \Msigma (\mathbf{V}^T \mathbf{V})
+    = \mathbf{U} \Msigma
+    \]
+    \pause\ungap[1.5]
+  \item For ``noise reduction'', project into $m$-dimensional subspace\\
+    by dropping all but the first $m \ll n$ columns of $\mathbf{U} \Msigma$
+  \item[\So] Sufficient to calculate the first $m$ \h{singular values}
+    $\sigma_1,\ldots, \sigma_m$ and \h{left singular vectors} $\va_1,\ldots,
+    \va_m$ (columns of $\mathbf{U}$)
+  \item[]\pause
+  \item What is the difference between SVD and PCA?%
+    \pause
+    \begin{itemize}
+    \item[\hand] we forgot to center and rescale the data!
+    \item[\hand] most DSM matrices contain only non-negative values
+    \item[\hand] first latent dimension points towards ``positive'' sector,
+      and was often found to be ``uninteresting'' in early SVD studies
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "../../workspace"
+%%% End: 

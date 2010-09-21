@@ -1,0 +1,62 @@
+\begin{frame}
+  \frametitle{The DSM data matrix}
+  %% \framesubtitle{}
+
+  DSM data are given as a \h{term-term} or \h{term-context} matrix:
+
+  \gap[.5]
+  \begin{center}\small
+  \begin{tabular}{r | cccccc}
+          &  get & see & use & hear & eat & kill \\
+    \midrule
+    knife &  51  & 20  & 84  &   0  &  3  &   0 \\
+    cat   &  52  & 58  &  4  &   4  &  6  &  26 \\
+    dog   & 115  & 83  & 10  &  42  & 33  &  17 \\
+    boat  &  59  & 39  & 23  &   4  &  0  &   0 \\
+    cup   &  98  & 14  &  6  &   2  &  1  &   0 \\
+    pig   &  12  & 17  &  3  &   2  &  9  &  27
+  \end{tabular}
+  \end{center}
+
+  \begin{itemize}
+  \item Most DSM parameters irrelevant for mathematical analysis\\
+    (context type, terms vs.\ contexts, feature scaling, \ldots)
+  \item Our example: targets (rows) are nouns, features (columns) are
+    co-occurrences with verbs (V-Obj), raw counts from BNC
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{The DSM data matrix}
+  %% \framesubtitle{}
+
+  DSM data are given as a \h{term-term} or \h{term-context} matrix:
+
+  \[
+  \mathbf{M} = 
+  \begin{bmatrix}
+     51  & 20  & 84  &   0  &  3  &   0 \\
+     52  & 58  &  4  &   4  &  6  &  26 \\
+    115  & 83  & 10  &  42  & 33  &  17 \\
+     59  & 39  & 23  &   4  &  0  &   0 \\
+     98  & 14  &  6  &   2  &  1  &   0 \\
+     12  & 17  &  3  &   2  &  9  &  27
+  \end{bmatrix}
+  \]
+  \begin{itemize}
+    \item Mathematical notation: \h{matrix} $\mathbf{M}$ of real numbers
+    \item Each row is a \h{feature vector} for one of the target terms, e.g.
+      \[
+      \vv_{\text{cat}} =
+      \begin{bmatrix}
+        52  & 58  &  4  &   4  &  6  &  26
+      \end{bmatrix}
+      \]
+    \item $n$-dimensional \h{vector space} $\setR^n \ni \vv = (v_1,\ldots, v_n)$
+  \end{itemize}
+\end{frame}
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "../../workspace"
+%%% End: 

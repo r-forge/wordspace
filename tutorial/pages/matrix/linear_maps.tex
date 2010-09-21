@@ -1,0 +1,156 @@
+\begin{frame}
+  \frametitle{Linear maps}
+  %% \framesubtitle{}
+
+  \begin{itemize}
+  \item A \h{linear map} is a \hh{homomorphism} between two vector spaces $V$ and
+    $W$, i.e.\ a function $f: V\to W$ that is compatible with addition and
+    s-multiplication:
+    \begin{enumerate}
+    \item $f(\vu + \vv) = f(\vu) + f(\vv)$
+    \item $f(\lambda \vu) = \lambda \cdot f(\vu)$
+    \end{enumerate}
+    \pause
+  \item Obviously, $f$ is uniquely determined by the images $f\bigl(\vb[1]\bigr), \ldots,
+    f\bigl(\vb[n]\bigr)$ of any basis $\vb[1], \ldots, \vb[n]$ of $V$
+    \pause
+  \item Using natural coordinates, a linear map $f: \setR^n \to \setR^k$ can
+    therefore be described by the vectors
+    \[
+    f\bigl(\ve[1]\bigr) \equiv_E
+    \begin{bmatrix}
+      a_{11} \\ a_{21} \\ \vdots \\ a_{k1}
+    \end{bmatrix}, \;
+    \ldots \;,\; 
+    f\bigl(\ve[n]\bigr) \equiv_E
+    \begin{bmatrix}
+      a_{1n} \\ a_{2n} \\ \vdots \\ a_{kn}
+    \end{bmatrix}
+    \]
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Matrix representation of a linear map}
+  %% \framesubtitle{}
+
+  \begin{itemize}
+  \item<1-> For a vector $\vu = x_1 \ve[1] + \dots + x_n \ve[n] \in \setR^n$,
+    we have
+    \begin{align*}
+      \vv = f(\vu) &= f\bigl(x_1 \ve[1] + \dots + x_n \ve[n]\bigr) \\
+      &= x_1\cdot f\bigl(\ve[1]\bigr) + \dots + x_n\cdot f\bigl(\ve[n]\bigr)
+    \end{align*}
+    and hence the natural coordinate vector $\vy$ of $\vv$ is given by
+    \[
+    y_j = x_1\cdot a_{j1} + x_2\cdot a_{j2} + \dots + x_n\cdot a_{jn}
+    \]
+    \pause\ungap
+  \item This corresponds to matrix multiplication
+    \[
+    \begin{bmatrix}
+      y_1 \\ \vdots \\ y_k
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+      a_{11} & \cdots & a_{1n} \\
+      \vdots &       & \vdots \\
+      a_{k1} & \cdots & a_{kn}
+    \end{bmatrix}
+    \cdot
+    \begin{bmatrix}
+      x_1 \\ \vdots \\ x_n
+    \end{bmatrix}
+    \]
+    \[
+    \text{\So} \qquad \vv = f(\vu) \iff \vy = \mathbf{A}\cdot \vx
+    \]
+  \end{itemize}
+  \addnote{$\vx \equiv_E \vu$ and $\vy \equiv_E \vv$ are coordinate vectors
+    wrt.\ the standard basis in $\setR^n$ and $\setR^k$}%
+  \addnote{We can obtain a similar matrix representation for any basis $B$ of
+    $\setR^n$ and any basis $B'$ of $\setR^k$.  We will see later how to
+    translate between the matrices of $f$ wrt.\ different bases.}%
+  \addnote{At this point, it might be useful to visualise a few examples of
+    linear maps in the Euclidean plane, showing e.g.\ how the standard coordinate
+    vectors and the unit circle are transformed.}%
+\end{frame}
+
+\begin{frame}
+  \frametitle{Image \& kernel}
+  %% \framesubtitle{}
+
+  \begin{itemize}
+  \item The \h{image} of a linear map $f: \setR^n\to \setR^k$ is the subspace
+    of all values $\vv\in \setR^k$ that $f(\vu)$ can assume for $\vu\in \setR^n$:
+    \[
+    \Image{f} \coloneq \Span{f\bigl(\ve[1]\bigr), \ldots, f\bigl(\ve[n]\bigr)}
+    \]
+    \pause\ungap
+  \item The \h{rank} of $f$ is defined by $\Rank{f} \coloneq \dim \bigl(
+    \Image{f} \bigr)$
+  \item $\Rank{f} = \Rank{\mathbf{A}}$ for the matrix representation $\mathbf{A}$
+  \item $f$ is \h{surjective} (onto) iff $\Image{f} = \setR^k$, i.e.\
+    $\Rank{f} = k$%
+    \pause\gap
+  \item The \h{kernel} of $f$ is the subspace of all $\vx\in \setR^n$ that are
+    mapped to $\vnull\in \setR^k$:
+    \[
+    \Kernel{f} \coloneq \setdefscale{\vx\in\setR^n}{f(\vx) = \vnull}
+    \]
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Rank \& composition}
+  %% \framesubtitle{}
+
+  \begin{itemize}
+  \item We have $\dim \bigl(\Image{f}\bigr) + \dim \bigl( \Kernel{f} \bigr) = n$
+  \item $f$ is \h{injective} iff every $\vv\in \Image{f}$ has a unique
+    preimage $\vv = f(\vu)$, i.e.\ iff $\Kernel{f} = \bigset{\vnull}$ or
+    $\Rank{f} = n$%
+    \pause\gap
+  \item The \h{composition} of linear maps corresponds\\
+    to matrix multiplication:%
+    \pause
+    \begin{itemize}
+    \item $f: \setR^n \to \setR^k$ given by a $k\times n$ matrix $\mathbf{A}$
+    \item $g: \setR^k\to \setR^m$ given by a $m\times k$ matrix $\mathbf{B}$
+    \item recall that $(g\circ f)(\vu) \coloneq g(f(\vu))$%
+      \pause
+    \item[\So] the composition $g\circ f: \setR^n\to \setR^m$ is given\\
+      by the matrix product $\mathbf{B}\cdot \mathbf{A}$
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{The inverse matrix}
+  %% \framesubtitle{}
+
+  \begin{itemize}
+  \item A linear map $f: \setR^n \to \setR^n$ is called an \h{endomorphism}
+    \begin{itemize}
+    \item can be represented by a square matrix $\mathbf{A}$
+    \end{itemize}
+    \pause\gap
+  \item $f$ surjective $\iff \Rank{f} = n \iff f$ injective
+  \item $\Rank{f} = \Rank{f\bigl(\ve[1]\bigr), \ldots, f\bigl(\ve[n]\bigr)} = n$\\
+    $\iff \Rank{\mathbf{A}} = n \iff \det \mathbf{A} \neq 0$%
+    \pause
+  \item[\So] $f$ \h{bijective} (one-to-one) $\iff \det \mathbf{A} \neq 0$%
+    \pause\gap
+  \item If $f$ is bijective, there exists an inverse function $f^{-1}:
+    \setR^n\to \setR^n$, which is also a linear map and satisfies
+    $f^{-1}(f(\vu)) = \vu$ and $f(f^{-1}(\vv)) = \vv$
+  \item $f^{-1}$ is given by the \h{inverse matrix} $\mathbf{A}^{-1}$ of $\mathbf{A}$,\\
+    which must satisfy $\mathbf{A}^{-1}\cdot \mathbf{A} = \mathbf{A}\cdot
+    \mathbf{A}^{-1} = \mathbf{I}$
+  \end{itemize}
+\end{frame}
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "../../workspace"
+%%% End: 

@@ -1,0 +1,112 @@
+\begin{frame}
+  \frametitle{The $n$-dimensional Euclidean space}
+  %% \framesubtitle{}
+
+  \begin{itemize}
+  \item The mathematical basis for matrix algebra is the theory of
+    vector spaces, also known as \h{linear algebra}
+  \item Before we focue on the analsis of DSM matrices, we will look at some
+    fundamental definitions and results of linear algebra
+  \item[]\pause
+  \item Definition: the $n$-dimensional \hh{real Euclidean vector space} $\setR^n$ is
+    the set of all real-valued vectors $\vx = (x_1, \ldots, x_n)$ of length $n$,
+    with the following operations:
+    \begin{itemize}
+    \item \h{vector addition}: $\vu + \vv \coloneq (u_1+v_1, \ldots, u_n+v_n)$
+    \item \h{scalar multiplication}: $\lambda \vu \coloneq (\lambda u_1,
+      \ldots, \lambda u_n)$  for $\lambda\in\setR$
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{The $n$-dimensional Euclidean space}
+  %% \framesubtitle{}
+
+  \begin{itemize}
+  \item Important properties of the addition and s-multiplication
+    operations in $\setR^n$
+    \begin{enumerate}
+    \item[1.] $(\vu + \vv) + \vw = \vu + (\vv + \vw)$
+    \item[2.] $\vu + \vnull = \vnull + \vu = \vu$
+    \item[3.] $\forall \vu\; \exists (-\vu):\; \vu + (-\vu) = (-\vu) + \vu = \vnull$
+    \item[4.] $\vu + \vv = \vv + \vu$
+    \item[5.] $(\lambda + \mu) \vu = \lambda \vu + \mu \vu$
+    \item[6.] $(\lambda \mu) \vu = \lambda (\mu \vu)$
+    \item[7.] $1\cdot \vu = \vu$
+    \item[8.] $\lambda (\vu + \vv) = \lambda \vu + \lambda \vv$
+    \end{enumerate}
+    for any $\vu, \vv, \vw\in \setR^n$ and $\lambda,\mu \in \setR$
+  \end{itemize}
+  \addnote{properties 1.--4.\ characterise a commutative group with neutral
+    element $\vnull$ and inverse $-\vu$}%
+  \addnote{properties 5.--7.\ embed the real numbers as a straight line with
+    direction $\vu$ in $\setR^n$}%
+  \addnote{property 8.\ ensures compatibility of addition and
+    s-multiplication}%
+  \addnote{these properties are sufficient to perform basic calculations and
+    solve equations in $\setR^n$}%
+\end{frame}
+
+\begin{frame}
+  \frametitle{The axioms of a general vector space}
+  %% \framesubtitle{}
+
+  \begin{itemize}
+  \item Abstract \hh{vector space} over the real numbers $\setR$\\
+    = set $V$ of vectors $\vu \in V$ with operations
+    \begin{itemize}
+    \item $\vu + \vv\in V$ for $\vu,\vv\in V$ (\h{addition})
+    \item $\lambda \vu\in V$ for $\lambda\in\setR$, $\vu\in V$ (\h{scalar multiplication})
+    \end{itemize}
+  \item Addition and s-multiplication must satisfy the \h{axioms}
+    \begin{enumerate}
+    \item[1.] $(\vu + \vv) + \vw = \vu + (\vv + \vw)$
+    \item[2.] $\vu + \vnull = \vnull + \vu = \vu$
+    \item[3.] $\forall \vu\; \exists \mathbf{u'}:\; \vu + \mathbf{u'} = \mathbf{u'} + \vu = \vnull$
+    \item[4.] $\vu + \vv = \vv + \vu$
+    \item[5.] $(\lambda + \mu) \vu = \lambda \vu + \mu \vu$
+    \item[6.] $(\lambda \mu) \vu = \lambda (\mu \vu)$
+    \item[7.] $1\cdot \vu = \vu$
+    \item[8.] $\lambda (\vu + \vv) = \lambda \vu + \lambda \vv$
+    \end{enumerate}
+    for any $\vu, \vv, \vw\in V$ and $\lambda,\mu \in \setR$
+  \item $\vnull$ is the unique \h{neutral element} of $V$,\\
+    and the unique \h{inverse} $\vu'$ of $\vu$ is often written as $-\vu$
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Further properties of vector spaces}
+  %% \framesubtitle{}
+
+  \begin{itemize}
+  \item Further properties of vector spaces:
+    \begin{itemize}
+    \item $0\cdot \vu = \vnull$
+    \item $\lambda \vnull = \vnull$
+    \item $\lambda \vu = \vnull \implies \lambda = 0 \vee \vu = \vnull$
+    \item $(-\lambda)\vu = \lambda(-\vu) = -(\lambda \vu) \eqcolon -\lambda \vu$
+    \end{itemize}
+    \pause
+  \item It is easy to show these properties for $\setR^n$, but they also
+    follow directly from the general axioms for all vector spaces%
+    \pause\gap
+  \item A non-trivial example: vector space $\mathcal{C}[a,b]$ of continuous
+    real functions $f: x\mapsto f(x)$ over the interval $[a,b]$
+    \begin{itemize}
+    \item vector addition: $\forall f,g \in \mathcal{C}[a,b]$,\\
+      we define $f+g$ by $(f+g)(x) \coloneq f(x) + g(x)$
+    \item s-multiplication: $\forall \lambda\in \setR$ and $\forall f \in
+      \mathcal{C}[a,b]$,\\
+      we define $\lambda f$ by $(\lambda f)(x) \coloneq \lambda\cdot f(x)$
+    \end{itemize}
+  \itemhand One can show that $\mathcal{C}[a,b]$ satisfies the vector space axioms
+  \end{itemize}
+\end{frame}
+
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "../../workspace"
+%%% End: 

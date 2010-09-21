@@ -1,0 +1,61 @@
+\begin{frame}
+  \frametitle{The covariance matrix}
+  %% \framesubtitle{}
+  
+  \begin{itemize}
+  \item Find the direction $\vv$ with maximal $\sigma_{\vv}^2$, which is given by:
+  \end{itemize}
+  \ungap
+  \begin{align*}
+    \sigma_{\vv}^2 &= \tfrac{1}{k-1} \sum_{i=1}^k \sprod{\vx_i}{\vv}^2 
+    \\
+    \only<beamer:2-| handout:1>{
+      &= \tfrac{1}{k-1} \sum_{i=1}^k \left(\vx_i^T \vv\right)^T
+      \cdot \left(\vx_i^T \vv\right) }
+    \\
+    \only<beamer:3-| handout:1>{
+      &= \tfrac{1}{k-1} \sum_{i=1}^k \vv^T  
+      \left(\vx_i  \vx_i^T \right) \vv }
+    \\
+    \only<beamer:4-| handout:1>{
+      &= \vv^T  
+      \left( \tfrac{1}{k-1} \sum_{i=1}^k \vx_i \vx_i^T \right) 
+      \vv} 
+    \\
+    \only<beamer:5-| handout:1>{
+      &= \vv^T \mathbf{C} \vv}
+  \end{align*}
+\end{frame}
+
+\begin{frame}
+  \frametitle{The covariance matrix}
+  %% \framesubtitle{}
+  
+  \begin{itemize}
+  \item $\mathbf{C}$ is the \h{covariance matrix} of the data points
+    \begin{itemize}
+    \item $\mathbf{C}$ is a square $n\times n$ matrix ($2\times 2$ in our
+      example)
+    \end{itemize}
+  \item Preserved variance after projection onto a line $\vv$ can easily be
+    calculated as $\sigma_{\vv}^2 = \vv^T \mathbf{C} \vv$
+  \item<2-> The original variance of the data set is given by $\sigma^2 =
+    \mathop{\text{tr}}(\mathbf{C}) = C_{11} + C_{22} + \cdots + C_{nn}$
+    \[
+    \mathbf{C} =
+    \begin{bmatrix}
+      \primary{\sigma_1^2} & C_{12} & \cdots & C_{1n} \\
+      C_{21} & \primary{\sigma_2^2} & \ddots & \vdots \\
+      \\
+      \vdots & \ddots & \primary{\ddots} & C_{n-1,n} \\
+      \\
+      C_{n1} & \cdots & C_{n,n-1}& \primary{\sigma_n^2}
+    \end{bmatrix}
+    \]
+  \end{itemize}
+\end{frame}
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "../../workspace"
+%%% End: 

@@ -1,0 +1,112 @@
+\begin{frame}
+  \frametitle{Linear equation systems}
+  %% \framesubtitle{}
+
+  \begin{itemize}
+  \item Recall that a linear system of equations can be written in compact
+    matrix notation:%
+    \only<beamer:1| handout:0>{
+      \begin{align*}
+        a_{11} x_1 + a_{12} x_2 + \dots + a_{1n} x_n &= b_1 \\
+        a_{21} x_1 + a_{22} x_2 + \dots + a_{2n} x_n &= b_2 \\
+        & \;\vdots \\
+        a_{k1} x_1 + a_{k2} x_2 + \dots + a_{kn} x_n &= b_k \\
+      \end{align*}}
+    \only<beamer:2| handout:0>{
+      \[
+      \begin{bmatrix}
+        a_{11} & \ldots & a_{1n} \\
+        \vdots &        & \vdots \\
+        a_{k1} & \ldots & a_{kn} 
+      \end{bmatrix}
+      \cdot
+      \begin{bmatrix}
+        x_1 \\ x_2 \\ \vdots \\ x_n
+      \end{bmatrix}
+      =
+      \begin{bmatrix}
+        b_1 \\ \vdots \\ b_k
+      \end{bmatrix}
+      \]}
+    \only<beamer:3-| handout:1>{
+      \[
+      \mathbf{A} \cdot \vx = \vb
+      \]}
+  \item<4-> Obviously, $\mathbf{A}$ describes a linear map $f: \setR^n\to
+    \setR^k$, and the linear system of equations can be written $f(\vx) = \vb$
+  \item<5-> This linear system can be solved iff $\vb\in \Image{f}$, i.e.\ iff
+    $\vb$ is a linear combination of the column vectors of $\mathbf{A}$
+  \item<6-> The solution is given by the coefficients $x_1, \ldots, x_n$\\ of
+    this linear combination
+  \end{itemize}
+  \addnote{Note that the linear system can be solved by the method of Gaussian
+    elimination (which basically transforms $\mathbf{A}$ into a triangular matrix).}%
+  \addnote{Gaussian elimination can also be used to compute the inverse
+    $\mathbf{A}^{-1}$ of a regular matrix $\mathbf{A}$}% 
+\end{frame}
+
+\begin{frame}
+  \frametitle{Linear equation systems}
+  %% \framesubtitle{}
+
+  \begin{itemize}
+  \item The linear system has a solution for arbitrary $\vb\in \setR^k$\\
+    iff $f$ is surjective, i.e.\ iff $\Rank{\mathbf{A}} = k$%
+    \pause
+  \item Solutions of the linear system are unique iff $f$ is injective, i.e.\
+    iff $\Rank{\mathbf{A}} = n$ (the column vectors are linearly independent)%
+    \pause
+  \item If $k=n$ (i.e.\ $\mathbf{A}$ is a square matrix), the linear map $f$ is an
+    endomorphism.  Consequently, the linear system has a unique solution for
+    arbitrary $\vb$ iff $\det \mathbf{A} \neq 0$%
+    \pause
+  \item In this case, the solution can be computed with the inverse function
+    $f^{-1}$ or the inverse matrix $\mathbf{A}^{-1}$:
+    \[
+    \vx = f^{-1}(\vb) = \mathbf{A}^{-1}\cdot \vb
+    \]
+    \ungap[1.5]
+    \begin{itemize}
+      \itemhand {\footnotesize practically, $\mathbf{A}^{-1}$ is often
+        determined by solving the corresponding linear system of equations}
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Linear equation systems}
+  %% \framesubtitle{}
+
+  Solving equation systems in R:
+  \begin{itemize}
+  \item \counterpoint{\texttt{A <- rbind(c(1,3), c(2,-1))}}
+  \item \counterpoint{\texttt{b <- c(5,3)}}
+  \item \counterpoint{\texttt{la.rank(A)}} (test that $\mathbf{A}$ is invertible)%
+  \item<2-> \counterpoint{\texttt{A.inv <- solve(A)}} (inverse matrix $\mathbf{A}^{-1}$)
+  \item<2-> \counterpoint{\texttt{print(round(A.inv, digits=3))}}
+    \begin{footnotesize}
+\begin{verbatim}
+      [,1]   [,2]
+[1,] 0.143  0.429
+[2,] 0.286 -0.143
+\end{verbatim}
+    \end{footnotesize}
+    
+  \item<3-> \counterpoint{\texttt{A.inv \%*\% b}}
+    \begin{footnotesize}
+\begin{verbatim}
+     [,1]
+[1,]    2
+[2,]    1
+\end{verbatim}
+    \end{footnotesize}
+  \item<3-> \counterpoint{\texttt{solve(A, b)}} (recommended: calculate
+    $\mathbf{A}^{-1}\cdot \vb$ directly)
+  \end{itemize}
+  
+\end{frame}
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "../../workspace"
+%%% End: 

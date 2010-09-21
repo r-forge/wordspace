@@ -1,0 +1,38 @@
+\begin{frame}
+  \frametitle{Playtime: toy DSM laboratory}
+  %% \framesubtitle{}
+
+  \begin{itemize}
+  \item Goal: construct and analyse DSM entirely in \textbf{R}
+  \item We will build the small noun-verb matrix from the introduction
+  \item Data: verb-object co-occurrence tokens from British National Corpus
+    (extracted with regexp query, both words lemmatised)
+  \end{itemize}
+  \begin{columns}[T]
+    \begin{column}{60mm}
+      \begin{itemize}
+      \item Text table with 3,406,821 co-occurence tokens in file
+        {\url{bnc_vobj_filtered.txt.gz}}
+      \end{itemize}
+      \begin{center}\ungap[.5]
+        \begin{tabular}{rl}
+          acquire & deficiency \\
+          affect & body \\
+          fight & infection \\
+          face & condition \\
+          serve & interest \\
+          put & back
+        \end{tabular}
+      \end{center}
+    \end{column}
+    \begin{column}{40mm}
+      \vspace{12mm}
+      \includegraphics[width=5cm]{img/teddy}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "../../workspace"
+%%% End: 

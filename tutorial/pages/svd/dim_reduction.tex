@@ -1,0 +1,70 @@
+\begin{frame}
+  \frametitle{Dimensionality reduction: SVD}
+  %% \framesubtitle{}
+
+  \begin{itemize}
+  \item Feature selection is a simple form of \h{dimensionality reduction} for
+    managing high-dimensional spaces
+    \begin{itemize}
+    \item information from discarded features is completely lost
+    \end{itemize}
+    \pause
+  \item Better strategy: only discard irrelevant information by orthogonal
+    projection into subspace of latent dimensions
+    \begin{itemize}
+    \item subspace of first $m$ principal components or singular vectors
+    \item recall that this subspace preserves original distances as well as
+      possible \so minimal amount of information discarded
+    \end{itemize}
+    \pause
+  \item Key ingredient: implementation of \h{sparse-matrix SVD}
+    \begin{itemize}
+    \item SVDPACK with various algorithms developed by Michael Berry
+    \item most convenient implementation: SVDLIBC\\
+      \url{http://tedlab.mit.edu/~dr/svdlibc/}
+    \item standard input format: compressed column-major sparse matrix
+    \item only calculates first $m$ singular values and vectors
+    \end{itemize}
+    \pause
+  \item SVD components $\mathbf{U}$, $\Msigma$ and $\mathbf{V}$ are stored in
+    separate files
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Dimensionality reduction: Random Indexing}
+  %% \framesubtitle{}
+
+  \begin{itemize}
+  \item SVD is computationally expensive for large DSM matrix
+    \begin{itemize}
+    \item even if the matrix is sparsely populated
+    \end{itemize}
+    \pause
+  \item Cheap method: orthogonal projection into \hh{random} subspace
+    \begin{itemize}
+    \item it can be shown that this preserves original distances with high
+      probability (though not as well as SVD)
+    \item intuition: if dimensionality $m$ of subspace is large enough, some
+      vector should be close to $\va_1$, another close to $\va_2$, etc.
+    \end{itemize}
+    \So \h{random indexing} (\hh{RI})%
+    \pause
+  \item Further simplication: use \hh{random basis} vectors for subspace
+    \begin{itemize}
+    \item saves additional cost of constructing an orthonormal basis
+    \item if dimensionality $n$ of original DSM space is large enough,\\
+      two random vectors are likely to be almost orthogonal
+    \item intuition: inner product between random vectors = covariance of two
+      independent samples of random numbers (should be 0)
+    \end{itemize}
+    \pause
+  \item SVD identifies latent dimensions (``noise reduction''), but RI only
+    preserves distances \so requires higher dimensionality $m$
+  \end{itemize}
+\end{frame}
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "../../workspace"
+%%% End: 

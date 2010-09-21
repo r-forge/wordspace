@@ -1,0 +1,137 @@
+\begin{frame}[fragile]
+  \frametitle{Norm \& distance}
+  %% \framesubtitle{}
+
+Intuitive length of vector $\vx$: \h{Euclidean norm}
+\[
+\vx \mapsto \norm[2]{\vx} = \sqrt{
+  (x_1)^2 + (x_2)^2 + \dots + (x_n)^2 }
+\]
+Euclidean distance \h{metric}: $\dist[2]{\vx}{\vy} = \norm[2]{\vx - \vy}$
+\begin{itemize}
+\item[\hand] more about norms and distances on Thursday
+\end{itemize}
+
+\gap
+\begin{alltt}\small
+\REM{R function definitions look almost like mathematical definitions}
+
+euclid.norm <- function (x) sqrt(sum(x * x))
+
+euclid.dist <- function (x, y) euclid.norm(x - y)
+\end{alltt}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Normalisation to unit length}
+  %% \framesubtitle{}
+
+\ungap
+\begin{alltt}\small
+\REM{Compute lengths (norms) of all row vectors}
+> row.norms <- apply(M, 1, euclid.norm) \REM{1 = rows, 2 = columns}
+> round(row.norms, 2) \begin{Rout}
+ boat   cat   cup   dog knife   pig 
+12.03  9.01 12.93 10.93 17.45  7.46 \end{Rout}
+
+\REM{Normalisation: divide each row by its norm; this a rescaling of the row}
+\REM{``dimensions'' and can be done by multiplication with a diagonal matrix}
+> scaling.matrix <- diag(1 / row.norms)
+> round(scaling.matrix, 3)
+
+> M.norm <- scaling.matrix \%*\% M
+> round(M.norm, 2) \begin{Rout}
+         eat   get  hear  kill   see   use
+  [1,] -0.58  0.07 -0.12 -0.79  0.10  0.09
+  [2,] -0.10 -0.17 -0.24  0.31  0.30 -0.85
+  [3,] -0.32  0.37 -0.23 -0.71 -0.32 -0.32
+  ...
+\end{Rout}
+\end{alltt}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Distances between row vectors}
+  %% \framesubtitle{}
+
+\ungap
+\begin{alltt}\small
+\REM{Matrix multiplication has lost the row labels (copy from M)}
+> rownames(M.norm) <- rownames(M)
+
+\REM{To calculate distances of all terms e.g. from "dog", apply euclid.dist()}
+\REM{function to rows, supplying the "dog" vector as fixed second argument}
+> v.dog <- M.norm["dog",]
+> dist.dog <- apply(M.norm, 1, euclid.dist, y=v.dog)
+
+\REM{Now we can sort the vector of distances to find nearest neighbours}
+> sort(dist.dog) \begin{Rout}
+     dog      cat      pig      cup     boat    knife 
+0.000000 0.839380 1.099067 1.298376 1.531342 1.725269 \end{Rout}
+\end{alltt}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{The distance matrix}
+  %% \framesubtitle{}
+
+\ungap
+\begin{alltt}\small
+\REM{R has a built-in function to compute a full distance matrix}
+> distances <- dist(M.norm, method="euclidean")
+> round(distances, 2) \begin{Rout}
+      boat  cat  cup  dog knife
+cat   1.56                     
+cup   0.73 1.43                
+dog   1.53 0.84 1.30           
+knife 0.77 1.70 0.93 1.73      
+pig   1.80 0.80 1.74 1.10  1.69 \end{Rout}
+
+\REM{If you want to search nearest neighbours, convert triangular distance}
+\REM{matrix to full symmetric matrix and extract distance vectors from rows}
+> dist.matrix <- as.matrix(distances)
+> sort(dist.matrix["dog",]) \begin{Rout}
+     dog      cat      pig      cup     boat    knife 
+0.000000 0.839380 1.099067 1.298376 1.531342 1.725269 \end{Rout}
+\end{alltt}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Clustering and semantic maps}
+  %% \framesubtitle{}
+
+\ungap
+\begin{alltt}\small
+\REM{Distance matrix is also the basis for a cluster analysis}
+> plot(hclust(distances))
+
+\REM{Visualisation as semantic map by projection into 2-dimensional space;}
+\REM{uses non-linear multidimensional scaling (MDS)}
+> library(MASS)
+> M.mds <- isoMDS(distances)\$points \begin{Rout}
+initial  value 2.611213 
+final  value 0.000000 
+converged \end{Rout}
+
+\REM{Plot works in the same way as for the two selected dimensions above}
+> plot(M.mds, pch=20, col="red", main="Semantic map", 
++             xlab="Dim 1", ylab="Dim 2")
+> text(M.mds, labels=rownames(M.mds), pos=3)
+\end{alltt}
+\end{frame}
+
+\begin{frame}[c]
+  \frametitle{Clustering and semantic maps}
+  %% \framesubtitle{}
+
+  \begin{tabular}{c c}
+    \includegraphics[width=55mm]{img/dsm_lab_cluster}
+    &
+    \includegraphics[width=55mm]{img/dsm_lab_semantic_map}
+  \end{tabular}
+\end{frame}
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "../../workspace"
+%%% End: 

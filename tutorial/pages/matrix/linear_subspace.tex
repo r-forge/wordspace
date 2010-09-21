@@ -1,0 +1,215 @@
+\begin{frame}
+  \frametitle{Linear combinations \& dimensionality}
+  %% \framesubtitle{}
+
+  \begin{itemize}
+  \item \h{Linear combination} of vectors $\vu[1],\ldots, \vu[n]$:
+    \[ \lambda_1 \vu[1] + \lambda_2 \vu[2] + \dots + \lambda_n \vu[n] \]
+    for any coefficients $\lambda_1, \ldots, \lambda_n \in \setR$
+    \begin{itemize}
+    \item intuition: all vectors that can be constructed from $\vu[1],\ldots,
+      \vu[n]$ using the basic vector operations
+    \end{itemize}
+    \pause\gap
+  \item $\vu[1],\ldots, \vu[n]$ are \h{linearly independent} iff
+    \[ 
+    \lambda_1 \vu[1] + \lambda_2 \vu[2] + \dots + \lambda_n \vu[n] = \vnull 
+    \]
+    implies $\lambda_1 = \lambda_2 = \dots = \lambda_n = 0$%
+    \pause\gap
+  \item Otherwise, they are \hh{linearly dependent}
+    \begin{itemize}
+    \item equivalent: one $\vu[i]$ is a linear combination of the other vectors
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Linear combinations \& dimensionality}
+  %% \framesubtitle{}
+
+  \begin{itemize}
+  \item Largest $n\in \setN$ for which there is a set of $n$
+    linearly independent vectors $\vu[i]\in V$ is called the \h{dimension}
+    of $V$: $\dim V = n$ 
+  \item It can be shown that $\dim \setR^n = n$%
+    \pause\gap
+  \item If there is no maximal number of linearly independent vectors, the
+    vector space is \h{infinite-dimensional} ($\dim V = \infty$)
+  \item An example is $\dim \mathcal{C}[a,b] = \infty$ (easy to show)%
+    \pause\gap
+  \item Every finite-dimensional vector space $V$ is
+    \h{isomorphic} to the Euclidean space $\setR^n$ (with $n = \dim V$)
+    \begin{itemize}
+      \itemhand We will be able to prove this in a little while
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Basis \& coordinates}
+  %% \framesubtitle{}
+
+  \begin{itemize}
+  \item A set of vectors $\vb[1], \ldots, \vb[n] \in V$ is called a
+    \h{basis} of $V$\\ iff every $\vu\in V$ can be written as a linear
+    combination
+    \[ 
+    \vu = x_1 \vb[1] + x_2 \vb[2] + \dots + x_n \vb[n]
+    \]
+    with unique coefficients $x_1, \ldots, x_n$
+  \item Number of vectors in a basis = $\dim V$%
+    \pause\gap
+  \item For every $n$-dimensional vector space $V$, a set of $n$ vectors
+    $\vb[1], \ldots, \vb[n]\in V$ is a basis iff they are linearly independent
+    \begin{itemize}
+    \itemhand Can you think of a proof?
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Basis \& coordinates}
+  %% \framesubtitle{}
+
+  \begin{itemize}
+  \item The unique coefficients $x_1, \ldots, x_n$ are called the
+    \h{coordinates} of $\vu$ wrt.\ the basis $B \coloneq \bigl( \vb[1], \ldots,
+      \vb[n] \bigr)$:
+    \[ 
+    \vu \equiv_B
+    \begin{bmatrix}
+      x_1\\ x_2\\ \vdots\\ x_n
+    \end{bmatrix}
+    \eqcolon \vx
+    \]
+    \pause
+  \item $\vx\in \setR^n$ is the \h{coordinate vector} of $\vu\in V$ wrt.\ $B$
+    \begin{itemize}
+      \itemhand $V$ is isomorphic to $\setR^n$ by virtue of this
+      correspondence
+    \item[]\pause
+    \end{itemize}
+  \item We can think of the rows (or columns) of a DSM matrix $\mathbf{M}$ as
+    coordinates in an abstract vector space
+    \begin{itemize}
+    \item coordinate transformations play an important role for DSMs
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Basis \& coordinates}
+  %% \framesubtitle{}
+
+  \begin{itemize}
+  \item The components $(u_1, u_2, \ldots, u_n)$ of a number vector $\vu \in
+    \setR^n$ correspond to its \h{natural coordinates}
+    \[ 
+    \vu = (u_1, u_2, \ldots, u_n)  \equiv_E
+    \begin{bmatrix}
+      u_1\\ u_2\\ \vdots\\ u_n
+    \end{bmatrix}
+    \]
+    according to the \h{standard basis} $\ve[1], \ldots, \ve[n]$ of $\setR^n$:
+    \begin{align*}
+      \ve[1] &= (1, 0, \ldots, 0)\\
+      \ve[2] &= (0, 1, \ldots, 0)\\
+      & \;\vdots\\
+      \ve[n] &= (0, 0, \ldots, 1)
+    \end{align*}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Basis \& coordinates}
+  %% \framesubtitle{}
+
+  \begin{columns}[T]
+    \begin{column}{35mm}
+      \begin{itemize}
+      \item<1-> $\vu = (4,5)\in \setR^2$
+      \item<1-> Basis $B$ of $\setR^2$:
+        \ungap[.5]
+        \begin{align*}
+          \vb[1] &= (2, 1)\\
+          \vb[2] &= (-1, 1)
+        \end{align*}
+        \ungap[2]
+      \item<1-> $\vu \equiv_B
+        \begin{bmatrix}
+          3\\ 2
+        \end{bmatrix}$
+      \item<2-> Standard basis:
+        \ungap[.5]
+        \begin{align*}
+          \ve[1] &= (1, 0)\\
+          \ve[2] &= (0, 1)
+        \end{align*}       
+        \ungap[2]
+      \item<2-> $\vu \equiv_E
+        \begin{bmatrix}
+          4\\ 5
+        \end{bmatrix}$
+      \end{itemize}
+    \end{column}
+    \begin{column}{65mm}
+      \gap[2]
+      \only<beamer:1| handout:0>{\includegraphics[width=65mm]{img/1_basis_1}}
+      \only<beamer:2| handout:1>{\includegraphics[width=65mm]{img/1_basis_2}}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Linear subspaces}
+  %% \framesubtitle{}
+
+  \begin{itemize}
+  \item The set of all linear combinations of vectors $\vb[1], \ldots,
+    \vb[k]\in V$ is called the \h{span}
+    \[
+    \Span{\vb[1], \ldots, \vb[k]} \coloneq
+    \setdefscale{\lambda_1 \vb[1] + \dots + \lambda_k \vb[k]}{\lambda_i \in \setR}
+    \]
+    \pause\ungap[1.5]
+  \item $\Span{\vb[1], \ldots, \vb[k]}$ forms a \h{linear subspace} of $V$
+    \begin{itemize}
+    \item a linear subspace is a subset of $V$ that is closed under vector
+      addition and scalar multiplication
+    \end{itemize}
+    \pause
+  \item $\vb[1], \ldots, \vb[k]$ form a basis of $\Span{\vb[1], \ldots,
+      \vb[k]}$\\ iff they are linearly independent
+  \itemhand {\small Can you prove that every linear subspace of $\setR^n$ has a basis?}%
+  \pause
+  \item The \h{rank} of vectors $\vb[1], \ldots, \vb[k]$ is the dimension of
+    their span, corresponding to the largest number of linearly independent
+    vectors among them
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Linear combinations \& linear subspace}
+
+  \begin{itemize}
+  \item Example: linear subspace $U\subseteq \setR^3$ spanned by vectors
+    $\vb[1] = (6,0,2)$, $\vb[2] = (0,3,3)$ and $\vb[3] = (3,1,2)$
+    \begin{itemize}
+    \item $\dim U = 2$ 
+      \only<beamer:1| handout:0>{(why?)}%
+      \only<beamer:2| handout:1>{(because $\vb[2] = 3 \vb[3] - \frac{3}{2} \vb[1]$)}
+    \end{itemize}
+  \end{itemize}
+
+  \begin{center}
+    \includegraphics<beamer:1| handout:0>[width=5cm]{img/1_subspace_1}
+    \includegraphics<beamer:2| handout:1>[width=5cm]{img/1_subspace_2}
+  \end{center}
+\end{frame}
+
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "../../workspace"
+%%% End: 

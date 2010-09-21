@@ -1,0 +1,56 @@
+\begin{frame}[fragile]
+  \frametitle{PCA in R}
+  %% \framesubtitle{}
+  
+  \ungap
+\begin{alltt}\small
+> pca <- prcomp(M)  \REM{for the buy/sell example data}
+
+> summary(pca) \begin{Rout}
+Importance of components:
+                         PC1   PC2
+Standard deviation     0.947 0.599
+Proportion of Variance 0.715 0.285
+Cumulative Proportion  0.715 1.000 \end{Rout}
+
+> print(pca) \begin{Rout}
+Standard deviations:
+[1] 0.9471326 0.5986067
+
+Rotation:
+            PC1        PC2
+buy  -0.5907416  0.8068608
+sell -0.8068608 -0.5907416 \end{Rout}
+\end{alltt}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{PCA in R}
+  %% \framesubtitle{}
+  
+  \ungap
+\begin{alltt}\small
+\REM{Coordinates in PCA space}
+> pca\$x[c("house","book","arm","time"), ] \begin{Rout}
+             PC1        PC2
+house -2.1390957  0.5274687
+book  -1.1864783  0.3797070
+arm    0.9141092 -1.3080504
+time   1.8036445  0.1387165 \end{Rout}
+
+\REM{Transformation matrix \textbf{U}}
+> pca\$rotation \begin{Rout}
+            PC1        PC2
+buy  -0.5907416  0.8068608
+sell -0.8068608 -0.5907416 \end{Rout}
+
+\REM{Eigenvalues of the covariance matrix \textbf{C}}
+> (pca\$sdev)^2 \begin{Rout}
+[1] 0.8970602 0.3583299 \end{Rout}
+\end{alltt}
+\end{frame}
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "../../workspace"
+%%% End: 

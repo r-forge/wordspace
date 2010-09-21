@@ -1,0 +1,67 @@
+%% \documentclass[handout,t]{beamer} % HANDOUT
+\documentclass[handout,notes=show,t]{beamer} % NOTES
+%% \documentclass[t]{beamer} % SLIDES
+
+\usetheme{DSM}
+\usepackage{beamer-tools-dsm}
+
+\input{lib/math}  % basic mathematical notation
+\input{lib/text}  % some useful macros for plain text
+\input{lib/stat}  % notation for probability theory and statistics
+\input{lib/vector}% convenience macros for vectors and matrices
+
+\input{local/config} % local adjustments to configuration and macros
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Titlepage
+
+\title[DSM Tutorial]{Distributional Semantic Models}
+\subtitle{Tutorial at NAACL-HLT 2010, Los Angeles, CA\\
+  --- part 2 ---}
+\author[\textcopyright\ Evert/Baroni/Lenci]{%
+  Stefan Evert\inst{1}\\
+  {\small with contributions from Marco Baroni\inst{2} and Alessandro Lenci\inst{3}}}
+\institute[CC-by-sa]{%
+  \inst{1}University of Osnabrück, Germany
+  \and
+  \inst{2}University of Trento, Italy
+  \and
+  \inst{3}University of Pisa, Italy
+}
+
+\date[wordspace.collocations.de]{
+  Los Angeles, 1 June 2010\\
+  \light{\tiny \dsmcopyright}}
+
+\begin{document}
+
+\logo{\includegraphics[width=2cm]{img/naacl_2010_icon}}
+\frame{\titlepage}
+\logo{}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section*{Outline}
+\frame{ 
+  \frametitle{Outline}
+  \tableofcontents
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% -- \input slide sets from pages/ subdirectory
+\input{pages/naacl_4_la}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% References (if any)
+
+% \frame[allowframebreaks]{
+%   \frametitle{References}
+%   \bibliographystyle{natbib-stefan}
+%   \begin{scriptsize}
+%     \bibliography{dsm,stefan-literature,stefan-publications}
+%   \end{scriptsize}
+% }
+
+\end{document}
