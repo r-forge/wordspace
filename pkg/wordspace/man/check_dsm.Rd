@@ -1,0 +1,48 @@
+\name{check.dsm}
+\alias{check.dsm}
+\title{
+  Validate Internal Structure of DSM Object (wordspace)
+}
+\description{
+
+  %%  ~~ A concise (1-5 lines) description of what the function does. ~~
+
+}
+\usage{
+
+ check.dsm(model, validate = FALSE)
+
+}
+%- maybe also 'usage' for other objects documented here.
+\arguments{
+
+  \item{model}{
+  }
+  
+  \item{validate}{carry out extended validation of internal consistency?}
+
+}
+\details{
+%%  ~~ If necessary, more details than the description above ~~
+}
+\value{
+
+  Aborts with error message if any inconsistency is detected.
+  Otherwise a list with the following elements is returned:
+
+  \item{nrow}{number of rows (target terms) of the DSM}
+  \item{ncol}{number of columns (features) of the DSM}
+  \item{slots}{character vector naming the components of the DSM object}
+  \item{have.S}{whether a scored/weighted matrix S is available}
+}
+\references{
+%% ~put references to the literature/web site here ~
+}
+\seealso{
+%% ~~objects to See Also as \code{\link{help}}, ~~~
+}
+\examples{
+## TODO
+}
+\author{Stefan Evert (\url{http://purl.org/stefan.evert})}
+\keyword{TODO}

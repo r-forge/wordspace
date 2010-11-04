@@ -1,7 +1,8 @@
-\name{cosine}
-\alias{cosine}
+\name{rbind.dsm}
+\alias{rbind.dsm}
+\alias{cbind.dsm}
 \title{
-  Angles or Cosine Similarities between Row Vectors (wordspace)
+  Combine DSM Models by Rows and Columns (wordspace)
 }
 \description{
 
@@ -10,22 +11,18 @@
 }
 \usage{
 
- cosine(M, M2 = M, angles = FALSE, normalised = FALSE)
+  \method{rbind}{dsm}(\dots, deparse.level = 1)
+  \method{cbind}{dsm}(\dots, deparse.level = 1)
 
 }
-%- maybe also 'usage' for other objects documented here.
 \arguments{
 
-  \item{M}{
+  \item{\dots}{
+    one or more objects of class \code{dsm}, which must have the same feature dimensions (\code{rbind}) or target terms (\code{cbind})
   }
 
-  \item{M2}{
-  }
-
-  \item{angles}{
-  }
-
-  \item{normalised}{
+  \item{deparse.level}{
+    ignored
   }
 
 }

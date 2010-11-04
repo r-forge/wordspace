@@ -79,7 +79,7 @@ read.dsm <- function (filename, encoding=getOption("encoding")) {
   stopifnot(nrow(M) == n.rows && ncol(M) == n.cols)
   rownames(M) <- rows$term
   colnames(M) <- cols$term
-  dsm <- list(M=M, rows=rows, cols=cols)
+  dsm <- list(M=M, rows=rows, cols=cols, locked=FALSE)
   class(dsm) <- c("dsm", "list")
   return(dsm)
 }
