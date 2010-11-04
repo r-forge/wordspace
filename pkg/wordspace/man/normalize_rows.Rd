@@ -1,7 +1,7 @@
-\name{cosine}
-\alias{cosine}
+\name{normalize.rows}
+\alias{normalize.rows}
 \title{
-  Angles or Cosine Similarities between Row Vectors (wordspace)
+  Normalize Rows of Matrix to Unit Length (wordspace)
 }
 \description{
 
@@ -10,7 +10,7 @@
 }
 \usage{
 
- cosine(M, M2 = M, angles = FALSE, normalised = FALSE)
+ normalize.rows(M, \dots)
 
 }
 %- maybe also 'usage' for other objects documented here.
@@ -19,13 +19,8 @@
   \item{M}{
   }
 
-  \item{M2}{
-  }
-
-  \item{angles}{
-  }
-
-  \item{normalised}{
+  \item{\dots}{
+    optional \code{method} and \code{p} arguments are passed to \code{\link{rowNorms}}
   }
 
 }
@@ -33,17 +28,15 @@
 %%  ~~ If necessary, more details than the description above ~~
 }
 \value{
-%%  ~Describe the value returned
-%%  If it is a LIST, use
-%%  \item{comp1 }{Description of 'comp1'}
-%%  \item{comp2 }{Description of 'comp2'}
-%% ...
+
+  A numeric vector containing one norm value for each row of \code{M}.
+
 }
 \references{
 %% ~put references to the literature/web site here ~
 }
 \seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
+  See \code{\link{rowNorms}} for details on available norms and their parameters.
 }
 \examples{
 ## TODO

@@ -166,6 +166,46 @@ euclid() S              2.870  4602.02    2.81
 euclid() small S        0.733  4507.39    0.73
 
 ------------------------------------------------------------------------
+2.66GHz MacPro4,1 with 16 threads (partial results reported by Simon Urbanek)
+Mac OS X 10.6.4, R 2.12.0, 64-bit, different BLAS implementations
+
+test                    R BLAS  vecLib  ATLAS   MKL
+inner M %*% t(M) D      19.961  3.470   0.519   0.662
+inner tcrossprod D      0.658   1.867   0.243   0.235
+inner crossprod t(M) D  9.574   1.849   0.242   0.256
+cosine normalised D     0.798   2.009   0.385   0.411
+cosine general D        0.770   1.993   0.380   0.352
+euclid() D              2.072   3.271   1.637   1.635
+euclid() small D        0.515   0.821   0.421   0.395
+
+
+------------------------------------------------------------------------
+Quickie, 2 x AMD Opteron 285 2.6 GHz, 4 cores total, 1 MB L2 cache per core, 16 GB RAM
+Debian Linux 5.0.6 64-bit, Kernel 2.6.24, R 2.12.0, 64-bit, reference BLAS
+
+                         Time    MOPS CPUTime
+transpose D             0.210   37.45   0.160
+normalise D             0.586   13.42   0.500
+dist() D               82.589   39.95  82.405
+inner M %*% t(M) D      3.008 4387.34   2.984
+inner tcrossprod D      1.924 6859.21   1.920
+inner crossprod t(M) D 31.500  418.96  31.406
+cosine normalised D     2.195 6019.52   2.077
+cosine general D        2.200 6003.54   2.104
+euclid() D              4.987 2648.44   4.804
+euclid() small D        1.302 2537.57   1.140
+construct S             0.199   39.52   0.192
+construct small S       0.060   65.54   0.060
+transpose S             0.017  462.63   0.016
+normalise S             0.262   30.02   0.256
+dist() S               82.559   39.96  82.457
+inner M %*% t(M) S      1.395 9460.29   1.393
+inner tcrossprod S      1.431 9222.30   1.428
+inner crossprod t(M) S  1.416 9319.99   1.416
+cosine normalised S     1.646 8027.24   1.648
+cosine general S        3.931 3359.91   3.632
+euclid() S              3.990 3310.22   3.952
+euclid() small S        1.005 3287.48   1.004
 
 
 ------------------------------------------------------------------------

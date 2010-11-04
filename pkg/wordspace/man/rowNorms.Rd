@@ -1,7 +1,7 @@
-\name{cosine}
-\alias{cosine}
+\name{rowNorms}
+\alias{rowNorms}
 \title{
-  Angles or Cosine Similarities between Row Vectors (wordspace)
+  Compute Norms of Row Vectors of a Matrix (wordspace)
 }
 \description{
 
@@ -10,7 +10,7 @@
 }
 \usage{
 
- cosine(M, M2 = M, angles = FALSE, normalised = FALSE)
+ rowNorms(M, method = c("euclidean", "maximum", "manhattan", "minkowski"), p = 2)
 
 }
 %- maybe also 'usage' for other objects documented here.
@@ -19,13 +19,10 @@
   \item{M}{
   }
 
-  \item{M2}{
+  \item{method}{
   }
 
-  \item{angles}{
-  }
-
-  \item{normalised}{
+  \item{p}{
   }
 
 }
@@ -33,11 +30,9 @@
 %%  ~~ If necessary, more details than the description above ~~
 }
 \value{
-%%  ~Describe the value returned
-%%  If it is a LIST, use
-%%  \item{comp1 }{Description of 'comp1'}
-%%  \item{comp2 }{Description of 'comp2'}
-%% ...
+
+  A numeric vector containing one norm value for each row of \code{M}.
+
 }
 \references{
 %% ~put references to the literature/web site here ~

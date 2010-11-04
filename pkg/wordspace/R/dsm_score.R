@@ -1,17 +1,15 @@
-dsm.score <- function (model, score=c("frequency", "t-score","z-score","Dice"), sparse=FALSE, transform=c("none", "log", "root", "sigmoid")) {
+dsm.score <- function (model, score=c("frequency", "t-score","z-score","Dice","MI"), sparse=FALSE, transform=c("none", "log", "root", "sigmoid")) {
   score <- match.arg(score)
   transform <- match.arg(transform)
-  stopifnot(inherits(model, "dsm"))
+  check.dsm(model)
 
   O <- model$M # observed frequencies
-  stopifnot(nrow(O) == nrow(model$rows))
-  stopifnot(ncol(O) == nrow(model$cols))
   R1 <- model$rows$R1
   R2 <- model$rows$R2
   C1 <- model$cols$C1
   C2 <- model$cols$C2
   
-  need.exp <- score %in% c("t-score", "z-score")
+  need.exp <- score %in% c("t-score", "z-score", "MI")
   if (need.exp) {
     N <- max(R1 + R2) # if there should be differences, largest value is most consistent
     if (N != max(C1 + C2)) stop("row and column marginals lead to inconsistent sample sizes N")
@@ -27,20 +25,25 @@ dsm.score <- function (model, score=c("frequency", "t-score","z-score","Dice"), 
     if (sparse) {
       idx <- nonzero & O > E
       scores[idx] <- (O[idx] - E[idx]) / sqrt(O[idx])
-    }
-    else {
+    } else {
       scores <- (O - E) / sqrt(O + 1) # "discounted" t-score
     }
   } else if (score == "z-score") {
     if (sparse) {
       idx <- nonzero & O > E
       scores[idx] <- (O[idx] - E[idx]) / sqrt(E[idx])
-    }
-    else {
+    } else {
       scores <- (O - E) / sqrt(E)
     }
   } else if (score == "Dice") {
     scores <- 2 * O / outer(R1, C1, "+")
+  } else if (score == "MI") {
+    if (sparse) {
+      ids <- nonzero & O > E
+      scores[idx] <- log2(O[idx] / E[idx])
+    } else {
+      scores <- log2(O / E)
+    }
   } else {
     scores <- O # "frequency" measure = observed frequency
   }
