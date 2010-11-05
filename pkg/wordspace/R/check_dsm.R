@@ -5,6 +5,7 @@ check.dsm <- function (model, validate=FALSE) {
   stopifnot(all(c("term","R1","R2") %in% colnames(model$rows)))
   stopifnot(all(c("term","C1","C2") %in% colnames(model$cols)))
   have.S <- "S" %in% slots
+  is.locked <- if ("locked" %in% slots) model$locked else FALSE
   
   n.rows <- nrow(model$M)
   n.cols <- ncol(model$M)
@@ -24,5 +25,5 @@ check.dsm <- function (model, validate=FALSE) {
     }
   }
   
-  list(nrow=n.rows, ncol=n.cols, slots=slots, have.S=have.S)
+  list(nrow=n.rows, ncol=n.cols, slots=slots, have.S=have.S, locked=is.locked)
 }

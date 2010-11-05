@@ -1,8 +1,17 @@
-dsm.score <- function (model, score=c("frequency", "t-score","z-score","Dice","MI"), sparse=FALSE, transform=c("none", "log", "root", "sigmoid")) {
+dsm.score <- function (model,
+                       score=c("frequency", "t-score", "z-score", "Dice", "MI", "reweight"), sparse=FALSE,
+                       transform=c("none", "log", "root", "sigmoid"),
+                       scale=c("none", "standardize"),
+                       normalize=FALSE, method="euclidean", p=2) {
   score <- match.arg(score)
   transform <- match.arg(transform)
-  check.dsm(model)
-
+  scale <- match.arg(scale)
+  model.info <- check.dsm(model)
+  if (model.info$locked && !(score %in% c("frequency", "reweight"))) stop("marginal frequencies have been adjusted, cannot recompute association scores")
+  if (score == "reweight" && !model.info$have.S) stop("cannot use score='reweight': association scores have not been computed yet")
+  if (scale == "standardize" && sparse) warning("standardization of matrix columns destroys sparse representation: are you sure you want to do this?")
+  if (normalize && !sparse) warning("normalization of matrix rows is only sensible for a sparse non-negative representation")
+  
   O <- model$M # observed frequencies
   R1 <- model$rows$R1
   R2 <- model$rows$R2
@@ -33,17 +42,19 @@ dsm.score <- function (model, score=c("frequency", "t-score","z-score","Dice","M
       idx <- nonzero & O > E
       scores[idx] <- (O[idx] - E[idx]) / sqrt(E[idx])
     } else {
-      scores <- (O - E) / sqrt(E)
+      scores <- (O - E) / sqrt(E) # z-score (E=0 should never happen)
     }
   } else if (score == "Dice") {
-    scores <- 2 * O / outer(R1, C1, "+")
+    scores <- 2 * O / outer(R1, C1, "+") # Dice coefficient
   } else if (score == "MI") {
     if (sparse) {
       ids <- nonzero & O > E
       scores[idx] <- log2(O[idx] / E[idx])
     } else {
-      scores <- log2(O / E)
+      scores <- log2(O / E) # standard pointwise MI
     }
+  } else if (score == "reweight") {
+    scores <- model$S # reweight existing scores (with transformation, scaling and/or normalisation)
   } else {
     scores <- O # "frequency" measure = observed frequency
   }

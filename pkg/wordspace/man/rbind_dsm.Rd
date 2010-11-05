@@ -2,7 +2,7 @@
 \alias{rbind.dsm}
 \alias{cbind.dsm}
 \title{
-  Combine DSM Models by Rows and Columns (wordspace)
+  Combine DSM Objects by Rows and Columns (wordspace)
 }
 \description{
 
@@ -11,8 +11,8 @@
 }
 \usage{
 
-  \method{rbind}{dsm}(\dots, deparse.level = 1)
-  \method{cbind}{dsm}(\dots, deparse.level = 1)
+  \method{rbind}{dsm}(\dots, term.suffix=NULL, deparse.level = 1)
+  \method{cbind}{dsm}(\dots, term.suffix=NULL, deparse.level = 1)
 
 }
 \arguments{
@@ -21,6 +21,10 @@
     one or more objects of class \code{dsm}, which must have the same feature dimensions (\code{rbind}) or target terms (\code{cbind})
   }
 
+  \item{term.suffix}{
+    optional character vector specifying one suffix string for each DSM, which will be appended to row (\code{rbind}) or column (\code{cbind}) labels in order to make them unique
+  }
+  
   \item{deparse.level}{
     ignored
   }

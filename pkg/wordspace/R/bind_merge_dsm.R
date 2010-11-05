@@ -1,34 +1,22 @@
-rbind.dsm <- function (..., deparse.level=1) {
+rbind.dsm <- function (..., term.suffix=NULL, deparse.level=1) {
   models <- list(...) # should be one or more objects of class "dsm" if rbind() dispatches here
+  if (!missing(term.suffix) && length(term.suffix) != length(models)) stop("term.suffix must provide as many strings as there are DSMs")
+
   models.info <- lapply(models, check.dsm, validate=TRUE) # validate models and extract dimensions etc.
-  ncol.vec <- sapply(models.info, function (i) i$ncol) # extract column counts
-  if (min(ncol.vec) != max(ncol.vec)) stop("all DSM objects must have the same number of columns (i.e. dimensions)")
+
   have.S.vec <- sapply(models.info, function (i) i$have.S) # are scored matrices available
   have.S <- all(have.S.vec)
   if (any(have.S.vec) && !have.S.vec) warning("some but not all DSM objects contain score matrix S, dropped from result")
-  
-  col.names <- models[[1]]$cols$term # column labels must be the same for all models
-  colnames.ok.vec <- sapply(models, function (m) all(m$cols$term == col.names))
-  if (!all(colnames.ok.vec)) stop("all DSM objects must have the same features (terms / context labels)")
 
-  cols.merged <- models[[1]]$cols # column marginal frequencies should also be the same
-  marginals.ok.vec <- sapply(models, function (m) all(m$cols$C1 == cols.merged$C1 & m$cols$C2 == cols.merged$C2))
-  marginals.inconsistent <- !all(marginals.ok.vec)
-  if (marginals.inconsistent) {
-    if (!have.S) warning("DSM objects have inconsistent column marginals, should calculate scores before combining them")
-    C1.list <- lapply(models, function (m) m$cols$C1) # if not, use maximum values to ensure consistency
-    cols.merged$C1 <- do.call(pmax, C1.list)
-    C2.list <- lapply(models, function (m) m$cols$C2)
-    cols.merged$C2 <- do.call(pmax, C2.list)
-  }
+  cols.merged <- .combine.marginals(lapply(models, function (m) m$cols), margin="column", mode="same") # check feature dimensions, then combine column marginals
+  marginals.inconsistent <- attr(cols.merged, "adjusted") # if marginal differ between DSMs, they're adjusted to the maximum value to ensure consistency
+  if (marginals.inconsistent && !have.S) warning("DSM objects have inconsistent column marginals, should calculate scores before combining them")
 
-  row.vars <- colnames(models[[1]]$rows) # row information tables must be compatible
-  rows.ok.vec <- sapply(models, function (m) all(colnames(m$rows) == row.vars))
-  if (!all(rows.ok.vec)) stop("row information tables of all DSM objects must be compatible")
+  rows.merged <- .bind.marginals(lapply(models, function (m) m$rows), margin="row", term.suffix=term.suffix)
   
   res <- list(
     M = do.call(rbind, lapply(models, function (m) m$M)),
-    rows = do.call(rbind, lapply(models, function (m) m$rows)),
+    rows = rows.merged,
     cols = cols.merged,
     locked = marginals.inconsistent
   )
@@ -40,40 +28,50 @@ rbind.dsm <- function (..., deparse.level=1) {
   return(res)
 }
 
-
-cbind.dsm <- function (...) {
+cbind.dsm <- function (..., term.suffix=NULL, deparse.level=1) {
   stop("not yet implemented")
 }
 
-merge.dsm <- function (x, y, ..., rows=TRUE, all=FALSE) {
+merge.dsm <- function (x, y, ..., rows=TRUE, all=FALSE, term.suffix=NULL) {
   models <- list(x, y, ...)
+  n.models <- length(models)
+  if (!missing(term.suffix) && length(term.suffix) != n.models) stop("term.suffix must provide as many strings as there are DSMs")
   models.info <- lapply(models, check.dsm, validate=TRUE) # validate models and extract dimensions etc.
 
   if (all) stop("all=TRUE is not yet implemented")
   if (!rows) stop("rows=FALSE is not yet implemented")
-  
-  ncol.vec <- sapply(models.info, function (i) i$ncol) # extract column counts
-  if (min(ncol.vec) != max(ncol.vec)) stop("all DSM objects must have the same number of columns (i.e. dimensions)")
+
   have.S.vec <- sapply(models.info, function (i) i$have.S) # are scored matrices available
   have.S <- all(have.S.vec)
   if (any(have.S.vec) && !have.S.vec) warning("some but not all DSM objects contain score matrix S, dropped from result")
+
+  # bind rows of DSM objects, preserving only terms that are shared by all DSM
+  cols.merged <- .combine.marginals(lapply(models, function (m) m$cols), margin="column", mode="intersect")
+  marginals.inconsistent <- attr(cols.merged, "adjusted") # if marginal differ between DSMs, they're adjusted to the maximum value to ensure consistency
+  if (marginals.inconsistent && !have.S) warning("DSM objects have inconsistent column marginals, should calculate scores before combining them")
   
-  col.names <- models[[1]]$cols$term # column labels must be the same for all models
-  colnames.ok.vec <- sapply(models, function (m) m$cols$term == col.names)
-  if (!all(colnames.ok.vec)) stop("all DSM objects must have the same features (terms / context labels)")
-  row.vars <- colnames(models[[1]]$rows) # row information tables must be compatible
-  rows.ok.vec <- sapply(models, function (m) colnames(m$rows) == row.vars)
-  if (!all(rows.ok.vec)) stop("row information tables of all DSM objects must be compatible")
+  rows.merged <- .bind.marginals(lapply(models, function (m) m$rows), margin="row", term.suffix=term.suffix)
+  n.rows <- sapply(models.info, function (i) i$nrow)
+  first.row <- cumsum(c(1, n.rows)) # rows offsets of individual DSMs in combined matrix M
   
-  res <- list(
-    M = do.call(rbind, lapply(models, function (m) m$M)),
-    rows = do.call(rbind, lapply(models, function (m) m$rows)),
-    cols = models[[1]]$cols
-  )
-  if (have.S) {
-    res$S <- do.call(rbind, lapply(models, function (m) m$S))
+  M <- matrix(nrow=nrow(rows.merged), ncol=nrow(cols.merged), dimnames=list(rows.merged$term, cols.merged$term))
+  if (have.S) S <- matrix(nrow=nrow(rows.merged), ncol=nrow(cols.merged), dimnames=list(rows.merged$term, cols.merged$term))
+  for (i in 1:n.models) {
+    model <- models[[i]]
+    col.idx <- na.omit( match(cols.merged$term, model$cols$term) ) # extract columns of i-th DSM matrix that match the common terms
+    M[ (first.row[i]):(first.row[i]+n.rows[i]-1), ] <- model$M[ , col.idx]
+    if (have.S) S[ (first.row[i]):(first.row[i]+n.rows[i]-1), ] <- model$S[ , col.idx]
   }
+
+  # construct and return merged DSM
+  res <- list(
+    M = M,
+    rows = rows.merged,
+    cols = cols.merged,
+    locked = marginals.inconsistent
+  )
+  if (have.S) res$S <- S
   class(res) <- c("dsm", "list")
 
   return(res)
-}
+}  
