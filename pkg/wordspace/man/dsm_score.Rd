@@ -1,7 +1,7 @@
 \name{dsm.score}
 \alias{dsm.score}
 \title{
-  Scoring and Weighting of Cooccurrence Matrix (wordspace)
+  Scoring, Weighting and Normalisation of Cooccurrence Matrix (wordspace)
 }
 \description{
 
@@ -10,11 +10,15 @@
 }
 \usage{
 
-  dsm.score(model, score=c("frequency", "t-score","z-score","Dice","MI"), sparse=FALSE, transform=c("none", "log", "root", "sigmoid"))
+  dsm.score(model,
+            score=c("frequency", "t-score", "z-score", "Dice", "MI", "reweight"), sparse=FALSE,
+            transform=c("none", "log", "root", "sigmoid"),
+            scale=c("none", "standardize"),
+            normalize=FALSE, method="euclidean", p=2)
 
 }
 \arguments{
-
+  
   \item{model}{
   }
 
@@ -27,6 +31,17 @@
   \item{transform}{
   }
 
+  \item{scale}{
+    if not \code{"none"}, scale columns of scored matrix by z-transformation (\code{"standardize"})
+  }
+
+  \item{normalize}{
+    whether to normalize rows vectors of scored matrix to unit length, according to the norm indicated by \code{method} and \code{p}
+  }
+
+  \item{method, p}{
+    specific norm used if \code{normalize=TRUE}.  See \code{\link{rowNorms}} for admissible values and details on the corresponding norms
+  }
 }
 \details{
 %%  ~~ If necessary, more details than the description above ~~
