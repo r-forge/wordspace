@@ -69,6 +69,16 @@ dsm.score <- function (model,
     # no transformation
   }
 
+  if (scale == "standardize") {
+    scores <- scale(scores, center=TRUE, scale=TRUE)
+  } else {
+    # no scaling
+  }
+
+  if (normalize) {
+    scores <- normalize.rows(scores, method=method, p=p)
+  }
+  
   rownames(scores) <- rownames(O) # make sure that row and column names are preserved
   colnames(scores) <- colnames(O)
   model$S <- scores
