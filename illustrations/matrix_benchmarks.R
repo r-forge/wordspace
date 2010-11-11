@@ -9,6 +9,8 @@ load("data/bnc_vobj_basic.rda") # sample data set: 1678 x 4687 with 349378 nonze
 M <- bnc.vobj.basic$M # operate on log-transformed frequency counts
 M <- log10(M + 1)
 
+## M <- M[seq(1,nrow(M),5), ] # -- small M for testing
+
 nr <- as.double(nrow(M))
 nc <- as.double(ncol(M))
 print(data.frame(rows=nr, cols=nc, cells=nr*nc, filled=sum(M > 0)))
@@ -58,12 +60,20 @@ euclid <- function (M) {
   sqrt(ifelse(.dist2 > 0, .dist2, 0))
 }
 
-## ---------- dense matrix operations ----------
+## full or truncated singular value decomposition (dense matrix only)
+svd.wrapper <- function (M, dim=NA, projection=FALSE) {
+  n <- min(dim(M))
+  if (!missing(dim)) n <- max(dim, n)
+  nu <- n
+  nv <- if (projection) 0 else n
+  svd(M, nu=nu, nv=nv)
+}
 
+## ---------- dense matrix operations ----------
 cat("===== Running benchmarks for DENSE matrices =====\n")
 results.dense <-
   list(benchmark(Mt <<- t(M), "transpose D", nr * nc),
-       benchmark(M.norm <- normalise(M), "normalise D", nr * nc),
+       benchmark(M.norm <<- normalise(M), "normalise D", nr * nc),
        benchmark(d1.dist <<- dist(M1, method="euclidean"), "dist() D", nr1 * nr1 * nc1),
        benchmark(d.inner <<- M %*% Mt, "inner M %*% t(M) D", nr * nr * nc),
        benchmark(d.tcrossprod <<- tcrossprod(M), "inner tcrossprod D", nr * nr * nc),
@@ -71,7 +81,10 @@ results.dense <-
        benchmark(d.cosine1 <<- cosine(M, normalise=TRUE), "cosine normalised D", nr * nr * nc + 2 * nr * nc),
        benchmark(d.cosine2 <<- cosine(M, normalise=FALSE), "cosine general D", nr * nr * nc + nr * nc + nr * nr),
        benchmark(d.euclid <<- euclid(M), "euclid() D", nr * nr * nc + nr * nc + nr * nr),
-       benchmark(d1.euclid <<- euclid(M1), "euclid() small D", nr1 * nr1 * nc1 + nr1 * nc1 + nr1 * nr1) # for validation against dist()
+       benchmark(d1.euclid <<- euclid(M1), "euclid() small D", nr1 * nr1 * nc1 + nr1 * nc1 + nr1 * nr1), # for validation against dist()
+       benchmark(svd.full <<- svd.wrapper(M), "SVD full D", 4 * nc*nc*nr + 8 * nc*nr*nr + 9 * nr*nr*nr), # complexity according to a Wikipedia talk page ... (actually for t(M), since Wikipedia assumes nr >> nc)
+       benchmark(svd.trunc <<- svd.wrapper(M, 42), "SVD truncated D", 4 * nc*nc*nr + 8 * nc*nr*nr + 9 * nr*nr*nr), # measure speed up wrt. full SVD, i.e. assume operation count of full SVD
+       benchmark(svd.proj <<- svd.wrapper(M, 42, TRUE), "SVD projection D", 4 * nc*nc*nr + 8 * nr*nr*nr) # projection omits computation of V
        )
 
 cat("----- validating results -----\n")
@@ -79,6 +92,7 @@ matrix.equal(d.inner, d.tcrossprod, "M %*% t(M) == tcrossprod(M)")
 matrix.equal(d.crossprod, d.tcrossprod, "crossprod(M) == tcrossprod(M)")
 matrix.equal(d.cosine1, d.cosine2, "cosine normalised == cosine general")
 matrix.equal(as.matrix(d1.dist), d1.euclid, "dist() == euclid()", tol=1e-6) # fast matrix algorithm is very inaccurate
+matrix.equal(svd.full$u %*% (svd.full$d * t(svd.full$v)), M, "U * D * t(V) == M")
 
 
 ## ---------- sparse matrix operations ----------
@@ -88,7 +102,7 @@ results.sparse <-
   list(benchmark(SM <<- Matrix(M, sparse=TRUE), "construct S", nr * nc),
        benchmark(SM1 <<- Matrix(M1, sparse=TRUE), "construct small S", nr1 * nc1),
        benchmark(SMt <<- t(SM), "transpose S", nr * nc),
-       benchmark(SM.norm <- normalise(SM), "normalise S", nr * nc),
+       benchmark(SM.norm <<- normalise(SM), "normalise S", nr * nc),
        benchmark(Sd1.dist <<- dist(SM1, method="euclidean"), "dist() S", nr1 * nr1 * nc1),
        benchmark(Sd.inner <<- SM %*% SMt, "inner M %*% t(M) S", nr * nr * nc),
        benchmark(Sd.tcrossprod <<- tcrossprod(SM), "inner tcrossprod S", nr * nr * nc),
