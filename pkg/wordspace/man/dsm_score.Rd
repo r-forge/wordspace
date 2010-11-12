@@ -13,7 +13,7 @@
   dsm.score(model,
             score=c("frequency", "t-score", "z-score", "Dice", "MI", "reweight"), sparse=FALSE,
             transform=c("none", "log", "root", "sigmoid"),
-            scale=c("none", "standardize"),
+            scale=c("none", "standardize", "center"),
             normalize=FALSE, method="euclidean", p=2)
 
 }
@@ -32,7 +32,7 @@
   }
 
   \item{scale}{
-    if not \code{"none"}, scale columns of scored matrix by z-transformation (\code{"standardize"})
+    if not \code{"none"}, scale columns of scored matrix by z-transformation (\code{"standardize"}) or center values without scaling (\code{"center"})
   }
 
   \item{normalize}{

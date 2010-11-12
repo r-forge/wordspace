@@ -1,7 +1,7 @@
 dsm.score <- function (model,
                        score=c("frequency", "t-score", "z-score", "Dice", "MI", "reweight"), sparse=FALSE,
                        transform=c("none", "log", "root", "sigmoid"),
-                       scale=c("none", "standardize"),
+                       scale=c("none", "standardize", "center"),
                        normalize=FALSE, method="euclidean", p=2) {
   score <- match.arg(score)
   transform <- match.arg(transform)
@@ -71,6 +71,8 @@ dsm.score <- function (model,
 
   if (scale == "standardize") {
     scores <- scale(scores, center=TRUE, scale=TRUE)
+  } else if (scale == "center") {
+    scores <- scale(scores, center=TRUE, scale=FALSE)
   } else {
     # no scaling
   }
