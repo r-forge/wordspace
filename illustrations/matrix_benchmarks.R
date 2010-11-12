@@ -9,15 +9,18 @@ load("data/bnc_vobj_basic.rda") # sample data set: 1678 x 4687 with 349378 nonze
 M <- bnc.vobj.basic$M # operate on log-transformed frequency counts
 M <- log10(M + 1)
 
-## M <- M[seq(1,nrow(M),5), ] # -- small M for testing
+## M <- M[seq(1,nrow(M),5), ] # -- reduce M for test runs
 
 nr <- as.double(nrow(M))
 nc <- as.double(ncol(M))
-print(data.frame(rows=nr, cols=nc, cells=nr*nc, filled=sum(M > 0)))
 
-M1 <- M[seq(1, nr, 2), ] # smaller matrix for slow dist() benchmarks
+M1 <- M[seq(1, nr, 2), seq(1, nc, 2)] # smaller matrix for slow dist() and svd() benchmarks: 839 x 2343 cells
 nr1 <- as.double(nrow(M1))
 nc1 <- as.double(ncol(M1))
+
+cat("BENCHMARK DATA:\n")
+print(data.frame(rows=c(nr,nr1), cols=c(nc,nc1), cells=c(nr*nc,nr1*nc1), filled=c(sum(M > 0), sum(M1 > 0)), row.names=c("full (M)", "small (M1)")))
+cat("\n")
 
 benchmark <- function (expr, name, n.ops=NULL, silent=FALSE) {
   gc()
@@ -82,9 +85,9 @@ results.dense <-
        benchmark(d.cosine2 <<- cosine(M, normalise=FALSE), "cosine general D", nr * nr * nc + nr * nc + nr * nr),
        benchmark(d.euclid <<- euclid(M), "euclid() D", nr * nr * nc + nr * nc + nr * nr),
        benchmark(d1.euclid <<- euclid(M1), "euclid() small D", nr1 * nr1 * nc1 + nr1 * nc1 + nr1 * nr1), # for validation against dist()
-       benchmark(svd.full <<- svd.wrapper(M), "SVD full D", 4 * nc*nc*nr + 8 * nc*nr*nr + 9 * nr*nr*nr), # complexity according to a Wikipedia talk page ... (actually for t(M), since Wikipedia assumes nr >> nc)
-       benchmark(svd.trunc <<- svd.wrapper(M, 42), "SVD truncated D", 4 * nc*nc*nr + 8 * nc*nr*nr + 9 * nr*nr*nr), # measure speed up wrt. full SVD, i.e. assume operation count of full SVD
-       benchmark(svd.proj <<- svd.wrapper(M, 42, TRUE), "SVD projection D", 4 * nc*nc*nr + 8 * nr*nr*nr) # projection omits computation of V
+       benchmark(svd.full <<- svd.wrapper(M1), "SVD full D", 4 * nc1*nc1*nr1 + 8 * nc1*nr1*nr1 + 9 * nr1*nr1*nr1), # complexity according to a Wikipedia talk page ... (actually for t(M), since Wikipedia assumes nr >> nc)
+       benchmark(svd.trunc <<- svd.wrapper(M1, 42), "SVD truncated D", 4 * nc1*nc1*nr1 + 8 * nc1*nr1*nr1 + 9 * nr1*nr1*nr1), # measure speed up wrt. full SVD, i.e. assume operation count of full SVD
+       benchmark(svd.proj <<- svd.wrapper(M1, 42, TRUE), "SVD projection D", 4 * nc1*nc1*nr1 + 8 * nr1*nr1*nr1) # projection omits computation of V
        )
 
 cat("----- validating results -----\n")
@@ -92,7 +95,7 @@ matrix.equal(d.inner, d.tcrossprod, "M %*% t(M) == tcrossprod(M)")
 matrix.equal(d.crossprod, d.tcrossprod, "crossprod(M) == tcrossprod(M)")
 matrix.equal(d.cosine1, d.cosine2, "cosine normalised == cosine general")
 matrix.equal(as.matrix(d1.dist), d1.euclid, "dist() == euclid()", tol=1e-6) # fast matrix algorithm is very inaccurate
-matrix.equal(svd.full$u %*% (svd.full$d * t(svd.full$v)), M, "U * D * t(V) == M")
+matrix.equal(svd.full$u %*% (svd.full$d * t(svd.full$v)), M1, "U * D * t(V) == M1")
 
 
 ## ---------- sparse matrix operations ----------
