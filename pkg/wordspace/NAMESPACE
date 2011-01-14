@@ -5,12 +5,9 @@ export(rowNorms, normalize.rows)
 export(dsm.projection)
 export(match.split)
 
-export(subset.dsm)
-S3Method(subset, dsm)
+S3method(subset, dsm)
 
-export(rbind.dsm, cbind.dsm)
-S3Method(rbind, dsm)
-S3Method(cbind, dsm)
+S3method(rbind, dsm)
+S3method(cbind, dsm)
 
-export(merge.dsm)
-S3Method(merge, dsm)
+S3method(merge, dsm)

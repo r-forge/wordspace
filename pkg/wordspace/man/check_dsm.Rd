@@ -32,6 +32,7 @@
 
   \item{nrow}{number of rows (target terms) of the DSM}
   \item{ncol}{number of columns (features) of the DSM}
+  \item{N}{sample size of the underlying data set}
   \item{slots}{character vector naming the components of the DSM object}
   \item{have.S}{whether a scored/weighted matrix S is available}
 }
