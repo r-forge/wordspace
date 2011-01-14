@@ -56,11 +56,15 @@ files:
   
   \item \file{rows.tbl}
   
-  row information (labels, marginal frequencies R1, R2)
+  row information (labels \code{term}, marginal frequencies \code{f})
   
   \item \file{cols.tbl}
   
-  column information (labels, marginal frequencies C1, C2)
+  column information (labels \code{term}, marginal frequencies \code{f})
+
+  \item \file{globals.tbl}
+
+  table with single row containing global variables; must include variable \code{N} specifying sample size
 }
 
 in the case of a directory, each contained file may be individually GZip-compressed with the extension \code{.gz}; \code{read.dsm} will automatically decompress the files when loading them
