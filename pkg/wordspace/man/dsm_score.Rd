@@ -11,10 +11,12 @@
 \usage{
 
   dsm.score(model,
-            score=c("frequency", "t-score", "z-score", "Dice", "MI", "reweight"), sparse=FALSE,
+            score=c("frequency", "t-score", "z-score", "Dice", "MI", "reweight"),
+            sparse=FALSE,
             transform=c("none", "log", "root", "sigmoid"),
             scale=c("none", "standardize", "center"),
-            normalize=FALSE, method="euclidean", p=2)
+            normalize=FALSE, method="euclidean", p=2,
+            matrix.only=FALSE)
 
 }
 \arguments{
@@ -42,16 +44,18 @@
   \item{method, p}{
     specific norm used if \code{normalize=TRUE}.  See \code{\link{rowNorms}} for admissible values and details on the corresponding norms
   }
+  
+  \item{matrix.only}{
+    whether to return updated DSM object (default) or only the matrix of scores (\code{TRUE})
+  }
 }
 \details{
 %%  ~~ If necessary, more details than the description above ~~
 }
 \value{
-%%  ~Describe the value returned
-%%  If it is a LIST, use
-%%  \item{comp1 }{Description of 'comp1'}
-%%  \item{comp2 }{Description of 'comp2'}
-%% ...
+  either an updated DSM object (default) or the matrix of (transformed, scaled, normalised) association scores (if \code{matrix.only=TRUE})
+  
+  note that updating large DSM objects requires considerably amounts of temporary memory (at least in R 2.12.x), which can be problematic on 32-bit platforms
 }
 \references{
 %% ~put references to the literature/web site here ~

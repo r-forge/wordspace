@@ -6,7 +6,9 @@ check.dsm <- function (model, validate=FALSE) {
   stopifnot(all(c("term","f") %in% colnames(model$cols)))
   have.S <- "S" %in% slots
   is.locked <- if ("locked" %in% slots) model$locked else FALSE
-  
+  main.matrix <- if (have.S) model$S else model$M
+  is.sparse <- inherits(main.matrix, "Matrix")
+
   n.rows <- nrow(model$M)
   n.cols <- ncol(model$M)
   stopifnot(nrow(model$rows) == n.rows)
@@ -25,5 +27,5 @@ check.dsm <- function (model, validate=FALSE) {
     }
   }
   
-  list(nrow=n.rows, ncol=n.cols, N=model$N, slots=slots, have.S=have.S, locked=is.locked)
+  list(nrow=n.rows, ncol=n.cols, N=model$N, slots=slots, have.S=have.S, locked=is.locked, sparse=is.sparse)
 }

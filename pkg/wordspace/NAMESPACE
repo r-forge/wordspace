@@ -1,3 +1,5 @@
+import(Matrix)
+
 export(read.dsm, check.dsm)
 export(dsm.score)
 export(cosine)
