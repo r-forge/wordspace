@@ -98,7 +98,7 @@ read.dsm <- function (filename, encoding=getOption("encoding")) {
   if (have.dense.M && have.sparse.M) warning("DSM archive '", archive$filename, "' contains both sparse (M.mtx) and dense (M) cooccurrence matrix -- using M.mtx")
   if (have.sparse.M) {
     fh <- .access.file(archive, "M.mtx", encoding)
-    M <- readMM(fh)
+    M <- as(readMM(fh), "dgCMatrix") # dgCMatrix (column-compressed) is the preferred format in the Matrix package
     close(fh)
   } else {
     fh <- .access.file(archive, "M", encoding)

@@ -35,6 +35,8 @@
   \item{N}{sample size of the underlying data set}
   \item{slots}{character vector naming the components of the DSM object}
   \item{have.S}{whether a scored/weighted matrix S is available}
+  \item{locked}{whether matrix combines data with inconsistent row or column marginals (in this case, association scores cannot be computed any more)}
+  \item{sparse}{whether the main model matrix (either \code{M} or \code{S}) is stored in sparse representation or not}
 }
 \references{
 %% ~put references to the literature/web site here ~
