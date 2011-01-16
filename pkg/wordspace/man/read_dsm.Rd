@@ -5,7 +5,7 @@
 }
 \description{
 
-  This functions loads raw DSM data - a cooccurrence frequency matrix and tables of marginal frequencies - from a disk file in \emph{\pkg{wordspace}} text format.  The input is either a ZIP archive or a directory containing text files with predefined names (see \sQuote{File Format} below for details).
+  This functions loads raw DSM data -- a cooccurrence frequency matrix and tables of marginal frequencies -- from a disk file in \emph{\pkg{wordspace}} text format.  The input is either a ZIP archive or a directory containing text files with predefined names (see \sQuote{File Format} below for details).
 
 }
 \usage{
@@ -26,13 +26,15 @@
 }
 \details{
 
-  The \code{encoding} argument currently doesn't work (as of R 2.11.1) if the DSM data are packaged in a ZIP archive.  If you need to work with non-ASCII row/column labels in R (or want them to be displayed properly), unpack the archive first in a subdirectory and specify this directory as \code{filename}.  Keep in mind that individual files may still be compressed with \code{gzip} in order to save disk space.
+  The \code{encoding} argument currently doesn't work (as of R 2.12.1) if the DSM data are packaged in a ZIP archive.  If you need to work with non-ASCII row/column labels in R (or want them to be displayed properly), unpack the archive first in a subdirectory and specify this directory as \code{filename}.  Keep in mind that individual files may still be compressed with \code{gzip} in order to save disk space.
 
 }
 \value{
 
   An object of class \code{dsm}, a list with the following components:
 
+  \bold{NB:} tables \code{rows} and \code{cols} contain variables \code{term}, \code{f}, and \code{nnzero} with the number of nonzero (positive) entries in the corresponding row or column; any additional variables given in the disk files are also included with their original names
+  
   %%  ~Describe the value returned
   %%  If it is a LIST, use
   %%  \item{comp1 }{Description of 'comp1'}

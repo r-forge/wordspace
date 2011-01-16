@@ -1,27 +1,39 @@
 rbind.dsm <- function (..., term.suffix=NULL, deparse.level=1) {
   models <- list(...) # should be one or more objects of class "dsm" if rbind() dispatches here
-  if (!missing(term.suffix) && length(term.suffix) != length(models)) stop("term.suffix must provide as many strings as there are DSMs")
+  if (!is.null(term.suffix) && length(term.suffix) != length(models)) stop("term.suffix must provide as many strings as there are DSMs")
 
   models.info <- lapply(models, check.dsm, validate=TRUE) # validate models and extract dimensions etc.
 
-  have.S.vec <- sapply(models.info, function (i) i$have.S) # are scored matrices available
+  have.S.vec <- sapply(models.info, function (i) i$have.S) # are scored matrices available?
   have.S <- all(have.S.vec)
-  if (any(have.S.vec) && !have.S.vec) warning("some but not all DSM objects contain score matrix S, dropped from result")
+  if (any(have.S.vec) && !have.S) warning("some but not all DSM objects contain score matrix S, dropped from result")
 
+  any.locked <- any(sapply(models.info, function (i) i$locked)) # are any of the input DSMs locked already?
+  any.sparse <- any(sapply(models.info, function (i) i$sparse)) # are there any sparse matrices?
+  N.vec <- sapply(models, function (i) i$N) # extract sample sizes
+  
   cols.merged <- .combine.marginals(lapply(models, function (m) m$cols), margin="column", mode="same") # check feature dimensions, then combine column marginals
-  marginals.inconsistent <- attr(cols.merged, "adjusted") # if marginal differ between DSMs, they're adjusted to the maximum value to ensure consistency
-  if (marginals.inconsistent && !have.S) warning("DSM objects have inconsistent column marginals, should calculate scores before combining them")
+  marginals.inconsistent <- attr(cols.merged, "adjusted") || diff(range(N.vec)) >= 1 # if marginals or sample sizes differ between DSMs, they're adjusted to the maximum value to ensure consistency
+  if (marginals.inconsistent && !have.S) warning("DSM objects have inconsistent column marginals / sample sizes, should calculate scores before combining them")
 
   rows.merged <- .bind.marginals(lapply(models, function (m) m$rows), margin="row", term.suffix=term.suffix)
   
+  ## TODO: rBind is memory-inefficient because it recursively combines two matrices at a time
+  ##  - replace by custom implementation (using triplet representation?), which need not preserve row/col names
+  ##  - standard rbind() for matrices seems compact and fast
   res <- list(
-    M = do.call(rbind, lapply(models, function (m) m$M)),
+    M = do.call(if (any.sparse) rBind else rbind, lapply(models, function (m) m$M)),
     rows = rows.merged,
     cols = cols.merged,
-    locked = marginals.inconsistent
+    globals = models[[1]]$globals,
+    N = max(N.vec),
+    locked = marginals.inconsistent || any.locked
   )
+  res$globals$N <- res$N
+  dimnames(res$M) <- list(res$rows$term, res$cols$term)
   if (have.S) {
-    res$S <- do.call(rbind, lapply(models, function (m) m$S))
+    res$S <- do.call(if (any.sparse) rBind else rbind, lapply(models, function (m) m$S))
+    dimnames(res$S) <- list(res$rows$term, res$cols$term)
   }
   class(res) <- c("dsm", "list")
 
@@ -35,7 +47,7 @@ cbind.dsm <- function (..., term.suffix=NULL, deparse.level=1) {
 merge.dsm <- function (x, y, ..., rows=TRUE, all=FALSE, term.suffix=NULL) {
   models <- list(x, y, ...)
   n.models <- length(models)
-  if (!missing(term.suffix) && length(term.suffix) != n.models) stop("term.suffix must provide as many strings as there are DSMs")
+  if (!is.null(term.suffix) && length(term.suffix) != n.models) stop("term.suffix must provide as many strings as there are DSMs")
   models.info <- lapply(models, check.dsm, validate=TRUE) # validate models and extract dimensions etc.
 
   if (all) stop("all=TRUE is not yet implemented")
@@ -43,35 +55,49 @@ merge.dsm <- function (x, y, ..., rows=TRUE, all=FALSE, term.suffix=NULL) {
 
   have.S.vec <- sapply(models.info, function (i) i$have.S) # are scored matrices available
   have.S <- all(have.S.vec)
-  if (any(have.S.vec) && !have.S.vec) warning("some but not all DSM objects contain score matrix S, dropped from result")
+  if (any(have.S.vec) && !have.S) warning("some but not all DSM objects contain score matrix S, dropped from result")
+
+  any.locked <- any(sapply(models.info, function (i) i$locked)) # are any of the input DSMs locked already?
+  any.sparse <- any(sapply(models.info, function (i) i$sparse)) # are there any sparse matrices?
+  N.vec <- sapply(models, function (i) i$N) # extract sample sizes
 
   # bind rows of DSM objects, preserving only terms that are shared by all DSM
   cols.merged <- .combine.marginals(lapply(models, function (m) m$cols), margin="column", mode="intersect")
-  marginals.inconsistent <- attr(cols.merged, "adjusted") # if marginal differ between DSMs, they're adjusted to the maximum value to ensure consistency
-  if (marginals.inconsistent && !have.S) warning("DSM objects have inconsistent column marginals, should calculate scores before combining them")
+  marginals.inconsistent <- attr(cols.merged, "adjusted") || diff(range(N.vec)) >= 1 # if marginals differ between DSMs, they're adjusted to the maximum value to ensure consistency
+  if (marginals.inconsistent && !have.S) warning("DSM objects have inconsistent column marginals / sample sizes, should calculate scores before combining them")
   
-  rows.merged <- .bind.marginals(lapply(models, function (m) m$rows), margin="row", term.suffix=term.suffix)
-  n.rows <- sapply(models.info, function (i) i$nrow)
-  first.row <- cumsum(c(1, n.rows)) # rows offsets of individual DSMs in combined matrix M
-  
-  M <- matrix(nrow=nrow(rows.merged), ncol=nrow(cols.merged), dimnames=list(rows.merged$term, cols.merged$term))
-  if (have.S) S <- matrix(nrow=nrow(rows.merged), ncol=nrow(cols.merged), dimnames=list(rows.merged$term, cols.merged$term))
-  for (i in 1:n.models) {
-    model <- models[[i]]
-    col.idx <- na.omit( match(cols.merged$term, model$cols$term) ) # extract columns of i-th DSM matrix that match the common terms
-    M[ (first.row[i]):(first.row[i]+n.rows[i]-1), ] <- model$M[ , col.idx]
-    if (have.S) S[ (first.row[i]):(first.row[i]+n.rows[i]-1), ] <- model$S[ , col.idx]
+  if (any.sparse) {
+    ## for sparse matrices, extract/reorder columns, then call rbind() to merge the models
+    ## TODO: this waste huge amounts of memory; needs to be reimplemented in more sophisticated way!
+    adjusted.models <- lapply(models, function (.m) subset(.m, select=na.omit( match(cols.merged$term, term) )))
+    return( do.call(rbind, c(adjusted.models, list(term.suffix=term.suffix))) )
   }
+  else {
+    ## for dense matrices, build merged DSM directly, filling in a pre-allocated matrix (more memory-efficient)
+    rows.merged <- .bind.marginals(lapply(models, function (m) m$rows), margin="row", term.suffix=term.suffix)
+    n.rows <- sapply(models.info, function (i) i$nrow)
+    first.row <- cumsum(c(1, n.rows)) # rows offsets of individual DSMs in combined matrix M
+  
+    M <- matrix(nrow=nrow(rows.merged), ncol=nrow(cols.merged), dimnames=list(rows.merged$term, cols.merged$term))
+    if (have.S) S <- matrix(nrow=nrow(rows.merged), ncol=nrow(cols.merged), dimnames=list(rows.merged$term, cols.merged$term))
+    for (i in 1:n.models) {
+      model <- models[[i]]
+      col.idx <- na.omit( match(cols.merged$term, model$cols$term) ) # extract columns of i-th DSM matrix that match the common terms
+      M[ (first.row[i]):(first.row[i]+n.rows[i]-1), ] <- model$M[ , col.idx]
+      if (have.S) S[ (first.row[i]):(first.row[i]+n.rows[i]-1), ] <- model$S[ , col.idx]
+    }
+    
+    ## construct and return merged DSM
+    res <- list(M = M,
+                rows = rows.merged,
+                cols = cols.merged,
+                globals = models[[1]]$globals,
+                N = max(N.vec),
+                locked = marginals.inconsistent || any.locked)
+    res$globals$N <- res$N
+    if (have.S) res$S <- S
 
-  # construct and return merged DSM
-  res <- list(
-    M = M,
-    rows = rows.merged,
-    cols = cols.merged,
-    locked = marginals.inconsistent
-  )
-  if (have.S) res$S <- S
-  class(res) <- c("dsm", "list")
-
-  return(res)
+    class(res) <- c("dsm", "list")
+    return(res)
+  }
 }  
