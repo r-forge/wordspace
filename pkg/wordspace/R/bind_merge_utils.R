@@ -1,7 +1,7 @@
 ## internal helper functions for [rc]bind.dsm() and merge.dsm()
 
 # merge tables of marginal frequencies (either columns or rows, as indicated by margin argument)
-#  - all tables must have variables "term" and "R1","R2" or "C1","C2"; other metdata variables taken from first table
+#  - all tables must have variables "term" and "f"; metdata variables taken from first table
 #  - marginal frequencies are checked for equality; if there are differences, pmax() is assigned to result table with attribute "adjusted" set
 #  - mode="same" requires that all tables have exactly the same terms in the same order and aborts with error message otherwise
 #  - mode="intersection" preserves only terms that occur in all tables and reorders them if necessary
@@ -10,11 +10,10 @@
   mode <- match.arg(mode)
   if (mode == "union") stop("'union' operation has not been implemented yet")
   margin <- match.arg(margin)
-  freq.vars <- if (margin == "row") c("R1", "R2") else c("C1", "C2")
   stopifnot(length(tbls) >= 1)
 
-  vars.ok <- all( sapply(tbls, function (.t) all(c("term", freq.vars) %in% colnames(.t))) )
-  if (!vars.ok) stop("all ", margin, " marginal tables must contain variables term, ", paste(freq.vars, collapse=", "))
+  vars.ok <- all( sapply(tbls, function (.t) all(c("term", "f") %in% colnames(.t))) )
+  if (!vars.ok) stop("all ", margin, " marginal tables must contain variables term and f")
 
   first.tbl <- tbls[[1]]
   other.tbls <- tbls[-1]
@@ -32,21 +31,18 @@
 
   adjusted <- FALSE
   terms.idx <- match(terms, first.tbl$term)
-  M1 <- first.tbl[terms.idx , freq.vars[1]] # first marginal frequency
-  M2 <- first.tbl[terms.idx , freq.vars[2]] # second marginal frequency
+  F <- first.tbl$f[terms.idx] # init marginal frequencies from first table
   for (.t in other.tbls) {
     .idx <- match(terms, .t$term)
-    .m1 <- .t[.idx, freq.vars[1]]
-    .m2 <- .t[.idx, freq.vars[2]]
-    if (any(.m1 != M1) || any(.m2 != M2)) {
-      M1 <- pmax(M1, .m1)
-      M2 <- pmax(M2, .m2)
+    .f <- .t$f[.idx]
+    if (any(.f != F)) {
+      F <- pmax(F, .f)
       adjusted <- TRUE
     }
   }
 
-  res <- if (margin == "row") data.frame(term=terms, R1=M1, R2=M2, stringsAsFactors=FALSE) else data.frame(term=terms, C1=M1, C2=M2, stringsAsFactors=FALSE)
-  other.vars <- setdiff(colnames(first.tbl), c("term", freq.vars)) # metadata variable from first table
+  res <- data.frame(term=terms, f=F, stringsAsFactors=FALSE)
+  other.vars <- setdiff(colnames(first.tbl), c("term", "f")) # metadata variable from first table
   if (length(other.vars) > 0) res <- cbind(res, first.tbl[terms.idx, other.vars, drop=FALSE])
   attr(res, "adjusted") <- adjusted
 
@@ -73,7 +69,9 @@
 
   if (!is.null(term.suffix)) {
     stopifnot(length(term.suffix) == length(tbls))
-    res$term <- paste(res$term, rep(term.suffix, n.items), sep="")
+    res$orig.term <- res$term
+    res$orig.part <- rep(term.suffix, n.items)
+    res$term <- paste(res$orig.term, res$orig.part, sep="")
   }
   if (any(duplicated(res$term))) stop(margin, " labels must be unique across all DSM objects")
 

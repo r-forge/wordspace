@@ -20,11 +20,12 @@
   }
 
   \item{subset}{
-    Boolean expression or index vector selecting a subset of the rows; expression can use variables \code{term}, \code{R1} and \code{R2} to access target (row) terms and their marginal frequencies, as well as optional other variables defined for the rows
+    Boolean expression or index vector selecting a subset of the rows; expression can use variables \code{term} and \code{f} to access target (row) terms and their marginal frequencies, as well as optional other variables defined for the rows and global variables such as the sample size \code{N}
   }
 
   \item{select}{
-    Boolean expression or index vector selecting a subset of the columns; expression can use variables \code{term}, \code{C1} and \code{C2} to access feature (column) terms (or context labels) and their marginal frequencies, as well as optional other variables defined for the columns
+    Boolean expression or index vector selecting a subset of the
+    columns; expression can use variables \code{term} and \code{f} to access feature (column) terms (or context labels) and their marginal frequencies, as well as optional other variables defined for the columns and global variables such as the sample size \code{N}
   }
 
   \item{\dots}{

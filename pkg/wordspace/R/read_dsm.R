@@ -112,6 +112,11 @@ read.dsm <- function (filename, encoding=getOption("encoding")) {
   stopifnot(nrow(M) == n.rows && ncol(M) == n.cols)
   rownames(M) <- rows$term
   colnames(M) <- cols$term
+
+  is.nzero <- M > 0 # if M is sparse, this returns a sparse logical matrix
+  rows$nnzero <- rowSums(is.nzero)
+  cols$nnzero <- colSums(is.nzero)
+  
   dsm <- list(M=M, rows=rows, cols=cols, N=N, globals=globals, locked=FALSE)
   class(dsm) <- c("dsm", "list")
   return(dsm)

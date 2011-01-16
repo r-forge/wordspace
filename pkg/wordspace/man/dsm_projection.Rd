@@ -10,13 +10,13 @@
 }
 \usage{
 
-  dsm.projection(model, method=c("svd"), n=NA)
+  dsm.projection(model, method=c("svd", "rsvd", "asvd", "ri", "ri+svd"), n=NA, oversampling=NA, q=2, verbose=FALSE)
 
 }
 \arguments{
 
   \item{model}{
-    an object of class \code{dsm}, which has already been scored/weighted with \code{dsm.score}
+    a numeric matrix, or  an object of class \code{dsm} that has already been scored/weighted with \code{dsm.score};
   }
 
   \item{method}{
@@ -27,9 +27,34 @@
     an integer specifying the number of target dimensions.  If unspecified, the maximal number of latent dimensions is used (i.e. the minimum of the number of rows and columns of the DSM matrix)
   }
 
+  \item{oversampling}{
+    oversampling factor for stochastic dimensionality reduction algorithms (\code{rsvd}, \code{asvd}, \code{ri+svd}).  If unspecified, defaults to 2 for randomized SVD (\code{rsvd}) and 5 for the other methods
+  }
+
+  \item{q}{
+    number of power iterations in the randomized SVD algorithm (Halko \emph{et al.} 2009 recommend \code{q=1} or \code{q=2})
+  }
+
+  \item{verbose}{
+    if \code{TRUE}, some methods display progress messages during execution
+  }
 }
 \details{
-%%  ~~ If necessary, more details than the description above ~~
+  The following dimensionality reduction algorithms can be selected with the \code{method} argument:
+  \describe{
+
+    \item{svd}{singular value decomposition (SVD).  Note that special efficient algorithms for sparse matrices are not implemented yet.  If the DSM has been scored with \code{scale="center"}, this method is equivalent to principal component analysis (PCA).}
+
+    \item{rsvd}{randomized SVD (Halko \emph{et al.} 2009, p. 9) based on a factorization of rank \code{oversampling * n} with \code{q} power iterations. -- \bold{TODO}}
+
+    \item{asvd}{approximate SVD, which determines latent dimensions from a random sample of matrix rows including  \code{oversampling * n} data points.}
+
+    \item{ri}{random indexing (RI) -- \bold{TODO}}
+
+    \item{ri+svd}{RI to \code{oversampling * n} dimensions, followed by SVD to pick the final \code{n} dimensions -- \bold{TODO}}
+
+  }
+  
 }
 \value{
   A numeric matrix with \code{n} columns (latent dimensions) and the same number of rows as the original DSM.
