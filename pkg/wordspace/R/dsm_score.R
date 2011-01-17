@@ -1,5 +1,5 @@
 dsm.score <- function (model,
-                       score=c("frequency", "t-score", "z-score", "Dice", "MI", "reweight"),
+                       score=c("frequency", "simple-ll", "t-score", "z-score", "Dice", "MI", "reweight"),
                        sparse=FALSE,
                        transform=c("none", "log", "root", "sigmoid"),
                        scale=c("none", "standardize", "center"),
