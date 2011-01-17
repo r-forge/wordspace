@@ -28,7 +28,7 @@
   }
 
   \item{oversampling}{
-    oversampling factor for stochastic dimensionality reduction algorithms (\code{rsvd}, \code{asvd}, \code{ri+svd}).  If unspecified, defaults to 2 for randomized SVD (\code{rsvd}) and 5 for the other methods
+    oversampling factor for stochastic dimensionality reduction algorithms (\code{rsvd}, \code{asvd}, \code{ri+svd}).  If unspecified, the default value is 2 for \code{rsvd}, 10 for \code{asvd} and 5 for \code{ri+svd} (subject to change).
   }
 
   \item{q}{
@@ -60,7 +60,8 @@
   A numeric matrix with \code{n} columns (latent dimensions) and the same number of rows as the original DSM.
 }
 \references{
-%% ~put references to the literature/web site here ~
+  Halko, N., Martinsson, P. G., and Tropp, J. A. (2009).
+  Finding structure with randomness: Stochastic algorithms for constructing approximate matrix decompositions. Technical Report 2009-05, ACM, California Institute of Technology.
 }
 \seealso{
 %% ~~objects to See Also as \code{\link{help}}, ~~~
