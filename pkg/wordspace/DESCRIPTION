@@ -1,8 +1,8 @@
 Package: wordspace
 Type: Package
 Title: Distributional semantic models (DSM) in R
-Version: 0.0-6
-Date: 2011-01-16
+Version: 0.0-7
+Date: 2011-01-17
 Author: Stefan Evert [http://purl.org/stefan.evert]
 Maintainer: Stefan Evert <stefan.evert@uos.de>
 Depends: R (>= 2.11.1), Matrix

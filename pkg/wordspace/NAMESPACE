@@ -6,6 +6,7 @@ export(cosine)
 export(rowNorms, normalize.rows)
 export(dsm.projection)
 export(match.split)
+export(context.vectors)
 
 S3method(subset, dsm)
 

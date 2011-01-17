@@ -100,9 +100,7 @@ dsm.score <- function (model,
   # transformation and scaling now operates in the same way on dense or sparse matrix "scores"
   if (transform == "log") {
     if (!sparse.M) {
-      print(str(scores))
       scores <- sign(scores) * log(abs(scores) + 1) # "signed log" transformation
-      print(str(scores))
     } else {
       scores@x <- sign(scores@x) * log(abs(scores@x) + 1)
     }

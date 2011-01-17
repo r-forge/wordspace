@@ -17,7 +17,7 @@ dsm.projection <- function (model, method=c("svd", "rsvd", "asvd", "ri", "ri+svd
   if (n > min(nR, nC)) stop("number of target dimensions exceeds dimensionality of DSM matrix")
 
   if (is.na(oversampling)) {
-    oversampling <- switch(method, svd=1, rsvd=2, asvd=5, ri=1, "ri+svd"=5)
+    oversampling <- switch(method, svd=1, rsvd=2, asvd=10, ri=1, "ri+svd"=5)
   }
 
   if (method == "svd") {
@@ -48,31 +48,58 @@ dsm.projection <- function (model, method=c("svd", "rsvd", "asvd", "ri", "ri+svd
   } else if (method == "rsvd") {
 
     ## -- randomized SVD according to Halko, Martinsson & Tropp (2009, p. 9)
-    ## we apply this algorithm to A = t(M), which is suitable for M with many rows and limited number of columns
-    ## TODO: should automatically apply either to A = M or to A = t(M) depending on format of the matrix
+    ## We can apply the rSVD algorithm either to A = M or to A = t(M), depending on the format of M.
+    ## Preliminary testing suggests that the original algorithm (A = M) is suitable for a matrix with many columns,
+    ## while the transpose algorithm (A = t(M)) works better if the matrix has many rows and a limited number of columns.
+    ## For the time being, we use the original version if nR <= nC, and the transpose version otherwise.
     k2 <- min(oversampling * n, nR, nC)   # = 2*k in the paper
-    if (verbose) cat(sprintf("Randomized SVD reduction to %d => %d dimensions:\n", k2, n))
-    if (verbose) cat(" - sampling range of A\n")
-    Omega <- matrix(rnorm(k2*nR), k2, nR) # = t(Omega)
-    Y <- Omega %*% M                      # = t(A * Omega)
-    rm(Omega)
-    if (q >= 1) for (i in 1:q) {
-      if (verbose) cat(sprintf(" - power iteration #%d\n", i))
-      Y <- tcrossprod(Y, M) %*% M         # = t( (A * t(A))^i * A * Omega) ) = t(Y)
+    transpose <- !(nR <= nC)
+    if (verbose) cat(sprintf("Randomized SVD reduction%s to %d => %d dimensions:\n", if (transpose) " (transposed)" else "", k2, n))
+    if (!transpose) {
+      if (verbose) cat(" - sampling range of A\n") # -- original algorithm applied to A = M
+      Omega <- matrix(rnorm(nC*k2), nC, k2)
+      Y <- M %*% Omega
+      rm(Omega)
+      if (q >= 1) for (i in 1:q) {
+        if (verbose) cat(sprintf(" - power iteration #%d\n", i))
+        Y <- M %*% crossprod(M, Y)
+      }
+      if (verbose) cat(sprintf(" - QR decomposition of %d x %d matrix\n", nrow(Y), ncol(Y)))
+      Q <- qr.Q( qr(Y) )
+      rm(Y)
+      B <- crossprod(Q, M)
+      if (verbose) cat(sprintf(" - SVD decomposition of %d x %d matrix\n", nrow(B), ncol(B)))
+      SVD <- svd(B, nu=0, nv=n)             # we can either project the original matrix using V, or construct the result from U and Sigma
+      rm(B)
+      if (verbose) cat(" - composing final matrix\n")
+      ## U <- Q %*% SVD$u # need to set nu=n above if we want to run this code (Uhat = SVD$u)
+      ## --> now construct projected matrix from U and SVD$d
+      S <- M %*% SVD$v
+      rm(SVD)
+      S <- as.matrix(S) # make sure result is an ordinary dense matrix
+      R2 <- norm(S, "F")^2 / norm(M, "F")^2
+    } else {
+      if (verbose) cat(" - sampling range of A\n") # -- transposed algorithm for A = t(M)
+      Omega <- matrix(rnorm(k2*nR), k2, nR) # = t(Omega)
+      Y <- Omega %*% M                      # = t(A * Omega)
+      rm(Omega)
+      if (q >= 1) for (i in 1:q) {
+        if (verbose) cat(sprintf(" - power iteration #%d\n", i))
+        Y <- tcrossprod(Y, M) %*% M         # = t( (A * t(A))^i * A * Omega) ) = t(Y)
+      }
+      if (verbose) cat(sprintf(" - QR decomposition of %d x %d matrix\n", ncol(Y), nrow(Y)))
+      Q <- qr.Q( qr(t(Y)) )                 # = orthonormal basis of rg(Y), from QR decomposition
+      rm(Y)
+      B <- M %*% Q                          # = t( t(Q) * A ) = t(B)
+      if (verbose) cat(sprintf(" - SVD decomposition of %d x %d matrix\n", nrow(B), ncol(B)))
+      SVD <- svd(B, nu=0, nv=n)             # t(B) = V * Sigma * t(Uhat), truncated to k target dimensions
+      rm(B)
+      if (verbose) cat(" - composing final matrix\n")
+      S <- M %*% Q %*% SVD$v                # t(t(U) * A) = t(A) * U = t(A) * Q * Uhat
+      rm(SVD)
+      S <- as.matrix(S) # make sure result is an ordinary dense matrix
+      R2 <- norm(S, "F")^2 / norm(M, "F")^2
     }
-    if (verbose) cat(" - QR decomposition\n")
-    Q <- qr.Q( qr(t(Y)) )                 # = orthonormal basis of rg(Y), from QR decomposition
-    rm(Y)
-    B <- M %*% Q                          # = t( t(Q) * A ) = t(B)
-    if (verbose) cat(" - SVD decomposition\n")
-    SVD <- svd(B, nu=n, nv=n)             # t(B) = V * Sigma * t(Uhat), truncated to k target dimensions
-    rm(B)
-    if (verbose) cat(" - composing final matrix\n")
-    S <- M %*% Q %*% SVD$v                # t(t(U) * A) = t(A) * U = t(A) * Q * Uhat
-    rm(SVD)
-    S <- as.matrix(S) # make sure result is an ordinary dense matrix
-    R2 <- norm(S, "F")^2 / norm(M, "F")^2
-
   } else {
     stop("dimensionality reduction method '", method, "' has not been implemented yet")
   }
