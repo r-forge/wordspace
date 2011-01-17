@@ -42,7 +42,12 @@ dsm.score <- function (model,
       C1 <- model$cols$f[M@j + 1]   # column marginals (compute C2 = N - C1 only if needed)
       # expected frequencies will be calculated when necessary
 
-      if (score == "t-score") {
+      if (score == "simple-ll") {
+        E <- R1 * C1 / N
+        score.vec <- 2 * (O * log(O / E) - (O - E))
+        score.vec[O < E] <- 0
+        rm(E)
+      } else if (score == "t-score") {
         E <- R1 * C1 / N
         score.vec <- (O - E) / sqrt(O)
         score.vec[O < E] <- 0
@@ -76,10 +81,13 @@ dsm.score <- function (model,
       R1 <- model$rows$f            # row marginals (compute R2 = N - R1 only if needed)
       C1 <- model$cols$f            # column marginals (compute C2 = N - C1 only if needed)
 
-      need.exp <- score %in% c("t-score", "z-score", "MI")
+      need.exp <- score %in% c("simple-ll", "t-score", "z-score", "MI")
       if (need.exp) E <- outer(R1, C1) / N
 
-      if (score == "t-score") {
+      if (score == "simple-ll") {
+        OmE <- O - E
+        scores <- sign(OmE) * 2 * (ifelse(O > 0, O * log(O/E), 0) - OmE)
+      } else if (score == "t-score") {
         scores <- (O - E) / sqrt(O + 1) # "discounted" t-score
       }
       else if (score == "z-score") {
