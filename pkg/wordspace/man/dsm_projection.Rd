@@ -10,7 +10,8 @@
 }
 \usage{
 
-  dsm.projection(model, method=c("svd", "rsvd", "asvd", "ri", "ri+svd"), n=NA, oversampling=NA, q=2, verbose=FALSE)
+  dsm.projection(model, method=c("svd", "rsvd", "asvd", "ri", "ri+svd"),
+                 n=NA, oversampling=NA, q=2, verbose=FALSE, with.basis=FALSE)
 
 }
 \arguments{
@@ -38,6 +39,11 @@
   \item{verbose}{
     if \code{TRUE}, some methods display progress messages during execution
   }
+  
+  \item{with.basis}{
+    if \code{TRUE}, also returns orthogonal basis of the subspace as attribute of the reduced matrix 
+  }
+  
 }
 \details{
   The following dimensionality reduction algorithms can be selected with the \code{method} argument:
@@ -57,7 +63,9 @@
   
 }
 \value{
-  A numeric matrix with \code{n} columns (latent dimensions) and the same number of rows as the original DSM.
+
+  A numeric matrix with \code{n} columns (latent dimensions) and the same number of rows as the original DSM.  If \code{with.projection=TRUE}, an orthogonal basis \eqn{B} of the latent subspace is returned as attribute \code{"basis"} of the return value.  \eqn{B} is column-orthogonal, hence \eqn{B^T} projects into latent dimensions and \eqn{B B^T} is an orthogonal projection in the original coordinate system.
+
 }
 \references{
   Halko, N., Martinsson, P. G., and Tropp, J. A. (2009).
