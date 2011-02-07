@@ -112,7 +112,11 @@ dsm.projection <- function (model, method=c("svd", "rsvd", "asvd", "ri", "ri+svd
 
   rownames(S) <- rownames(M)
   colnames(S) <- paste(method, 1:n, sep="")
-  if (with.basis) attr(S, "basis") <- B
+  if (with.basis) {
+    rownames(B) <- colnames(M)
+    colnames(B) <- colnames(S)
+    attr(S, "basis") <- B
+  }
   attr(S, "R2") <- R2
   return(S)
  }
