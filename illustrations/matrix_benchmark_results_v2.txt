@@ -58,3 +58,152 @@ cosine general S        3.415  3867.58    3.13
 euclid() S              2.848  4637.57    2.81
 euclid() small S        0.568  2909.62    0.57
 
+------------------------------------------------------------------------
+MacBook Pro 4,1 (2008), Intel Core 2 Duo T9300 2.5 GHz, 6MB L2 Cache, 800 MHz FSB, GeForce 8600M GT
+Mac OS X 10.6.6, R 2.12.1, 64-bit, reference BLAS
+                         Time     MOPS CPUTime
+transpose D             0.096    81.92   0.093
+normalise D             0.334    23.55   0.278
+dist() D               10.007   164.88   9.963
+inner M %*% t(M) D     24.570   537.12  24.504
+inner tcrossprod D      0.664 19875.17   0.645
+inner crossprod t(M) D 12.095  1091.12  12.052
+cosine normalised D     0.850 15544.52   0.742
+cosine general D        0.832 15874.75   0.763
+euclid() D              2.104  6277.47   1.782
+euclid() small D        0.446  3705.52   0.310
+SVD full D             11.678  3164.43  11.554
+SVD truncated D        11.869  3113.51  11.744
+SVD projection D       11.485  2016.87  11.473
+construct S             0.233    33.75   0.147
+construct small S       0.024    81.94   0.023
+transpose S             0.017   462.63   0.013
+normalise S             0.197    39.92   0.138
+dist() S               10.044   164.28   9.992
+inner M %*% t(M) S      0.703 18772.56   0.651
+inner tcrossprod S      0.668 19756.15   0.640
+inner crossprod t(M) S  0.675 19551.28   0.648
+cosine normalised S     0.839 15748.32   0.765
+cosine general S        2.219  5952.14   1.773
+euclid() S              1.947  6783.66   1.628
+euclid() small S        0.493  3352.25   0.331
+
+------------------------------------------------------------------------
+MacBook Pro 4,1 (2008), Intel Core 2 Duo T9300 2.5 GHz, 6MB L2 Cache, 800 MHz FSB, GeForce 8600M GT
+Mac OS X 10.6.6, R 2.12.1, 64-bit, vecLib BLAS
+                         Time     MOPS CPUTime
+transpose D             0.100    78.65   0.095
+normalise D             0.336    23.41   0.278
+dist() D               10.310   160.04  10.110
+inner M %*% t(M) D      2.580  5115.16   4.681
+inner tcrossprod D      2.947  4478.15   3.980
+inner crossprod t(M) D  1.938  6809.65   3.003
+cosine normalised D     3.109  4249.87   4.082
+cosine general D        3.191  4139.08   4.130
+euclid() D              4.423  2986.16   5.120
+euclid() small D        0.597  2768.28   0.542
+SVD full D              3.838  9628.51   4.534
+SVD truncated D         3.372 10959.14   4.462
+SVD projection D        3.177  7291.06   4.386
+construct S             0.256    30.72   0.148
+construct small S       0.024    81.94   0.023
+transpose S             0.017   462.63   0.013
+normalise S             0.198    39.72   0.138
+dist() S               10.588   155.84  10.217
+inner M %*% t(M) S      0.718 18380.38   0.658
+inner tcrossprod S      0.679 19436.10   0.649
+inner crossprod t(M) S  0.696 18961.37   0.659
+cosine normalised S     0.851 15526.25   0.776
+cosine general S        2.265  5831.25   1.801
+euclid() S              1.967  6714.69   1.643
+euclid() small S        0.507  3259.69   0.334
+
+------------------------------------------------------------------------
+MacBook Pro 4,1 (2008), Intel Core 2 Duo T9300 2.5 GHz, 6MB L2 Cache, 800 MHz FSB, GeForce 8600M GT
+Mac OS X 10.6.6, R 2.12.1, 32-bit, vecLib BLAS
+                         Time     MOPS CPUTime
+transpose D             0.170    46.26   0.114
+normalise D             0.353    22.28   0.226
+dist() D               10.154   162.50   9.843
+inner M %*% t(M) D      2.137  6175.53   3.958
+inner tcrossprod D      1.117 11814.78   2.021
+inner crossprod t(M) D  1.144 11535.94   2.043
+cosine normalised D     1.374  9616.33   2.149
+cosine general D        1.407  9387.20   2.163
+euclid() D              3.133  4215.70   3.164
+euclid() small D        0.676  2444.77   0.543
+SVD full D              3.271 11297.53   3.971
+SVD truncated D         3.015 12256.79   3.904
+SVD projection D        2.921  7930.06   3.851
+construct S             0.246    31.97   0.158
+construct small S       0.040    49.17   0.030
+transpose S             0.044   178.75   0.017
+normalise S             0.236    33.33   0.172
+dist() S                9.823   167.97   9.746
+inner M %*% t(M) S      1.175 11231.58   1.079
+inner tcrossprod S      0.987 13370.93   0.923
+inner crossprod t(M) S  0.996 13250.11   0.930
+cosine normalised S     1.203 10983.24   1.082
+cosine general S        3.128  4222.44   2.192
+euclid() S              2.849  4635.94   2.072
+euclid() small S        0.570  2899.41   0.406
+
+------------------------------------------------------------------------
+MacBook Pro 4,1 (2008), Intel Core 2 Duo T9300 2.5 GHz, 6MB L2 Cache, 800 MHz FSB, GeForce 8600M GT
+Mac OS X 10.6.6, R 2.12.1, 64-bit, Goto BLAS (Universal, Penryn)
+                         Time     MOPS CPUTime
+transpose D             0.139    56.58   0.099
+normalise D             0.380    20.70   0.288
+dist() D               10.596   155.72  10.198
+inner M %*% t(M) D      1.681  7850.75   2.873
+inner tcrossprod D      0.889 14844.89   1.520
+inner crossprod t(M) D  0.808 16333.06   1.513
+cosine normalised D     0.990 13346.30   1.609
+cosine general D        0.979 13491.10   1.704
+euclid() D              2.256  5854.52   2.731
+euclid() small D        0.474  3486.63   0.501
+SVD full D              1.875 19708.92   3.208
+SVD truncated D         1.748 21140.86   3.180
+SVD projection D        1.670 13870.48   3.057
+construct S             0.231    34.05   0.147
+construct small S       0.024    81.94   0.022
+transpose S             0.018   436.93   0.013
+normalise S             0.198    39.72   0.139
+dist() S               10.078   163.72  10.029
+inner M %*% t(M) S      0.705 18719.31   0.651
+inner tcrossprod S      0.669 19726.62   0.640
+inner crossprod t(M) S  0.675 19551.28   0.646
+cosine normalised S     0.847 15599.58   0.774
+cosine general S        2.243  5888.45   1.878
+euclid() S              1.947  6783.66   1.627
+euclid() small S        0.495  3338.71   0.332
+
+------------------------------------------------------------------------
+MacBook Pro 4,1 (2008), Intel Core 2 Duo T9300 2.5 GHz, 6MB L2 Cache, 800 MHz FSB, GeForce 8600M GT
+Mac OS X 10.6.6, R 2.12.1, 32-bit, Goto BLAS (Universal, Penryn)
+                         Time     MOPS CPUTime
+transpose D             0.163    48.25   0.113
+normalise D             0.328    23.98   0.227
+dist() D               10.277   160.55   9.923
+inner M %*% t(M) D      1.944  6788.64   3.054
+inner tcrossprod D      0.997 13236.82   1.604
+inner crossprod t(M) D  1.047 12604.69   1.619
+cosine normalised D     1.122 11776.15   1.682
+cosine general D        1.154 11445.23   1.792
+euclid() D              2.712  4870.13   2.754
+euclid() small D        0.568  2909.62   0.541
+SVD full D              2.208 16736.52   3.745
+SVD truncated D         2.151 17180.02   3.715
+SVD projection D        2.114 10957.29   3.611
+construct S             0.248    31.71   0.159
+construct small S       0.042    46.82   0.030
+transpose S             0.015   524.32   0.012
+normalise S             0.253    31.09   0.173
+dist() S                9.923   166.28   9.820
+inner M %*% t(M) S      1.163 11347.47   1.067
+inner tcrossprod S      1.001 13183.93   0.936
+inner crossprod t(M) S  1.012 13040.62   0.941
+cosine normalised S     1.270 10403.81   1.131
+cosine general S        3.067  4306.42   2.283
+euclid() S              2.853  4629.44   2.081
+euclid() small S        0.569  2904.50   0.407
