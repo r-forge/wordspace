@@ -65,7 +65,6 @@ read.dsm <- function (filename, encoding=getOption("encoding")) {
   
   n.rows <- nrow(rows)
   n.cols <- nrow(cols)
-  n.cells <- n.rows * n.cols
 
   if (any(c("globals.tbl", "globals.tbl.gz") %in% archive$contents)) {
     fh <- .access.file(archive, "globals.tbl")
@@ -102,6 +101,8 @@ read.dsm <- function (filename, encoding=getOption("encoding")) {
     close(fh)
   } else {
     fh <- .access.file(archive, "M", encoding)
+    n.cells <- as.double(n.rows) * n.cols # avoid integer overflow for oversized matrix
+    if (n.cells >= 2^31) stop("dense co-occurrence matrix is too large to load into R")
     tmp <- scan(fh, what=double(0), nmax=n.cells, quiet=TRUE)
     close(fh) # not sure when we need to / are allowed to close connections
     if (length(tmp) != n.cells) stop("invalid data - M does not contain exactly ", n.cells, " = ", n.rows, " * ", n.cols, " cells")
