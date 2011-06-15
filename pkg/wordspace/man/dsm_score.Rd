@@ -1,7 +1,7 @@
 \name{dsm.score}
 \alias{dsm.score}
 \title{
-  Scoring, Weighting and Normalisation of Cooccurrence Matrix (wordspace)
+  Weighting, Scaling and Normalisation of Cooccurrence Matrix (wordspace)
 }
 \description{
 
@@ -22,40 +22,49 @@
 \arguments{
   
   \item{model}{
+    a DSM model, i.e. an object of class \code{dsm}
   }
 
   \item{score}{
+    the association measure to be used for feature weighting (see "Details" below)
   }
 
   \item{sparse}{
+    if \code{TRUE} compute sparse non-negative association scores.  Currently, \code{sparse=TRUE} \strong{must} be used if the DSM model is stored in sparse format (cf. \code{\link{check.dsm}})
   }
 
   \item{transform}{
+    scale transformation to be applied to association scores (see "Details" below)
   }
 
   \item{scale}{
-    if not \code{"none"}, scale columns of scored matrix by z-transformation (\code{"standardize"}) or center values without scaling (\code{"center"})
+    if not \code{"none"}, standardize columns of scored matrix by z-transformation (\code{"standardize"}) or center columns without rescaling (\code{"center"})
   }
 
   \item{normalize}{
-    whether to normalize rows vectors of scored matrix to unit length, according to the norm indicated by \code{method} and \code{p}
+    if \code{TRUE} normalize row vectors of scored matrix to unit length, according to the norm indicated by \code{method} and \code{p}
   }
 
   \item{method, p}{
-    specific norm used if \code{normalize=TRUE}.  See \code{\link{rowNorms}} for admissible values and details on the corresponding norms
+    norm to be used with \code{normalize=TRUE}.  See \code{\link{rowNorms}} for admissible values and details on the corresponding norms
   }
   
   \item{matrix.only}{
-    whether to return updated DSM object (default) or only the matrix of scores (\code{TRUE})
+    whether to return updated DSM model (default) or only the matrix of scores (\code{matrix.only=TRUE})
   }
 }
 \details{
-%%  ~~ If necessary, more details than the description above ~~
+  \subsection{Association measures}{
+    
+  }
+  \subsection{Scale transformations}{
+  
+  }
 }
 \value{
-  either an updated DSM object (default) or the matrix of (transformed, scaled, normalised) association scores (if \code{matrix.only=TRUE})
+  Either an updated DSM model of class \code{dsm} (default) or the matrix of (scaled and normalised) association scores (\code{matrix.only=TRUE}).
   
-  note that updating large DSM objects requires considerably amounts of temporary memory (at least in R 2.12.x), which can be problematic on 32-bit platforms
+  Note that updating DSM models may require a substantial amount of temporary memory (because of the way memory management is implemented in \R).  This can be problematic when running a 32-bit build of \R and when dealing with very large DSM models, so it may be better to return only the scored matrix in such cases.
 }
 \references{
 %% ~put references to the literature/web site here ~

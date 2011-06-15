@@ -29,7 +29,7 @@ match.split(x, f, values=NULL, groups=NULL, nomatch=NA_integer_)
   }
 
   \item{groups}{
-    a character vector listing the set of groups to be formed.  Defaults to the levels of \code{f} and should be a subset of these levels if given explictly
+    a character vector listing the set of groups to be formed.  Defaults to the levels of \code{f} and should be a subset of these levels if given explicitly
   }
 
   \item{nomatch}{

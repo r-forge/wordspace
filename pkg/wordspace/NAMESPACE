@@ -1,10 +1,14 @@
 import(Matrix)
 
+useDynLib(wordspace, .registration=TRUE)
+export(R_sqrt)
+
+
 export(read.dsm, check.dsm)
 export(dsm.score)
-export(cosine)
 export(rowNorms, normalize.rows)
 export(dsm.projection)
+export(dist.matrix, nearest.neighbours)
 export(match.split)
 export(context.vectors)
 

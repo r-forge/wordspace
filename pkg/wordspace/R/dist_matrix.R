@@ -2,7 +2,7 @@ cosine <-
 function (M, M2=M, angles=FALSE, normalised=FALSE) {
   # tcrossprod(M, M2) == M %*% t(M2) calculates dot products between rows of M and rows of M2
   sim <- if (missing(M2)) tcrossprod(M) else tcrossprod(M, M2)
-
+  # need to coerce to regular matrix if sparse (for pmin/pmax, but generally more efficient)
   if (!normalised) {
     norms.M <- rowNorms(M, "euclidean") # norms of row vectors (if not normalised yet)
     norms.M2 <- if (missing(M2)) norms.M else rowNorms(M2, "euclidean")

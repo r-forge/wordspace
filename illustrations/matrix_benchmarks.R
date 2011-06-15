@@ -3,6 +3,7 @@
 ##
 
 library(Matrix) # sparse matrix library
+library(irlba)  # fast algorithm for truncated SVD
 
 load("data/bnc_vobj_basic.rda") # sample data set: 1678 x 4687 with 349378 nonzero cells (4.4% fill rate)
 
@@ -66,7 +67,7 @@ euclid <- function (M) {
 ## full or truncated singular value decomposition (dense matrix only)
 svd.wrapper <- function (M, dim=NA, projection=FALSE) {
   n <- min(dim(M))
-  if (!missing(dim)) n <- max(dim, n)
+  if (!missing(dim)) n <- min(dim, n)
   nu <- n
   nv <- if (projection) 0 else n
   svd(M, nu=nu, nv=nv)
@@ -87,7 +88,8 @@ results.dense <-
        benchmark(d1.euclid <<- euclid(M1), "euclid() small D", nr1 * nr1 * nc1 + nr1 * nc1 + nr1 * nr1), # for validation against dist()
        benchmark(svd.full <<- svd.wrapper(M1), "SVD full D", 4 * nc1*nc1*nr1 + 8 * nc1*nr1*nr1 + 9 * nr1*nr1*nr1), # complexity according to a Wikipedia talk page ... (actually for t(M), since Wikipedia assumes nr >> nc)
        benchmark(svd.trunc <<- svd.wrapper(M1, 42), "SVD truncated D", 4 * nc1*nc1*nr1 + 8 * nc1*nr1*nr1 + 9 * nr1*nr1*nr1), # measure speed up wrt. full SVD, i.e. assume operation count of full SVD
-       benchmark(svd.proj <<- svd.wrapper(M1, 42, TRUE), "SVD projection D", 4 * nc1*nc1*nr1 + 8 * nr1*nr1*nr1) # projection omits computation of V
+       benchmark(svd.proj <<- svd.wrapper(M1, 42, TRUE), "SVD projection D", 4 * nc1*nc1*nr1 + 8 * nr1*nr1*nr1), # projection omits computation of V
+       benchmark(svd.irlba <<- irlba(M1, nu=42, nv=42), "SVD trunc IRLBA D", 4 * nc1*nc1*nr1 + 8 * nc1*nr1*nr1 + 9 * nr1*nr1*nr1) # compare with standard truncated SVD
        )
 
 cat("----- validating results -----\n")
@@ -96,7 +98,7 @@ matrix.equal(d.crossprod, d.tcrossprod, "crossprod(M) == tcrossprod(M)")
 matrix.equal(d.cosine1, d.cosine2, "cosine normalised == cosine general")
 matrix.equal(as.matrix(d1.dist), d1.euclid, "dist() == euclid()", tol=1e-6) # fast matrix algorithm is very inaccurate
 matrix.equal(svd.full$u %*% (svd.full$d * t(svd.full$v)), M1, "U * D * t(V) == M1")
-
+matrix.equal(svd.trunc$u %*% (svd.trunc$d[1:42] * t(svd.trunc$v)), svd.irlba$u %*% (svd.irlba$d * t(svd.irlba$v)), "truncated SVD == IRLBA")
 
 ## ---------- sparse matrix operations ----------
 
@@ -113,7 +115,8 @@ results.sparse <-
        benchmark(Sd.cosine1 <<- cosine(SM, normalise=TRUE), "cosine normalised S", nr * nr * nc + 2 * nr * nc),
        benchmark(Sd.cosine2 <<- cosine(SM, normalise=FALSE), "cosine general S", nr * nr * nc + nr * nc + nr * nr),
        benchmark(Sd.euclid <<- euclid(SM), "euclid() S", nr * nr * nc + nr * nc + nr * nr),
-       benchmark(Sd1.euclid <<- euclid(SM1), "euclid() small S", nr1 * nr1 * nc1 + nr1 * nc1 + nr1 * nr1) # for validation against dist()
+       benchmark(Sd1.euclid <<- euclid(SM1), "euclid() small S", nr1 * nr1 * nc1 + nr1 * nc1 + nr1 * nr1), # for validation against dist()
+       benchmark(Ssvd.irlba <<- irlba(SM1, nu=42, nv=42), "SVD trunc IRLBA S", 4 * nc1*nc1*nr1 + 8 * nc1*nr1*nr1 + 9 * nr1*nr1*nr1) # compare with standard truncated SVD
        )
 
 cat("----- validating results -----\n")
@@ -121,6 +124,7 @@ matrix.equal(Sd.inner, Sd.tcrossprod, "M %*% t(M) == tcrossprod(M)")
 matrix.equal(Sd.crossprod, Sd.tcrossprod, "crossprod(M) == tcrossprod(M)")
 matrix.equal(Sd.cosine1, Sd.cosine2, "cosine normalised == cosine general")
 matrix.equal(as.matrix(Sd1.dist), Sd1.euclid, "dist() == euclid()", tol=1e-6) # fast matrix algorithm is very inaccurate
+matrix.equal(svd.irlba$u %*% (svd.irlba$d * t(svd.irlba$v)), Ssvd.irlba$u %*% (Ssvd.irlba$d * t(Ssvd.irlba$v)), "sparse IRLBA == dense IRLBA")
 
 
 ## ---------- result table ----------
