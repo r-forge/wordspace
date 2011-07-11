@@ -55,10 +55,10 @@
 }
 \details{
   \subsection{Association measures}{
-    
+    \bold{*** TODO ***}
   }
   \subsection{Scale transformations}{
-  
+    \bold{*** TODO ***}
   }
 }
 \value{
