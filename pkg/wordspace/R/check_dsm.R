@@ -1,4 +1,4 @@
-check.dsm <- function (model, validate=FALSE) {
+check.dsm <- function (model, validate=FALSE, check.S=TRUE) {
   stopifnot(inherits(model, "dsm"))
   slots <- names(model)
   stopifnot(all(c("M","rows","cols","N") %in% slots))
@@ -6,14 +6,15 @@ check.dsm <- function (model, validate=FALSE) {
   stopifnot(all(c("term","f") %in% colnames(model$cols)))
   have.S <- "S" %in% slots
   is.locked <- if ("locked" %in% slots) model$locked else FALSE
-  main.matrix <- if (have.S) model$S else model$M
+  main.matrix <- if (have.S && check.S) model$S else model$M
   is.sparse <- inherits(main.matrix, "Matrix")
+  if (is.sparse && !is(main.matrix, "dgCMatrix")) stop("sparse matrix must be in normal form (dgCMatrix)")
 
   n.rows <- nrow(model$M)
   n.cols <- ncol(model$M)
   stopifnot(nrow(model$rows) == n.rows)
   stopifnot(nrow(model$cols) == n.cols)
-  if (have.S) {
+  if (have.S && check.S) {
     stopifnot(nrow(model$S) == n.rows)
     stopifnot(ncol(model$S) == n.cols)
   }
@@ -21,7 +22,7 @@ check.dsm <- function (model, validate=FALSE) {
   if (validate) {
     stopifnot(all(rownames(model$M) == model$rows$term))
     stopifnot(all(colnames(model$M) == model$cols$term))
-    if (have.S) {
+    if (have.S && check.S) {
       stopifnot(all(rownames(model$S) == model$rows$term))
       stopifnot(all(colnames(model$S) == model$cols$term))
     }

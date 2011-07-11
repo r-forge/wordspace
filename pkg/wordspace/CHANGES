@@ -1,0 +1,19 @@
+TODO:
+
+  - reimplement rowNorms in C (mainly for memory-efficiency)
+  - old versions -> rowNorms.old, normalize.rows.old should be used by dsm.score.old for comparison
+  - test performance and memory-efficiency of C implementation against dsm.score.old
+  - implement dist.matrix in C, benchmarking different approaches
+  - replace as.double(), as.integer() in .C() calls by functions that check whether argument already is a double/int vector or matrix and pass through without dropping attributes etc. in this case (to keep R's pseudo-refcounting from making unnecessary copies)
+  - remove dsm.score.old, rowNorms.old, normalize.rows.old, ... (NAMESPACE, R/...) when new C implementation has been tested sufficiently
+  - write complete documentation for basic functions
+  - include more small data sets for usage examples
+  - add usage examples to all functions
+
+RECENT CHANGES to the 'wordspace' package:
+
+  - 
+
+Version 0.1-0
+
+  - this will be the first usable release with a hopefully stable basic API

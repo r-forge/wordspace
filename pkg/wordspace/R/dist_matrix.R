@@ -1,3 +1,5 @@
+dist.matrix <- NULL
+
 cosine <- function (M, M2=M, angles=FALSE, normalized=FALSE) {
   # tcrossprod(M, M2) == M %*% t(M2) calculates dot products between rows of M and rows of M2
   sim <- if (missing(M2)) tcrossprod(M) else tcrossprod(M, M2)

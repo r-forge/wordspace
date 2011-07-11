@@ -10,7 +10,7 @@
 }
 \usage{
 
- check.dsm(model, validate = FALSE)
+ check.dsm(model, validate = FALSE, check.S = TRUE)
 
 }
 %- maybe also 'usage' for other objects documented here.
@@ -20,6 +20,8 @@
   }
   
   \item{validate}{carry out extended validation of internal consistency?}
+
+  \item{check.S}{if set to \code{FALSE}, raw matrix \code{M} will be used as main model matrix even if scored matrix \code{S} is available (see below)}
 
 }
 \details{
@@ -36,7 +38,7 @@
   \item{slots}{character vector naming the components of the DSM object}
   \item{have.S}{whether a scored/weighted matrix S is available}
   \item{locked}{whether matrix combines data with inconsistent row or column marginals (in this case, association scores cannot be computed any more)}
-  \item{sparse}{whether the main model matrix (either \code{M} or \code{S}) is stored in sparse representation or not}
+  \item{sparse}{whether the main model matrix (either \code{M} or \code{S}) is stored in sparse representation or not (always uses \code{M} if \code{check.S=FALSE})}
 }
 \references{
 %% ~put references to the literature/web site here ~

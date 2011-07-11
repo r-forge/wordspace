@@ -3,6 +3,7 @@ import(Matrix)
 useDynLib(wordspace, .registration=TRUE)
 export(R_sqrt)
 
+export(dsm.score.old, rowNorms.old, normalize.rows.old)
 
 export(read.dsm, check.dsm)
 export(dsm.score)
