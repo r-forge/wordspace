@@ -3,11 +3,11 @@ import(Matrix)
 useDynLib(wordspace, .registration=TRUE)
 export(R_sqrt)
 
-export(dsm.score.old, rowNorms.old, normalize.rows.old)
+export(dsm.score.old, rowNorms.old, normalize.rows.old, cosine)
 
 export(read.dsm, check.dsm)
 export(dsm.score)
-export(rowNorms, normalize.rows)
+export(rowNorms, colNorms, normalize.rows)
 export(dsm.projection)
 export(dist.matrix, nearest.neighbours)
 export(match.split)

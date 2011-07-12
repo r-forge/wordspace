@@ -12,6 +12,8 @@
 
  rowNorms(M, method = c("euclidean", "maximum", "manhattan", "minkowski"), p = 2)
 
+ colNorms(M, method = c("euclidean", "maximum", "manhattan", "minkowski"), p = 2)
+
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{

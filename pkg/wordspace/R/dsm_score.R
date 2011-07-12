@@ -46,7 +46,7 @@ dsm.score <- function (model,
     scores <- new("dgCMatrix", Dim=as.integer(c(model.info$nrow, model.info$ncol)), p=model$M@p, i=model$M@i, x=scores.x)
     rm(scores.x)
   } else if (!sparse.M) {
-    scores <- double(model.info$nrow * model.info$ncol)
+    scores <- matrix(0.0, nrow=model.info$nrow, ncol=model.info$ncol)
     .C(
       C_dsm_score_dense,
       scores,
@@ -61,7 +61,6 @@ dsm.score <- function (model,
       as.integer(transform.code),
       DUP=FALSE, NAOK=FALSE
     )
-    dim(scores) <- c(model.info$nrow, model.info$ncol)
     ## -- remaining clauses are effectively disabled now --
   } else if (score == "frequency") {
   scores <- model$M # "frequency" AM = observed co-occurrence frequency
