@@ -1,7 +1,12 @@
-dist.matrix <- function (M, M2=NULL, method=c("cosine", "euclidean", "maximum", "manhattan", "minkowski"), p=2, angles=TRUE, normalized=FALSE, byrow=TRUE, as.dist=FALSE) {
+dist.matrix <- function (M, M2=NULL, method=c("cosine", "euclidean", "maximum", "manhattan", "minkowski"), p=2, normalized=FALSE, byrow=TRUE, convert=TRUE, as.dist=FALSE) {
   method <- match.arg(method)
+  similarity <- (method %in% c("cosine")) && !convert
+  symmetric <- !(method %in% c()) # FALSE if distance/similarity measure is asymmetric
+  cross.distance <- !is.null(M2)  # TRUE if calculating (rectangular) cross-distance matrix
+
   if (method == "minkowski" && (p < 1 || !is.finite(p))) stop("Minkowski p-norm only defined for 1 <= p < Inf")
-  if (method == "cosine" && as.dist && !angles) stop("cosine is not a valid distance measure, cannot return dist object")
+  if (as.dist && similarity) stop("cannot return 'dist' object from similarity matrix")
+  if (as.dist && cross.distance) stop("cannot return 'dist' object from cross-distance matrix")
 
   if (method == "cosine") {
     ## cosine / angular measure is computed as very efficient matrix crossproduct
@@ -23,7 +28,7 @@ dist.matrix <- function (M, M2=NULL, method=c("cosine", "euclidean", "maximum", 
       result <- result / outer(norms.M, norms.M2)
     }
 
-    if (angles) {
+    if (convert) {
       if(!all(result >= -(1+1e-6) & result <= 1+1e-6)) warning("angular distance may be inaccurate (some cosine values out of range)")
       ## TODO: rewrite angle computation as inplace operation in C to avoid memory overhead
       result[result < -1] <- -1           # clamp to range [-1, 1]
@@ -41,23 +46,19 @@ dist.matrix <- function (M, M2=NULL, method=c("cosine", "euclidean", "maximum", 
     if (sparse.M && !is(M, "dgCMatrix")) stop("sparse matrix M must be in normal form (dgCMatrix)")
     .M <- if (byrow) t(M) else M
 
-    if (is.null(M2)) {
-      .M2 <- .M
-      symmetric <- TRUE
-    } else {
+    if (cross.distance) {
       sparse.M2 <- inherits(M2, "Matrix")
       if (!(is.matrix(M2) || sparse.M2)) stop("M2 must be a dense or sparse matrix")
       if (sparse.M2 && !is(M2, "dgCMatrix")) stop("sparse matrix M2 must be in normal form (dgCMatrix)")
       if (sparse.M != sparse.M2) stop("M and M2 must be both in dense format or both in sparse format")
       .M2 <- if (byrow) t(M2) else M2
-      symmetric <- FALSE
+    } else {
+      .M2 <- .M
     }
     if (nrow(.M) != nrow(.M2)) stop("M and M2 must have the same number of ", if (byrow) "columns" else "rows")
 
     method.code <- switch(method, euclidean=0, maximum=1, manhattan=2, minkowski=3)
     param1 <- switch(method, euclidean=0, maximum=0, manhattan=0, minkowski=p)
-    ## *** must set symmetric=FALSE if asymmetric "distance" measure is selected (to be implemented later) ***
-    if (as.dist && !symmetric) stop("cannot return cross-distances between M and M2 as dist object")
   
     result <- matrix(0.0, nrow=ncol(.M), ncol=ncol(.M2))
     if (sparse.M) {
@@ -74,7 +75,7 @@ dist.matrix <- function (M, M2=NULL, method=c("cosine", "euclidean", "maximum", 
         as.double(.M2@x),
         as.integer(method.code),
         as.double(param1),
-        as.logical(symmetric),
+        as.logical(symmetric && !cross.distance),
         DUP=FALSE, NAOK=FALSE
       )    
     } else {
@@ -88,7 +89,7 @@ dist.matrix <- function (M, M2=NULL, method=c("cosine", "euclidean", "maximum", 
         as.double(.M2),
         as.integer(method.code),
         as.double(param1),
-        as.logical(symmetric),
+        as.logical(symmetric && !cross.distance),
         DUP=FALSE, NAOK=FALSE
       )
     }
@@ -97,7 +98,13 @@ dist.matrix <- function (M, M2=NULL, method=c("cosine", "euclidean", "maximum", 
 
   }
 
-  if (as.dist) as.dist(result) else result
+  if (as.dist) {
+    as.dist(result)
+  } else {
+    class(result) <- c("dist.matrix", "matrix")
+    if (similarity) attr(result, "similarity") <- TRUE
+    result
+  }
 }
 
 cosine <- function (M, M2=M, angles=FALSE, normalized=FALSE) {
