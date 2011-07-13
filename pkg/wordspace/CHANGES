@@ -1,12 +1,13 @@
 TODO:
 
-  - reimplement rowNorms in C (mainly for memory-efficiency)
-  - old versions -> rowNorms.old, normalize.rows.old should be used by dsm.score.old for comparison
-  - test performance and memory-efficiency of C implementation against dsm.score.old
-  - implement dist.matrix in C, benchmarking different approaches
-  - replace as.double(), as.integer() in .C() calls by functions that check whether argument already is a double/int vector or matrix and pass through without dropping attributes etc. in this case (to keep R's pseudo-refcounting from making unnecessary copies)
   - remove dsm.score.old, rowNorms.old, normalize.rows.old, ... (NAMESPACE, R/...) when new C implementation has been tested sufficiently
-  - write complete documentation for basic functions
+  - write complete (rough) documentation for basic functions
+  - efficient reimplementation of rbind.dsm for sparse matrices (require all arguments to be sparse in normal form; use C code, work with triplet representation, or very clever code on dgCMatrix objects)
+  - implement all=TRUE option for merge.dsm ("expanding merge")
+  - implement cbind.dsm
+  - implement column merge (rows=FALSE) for merge.dsm
+  - implement in-place row and column scaling in C (dense matrix only) to conserve memory in cosine distance measure (worthwhile?)
+  - replace as.double(), as.integer() in .C() calls by functions that check whether argument already is a double/int vector or matrix and pass through without dropping attributes etc. in this case (to keep R's pseudo-refcounting from making unnecessary copies in some cases)
   - include more small data sets for usage examples
   - add usage examples to all functions
 

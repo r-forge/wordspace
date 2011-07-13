@@ -1,5 +1,6 @@
 \name{rowNorms}
 \alias{rowNorms}
+\alias{colNorms}
 \title{
   Compute Norms of Row Vectors of a Matrix (wordspace)
 }

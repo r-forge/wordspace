@@ -2,16 +2,16 @@
 
 #include <R_ext/Rdynload.h>
 
-const R_NativePrimitiveArgType sqrt_args[3] = {REALSXP, INTSXP, REALSXP};
+R_NativePrimitiveArgType sqrt_args[3] = {REALSXP, INTSXP, REALSXP};
 
-const R_NativePrimitiveArgType score_dense_args[10] = {REALSXP, INTSXP, INTSXP, REALSXP, REALSXP, REALSXP, REALSXP, INTSXP, LGLSXP, INTSXP};
-const R_NativePrimitiveArgType score_sparse_args[11] = {REALSXP, INTSXP, INTSXP, INTSXP, REALSXP, REALSXP, REALSXP, REALSXP, INTSXP, LGLSXP, INTSXP};
+R_NativePrimitiveArgType score_dense_args[10] = {REALSXP, INTSXP, INTSXP, REALSXP, REALSXP, REALSXP, REALSXP, INTSXP, LGLSXP, INTSXP};
+R_NativePrimitiveArgType score_sparse_args[11] = {REALSXP, INTSXP, INTSXP, INTSXP, REALSXP, REALSXP, REALSXP, REALSXP, INTSXP, LGLSXP, INTSXP};
 
-const R_NativePrimitiveArgType row_norms_dense_args[6] = {REALSXP, INTSXP, INTSXP, REALSXP, INTSXP, REALSXP};
-const R_NativePrimitiveArgType row_norms_sparse_args[8] = {REALSXP, INTSXP, INTSXP, INTSXP, INTSXP, REALSXP, INTSXP, REALSXP};
+R_NativePrimitiveArgType row_norms_dense_args[6] = {REALSXP, INTSXP, INTSXP, REALSXP, INTSXP, REALSXP};
+R_NativePrimitiveArgType row_norms_sparse_args[8] = {REALSXP, INTSXP, INTSXP, INTSXP, INTSXP, REALSXP, INTSXP, REALSXP};
 
-const R_NativePrimitiveArgType col_dist_dense_args[9] = {REALSXP, INTSXP, INTSXP, INTSXP, REALSXP, REALSXP, INTSXP, REALSXP, LGLSXP};
-const R_NativePrimitiveArgType col_dist_sparse_args[12] = {REALSXP, INTSXP, INTSXP, INTSXP, INTSXP, REALSXP, INTSXP, INTSXP, REALSXP, INTSXP, REALSXP, LGLSXP};
+R_NativePrimitiveArgType col_dist_dense_args[9] = {REALSXP, INTSXP, INTSXP, INTSXP, REALSXP, REALSXP, INTSXP, REALSXP, LGLSXP};
+R_NativePrimitiveArgType col_dist_sparse_args[12] = {REALSXP, INTSXP, INTSXP, INTSXP, INTSXP, REALSXP, INTSXP, INTSXP, REALSXP, INTSXP, REALSXP, LGLSXP};
 
 const R_CMethodDef cMethods[] = {
   {"C_sqrt", (DL_FUNC) &do_sqrt, 3, sqrt_args},
