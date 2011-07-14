@@ -10,7 +10,7 @@ dsm.projection <- function (model, method=c("svd", "rsvd", "asvd", "ri", "ri+svd
     stop("first argument of dsm.projection() must be DSM object or numeric matrix")
   }
 
-  is.sparse <- inherits(model, "Matrix") # whether to use sparse or dense algorithms
+  is.sparse <- is(M, "Matrix") # whether to use sparse or dense algorithms
   
   nR <- nrow(M)
   nC <- ncol(M)
