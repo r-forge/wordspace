@@ -5,8 +5,20 @@ dist.matrix <- function (M, M2=NULL, method=c("cosine", "euclidean", "maximum", 
   cross.distance <- !is.null(M2)  # TRUE if calculating (rectangular) cross-distance matrix
 
   if (method == "minkowski" && (p < 1 || !is.finite(p))) stop("Minkowski p-norm only defined for 1 <= p < Inf")
-  if (as.dist && similarity) stop("cannot return 'dist' object from similarity matrix")
-  if (as.dist && cross.distance) stop("cannot return 'dist' object from cross-distance matrix")
+  if (as.dist && similarity) stop("cannot create 'dist' object from similarity matrix")
+  if (as.dist && cross.distance) stop("cannot create 'dist' object from cross-distance matrix")
+
+  sparse.M <- inherits(M, "Matrix") # check that M (and optional M2) are appropriate matrices
+  if (!(is.matrix(M) || sparse.M)) stop("M must be a dense or sparse matrix")
+  if (cross.distance) {
+    sparse.M2 <- inherits(M2, "Matrix")
+    if (!(is.matrix(M2) || sparse.M2)) stop("M2 must be a dense or sparse matrix")
+    if (byrow) {
+      if (ncol(M) != ncol(M2)) stop("M and M2 are not conformable (must have same number of columns)")
+    } else {
+      if (nrow(M) != nrow(M2)) stop("M and M2 are not conformable (must have same number of rows)")        
+    }
+  }
 
   if (method == "cosine") {
     ## cosine / angular measure is computed as very efficient matrix crossproduct
@@ -41,21 +53,16 @@ dist.matrix <- function (M, M2=NULL, method=c("cosine", "euclidean", "maximum", 
   } else {
     ## other distance measures are implemented in C code, working on columns (transposed matrix) for efficiency
 
-    sparse.M <- inherits(M, "Matrix")
-    if (!(is.matrix(M) || sparse.M)) stop("M must be a dense or sparse matrix")
     if (sparse.M && !is(M, "dgCMatrix")) stop("sparse matrix M must be in normal form (dgCMatrix)")
     .M <- if (byrow) t(M) else M
 
     if (cross.distance) {
-      sparse.M2 <- inherits(M2, "Matrix")
-      if (!(is.matrix(M2) || sparse.M2)) stop("M2 must be a dense or sparse matrix")
       if (sparse.M2 && !is(M2, "dgCMatrix")) stop("sparse matrix M2 must be in normal form (dgCMatrix)")
       if (sparse.M != sparse.M2) stop("M and M2 must be both in dense format or both in sparse format")
       .M2 <- if (byrow) t(M2) else M2
     } else {
       .M2 <- .M
     }
-    if (nrow(.M) != nrow(.M2)) stop("M and M2 must have the same number of ", if (byrow) "columns" else "rows")
 
     method.code <- switch(method, euclidean=0, maximum=1, manhattan=2, minkowski=3)
     param1 <- switch(method, euclidean=0, maximum=0, manhattan=0, minkowski=p)
