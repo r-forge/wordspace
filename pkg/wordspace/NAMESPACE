@@ -1,17 +1,18 @@
 import(Matrix)
 
 useDynLib(wordspace, .registration=TRUE)
-export(R_sqrt)
 
 export(dsm.score.old, rowNorms.old, normalize.rows.old, cosine)
 
-export(read.dsm, check.dsm)
+export(read.dsm.ucs, check.dsm)
 export(dsm.score)
-export(rowNorms, colNorms, normalize.rows)
+export(rowNorms, colNorms, normalize.rows, scaleMargins)
 export(dsm.projection)
 export(dist.matrix, nearest.neighbours)
 export(match.split)
 export(context.vectors)
+
+S3method(dim, dsm)
 
 S3method(subset, dsm)
 

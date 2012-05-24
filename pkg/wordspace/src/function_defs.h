@@ -20,6 +20,4 @@ void col_dist_dense(double *dist, int *nr, int *nc1, int *nc2, double *x, double
 void col_dist_sparse(double *dist, int *nc1, int *nc2, int *xp, int *xrow, double *x, int *yp, int *yrow, double *y, int *metric_code, double *param1, int *symmetric);
 
 
-void do_sqrt(double *x, int *n, double *result);
-
 #endif /* wordspace_defs_h */

@@ -17,8 +17,8 @@
   \tabular{ll}{
     Package: \tab wordspace\cr
     Type: \tab Package\cr
-    Version: \tab 0.0-3\cr
-    Date: \tab 2010-10-27\cr
+    Version: \tab 0.0-12\cr
+    Date: \tab 2012-05-22\cr
     License: \tab GPL-3\cr
     LazyLoad: \tab yes\cr
   }

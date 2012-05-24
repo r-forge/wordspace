@@ -52,7 +52,7 @@
   fh
 }
 
-read.dsm <- function (filename, encoding=getOption("encoding")) {
+read.dsm.ucs <- function (filename, encoding=getOption("encoding")) {
   archive <- .open.archive(filename)
   
   fh <- .access.file(archive, "rows.tbl", encoding)

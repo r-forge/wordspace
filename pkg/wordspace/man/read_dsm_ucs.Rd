@@ -1,16 +1,16 @@
-\name{read.dsm}
-\alias{read.dsm}
+\name{read.dsm.ucs}
+\alias{read.dsm.ucs}
 \title{
-  Load Raw DSM Data from Disk File (wordspace)
+  Load Raw DSM Data from Disk File in UCS Export Format (wordspace)
 }
 \description{
 
-  This functions loads raw DSM data -- a cooccurrence frequency matrix and tables of marginal frequencies -- from a disk file in \emph{\pkg{wordspace}} text format.  The input is either a ZIP archive or a directory containing text files with predefined names (see \sQuote{File Format} below for details).
+  This functions loads raw DSM data -- a cooccurrence frequency matrix and tables of marginal frequencies -- from a disk file in \bold{UCS} export format.  The input is either a ZIP archive or a directory containing text files with predefined names (see \sQuote{File Format} below for details).
 
 }
 \usage{
 
-  read.dsm(filename, encoding=getOption("encoding"))
+  read.dsm.ucs(filename, encoding=getOption("encoding"))
 
 }
 \arguments{
