@@ -4,7 +4,7 @@ useDynLib(wordspace, .registration=TRUE)
 
 export(dsm.score.old, rowNorms.old, normalize.rows.old, cosine)
 
-export(read.dsm.ucs, check.dsm)
+export(read.dsm.ucs, read.dsm.triplet, check.dsm)
 export(dsm.score)
 export(rowNorms, colNorms, normalize.rows, scaleMargins)
 export(dsm.projection)

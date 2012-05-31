@@ -36,15 +36,15 @@ dist.matrix <- function (M, M2=NULL, method=c("cosine", "euclidean", "maximum", 
       } else {
         norms.M2 <- if (byrow) rowNorms(M2, "euclidean") else colNorms(M2, "euclidean")        
       }
-      ## TODO: rewrite as inplace operation in C code for memory efficiency (but needs separate dense/sparse versions)
-      result <- result / outer(norms.M, norms.M2)
+      result <- scaleMargins(result, rows=1/norms.M, cols=1/norms.M2)
     }
 
     if (convert) {
-      if(!all(result >= -(1+1e-6) & result <= 1+1e-6)) warning("angular distance may be inaccurate (some cosine values out of range)")
+      tol <- 1e-12 # rounding errors tolerated for very small angles (cosine approx. 1 or -1)
+      if(!all(result >= -(1+tol) & result <= 1+tol)) warning("angular distance may be inaccurate (some cosine values out of range)")
       ## TODO: rewrite angle computation as inplace operation in C to avoid memory overhead
-      result[result < -1] <- -1           # clamp to range [-1, 1]
-      result[result > 1] <- 1             # (pmin/pmax eat many GiB of memory for Matrix class??)
+      result[result < -(1-tol)] <- -1     # clamp to range [-1, 1] and snap to endpoints -1 / 1
+      result[result > 1-tol] <- 1         # (pmin/pmax eat many GiB of memory for Matrix class??)
       result <- acos(result) * (180 / pi) # angles are returned in degrees
     }    
     rownames(result) <- if (byrow) rownames(M) else colnames(M)
