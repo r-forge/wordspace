@@ -1,4 +1,4 @@
-dsm.projection <- function (model, method=c("svd", "rsvd", "asvd", "ri", "ri+svd"), n=NA, oversampling=NA, q=2, rate=.01, verbose=FALSE, with.basis=FALSE, blocksize=100000, use.C=FALSE) {
+dsm.projection <- function (model, method=c("svd", "rsvd", "asvd", "ri", "ri+svd"), n=NA, oversampling=NA, q=2, rate=.01, with.basis=FALSE, verbose=FALSE, use.C=TRUE, blocksize=100000) {
   method <- match.arg(method)
   if (is.matrix(model) || inherits(model, "Matrix")) {
     M <- model

@@ -1,26 +1,53 @@
-\name{read.dsm.ucs}
-\alias{read.dsm.ucs}
+\name{read.dsm.triplet}
+\alias{read.dsm.triplet}
 \title{
-  Load Raw DSM Data from Disk File in UCS Export Format (wordspace)
+  Load DSM Data from Triplet Representation (wordspace)
 }
 \description{
 
-  This functions loads raw DSM data -- a cooccurrence frequency matrix and tables of marginal frequencies -- from a disk file in \bold{UCS} export format.  The input is either a ZIP archive or a directory containing text files with predefined names (see \sQuote{File Format} below for details).
+  This functions loads DSM in triplet representation -- (row label, column label, score) -- from a disk file or a pipe.
+  Such a triplet file normally represents a pre-scored DSM, but can also hold raw syntactic cooccurrence frequencies for an 
+  unreduced set of target and feature terms (from which marginals and sample size can then be derived).
 
 }
 \usage{
 
-  read.dsm.ucs(filename, encoding=getOption("encoding"))
+  read.dsm.triplet(filename, freq = FALSE, value.first = FALSE, sep = "\t", quote = "",
+                   nmax = -1, sort = FALSE, encoding = getOption("encoding"), verbose = FALSE) 
 
 }
 \arguments{
 
   \item{filename}{
-    the name of a directory or ZIP archive containing the raw DSM data.  If the specified file does not exist, looks for a corresponding ZIP archive with the additional extension \code{.zip}.
+    the name of a file containing the triplet data (see \sQuote{File Format} below for details), which may be compressed (\file{.gz}, \file{.bz2}, \file{.xz}).  If \code{filename} ends in \code{|}, it is opened as a Unix pipe for reading.
+  }
+
+  \item{freq}{
+  
+  }
+
+  \item{value.first}{
+  
+  }
+
+  \item{sep, quote}{
+  
+  }
+
+  \item{nmax}{
+  
+  }
+
+  \item{sort}{
+  
   }
 
   \item{encoding}{
     character encoding of the input files, which will automatically be converted to R's internal representation if possible.  See \sQuote{Encoding} in \link{file} for details.
+  }
+
+  \item{verbose}{
+    if \code{TRUE}, a few progress and information messages are shown
   }
 
 }
@@ -46,32 +73,6 @@
 
 TODO
 
-either directory or ZIP archive containing the following files with the specified names
-
-note that in the ZIP archive case, there must not be any prefix before the filenames; most GUI tools for creating ZIP archives will not handle this properly
-
-files:
-\itemize{
-  \item \file{M} \strong{or} \file{M.mtx}
-
-  cooccurrence matrix (dense, plain text) or sparse matrix (MatrixMarket format)
-  
-  \item \file{rows.tbl}
-  
-  row information (labels \code{term}, marginal frequencies \code{f})
-  
-  \item \file{cols.tbl}
-  
-  column information (labels \code{term}, marginal frequencies \code{f})
-
-  \item \file{globals.tbl}
-
-  table with single row containing global variables; must include variable \code{N} specifying sample size
-}
-
-in the case of a directory, each contained file may be individually GZip-compressed with the extension \code{.gz}; \code{read.dsm} will automatically decompress the files when loading them
-
-it makes little sense to compress the files within a ZIP archive and this is currently not supported by \code{read.dsm}
 
 }
 \note{

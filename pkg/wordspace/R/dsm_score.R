@@ -22,9 +22,15 @@ dsm.score <- function (model,
   if (score == "reweight") {
     if (!have.S) stop("cannot use score='reweight': association scores have not been computed yet")
     cooc.matrix <- model$S # neat trick: apply "frequency" association measure to S instead of M
+    f1 <- 0 # we may need dummy entries for marginal frequencies and sample size
+    f2 <- 0
+    N  <- 0
   } else {
     if (!have.M) stop("cannot compute association scores: no co-occurrence frequency data available")
     cooc.matrix <- model$M
+    f1 <- model$rows$f
+    f2 <- model$cols$f
+    N  <- model.info$N
   }
 
   if (model.info$locked && calculate.AM) stop("marginal frequencies are invalid, cannot compute association scores")
@@ -43,9 +49,9 @@ dsm.score <- function (model,
       as.integer(cooc.matrix@p),
       as.integer(cooc.matrix@i),
       as.double(cooc.matrix@x),
-      as.double(model$rows$f),
-      as.double(model$cols$f),
-      as.double(model.info$N),
+      as.double(f1),
+      as.double(f2),
+      as.double(N),
       as.integer(score.code),
       as.logical(sparse),
       as.integer(transform.code),
@@ -62,9 +68,9 @@ dsm.score <- function (model,
       as.integer(model.info$nrow),
       as.integer(model.info$ncol),
       as.double(cooc.matrix),
-      as.double(model$rows$f),
-      as.double(model$cols$f),
-      as.double(model.info$N),
+      as.double(f1),
+      as.double(f2),
+      as.double(N),
       as.integer(score.code),
       as.logical(sparse),
       as.integer(transform.code),

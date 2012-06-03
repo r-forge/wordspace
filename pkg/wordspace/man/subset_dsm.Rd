@@ -36,6 +36,9 @@
 %%  ~~ If necessary, more details than the description above ~~
 }
 \value{
+
+  NB: if necessary, counts of nonzero elements in each row and/or column are updated automatically
+
 %%  ~Describe the value returned
 %%  If it is a LIST, use
 %%  \item{comp1 }{Description of 'comp1'}
