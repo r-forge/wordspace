@@ -160,6 +160,7 @@ dsm.projection <- function (model, method=c("svd", "rsvd", "asvd", "ri", "ri+svd
           as.double(M@x),
           as.integer(nRI),
           as.double(rate),
+          as.logical(verbose),
           DUP=FALSE, NAOK=FALSE
         )
       } else {
