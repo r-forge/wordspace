@@ -10,8 +10,9 @@
 }
 \usage{
 
-  dsm.projection(model, method=c("svd", "rsvd", "asvd", "ri", "ri+svd"),
-                 n=NA, oversampling=NA, q=2, rate=.01, verbose=FALSE, with.basis=FALSE)
+  dsm.projection(model, method = c("svd", "rsvd", "asvd", "ri", "ri+svd"), n = NA,
+                 oversampling = NA, q = 2, rate = .01, with.basis = FALSE,
+                 verbose = FALSE, use.C = TRUE, blocksize = 100000)
 
 }
 \arguments{
@@ -21,7 +22,7 @@
   }
 
   \item{method}{
-    projection method to use for dimensionality reduction (see "DETAILS" below)
+    projection method to use for dimensionality reduction (see \sQuote{DETAILS} below)
   }
   
   \item{n}{
@@ -37,17 +38,24 @@
   }
 
   \item{rate}{
-    fill rate of random projection vectors.  Each random dimension has exactly \code{rate * ncol(model)} nonzero components in the original space
+    fill rate of random projection vectors.  Each random dimension has on average \code{rate * ncol(model)} nonzero components in the original space
   }
     
+  \item{with.basis}{
+    if \code{TRUE}, also returns orthogonal basis of the subspace as attribute of the reduced matrix (not available for random indexing methods)
+  }
+
   \item{verbose}{
     if \code{TRUE}, some methods display progress messages during execution
   }
   
-  \item{with.basis}{
-    if \code{TRUE}, also returns orthogonal basis of the subspace as attribute of the reduced matrix (not available for random indexing methods)
+  \item{use.C}{
+    if \code{TRUE}, use memory-efficient C implementation of random indexing algorithm for sparse matrix.  This is now the default, and the legacy R implementation will no longer be available in future releases.
   }
   
+  \item{blocksize}{
+    for random indexing of sparse matrices, the legacy R implementation iterates over blocks of \code{blocksize} dimensions in the original space (otherwise, random basis vectors may not fit into available memory).  This option will not be available in future releases.
+  }
 }
 
 \details{
