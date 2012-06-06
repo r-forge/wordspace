@@ -15,7 +15,8 @@ dsm_score_dense(double *scores, int *nr, int *nc, double *f, double *f1, double 
 
   i = 0;
   for (col = 0; col < *nc; col++) for (row = 0; row < *nr; row++) {
-    double score = AM(f[i], f1[row], f2[col], *N, *sparse);
+    /* frequeny measure (*am_code == 0) is a special case, since marginals may not be available ("reweight" mode) */
+    double score = (*am_code == 0) ? f[i] : AM(f[i], f1[row], f2[col], *N, *sparse);
     scores[i] = (*transform_code) ? transform(score, *transform_code) : score;
     i++;
   }
@@ -33,7 +34,8 @@ dsm_score_sparse(double *scores, int *nc, int *p, int *row, double *f, double *f
   
   for (col = 0; col < *nc; col++) {
     for (i = p[col]; i < p[col+1]; i++) {
-      double score = AM(f[i], f1[row[i]], f2[col], *N, 1);
+      /* frequeny measure (*am_code == 0) is a special case, since marginals may not be available ("reweight" mode) */
+      double score = (*am_code == 0) ? f[i] : AM(f[i], f1[row[i]], f2[col], *N, 1);
       scores[i] = (*transform_code) ? transform(score, *transform_code) : score;
     }
   }
