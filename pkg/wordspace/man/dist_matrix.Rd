@@ -13,7 +13,8 @@
 \usage{
 
 dist.matrix(M, M2 = NULL, method = c("cosine", "euclidean", "maximum", "manhattan", "minkowski"), p = 2, 
-            normalized = FALSE, byrow = TRUE, convert = TRUE, as.dist = FALSE)
+            normalized = FALSE, byrow = TRUE, convert = TRUE, as.dist = FALSE, 
+            terms=NULL, terms2=terms, skip.missing=FALSE)
 
 }
 \arguments{
@@ -52,6 +53,19 @@ dist.matrix(M, M2 = NULL, method = c("cosine", "euclidean", "maximum", "manhatta
     convert the full symmetric distance matrix to a compact object of class \code{dist}.  This option cannot be used if cross-distances are calculated (i.e. if \code{M2} is specified) or if a similarity measure has been selected (with option \code{convert=FALSE}).
   }
 
+  \item{terms}{
+    a character vector specifying rows of M for which distance matrix is to be computed (or columns if \code{byrow=TRUE})
+  }
+
+  \item{terms2}{
+    a character vector specifying rows of M2 for which cross-distance matrix is to be computed (or columns if \code{byrow=TRUE}).
+    If only \code{terms} is specified, the same set of rows (or columns) will be selected from both M and M2;
+    you can explicitly specify \code{terms2=NULL} in order to compute cross-distances for all rows (or columns) of M2.
+  }
+  
+  \item{skip.missing}{
+    if \code{TRUE}, silently ignores terms not found in M (or in M2). By default (\code{skip.missing=FALSE}) an error is raised in this case.
+  }
 }
 \details{
 %%  ~~ If necessary, more details than the description above ~~

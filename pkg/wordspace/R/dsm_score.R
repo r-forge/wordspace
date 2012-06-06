@@ -4,7 +4,7 @@ dsm.score <- function (model,
                        transform=c("none", "log", "root", "sigmoid"),
                        scale=c("none", "standardize", "center"),
                        normalize=FALSE, method="euclidean", p=2,
-                       matrix.only=FALSE) {
+                       matrix.only=FALSE, update.nnzero=FALSE) {
   score <- match.arg(score)
   transform <- match.arg(transform)
   scale <- match.arg(scale)
@@ -95,6 +95,12 @@ dsm.score <- function (model,
     return(scores)
   } else {
     model$S <- scores
+    if (update.nnzero) {
+      is.nzero <- scores != 0
+      model$rows$nnzero <- rowSums(is.nzero)
+      model$cols$nnzero <- colSums(is.nzero)
+      rm(is.nzero)
+    }
     return(model)
   }
 }

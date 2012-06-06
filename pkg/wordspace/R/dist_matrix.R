@@ -1,4 +1,4 @@
-dist.matrix <- function (M, M2=NULL, method=c("cosine", "euclidean", "maximum", "manhattan", "minkowski"), p=2, normalized=FALSE, byrow=TRUE, convert=TRUE, as.dist=FALSE) {
+dist.matrix <- function (M, M2=NULL, method=c("cosine", "euclidean", "maximum", "manhattan", "minkowski"), p=2, normalized=FALSE, byrow=TRUE, convert=TRUE, as.dist=FALSE, terms=NULL, terms2=terms, skip.missing=FALSE) {
   method <- match.arg(method)
   similarity <- (method %in% c("cosine")) && !convert
   symmetric <- !(method %in% c()) # FALSE if distance/similarity measure is asymmetric
@@ -18,6 +18,35 @@ dist.matrix <- function (M, M2=NULL, method=c("cosine", "euclidean", "maximum", 
     } else {
       if (nrow(M) != nrow(M2)) stop("M and M2 are not conformable (must have same number of rows)")        
     }
+  }
+
+  if (!is.null(terms) || !is.null(terms2)) {
+    targets.M <- if (byrow) rownames(M) else colnames(M)
+    targets.M2 <- if (is.null(M2)) targets.M else if (byrow) rownames(M2) else colnames(M2)
+
+    if (!missing(terms2)) cross.distance <- TRUE # if different filters are applied, we're always dealing with a cross-distance calculation
+
+    # if cross.distance is FALSE, both M2 and terms2 must be missing (and hence M2=M and terms2=terms), so leave M2 set to NULL
+    if (!is.null(terms2) && cross.distance) { 
+      terms2 <- as.character(terms2) # in case terms2 is a factor
+      found <- terms2 %in% targets.M2
+      if (!all(found) && !skip.missing) stop("second term(s) not found in M2: ", paste(terms2[!found], collapse=", "))
+      terms2 <- terms2[found]
+      if (is.null(M2)) {
+        M2 <- if (byrow) M[terms2, , drop=FALSE] else M[ , terms2, drop=FALSE] # need to process terms2 first before overwriting M below
+      } else {
+        M2 <- if (byrow) M2[terms2, , drop=FALSE] else M2[ , terms2, drop=FALSE]
+      }
+    }
+
+    if (!is.null(terms)) {
+      terms <- as.character(terms) # in case terms is a factor
+      found <- terms %in% targets.M
+      if (!all(found) && !skip.missing) stop("first term(s) not found in M: ", paste(terms[!found], collapse=", "))
+      terms <- terms[found]
+      M <- if (byrow) M[terms, , drop=FALSE] else M[ , term2, drop=FALSE]
+    }
+  
   }
 
   if (method == "cosine") {

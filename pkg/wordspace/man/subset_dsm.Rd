@@ -10,7 +10,7 @@
 }
 \usage{
 
- \method{subset}{dsm}(x, subset, select, \dots)
+ \method{subset}{dsm}(x, subset, select, drop.zeroes=FALSE, matrix.only=FALSE, \dots)
 
 }
 %- maybe also 'usage' for other objects documented here.
@@ -24,13 +24,21 @@
   }
 
   \item{select}{
-    Boolean expression or index vector selecting a subset of the
-    columns; expression can use variables \code{term} and \code{f} to access feature (column) terms (or context labels) and their marginal frequencies, as well as optional other variables defined for the columns and global variables such as the sample size \code{N}
+    Boolean expression or index vector selecting a subset of the columns; expression can use variables \code{term} and \code{f} to access feature (column) terms (or context labels) and their marginal frequencies, as well as optional other variables defined for the columns and global variables such as the sample size \code{N}
+  }
+
+  \item{drop.zeroes}{
+    if \code{TRUE}, all rows and columns without nonzero entries after subsetting are removed from the model
+    (nonzero counts are based on score matrix S if available, raw cooccurrence frequencies M otherwise)
+  }
+
+  \item{matrix.only}{
+    if \code{TRUE}, return only the selected subset of the score matrix S (if available) or frequency matrix M, not a full DSM object.
+    This may conserve a substantial amount of memory when processing very large DSMs.
   }
 
   \item{\dots}{
   }
-
 }
 \details{
 %%  ~~ If necessary, more details than the description above ~~

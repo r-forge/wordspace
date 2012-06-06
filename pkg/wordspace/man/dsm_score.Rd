@@ -16,7 +16,7 @@
             transform=c("none", "log", "root", "sigmoid"),
             scale=c("none", "standardize", "center"),
             normalize=FALSE, method="euclidean", p=2,
-            matrix.only=FALSE)
+            matrix.only=FALSE, update.nnzero=FALSE)
 
 }
 \arguments{
@@ -51,6 +51,10 @@
   
   \item{matrix.only}{
     whether to return updated DSM model (default) or only the matrix of scores (\code{matrix.only=TRUE})
+  }
+  
+  \item{update.nnzero}{
+    if \code{TRUE} and a full DSM model is returned, update the counts of nonzero entries in rows and columns according to the matrix of scores (may have fewer nonzero entries for sparse association scores)
   }
 }
 \details{
