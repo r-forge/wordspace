@@ -1,4 +1,4 @@
-dist.matrix <- function (M, M2=NULL, method=c("cosine", "euclidean", "maximum", "manhattan", "minkowski"), p=2, normalized=FALSE, byrow=TRUE, convert=TRUE, as.dist=FALSE, terms=NULL, terms2=terms, skip.missing=FALSE) {
+dist.matrix <- function (M, M2=NULL, method=c("cosine", "euclidean", "maximum", "manhattan", "minkowski", "canberra"), p=2, normalized=FALSE, byrow=TRUE, convert=TRUE, as.dist=FALSE, terms=NULL, terms2=terms, skip.missing=FALSE) {
   method <- match.arg(method)
   similarity <- (method %in% c("cosine")) && !convert
   symmetric <- !(method %in% c()) # FALSE if distance/similarity measure is asymmetric
@@ -93,8 +93,8 @@ dist.matrix <- function (M, M2=NULL, method=c("cosine", "euclidean", "maximum", 
       .M2 <- .M
     }
 
-    method.code <- switch(method, euclidean=0, maximum=1, manhattan=2, minkowski=3)
-    param1 <- switch(method, euclidean=0, maximum=0, manhattan=0, minkowski=p)
+    method.code <- switch(method, euclidean=0, maximum=1, manhattan=2, minkowski=3, canberra=4) # must be kept in sync with C code
+    param1 <- switch(method, euclidean=0, maximum=0, manhattan=0, minkowski=p, canberra=0)
   
     result <- matrix(0.0, nrow=ncol(.M), ncol=ncol(.M2))
     if (sparse.M) {
