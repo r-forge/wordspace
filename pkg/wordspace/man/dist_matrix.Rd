@@ -12,7 +12,8 @@
 }
 \usage{
 
-dist.matrix(M, M2 = NULL, method = c("cosine", "euclidean", "maximum", "manhattan", "minkowski"), p = 2, 
+dist.matrix(M, M2 = NULL,
+            method = c("cosine", "euclidean", "maximum", "manhattan", "minkowski", "canberra"), p = 2, 
             normalized = FALSE, byrow = TRUE, convert = TRUE, as.dist = FALSE, 
             terms=NULL, terms2=terms, skip.missing=FALSE)
 
@@ -86,6 +87,9 @@ dist.matrix(M, M2 = NULL, method = c("cosine", "euclidean", "maximum", "manhatta
   metric vs. distance measure vs. similarity measure
   
   explain for each similarity measure how the conversion to a distance is accomplished
+  
+  Canberra distance is implemented for compatibility with R's builtin \code{\link{dist}} function, but is probably not very useful for DSMs.
+  NB: definition of Canberra distance for opposite signs follows the Wikipedia page (\eqn{\sum_i |x_i - y_i| / |x_i| + |y_i|}{SUM(i) |x_i - y_i| / |x_i| + |y_i|}) and is different from that used by \code{\link{dist}} (\eqn{\sum_i |x_i - y_i| / |x_i + y_i|}{SUM(i) |x_i - y_i| / |x_i + y_i|})
 }
 \references{
 %% ~put references to the literature/web site here ~

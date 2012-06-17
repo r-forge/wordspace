@@ -7,6 +7,7 @@
  *  1 = maximum
  *  2 = manhattan
  *  3 = minkowski   (*param1 = exponent p)
+ *  4 = canberra
  */
 
 #include "function_defs.h"
@@ -26,7 +27,7 @@ col_dist_dense(double *dist, int *nr, int *nc1, int *nc2, double *x, double *y, 
   double accum, d_xy;
   double *dist_ptr, *x_ptr, *y_ptr;
 
-  if (*metric_code < 0 || *metric_code > 3)
+  if (*metric_code < 0 || *metric_code > 4)
     error("distance metric #%d is not defined -- internal error", *metric_code);
   if (*metric_code == 3 && (*param1 < 1 || !R_FINITE(*param1)))
     error("Minkowski p-norm is not defined for p = %g", *param1);
@@ -68,6 +69,14 @@ col_dist_dense(double *dist, int *nr, int *nc1, int *nc2, double *x, double *y, 
         }
         *(dist_ptr++) = pow(accum, 1 / *param1);
         break;
+      case 4:
+        for (row = 0; row < vec_len; row++) {
+          double x_plus_y = fabs(*x_ptr) + fabs(*y_ptr);
+          d_xy = fabs(*(x_ptr++) - *(y_ptr++));
+          if (x_plus_y > 0) accum += d_xy / x_plus_y;
+        }
+        *(dist_ptr++) = accum;
+        break;
       }
     }
   }
@@ -80,9 +89,9 @@ col_dist_sparse(double *dist, int *nc1, int *nc2, int *xp, int *xrow, double *x,
   int xrow_curr, yrow_curr, col1, col2, col1_max;
   int xi, yi, xi_max, yi_max;
   double *dist_ptr, *x_ptr, *y_ptr;
-  double accum, d_xy, x_curr, y_curr;
+  double accum, d_xy, x_plus_y, x_curr, y_curr;
 
-  if (*metric_code < 0 || *metric_code > 3)
+  if (*metric_code < 0 || *metric_code > 4)
     error("distance metric #%d is not defined -- internal error", *metric_code);
   if (*metric_code == 3 && (*param1 < 1 || !R_FINITE(*param1)))
     error("Minkowski p-norm is not defined for p = %g", *param1);
@@ -136,6 +145,11 @@ col_dist_sparse(double *dist, int *nc1, int *nc2, int *xp, int *xrow, double *x,
           d_xy = fabs(x_curr - y_curr);
           accum += pow(d_xy, *param1);
           break;
+        case 4:
+          x_plus_y = fabs(x_curr) + fabs(y_curr);
+          d_xy = fabs(x_curr - y_curr);
+          if (x_plus_y > 0) accum += d_xy / x_plus_y;
+          break;
         }
       } /* while (xi, yi) */
 
@@ -145,6 +159,7 @@ col_dist_sparse(double *dist, int *nc1, int *nc2, int *xp, int *xrow, double *x,
         break;
       case 1:
       case 2:
+      case 4:
         *(dist_ptr++) = accum;
         break;
       case 3:
