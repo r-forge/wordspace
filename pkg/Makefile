@@ -1,6 +1,11 @@
 PKG_VERSION := $(shell perl -ne 'print $$1 if /^Version:\s+([0-9]+\.[0-9]+(-[0-9]+)?)$$/' wordspace/DESCRIPTION)
 PKG := wordspace_$(PKG_VERSION).tar.gz
 
+INSTALL_FLAGS = 
+
+# you may create a local file "local_config.mk" to override INSTALL_FLAGS or other settings
+-include local_config.mk
+
 default:
 	@echo "Available targets for wordspace v$(PKG_VERSION)"
 	@echo "  make build    ...  build source package"
@@ -19,7 +24,7 @@ check:	clean build $(PKG)
 	R CMD check --multiarch $(PKG)
 
 install:	clean build $(PKG)
-	R CMD INSTALL $(PKG)
+	R CMD INSTALL $(INSTALL_FLAGS) $(PKG)
 
 release:	clean
 	R CMD build --resave-data wordspace
