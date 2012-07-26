@@ -55,11 +55,11 @@ dist.matrix(M, M2 = NULL,
   }
 
   \item{terms}{
-    a character vector specifying rows of M for which distance matrix is to be computed (or columns if \code{byrow=TRUE})
+    a character vector specifying rows of M for which distance matrix is to be computed (or columns if \code{byrow=FALSE})
   }
 
   \item{terms2}{
-    a character vector specifying rows of M2 for which cross-distance matrix is to be computed (or columns if \code{byrow=TRUE}).
+    a character vector specifying rows of M2 for which cross-distance matrix is to be computed (or columns if \code{byrow=FALSE}).
     If only \code{terms} is specified, the same set of rows (or columns) will be selected from both M and M2;
     you can explicitly specify \code{terms2=NULL} in order to compute cross-distances for all rows (or columns) of M2.
   }

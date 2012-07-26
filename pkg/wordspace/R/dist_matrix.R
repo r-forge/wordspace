@@ -27,16 +27,21 @@ dist.matrix <- function (M, M2=NULL, method=c("cosine", "euclidean", "maximum", 
     if (!missing(terms2)) cross.distance <- TRUE # if different filters are applied, we're always dealing with a cross-distance calculation
 
     # if cross.distance is FALSE, both M2 and terms2 must be missing (and hence M2=M and terms2=terms), so leave M2 set to NULL
-    if (!is.null(terms2) && cross.distance) { 
-      terms2 <- as.character(terms2) # in case terms2 is a factor
-      found <- terms2 %in% targets.M2
-      if (!all(found) && !skip.missing) stop("second term(s) not found in M2: ", paste(terms2[!found], collapse=", "))
-      terms2 <- terms2[found]
-      if (is.null(M2)) {
-        M2 <- if (byrow) M[terms2, , drop=FALSE] else M[ , terms2, drop=FALSE] # need to process terms2 first before overwriting M below
+    if (cross.distance) {
+      if (!is.null(terms2)) {
+        terms2 <- as.character(terms2) # in case terms2 is a factor
+        found <- terms2 %in% targets.M2
+        if (!all(found) && !skip.missing) stop("second term(s) not found in M2: ", paste(terms2[!found], collapse=", "))
+        terms2 <- terms2[found]
+        if (is.null(M2)) {
+          M2 <- if (byrow) M[terms2, , drop=FALSE] else M[ , terms2, drop=FALSE] # need to process terms2 first before overwriting M below
+        } else {
+          M2 <- if (byrow) M2[terms2, , drop=FALSE] else M2[ , terms2, drop=FALSE]
+        }
       } else {
-        M2 <- if (byrow) M2[terms2, , drop=FALSE] else M2[ , terms2, drop=FALSE]
+        if (is.null(M2)) M2 <- M # cross-distances with terms2=NULL -> M2 = copy of M before subsetting
       }
+      sparse.M2 <- inherits(M2, "Matrix") # define/update sparse.M2
     }
 
     if (!is.null(terms)) {
