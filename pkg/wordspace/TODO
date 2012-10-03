@@ -1,5 +1,3 @@
-TODO:
-
   - remove dsm.score.old, rowNorms.old, normalize.rows.old, ... (NAMESPACE, R/...) when new C implementation has been tested sufficiently
   - write complete (rough) documentation for basic functions
   - efficient reimplementation of rbind.dsm for sparse matrices (require all arguments to be sparse in normal form; use C code, work with triplet representation, or very clever code on dgCMatrix objects)
@@ -10,11 +8,3 @@ TODO:
   - replace as.double(), as.integer() in .C() calls by functions that check whether argument already is a double/int vector or matrix and pass through without dropping attributes etc. in this case (to keep R's pseudo-refcounting from making unnecessary copies in some cases)
   - include more small data sets for usage examples
   - add usage examples to all functions
-
-RECENT CHANGES to the 'wordspace' package:
-
-  - 
-
-Version 0.1-0
-
-  - this will be the first usable release with a hopefully stable basic API
