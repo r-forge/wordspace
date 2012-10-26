@@ -11,7 +11,7 @@
 \usage{
 
   dsm.score(model,
-            score=c("frequency", "simple-ll", "t-score", "z-score", "Dice", "MI", "reweight"),
+            score=c("frequency", "simple-ll", "t-score", "z-score", "Dice", "MI", "tf.idf", "reweight"),
             sparse=FALSE,
             transform=c("none", "log", "root", "sigmoid"),
             scale=c("none", "standardize", "center"),
@@ -60,6 +60,14 @@
 \details{
   \subsection{Association measures}{
     \bold{*** TODO ***}
+    
+    For the \code{tf.idf} measure, relative document frequencies for feature terms should be provided as a variable \code{df}
+    in the model's column information.  Otherwise, nonzero counts (variable \code{nnzero}) will be used and divided by the
+    total number of rows of the cooccurrence matrix.
+    
+    IDF values are calculated as \eqn{\log \frac{N + 1}{\mathit{df} + 1}}, where the discounting avoids division-by-zero errors.
+    Term frequencies are always unscaled; use an additional \code{log}-transformation for an effect similar to logarithmic tf.
+    
   }
   \subsection{Scale transformations}{
     \bold{*** TODO ***}

@@ -1,5 +1,5 @@
 dsm.score <- function (model,
-                       score=c("frequency", "simple-ll", "t-score", "z-score", "Dice", "MI", "reweight"),
+                       score=c("frequency", "simple-ll", "t-score", "z-score", "Dice", "MI", "tf.idf", "reweight"),
                        sparse=FALSE,
                        transform=c("none", "log", "root", "sigmoid"),
                        scale=c("none", "standardize", "center"),
@@ -15,9 +15,9 @@ dsm.score <- function (model,
   calculate.AM <- !(score %in% c("frequency", "reweight"))
   
   ## internal codes for association scores and transformation functions (must match C code in <score.c>)
-  score.code <- switch(score, frequency=0, reweight=0, "simple-ll"=1, "t-score"=2, "z-score"=3, Dice=4, MI=5)
+  score.code <- switch(score, frequency=0, reweight=0, "simple-ll"=1, "t-score"=2, "z-score"=3, Dice=4, MI=5, tf.idf=6)
   transform.code <- switch(transform, none=0, log=1, root=2, sigmoid=3)
-  if (score.code == 0) sparse <- TRUE # frequency measure and reweighting are always sparse
+  if (score.code == 0 || score.code == 6) sparse <- TRUE # frequency measure, reweighting and tf.idf are always sparse
 
   if (score == "reweight") {
     if (!have.S) stop("cannot use score='reweight': association scores have not been computed yet")
@@ -25,6 +25,19 @@ dsm.score <- function (model,
     f1 <- 0 # we may need dummy entries for marginal frequencies and sample size
     f2 <- 0
     N  <- 0
+  } else if (score == "tf.idf") {
+    if (!have.M) stop("cannot compute association scores: no co-occurrence frequency data available")
+    cooc.matrix <- model$M
+    f1 <- model$rows$f # dummy, will be ignored
+    if ("df" %in% colnames(model$cols)) {
+      f2 <- model$cols$df
+      N <- 1             # relative document frequencies -> dummy document count
+    } else if ("nnzero" %in% colnames(model$cols)) {
+      f2 <- model$cols$nnzero
+      N <- nrow(model$M) # N = total document count
+    } else {
+      stop("matrix columns need to include relative document frequencies ('df') or nonzero counts ('nnzero') for tf.idf association measure")
+    }
   } else {
     if (!have.M) stop("cannot compute association scores: no co-occurrence frequency data available")
     cooc.matrix <- model$M

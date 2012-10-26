@@ -49,7 +49,7 @@ dist.matrix <- function (M, M2=NULL, method=c("cosine", "euclidean", "maximum", 
       found <- terms %in% targets.M
       if (!all(found) && !skip.missing) stop("first term(s) not found in M: ", paste(terms[!found], collapse=", "))
       terms <- terms[found]
-      M <- if (byrow) M[terms, , drop=FALSE] else M[ , term2, drop=FALSE]
+      M <- if (byrow) M[terms, , drop=FALSE] else M[ , terms, drop=FALSE]
     }
   
   }

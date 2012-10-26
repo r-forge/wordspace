@@ -12,7 +12,7 @@
 }
 \usage{
 
-  read.dsm.triplet(filename, freq = FALSE, value.first = FALSE, sep = "\t", quote = "",
+  read.dsm.triplet(filename, freq = FALSE, value.first = FALSE, tokens=FALSE, sep = "\t", quote = "",
                    nmax = -1, sort = FALSE, encoding = getOption("encoding"), verbose = FALSE) 
 
 }
@@ -28,6 +28,12 @@
 
   \item{value.first}{
   
+  }
+
+  \item{tokens}{
+    if \code{TRUE}, input represents pair tokens, i.e. row and column labels without score/frequency data.
+    Co-occurrence frequencies will automatically be calculated, but this input format should only be used
+    for small samples up to a few millon tokens.
   }
 
   \item{sep, quote}{
