@@ -34,7 +34,7 @@
   \item{ncol}{number of columns (features) of the DSM}
   \item{N}{sample size of the underlying data set (may be \code{NA})}
   \item{slots}{character vector naming the components of the DSM object}
-  \item{have.S}{whether a raw frequency matrix M is available}
+  \item{have.M}{whether a raw frequency matrix M is available}
   \item{have.S}{whether a score matrix S is available}
   \item{locked}{\code{TRUE} if matrix combines data with inconsistent row or column marginals (in this case, association scores cannot be computed any more)}
   \item{sparse}{whether the model matrix (\code{M} or \code{S}, or both) is stored in sparse format or not}

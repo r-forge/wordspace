@@ -46,6 +46,11 @@ double am_MI(double f, double f1, double f2, double N, int sparse) {
     return log2(O / E); /* not clear how to avoid the -Inf result here */
 }
 
+double am_tf_idf(double f, double f1, double f2, double N, int sparse) {
+  /* f1 = dummy, f2 = df, N = total document count (set to 1 if f2 holds relative df) */
+  return f * log((N + 1) / (f2 + 1)); /* use discounted df to avoid division by zero */
+}
+
 double transform(double x, int method) {
   switch (method) {
     case 0:       /* 0 = none */
@@ -61,7 +66,7 @@ double transform(double x, int method) {
   }
 }
 
-int am_table_entries = 6;
+int am_table_entries = 7;
 
 am_func am_table[] = {
   &am_frequency,
@@ -69,6 +74,7 @@ am_func am_table[] = {
   &am_t_score,
   &am_z_score,
   &am_Dice,
-  &am_MI
+  &am_MI,
+  &am_tf_idf,
 };
 

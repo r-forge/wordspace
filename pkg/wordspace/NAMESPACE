@@ -13,6 +13,7 @@ export(match.split)
 export(context.vectors)
 
 S3method(dim, dsm)
+S3method(t, dsm)
 
 S3method(subset, dsm)
 

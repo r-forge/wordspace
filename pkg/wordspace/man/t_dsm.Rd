@@ -1,17 +1,18 @@
-\name{dim.dsm}
-\alias{dim.dsm}
+\name{t.dsm}
+\alias{t.dsm}
 \title{
-  Dimensions of a DSM Object (wordspace)
+  Swap the Rows and Columns of a DSM Object (wordspace)
 }
 \description{
 
-  Retrieve the dimensions of the co-occurrence and/or score matrix 
-  represented by a DSM object.
-
+  Given a distributional model \code{x}, \code{t(x)} returns a new DSM object
+  representing the transposed co-occurrence and/or score matrix.  Marginal frequencies
+  and other row/column information are updated accordingly.
+  
 }
 \usage{
 
-  \method{dim}{dsm}(x)
+  \method{t}{dsm}(x)
 
 }
 \arguments{
@@ -22,9 +23,7 @@
 
 }
 \details{
-
-  Note that an assignment form (\code{dim<-}) for modifying dimensions is not provided.
-
+%%  ~~ If necessary, more details than the description above ~~
 }
 \value{
 %% TODO
