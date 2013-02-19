@@ -207,3 +207,79 @@ cosine normalised S     1.270 10403.81   1.131
 cosine general S        3.067  4306.42   2.283
 euclid() S              2.853  4629.44   2.081
 euclid() small S        0.569  2904.50   0.407
+
+------------------------------------------------------------------------
+Retina MacBook Pro 10,1 (2012), Intel Core i7 2.6 GHz (4-core + hyperthreading), 6MB L2 Cache, GeForce 8600M GT
+Mac OS X 10.8.2, R 2.15.2, 64-bit, vecLib BLAS
+                         Time      MOPS CPUTime
+transpose D             0.081     97.10   0.079
+normalise D             0.215     36.58   0.189
+normalize.rows() D      0.176     44.69   0.135
+dist() D               10.497    157.19  10.485
+dist.matrix() D         0.816   2022.05   0.795
+inner M %*% t(M) D      0.417  31647.75   1.439
+inner tcrossprod D      0.242  54533.52   1.027
+inner crossprod t(M) D  0.251  52578.13   0.998
+cosine normalised D     0.340  38861.30   1.123
+cosine general D        0.311  42468.78   1.098
+euclid() D              0.900  14675.32   1.522
+euclid() small D        0.199   8304.83   0.267
+SVD full D              0.918  40255.15   1.795
+SVD truncated D         0.801  46135.11   1.711
+SVD projection D        0.799  28990.88   1.714
+rSVD projection D       0.231 100275.80   0.415
+SVD trunc IRLBA D       1.311  28187.82   2.187
+construct S             0.084     93.63   0.054
+construct small S       0.009    218.51   0.009
+transpose S             0.007   1123.54   0.006
+normalise S             0.104     75.62   0.084
+normalize.rows() S      0.016    491.55   0.014
+dist() S               10.506    157.05  10.478
+dist.matrix() S         0.332   4969.85   0.324
+inner M %*% t(M) S      0.402  32828.63   0.375
+inner tcrossprod S      0.369  35764.53   0.359
+inner crossprod t(M) S  0.375  35192.30   0.361
+cosine normalised S     0.460  28723.57   0.434
+cosine general S        1.176  11231.12   0.941
+euclid() S              1.062  12436.72   0.896
+euclid() small S        0.228   7248.51   0.178
+rSVD projection S       0.233  99415.06   0.239
+SVD trunc IRLBA S       0.710  52048.21   0.621
+
+------------------------------------------------------------------------
+Retina MacBook Pro 10,1 (2012), Intel Core i7 2.6 GHz (4-core + hyperthreading), 6MB L2 Cache, GeForce 8600M GT
+Mac OS X 10.8.2, R 2.15.2, 64-bit, Goto BLAS (Universal, Penryn)
+                         Time     MOPS CPUTime
+transpose D             0.084    93.63   0.082
+normalise D             0.214    36.75   0.189
+normalize.rows() D      0.170    46.26   0.133
+dist() D               10.505   157.07  10.493
+dist.matrix() D         0.812  2032.01   0.792
+inner M %*% t(M) D      0.596 22142.80   4.236
+inner tcrossprod D      0.317 41631.26   2.262
+inner crossprod t(M) D  0.317 41631.26   2.276
+cosine normalised D     0.391 33792.43   2.335
+cosine general D        0.409 32292.89   2.432
+euclid() D              0.973 13574.30   3.134
+euclid() small D        0.228  7248.51   0.849
+SVD full D              0.861 42920.12   5.183
+SVD truncated D         0.732 50483.91   4.719
+SVD projection D        0.817 28352.15   5.024
+rSVD projection D       0.256 90483.24   1.432
+SVD trunc IRLBA D       1.825 20248.89   7.000
+construct S             0.084    93.63   0.054
+construct small S       0.009   218.51   0.009
+transpose S             0.007  1123.54   0.007
+normalise S             0.104    75.62   0.084
+normalize.rows() S      0.016   491.55   0.013
+dist() S               10.430   158.20  10.415
+dist.matrix() S         0.331  4984.87   0.322
+inner M %*% t(M) S      0.402 32828.63   0.376
+inner tcrossprod S      0.370 35667.87   0.361
+inner crossprod t(M) S  0.374 35286.39   0.360
+cosine normalised S     0.464 28475.95   0.437
+cosine general S        1.204 10969.93   1.384
+euclid() S              0.991 13327.74   0.828
+euclid() small S        0.223  7411.04   0.173
+rSVD projection S       0.232 99843.57   0.809
+SVD trunc IRLBA S       0.969 38136.46   3.890
