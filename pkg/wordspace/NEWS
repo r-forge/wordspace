@@ -4,4 +4,8 @@ Changes in version 0.1-0
 
 Pre-release milestones
 
-  - v0.21: experimental support for OpenMP on appropriate platforms (n/a on Mac OS X in the default R installation)
+  - v0.21: experimental support for OpenMP on appropriate platforms
+    - results unsatisfactory so far
+    - slower than serial code on Linux (Ubuntu 12.04), showing no more than 100% CPU
+    - n/a on Mac OS X in the default R installation (but achieves speed-up if expressly activated)
+
