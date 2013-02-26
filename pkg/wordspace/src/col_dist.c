@@ -33,6 +33,9 @@ col_dist_dense(double *dist, int *nr, int *nc1, int *nc2, double *x, double *y, 
     error("Minkowski p-norm is not defined for p = %g", *param1);
 
   vec_len = *nr;
+#pragma omp parallel for \
+        shared(dist) \
+        private(row, col1, col2, col1_max, accum, d_xy, dist_ptr, x_ptr, y_ptr)
   for (col2 = 0; col2 < *nc2; col2++) {
     dist_ptr = dist + *nc1 * col2;      /* column <col2> of result matrix <dist> */
     col1_max = (*symmetric) ? col2 + 1 : *nc1;
@@ -96,6 +99,9 @@ col_dist_sparse(double *dist, int *nc1, int *nc2, int *xp, int *xrow, double *x,
   if (*metric_code == 3 && (*param1 < 1 || !R_FINITE(*param1)))
     error("Minkowski p-norm is not defined for p = %g", *param1);
 
+#pragma omp parallel for \
+        shared(dist) \
+        private(xrow_curr, yrow_curr, col1, col2, col1_max, xi, yi, xi_max, yi_max, accum, d_xy, x_plus_y, x_curr, y_curr, dist_ptr, x_ptr, y_ptr)
   for (col2 = 0; col2 < *nc2; col2++) {
     dist_ptr = dist + *nc1 * col2;      /* column <col2> of result matrix <dist> */
     col1_max = (*symmetric) ? col2 + 1 : *nc1;

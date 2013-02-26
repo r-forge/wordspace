@@ -1,3 +1,7 @@
 Changes in version 0.1-0
 
   - this will be the first usable release with a hopefully stable basic API
+
+Pre-release milestones
+
+  - v0.21: experimental support for OpenMP on appropriate platforms (n/a on Mac OS X in the default R installation)
