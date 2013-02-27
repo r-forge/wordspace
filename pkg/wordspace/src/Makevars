@@ -2,6 +2,6 @@
 PKG_CFLAGS = $(SHLIB_OPENMP_CFLAGS)
 PKG_LIBS = $(SHLIB_OPENMP_CFLAGS)
 
-# -- force OpenMP on Mac OS X (supported by compiled, but not used by default toolchain)
+# -- force OpenMP on Mac OS X (supported by compiler, but not used by default toolchain)
 # PKG_CFLAGS = -fopenmp
 # PKG_LIBS = -fopenmp
