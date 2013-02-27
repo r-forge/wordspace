@@ -23,7 +23,9 @@ mk_symmetric_matrix(double *x, int nr, int nc) {
 
 void
 col_dist_dense(double *dist, int *nr, int *nc1, int *nc2, double *x, double *y, int *metric_code, double *param1, int *symmetric) {
-  int col2, vec_len;
+  int row, col1, col2, vec_len, col1_max;
+  double accum, d_xy;
+  double *dist_ptr, *x_ptr, *y_ptr;
 
   if (*metric_code < 0 || *metric_code > 4)
     error("distance metric #%d is not defined -- internal error", *metric_code);
@@ -32,13 +34,10 @@ col_dist_dense(double *dist, int *nr, int *nc1, int *nc2, double *x, double *y, 
 
   vec_len = *nr;
 #pragma omp parallel for \
+        default(shared) \
         shared(dist) \
-        private(col2, vec_len)
+        private(row, col1, col2, col1_max, accum, d_xy, dist_ptr, x_ptr, y_ptr)
   for (col2 = 0; col2 < *nc2; col2++) {
-    int row, col1, col1_max;
-    double accum, d_xy;
-    double *dist_ptr, *x_ptr, *y_ptr;
-
     dist_ptr = dist + *nc1 * col2;      /* column <col2> of result matrix <dist> */
     col1_max = (*symmetric) ? col2 + 1 : *nc1;
     for (col1 = 0; col1 < col1_max; col1++) {
