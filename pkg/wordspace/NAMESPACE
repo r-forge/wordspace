@@ -8,7 +8,7 @@ export(read.dsm.ucs, read.dsm.triplet, check.dsm)
 export(dsm.score)
 export(rowNorms, colNorms, normalize.rows, scaleMargins)
 export(dsm.projection)
-export(dist.matrix, nearest.neighbours)
+export(dist.matrix, nearest.neighbours, pair.distances)
 export(match.split)
 export(context.vectors)
 

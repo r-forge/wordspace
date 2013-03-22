@@ -11,7 +11,7 @@
 }
 \usage{
 
-nearest.neighbours(M, term, n=10, drop=TRUE, skip.missing=FALSE, min.distance=1e-6, byrow=TRUE, \dots)
+nearest.neighbours(M, term, n=10, drop=TRUE, skip.missing=FALSE, min.distance=1e-6, byrow=TRUE, \dots, batchsize=50e6, verbose=FALSE)
 
 }
 \arguments{
@@ -47,7 +47,11 @@ nearest.neighbours(M, term, n=10, drop=TRUE, skip.missing=FALSE, min.distance=1e
   \item{\dots}{
     additional arguments are passed to \code{dist.matrix} if \code{M} is a scored DSM matrix.  See the manpage of \code{\link{dist.matrix}} for details on available parameters and settings.
   }
- 
+    
+  \item{batchsize}{if \code{term} is a long list of lookup terms, it will automatically be processed in batches.  The number of terms per batch is chosen in such a way that approximately \code{batchsize} intermediate similarity values have to be computed and stored at a time.}
+  
+  \item{verbose}{if \code{TRUE}, display some progress messages indicating how data are split into batches}
+   
 }
 \details{
 %%  ~~ If necessary, more details than the description above ~~
