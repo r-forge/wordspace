@@ -6,4 +6,11 @@ Pre-release milestones
 
   - v0.21: experimental support for OpenMP on appropriate platforms
     - n/a on Mac OS X in the default R installation (but achieves speed-up if expressly activated)
+    - parallelization only used if more than 100 M operations have to be carried out (purely heuristic limit)
+    - first experiments suggests that using more than 4 or 8 threads brings little benefit with enormous overhead
+    - setting OMP_NUM_THREADS is strongly recommended but may also affect BLAS matrix operations (e.g. with OpenBLAS)
 
+  - v0.23: further performance improvements
+    - dist.matrix() uses less memory and is considerably faster for cosine/angle distance measure
+    - new function pair.distances() computes distances or neighbour ranks for a list of word pairs efficiently
+    - nearest.neighbours() automatically processes a long list of lookup terms in moderately sized batches

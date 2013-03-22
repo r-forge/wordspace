@@ -1,4 +1,4 @@
-nearest.neighbours <-function (M, term, n=10, drop=TRUE, skip.missing=FALSE, min.distance=1e-6, byrow=TRUE, ...) {
+nearest.neighbours <-function (M, term, n=10, drop=TRUE, skip.missing=FALSE, min.distance=1e-6, byrow=TRUE, ..., batchsize=50e6, verbose=FALSE) {
   is.dist <- inherits(M, "dist.matrix")
   if (!is.dist) {
     if (!(is.matrix(M) || is(M, "Matrix"))) stop("M must be either a dense or sparse DSM matrix, or a pre-computed dist.matrix object")
@@ -8,7 +8,22 @@ nearest.neighbours <-function (M, term, n=10, drop=TRUE, skip.missing=FALSE, min
   found <- term %in% term.labels
   if (any(!found) && !skip.missing) stop("target term(s) not found in M: ", paste(term[!found], collapse=", "))
   term <- term[found]
-  if (length(term) == 0) return(NULL)
+  n.terms <- length(term)
+  if (n.terms == 0) return(NULL)
+  
+  ## unless input is a pre-computed dist.matrix, process vector of lookup terms in moderately sized batches
+  if (!is.dist) {
+    n.cand <- if (byrow) nrow(M) else ncol(M)
+    if ((1.0 * n.terms) * n.cand > batchsize) {
+      items.per.batch <- ceiling(batchsize / n.cand)
+      res.list <- lapply(seq(1, n.terms, items.per.batch), function (i.start) {
+        i.end <- min(i.start + items.per.batch - 1, n.terms)
+        if (verbose) cat(sprintf(" - nearest.neighbours(): terms #%d .. #%d of %d (size = %.1fM)\n", i.start, i.end, n.terms, (i.end-i.start+1) * n.cand / 1e6))
+        nearest.neighbours(M, term[i.start:i.end], n=n, drop=FALSE, skip.missing=FALSE, min.distance=min.distance, byrow=byrow, ..., batchsize=Inf, verbose=verbose)
+      })
+      return(do.call(c, res.list))
+    }
+  }
   
   if (!is.dist) {
     M.term <- if (byrow) M[term,, drop=FALSE] else M[,term, drop=FALSE]

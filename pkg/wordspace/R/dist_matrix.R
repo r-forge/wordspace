@@ -74,12 +74,27 @@ dist.matrix <- function (M, M2=NULL, method=c("cosine", "euclidean", "maximum", 
     }
 
     if (convert) {
-      tol <- 1e-12 # rounding errors tolerated for very small angles (cosine approx. 1 or -1)
-      if(!all(result >= -(1+tol) & result <= 1+tol)) warning("angular distance may be inaccurate (some cosine values out of range)")
-      ## TODO: rewrite angle computation as inplace operation in C to avoid memory overhead
-      result[result < -(1-tol)] <- -1     # clamp to range [-1, 1] and snap to endpoints -1 / 1
-      result[result > 1-tol] <- 1         # (pmin/pmax eat many GiB of memory for Matrix class??)
-      result <- acos(result) * (180 / pi) # angles are returned in degrees
+      n <- prod(dim(result))
+      transform_code <- 0L # cosine -> angle transformation
+      n.clamped <- 0L
+      tol <- 1e-12
+      .C(
+        C_similarity_to_distance,
+        result,
+        as.integer(n),
+        transform_code,
+        tol,
+        n.clamped,
+        DUP=FALSE, NAOK=FALSE
+      )
+      if (n.clamped > 0) warning("angular distance may be inaccurate (some cosine values out of range)")
+      
+      # tol <- 1e-12 # rounding errors tolerated for very small angles (cosine approx. 1 or -1)
+      # if(!all(result >= -(1+tol) & result <= 1+tol)) warning("angular distance may be inaccurate (some cosine values out of range)")
+      # ## TODO: rewrite angle computation as inplace operation in C to avoid memory overhead
+      # result[result < -(1-tol)] <- -1     # clamp to range [-1, 1] and snap to endpoints -1 / 1
+      # result[result > 1-tol] <- 1         # (pmin/pmax eat many GiB of memory for Matrix class??)
+      # result <- acos(result) * (180 / pi) # angles are returned in degrees
     }    
     rownames(result) <- if (byrow) rownames(M) else colnames(M)
     colnames(result) <- if (is.null(M2)) rownames(result) else if (byrow) rownames(M2) else colnames(M2)

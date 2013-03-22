@@ -34,6 +34,7 @@ col_dist_dense(double *dist, int *nr, int *nc1, int *nc2, double *x, double *y, 
 
   vec_len = *nr;
 #pragma omp parallel for \
+        if ((*nc1 + 0.0) * (*nc2 + 0.0) * (*nr + 0.0) > 100e6) \
         shared(dist) \
         private(row, col1, col2, col1_max, accum, d_xy, dist_ptr, x_ptr, y_ptr)
   for (col2 = 0; col2 < *nc2; col2++) {
@@ -93,6 +94,8 @@ col_dist_sparse(double *dist, int *nc1, int *nc2, int *xp, int *xrow, double *x,
   int xi, yi, xi_max, yi_max;
   double *dist_ptr, *x_ptr, *y_ptr;
   double accum, d_xy, x_plus_y, x_curr, y_curr;
+  /* average number of entries scanned when comparing two columns */
+  double avg_nr = (xp[*nc1] - xp[0] + 0.0) / *nc1 + (yp[*nc2] - yp[0] + 0.0) / *nc2; 
 
   if (*metric_code < 0 || *metric_code > 4)
     error("distance metric #%d is not defined -- internal error", *metric_code);
@@ -100,6 +103,7 @@ col_dist_sparse(double *dist, int *nc1, int *nc2, int *xp, int *xrow, double *x,
     error("Minkowski p-norm is not defined for p = %g", *param1);
 
 #pragma omp parallel for \
+        if ((*nc1 + 0.0) * (*nc2 + 0.0) * avg_nr > 40e6) \
         shared(dist) \
         private(xrow_curr, yrow_curr, col1, col2, col1_max, xi, yi, xi_max, yi_max, accum, d_xy, x_plus_y, x_curr, y_curr, dist_ptr, x_ptr, y_ptr)
   for (col2 = 0; col2 < *nc2; col2++) {
