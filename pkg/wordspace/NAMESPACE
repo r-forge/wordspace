@@ -2,6 +2,8 @@ import(Matrix)
 
 useDynLib(wordspace, .registration=TRUE)
 
+export(wordspace.openmp)
+
 # export(dsm.score.old, rowNorms.old, normalize.rows.old, cosine)
 
 export(read.dsm.ucs, read.dsm.triplet, check.dsm)

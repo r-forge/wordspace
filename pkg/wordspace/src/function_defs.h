@@ -7,6 +7,9 @@
 #ifndef wordspace_defs_h
 #define wordspace_defs_h
 
+extern int have_openmp;
+extern int openmp_threads;
+
 void dsm_score_dense(double *scores, int *nr, int *nc, double *f, double *f1, double *f2, double *N, int *am_code, int *sparse, int *transform_code);
 void dsm_score_sparse(double *scores, int *nc, int *p, int *row, double *f, double *f1, double *f2, double *N, int *am_code, int *sparse, int *transform_code);
 
