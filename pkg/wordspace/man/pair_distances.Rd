@@ -2,7 +2,7 @@
 \alias{pair.distances}
 \title{
 
-  Semantic Distances Between Word Pairs (wordspaceEval)
+  Semantic Distances Between Word Pairs (wordspace)
 
 }
 \description{

@@ -14,3 +14,6 @@ Pre-release milestones
     - dist.matrix() uses less memory and is considerably faster for cosine/angle distance measure
     - new function pair.distances() computes distances or neighbour ranks for a list of word pairs efficiently
     - nearest.neighbours() automatically processes a long list of lookup terms in moderately sized batches
+
+  - v0.24: OpenMP no longer activated by default
+    - wordspace.openmp() to check for OpenMP support and select the number of parallel threads
