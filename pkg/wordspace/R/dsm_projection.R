@@ -58,64 +58,18 @@ dsm.projection <- function (model, method=c("svd", "rsvd", "asvd", "ri", "ri+svd
     R2 <- cumsum(colSums(S*S)) / norm(M, "F")^2 # this should be the proportion of "explained" variance
 
   } else if (method == "rsvd") {
-    ## --- randomized SVD according to Halko, Martinsson & Tropp (2009, p. 9) ---
 
-    ## We can apply the rSVD algorithm either to A = M or to A = t(M), depending on the format of M.
-    ## Preliminary testing suggested that the original algorithm (A = M) is suitable for a matrix with many columns,
-    ## while the transpose algorithm (A = t(M)) works better if the matrix has many rows and a limited number of columns.
-    ## With the current implementation, which uses SVD rather than QR decomposition to obtain an orthonormal basis,
-    ## there does not seem to be a substantial difference, so we currently always use the original algorithm.
-    k2 <- min(oversampling * n, nR, nC)   # = 2*k in the paper
-    transpose <- FALSE # previously: !(nR <= nC)
-    if (verbose) cat(sprintf("Randomized SVD reduction%s to %d => %d dimensions:\n", if (transpose) " (transposed)" else "", k2, n))
-    if (!transpose) {
-      if (verbose) cat(" - sampling range of A\n") # -- original algorithm applied to A = M
-      Omega <- matrix(rnorm(nC*k2), nC, k2)
-      Y <- M %*% Omega
-      rm(Omega)
-      if (q >= 1) for (i in 1:q) {
-        if (verbose) cat(sprintf(" - power iteration #%d\n", i))
-        Y <- M %*% crossprod(M, Y)
-      }
-      if (verbose) cat(sprintf(" - orthonormal basis of %d x %d matrix\n", nrow(Y), ncol(Y)))
-      Q <- svd(Y, nu=k2, nv=0)$u  # orthonormal basis of rg(Y); SVD is faster than and as accurate as QR decomposition
-      rm(Y)
-      B <- crossprod(Q, M)
-      if (verbose) cat(sprintf(" - SVD decomposition of %d x %d matrix\n", nrow(B), ncol(B)))
-      SVD <- svd(B, nu=0, nv=n)   # we can either project the original matrix using V, or construct the result from U and Sigma
-      rm(B)
-      if (verbose) cat(" - composing final matrix\n")
-      ## We can either construct the reduced matrix from SVD$u and SVD$d, or project original matrix using SVD$v
-      ## U <- Q %*% SVD$u # need to set nu=n above if we want to run this code (Uhat = SVD$u)
-      ## --> now construct projected matrix from U and SVD$d (check paper)
-      S <- M %*% SVD$v
-      if (with.basis) B <- SVD$v
-      R2 <- cumsum(SVD$d^2) / norm(M, "F")^2
-      rm(SVD)
-      S <- as.matrix(S) # make sure result is an ordinary dense matrix
-    } else {
-      if (verbose) cat(" - sampling range of A\n") # -- transposed algorithm for A = t(M)
-      Omega <- matrix(rnorm(k2*nR), k2, nR) # = t(Omega)
-      Y <- Omega %*% M                      # = t(A * Omega)
-      rm(Omega)
-      if (q >= 1) for (i in 1:q) {
-        if (verbose) cat(sprintf(" - power iteration #%d\n", i))
-        Y <- tcrossprod(Y, M) %*% M         # = t( (A * t(A))^i * A * Omega) ) = t(Y)
-      }
-      if (verbose) cat(sprintf(" - orthonormal basis of %d x %d matrix\n", ncol(Y), nrow(Y)))
-      Q <- svd(Y, nu=0, nv=k2)$v  # orthonormal basis of rg(t(Y)); SVD is faster than and as accurate as QR decomposition
-      rm(Y)
-      B <- M %*% Q                          # = t( t(Q) * A ) = t(B)
-      if (verbose) cat(sprintf(" - SVD decomposition of %d x %d matrix\n", nrow(B), ncol(B)))
-      SVD <- svd(B, nu=0, nv=n)             # t(B) = V * Sigma * t(Uhat), truncated to k target dimensions
-      rm(B)
-      if (verbose) cat(" - composing final matrix\n")
-      S <- M %*% Q %*% SVD$v                # t(t(U) * A) = t(A) * U = t(A) * Q * Uhat
-      if (with.basis) B <- Q %*% SVD$v
-      R2 <- cumsum(SVD$d^2) / norm(M, "F")^2
-      rm(SVD)
-      S <- as.matrix(S) # make sure result is an ordinary dense matrix
-    }
+    ## randomized SVD according to Halko, Martinsson & Tropp (2009, p. 9) 
+    ##  - preliminary testing suggests there is no substantial difference between the original and transposed rSVD algorithm
+    ##  - so we currently always use the original versions
+    SVD <- rsvd(M, n=n, q=q, oversampling=oversampling, transpose=FALSE, verbose=verbose)
+
+    S <- scaleMargins(SVD$u, cols=SVD$d)
+    ## -- still necessary? --
+    ## S <- as.matrix(S) # make sure result is an ordinary dense matrix
+    if (with.basis) B <- SVD$v
+    R2 <- cumsum(SVD$d^2) / norm(M, "F")^2
+    rm(SVD)
 
   } else if (method %in% c("ri", "ri+svd")) {
     ## --- straightforward random indexing (with specified fill rate), optionally followed by rSVD ---

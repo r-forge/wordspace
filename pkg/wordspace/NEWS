@@ -17,3 +17,6 @@ Pre-release milestones
 
   - v0.24: OpenMP no longer activated by default
     - wordspace.openmp() to check for OpenMP support and select the number of parallel threads
+
+  - v0.25: randomized SVD available as separate function rsvd()
+
