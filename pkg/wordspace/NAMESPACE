@@ -6,7 +6,9 @@ export(wordspace.openmp)
 
 # export(dsm.score.old, rowNorms.old, normalize.rows.old, cosine)
 
-export(read.dsm.ucs, read.dsm.triplet, check.dsm)
+export(dsm, check.dsm)
+export(dsm.is.canonical, dsm.canonical.matrix)
+export(read.dsm.ucs, read.dsm.triplet)
 export(dsm.score)
 export(rowNorms, colNorms, normalize.rows, scaleMargins)
 export(rsvd)

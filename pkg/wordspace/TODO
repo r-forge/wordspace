@@ -1,10 +1,70 @@
-  - remove dsm.score.old, rowNorms.old, normalize.rows.old, ... (NAMESPACE, R/...) when new C implementation has been tested sufficiently
-  - write complete (rough) documentation for basic functions
-  - efficient reimplementation of rbind.dsm for sparse matrices (require all arguments to be sparse in normal form; use C code, work with triplet representation, or very clever code on dgCMatrix objects)
+# -*-org-*-
+#+TITLE: TODO sheet for wordspace package development
+
+* Next steps
+
+  - =dsm()= als Konstruktor für DSM-Objekte; soweit möglich in =read.dsm.*= nutzen
+    - evtl. mit Option =sparse=FALSE=, um M als dense matrix zu erzeugen
+    - überprüft, dass M nonneg ist (für S keine Einschränkung); M (oder S) wird entsprechend mit =attr(,"nonneg")= markiert
+  - re-think and redesign DSM objects
+    - separate storage mode for M and S; attached as attribute to matrix; functions check respective input matrix, not DSM object
+    - DSM object has no =dense= or =nonneg= flag
+    - helper functions to check input matrix (dense/sparse, nonneg/general)
+
+* Combining DSM objects
   - implement all=TRUE option for merge.dsm ("expanding merge")
   - implement cbind.dsm
   - implement column merge (rows=FALSE) for merge.dsm
-  - implement in-place row and column scaling in C (dense matrix only) to conserve memory in cosine distance measure (worthwhile?)
-  - replace as.double(), as.integer() in .C() calls by functions that check whether argument already is a double/int vector or matrix and pass through without dropping attributes etc. in this case (to keep R's pseudo-refcounting from making unnecessary copies in some cases)
+  - efficient reimplementation of rbind.dsm for sparse matrices (require all arguments to be sparse in normal form; use C code, work with triplet representation, or very clever code on dgCMatrix objects)
+
+* Non-negative matrices and projections
+
+  - =dsm.score()= mit neuem Parameter =non.negative=NA= statt =sparse=FALSE=, wird für sparse M automatisch auf TRUE gesetzt
+  - =non.negative=FALSE= wandelt M in dense matrix um, dann auch Standardisierung der Spalten erlaubt
+  - Matrizen werden mit Attribut ="non.negative"= versehen; Frequenzmatrix M muss nonneg sein (wird von Konstruktor überprüft); S wird überprüft und entsprechend markiert
+  - diverse Funktionen wie =dsm.score()=, =dsm.projection()=, =dist.matrix()=, ...  erlauben bestimmte Optionen / Algorithmen nur für nonneg-Matrizen; diese werden am Attribut ="non.negative"= erkannt; wenn Attribut fehlt, wird die Eingabematrix geprüft; evtl. expliziter Override mit =non.negative=TRUE= (aber sinnvoll?)
+  - dafür C-Funktion, um Vektor/Matrix speichereffizient auf nonneg zu testen; in Methode =is.nonnegative()= einbinden, mit Methoden für numeric, matrix, und Matrix (csr oder triplet)
+  - Ausgabe von dsm.projection mit NMF oder anderem nonneg-Algorithmus wird ebenfalls mit Attribut ="non.negative"=TRUE= markiert
+
+* Support for evaluation experiments
+
+  - =pair.distances()= mit =rank="none"=, ="fwd"=, ="bwd"=, ="avg"= und =avg.method="arithmetic"=, ="geometric"=, ="harmonic"=
+  - =as.dist.matrix(M, sim=FALSE)= to mark as distance matrix (so =nearest.neighbours=, =pair.distances=, etc. can be used); perhaps with method for dist objects –> has to support and preserve sparse matrix!
+  - =nearest.neighbours()= and =pair.distances()= should work with M2(=M) for cross-distance computations –> may conflict with efficient implementation of avg. rank!
+  - =pair.distances()= should accept pre-computed =dist.matrix= (both distance and similarity) –> may conflict with implementation of cross-distances
+  - also see hand-written notes
+
+* Additional metrics
+
+  - Dice und/oder Jaccard coefficient (nach Lin 1998) –> für nicht-positive Vektoren sinnvoll?
+  - KL-Divergenz + Jensen-Shannon metric (Endres & Schindelin 2003) für nichtnegative Vektoren (Eingabematrizen werden überprüft!)
+    - KL-Divergenz –> skew divergence (Lee 2001)?
+
+* New projection methods
+
+  - power scaling for =dsm.projection= (Caron 2001); needs built-in renormalization, I think, or keep total R2 same
+  - what is a sensible relative R2 for different =dsm.projection= methods? especially SVD without centering and non-orthogonal projections
+  - =nndsvd()= nach Boutsidis & Gallopoulos (2008); wandelt SVD-Zerlegung in nichtnegative Approximation um
+    - can this be interpreted as a (non-orthogonal) projection? what are the basis vectors?
+    - wie kann R2 hier abgeschätzt werden?
+    - unbedingt Tests zu Genauigkeit / Anwendungsnutzen dieser Approximation
+    - in dsm.projection() evtl. eine Option =non.negative=TRUE= anbieten, die nur für nonneg-Eingabematrix zulässig ist und auf eine nonneg-Matrix projiziert (nonneg-Basis für RI, NNDSVD für SVD)
+  - NMF implementieren (multiplicative updates, nach Python-Vorlage)
+    - benötigt C-Funktion, die =crossprod()= nur für nonzero entries einer sparse matrix berechnet
+    - diese Funktion kann ggf. auch modifiziert werden, um Approximationsfehler der Zerlegung einer sparse matrix exakt zu bestimmen
+    - Initialisierung mit =nndsvd()= bzw. NNDSVDar; alternativ mehrere Runs mit zufälligen Initialisierungen -> beste Approximation auswählen
+
+* Analysis support
+  - Chinese Whispers implementieren (verschiedene Varianten: batch update in R, single updates in C)
+
+* Cleanup and documentation
+
+  - write complete (rough) documentation for basic functions
   - include more small data sets for usage examples
   - add usage examples to all functions
+  - remove dsm.score.old, rowNorms.old, normalize.rows.old, ... (NAMESPACE, R/...) when new C implementation has been tested sufficiently
+  - replace as.double(), as.integer() in .C() calls by functions that check whether argument already is a double/int vector or matrix and pass through without dropping attributes etc. in this case (to keep R's pseudo-refcounting from making unnecessary copies in some cases)
+
+* Miscellaneous
+
+  - implement in-place row and column scaling in C (dense matrix only) to conserve memory in cosine distance measure (worthwhile?)

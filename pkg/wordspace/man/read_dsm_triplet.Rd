@@ -5,15 +5,13 @@
 }
 \description{
 
-  This functions loads DSM in triplet representation -- (row label, column label, score) -- from a disk file or a pipe.
-  Such a triplet file normally represents a pre-scored DSM, but can also hold raw syntactic cooccurrence frequencies for an 
-  unreduced set of target and feature terms (from which marginals and sample size can then be derived).
+  This functions loads a sparse distributional semantic model in triplet representation -- (row label, column label, score) -- from a disk file or a pipe.  Such a triplet file normally represents a pre-scored DSM, but can also hold raw syntactic cooccurrence frequencies for an unreduced set of target and feature terms (from which marginals and sample size can then be derived).
 
 }
 \usage{
 
-  read.dsm.triplet(filename, freq = FALSE, value.first = FALSE, tokens=FALSE, sep = "\t", quote = "",
-                   nmax = -1, sort = FALSE, encoding = getOption("encoding"), verbose = FALSE) 
+read.dsm.triplet(filename, freq = FALSE, value.first = FALSE, tokens = FALSE, sep = "\t", quote = "",
+                 nmax = -1, sort = FALSE, encoding = getOption("encoding"), verbose = FALSE) 
 
 }
 \arguments{
@@ -23,33 +21,33 @@
   }
 
   \item{freq}{
-  
+    whether values are raw co-occurrence frequencies (\code{TRUE}) or pre-computed scores (\code{FALSE})
   }
 
   \item{value.first}{
-  
+    if \code{TRUE}, triplets are given as (score, row label, column label) instead of the default (row label, column label, score)
   }
 
   \item{tokens}{
-    if \code{TRUE}, input represents pair tokens, i.e. row and column labels without score/frequency data.
+    if \code{TRUE}, the input file contains pair \emph{tokens}, i.e. row and column labels without score/frequency values.
     Co-occurrence frequencies will automatically be calculated, but this input format should only be used
     for small samples up to a few millon tokens.
   }
 
   \item{sep, quote}{
-  
+    specify field separator and the types of quotes used by the disk file (see the \code{\link{scan}} documentation for details).  By default, a TAB-delimited file without quotes is assumed.
   }
 
   \item{nmax}{
-  
+    if the number of entries (= text lines) in the disk file is known, it can be specified here in order to make loading faster and more memory-efficient.  Caution: If \code{nmax} is smaller than the number of lines in the disk file, the extra lines will silently be discarded.
   }
 
   \item{sort}{
-  
+    if \code{TRUE}, the rows and columns of the co-occurrence matrix will be sorted alphabetically according to their labels (i.e. the target and feature terms); otherwise they are listed as encountered in the triplet representation
   }
 
   \item{encoding}{
-    character encoding of the input files, which will automatically be converted to R's internal representation if possible.  See \sQuote{Encoding} in \link{file} for details.
+    character encoding of the input files, which will automatically be converted to \R's internal representation if possible.  See \sQuote{Encoding} in \code{\link{file}} for details.
   }
 
   \item{verbose}{
@@ -59,33 +57,26 @@
 }
 \details{
 
-  The \code{encoding} argument currently doesn't work (as of R 2.12.1) if the DSM data are packaged in a ZIP archive.  If you need to work with non-ASCII row/column labels in R (or want them to be displayed properly), unpack the archive first in a subdirectory and specify this directory as \code{filename}.  Keep in mind that individual files may still be compressed with \code{gzip} in order to save disk space.
-
+  \bold{TODO}
+  
 }
 \value{
 
-  An object of class \code{dsm}, a list with the following components:
-
-  \bold{NB:} tables \code{rows} and \code{cols} contain variables \code{term}, \code{f}, and \code{nnzero} with the number of nonzero (positive) entries in the corresponding row or column; any additional variables given in the disk files are also included with their original names
-  
-  %%  ~Describe the value returned
-  %%  If it is a LIST, use
-  %%  \item{comp1 }{Description of 'comp1'}
-  %%  \item{comp2 }{Description of 'comp2'}
-  %% ...
+  An object of class \code{\link{dsm}} containing a sparse DSM.
 
 }
 \section{File Format}{
 
-TODO
-
+  \bold{TODO}
 
 }
 \note{
 %%  ~~further notes~~
 }
 \seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
+
+  \code{\link{dsm}}, \code{\link{read.dsm.ucs}}
+  
 }
 \examples{
 ## TODO

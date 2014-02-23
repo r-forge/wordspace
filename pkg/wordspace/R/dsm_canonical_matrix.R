@@ -1,0 +1,35 @@
+dsm.is.canonical <- function (x, nonneg.check = FALSE) {
+  if (is.matrix(x) && is.numeric(x)) {
+    sparse <- FALSE  # regular dense numeric matrix
+    canonical <- TRUE
+  } else {
+    if (!is(x, "dMatrix")) stop("x must be a dense or sparse numeric matrix")
+    sparse <- if (is(x, "sparseMatrix")) TRUE else FALSE
+    canonical <- if (sparse && is(x, "dgCMatrix")) TRUE else FALSE
+  }
+  if (nonneg.check) {
+    nonneg <- !any(x < 0) # caution: all(x >= 0) would result in dense matrix!
+  } else {
+    nonneg <- attr(x, "nonneg")
+    if (is.null(nonneg)) nonneg <- NA
+  }
+  list(sparse=sparse, canonical=canonical, nonneg=nonneg)
+}
+
+dsm.canonical.matrix <- function (x, triplet = FALSE, annotate = FALSE, nonneg.check = FALSE) {
+  flags <- dsm.is.canonical(x, nonneg.check = nonneg.check)
+  if (flags$sparse) {
+    if (triplet) {
+      if (!is(x, "dgTMatrix")) x <- as(x, "dgTMatrix")
+    } else {
+      if (!flags$canonical) x <- as(x, "dgCMatrix")
+    }
+  } else {
+    if (!flags$canonical) x <- as.matrix(x)
+  }
+  if (annotate) {
+    attr(x, "sparse") <- flags$sparse
+    attr(x, "nonneg") <- flags$nonneg
+  }
+  x
+}
