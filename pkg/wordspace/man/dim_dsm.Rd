@@ -11,7 +11,7 @@
 }
 \usage{
 
-  \method{dim}{dsm}(x)
+\method{dim}{dsm}(x)
 
 }
 \arguments{
