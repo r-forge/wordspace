@@ -10,7 +10,7 @@
 }
 \usage{
 
-  read.dsm.ucs(filename, encoding=getOption("encoding"))
+read.dsm.ucs(filename, encoding = getOption("encoding"), verbose = FALSE)
 
 }
 \arguments{
@@ -23,23 +23,20 @@
     character encoding of the input files, which will automatically be converted to R's internal representation if possible.  See \sQuote{Encoding} in \code{\link{file}} for details.
   }
 
+  \item{verbose}{
+    if \code{TRUE}, a few progress and information messages are shown
+  }
 }
 \details{
 
-\bold{TODO}
+  \bold{TODO}
 
 }
 \value{
 
-  An object of class \code{dsm}, a list with the following components:
+  An object of class \code{\link{dsm}} containing a dense or sparse DSM.
 
-  \bold{NB:} tables \code{rows} and \code{cols} contain variables \code{term}, \code{f}, and \code{nnzero} with the number of nonzero (positive) entries in the corresponding row or column; any additional variables given in the disk files are also included with their original names
-  
-  %%  ~Describe the value returned
-  %%  If it is a LIST, use
-  %%  \item{comp1 }{Description of 'comp1'}
-  %%  \item{comp2 }{Description of 'comp2'}
-  %% ...
+  Note that the information tables for target terms (field \code{rows}) and feature terms (field \code{cols}) include the correct marginal frequencies from the UCS export files.  Nonzero counts for rows are and columns are added automatically unless they are already present in the disk files.  Additional fields from the information tables as well as all global variables are preserved with their original names.
 
 }
 \section{File Format}{

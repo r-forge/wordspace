@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>TODO sheet for wordspace package development</title>
+<!-- 2014-02-19 Wed 16:22 -->
+<meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta  name="generator" content="Org-mode" />
+<meta  name="author" content="Stefan Evert" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { color: green; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  pre.src-sh:before    { content: 'sh'; }
+  pre.src-bash:before  { content: 'sh'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-R:before     { content: 'R'; }
+  pre.src-perl:before  { content: 'Perl'; }
+  pre.src-java:before  { content: 'Java'; }
+  pre.src-sql:before   { content: 'SQL'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.right  { text-align: center;  }
+  th.left   { text-align: center;   }
+  th.center { text-align: center; }
+  td.right  { text-align: right;  }
+  td.left   { text-align: left;   }
+  td.center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara:nth-child(2) { display: inline; }
+  .footpara { display: block; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">TODO sheet for wordspace package development</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1. Next steps</a></li>
+<li><a href="#sec-2">2. Combining DSM objects</a></li>
+<li><a href="#sec-3">3. Non-negative matrices and projections</a></li>
+<li><a href="#sec-4">4. Support for evaluation experiments</a></li>
+<li><a href="#sec-5">5. Additional metrics</a></li>
+<li><a href="#sec-6">6. New projection methods</a></li>
+<li><a href="#sec-7">7. Analysis support</a></li>
+<li><a href="#sec-8">8. Cleanup and documentation</a></li>
+<li><a href="#sec-9">9. Miscellaneous</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> Next steps</h2>
+<div class="outline-text-2" id="text-1">
+<ul class="org-ul">
+<li><code>dsm()</code> als Konstruktor für DSM-Objekte; soweit möglich in <code>read.dsm.*</code> nutzen
+<ul class="org-ul">
+<li>evtl. mit Option <code>sparse=FALSE</code>, um M als dense matrix zu erzeugen
+</li>
+<li>überprüft, dass M nonneg ist (für S keine Einschränkung); M (oder S) wird entsprechend mit <code>attr(,"nonneg")</code> markiert
+</li>
+</ul>
+</li>
+<li>re-think and redesign DSM objects
+<ul class="org-ul">
+<li>separate storage mode for M and S; attached as attribute to matrix; functions check respective input matrix, not DSM object
+</li>
+<li>DSM object has no <code>dense</code> or <code>nonneg</code> flag
+</li>
+<li>helper functions to check input matrix (dense/sparse, nonneg/general)
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2"><span class="section-number-2">2</span> Combining DSM objects</h2>
+<div class="outline-text-2" id="text-2">
+<ul class="org-ul">
+<li>implement all=TRUE option for merge.dsm ("expanding merge")
+</li>
+<li>implement cbind.dsm
+</li>
+<li>implement column merge (rows=FALSE) for merge.dsm
+</li>
+<li>efficient reimplementation of rbind.dsm for sparse matrices (require all arguments to be sparse in normal form; use C code, work with triplet representation, or very clever code on dgCMatrix objects)
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3"><span class="section-number-2">3</span> Non-negative matrices and projections</h2>
+<div class="outline-text-2" id="text-3">
+<ul class="org-ul">
+<li><code>dsm.score()</code> mit neuem Parameter <code>non.negative=NA</code> statt <code>sparse=FALSE</code>, wird für sparse M automatisch auf TRUE gesetzt
+</li>
+<li><code>non.negative=FALSE</code> wandelt M in dense matrix um, dann auch Standardisierung der Spalten erlaubt
+</li>
+<li>Matrizen werden mit Attribut ="non.negative"= versehen; Frequenzmatrix M muss nonneg sein (wird von Konstruktor überprüft); S wird überprüft und entsprechend markiert
+</li>
+<li>diverse Funktionen wie <code>dsm.score()</code>, <code>dsm.projection()</code>, <code>dist.matrix()</code>, &#x2026;  erlauben bestimmte Optionen / Algorithmen nur für nonneg-Matrizen; diese werden am Attribut ="non.negative"= erkannt; wenn Attribut fehlt, wird die Eingabematrix geprüft; evtl. expliziter Override mit <code>non.negative=TRUE</code> (aber sinnvoll?)
+</li>
+<li>dafür C-Funktion, um Vektor/Matrix speichereffizient auf nonneg zu testen; in Methode <code>is.nonnegative()</code> einbinden, mit Methoden für numeric, matrix, und Matrix (csr oder triplet)
+</li>
+<li>Ausgabe von dsm.projection mit NMF oder anderem nonneg-Algorithmus wird ebenfalls mit Attribut ="non.negative"<code>TRUE</code> markiert
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4"><span class="section-number-2">4</span> Support for evaluation experiments</h2>
+<div class="outline-text-2" id="text-4">
+<ul class="org-ul">
+<li><code>pair.distances()</code> mit <code>rank</code>"none"=, ="fwd"=, ="bwd"=, ="avg"= und <code>avg.method</code>"arithmetic"=, ="geometric"=, ="harmonic"=
+</li>
+<li><code>as.dist.matrix(M, sim=FALSE)</code> to mark as distance matrix (so <code>nearest.neighbours</code>, <code>pair.distances</code>, etc. can be used); perhaps with method for dist objects –&gt; has to support and preserve sparse matrix!
+</li>
+<li><code>nearest.neighbours()</code> and <code>pair.distances()</code> should work with M2(=M) for cross-distance computations –&gt; may conflict with efficient implementation of avg. rank!
+</li>
+<li><code>pair.distances()</code> should accept pre-computed <code>dist.matrix</code> (both distance and similarity) –&gt; may conflict with implementation of cross-distances
+</li>
+<li>also see hand-written notes
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-sec-5" class="outline-2">
+<h2 id="sec-5"><span class="section-number-2">5</span> Additional metrics</h2>
+<div class="outline-text-2" id="text-5">
+<ul class="org-ul">
+<li>Dice und/oder Jaccard coefficient (nach Lin 1998) –&gt; für nicht-positive Vektoren sinnvoll?
+</li>
+<li>KL-Divergenz + Jensen-Shannon metric (Endres &amp; Schindelin 2003) für nichtnegative Vektoren (Eingabematrizen werden überprüft!)
+<ul class="org-ul">
+<li>KL-Divergenz –&gt; skew divergence (Lee 2001)?
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-sec-6" class="outline-2">
+<h2 id="sec-6"><span class="section-number-2">6</span> New projection methods</h2>
+<div class="outline-text-2" id="text-6">
+<ul class="org-ul">
+<li>power scaling for <code>dsm.projection</code> (Caron 2001); needs built-in renormalization, I think, or keep total R2 same
+</li>
+<li>what is a sensible relative R2 for different <code>dsm.projection</code> methods? especially SVD without centering and non-orthogonal projections
+</li>
+<li><code>nndsvd()</code> nach Boutsidis &amp; Gallopoulos (2008); wandelt SVD-Zerlegung in nichtnegative Approximation um
+<ul class="org-ul">
+<li>can this be interpreted as a (non-orthogonal) projection? what are the basis vectors?
+</li>
+<li>wie kann R2 hier abgeschätzt werden?
+</li>
+<li>unbedingt Tests zu Genauigkeit / Anwendungsnutzen dieser Approximation
+</li>
+<li>in dsm.projection() evtl. eine Option <code>non.negative=TRUE</code> anbieten, die nur für nonneg-Eingabematrix zulässig ist und auf eine nonneg-Matrix projiziert (nonneg-Basis für RI, NNDSVD für SVD)
+</li>
+</ul>
+</li>
+<li>NMF implementieren (multiplicative updates, nach Python-Vorlage)
+<ul class="org-ul">
+<li>benötigt C-Funktion, die <code>crossprod()</code> nur für nonzero entries einer sparse matrix berechnet
+</li>
+<li>diese Funktion kann ggf. auch modifiziert werden, um Approximationsfehler der Zerlegung einer sparse matrix exakt zu bestimmen
+</li>
+<li>Initialisierung mit <code>nndsvd()</code> bzw. NNDSVDar; alternativ mehrere Runs mit zufälligen Initialisierungen -&gt; beste Approximation auswählen
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-sec-7" class="outline-2">
+<h2 id="sec-7"><span class="section-number-2">7</span> Analysis support</h2>
+<div class="outline-text-2" id="text-7">
+<ul class="org-ul">
+<li>Chinese Whispers implementieren (verschiedene Varianten: batch update in R, single updates in C)
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-sec-8" class="outline-2">
+<h2 id="sec-8"><span class="section-number-2">8</span> Cleanup and documentation</h2>
+<div class="outline-text-2" id="text-8">
+<ul class="org-ul">
+<li>write complete (rough) documentation for basic functions
+</li>
+<li>include more small data sets for usage examples
+</li>
+<li>add usage examples to all functions
+</li>
+<li>remove dsm.score.old, rowNorms.old, normalize.rows.old, &#x2026; (NAMESPACE, R/&#x2026;) when new C implementation has been tested sufficiently
+</li>
+<li>replace as.double(), as.integer() in .C() calls by functions that check whether argument already is a double/int vector or matrix and pass through without dropping attributes etc. in this case (to keep R's pseudo-refcounting from making unnecessary copies in some cases)
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-sec-9" class="outline-2">
+<h2 id="sec-9"><span class="section-number-2">9</span> Miscellaneous</h2>
+<div class="outline-text-2" id="text-9">
+<ul class="org-ul">
+<li>implement in-place row and column scaling in C (dense matrix only) to conserve memory in cosine distance measure (worthwhile?)
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: Stefan Evert</p>
+<p class="date">Created: 2014-02-19 Wed 16:22</p>
+<p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.3.1 (<a href="http://orgmode.org">Org</a> mode 8.2.5h)</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>
