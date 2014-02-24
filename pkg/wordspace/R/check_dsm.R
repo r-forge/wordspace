@@ -6,15 +6,17 @@ check.dsm <- function (model, validate=FALSE, nonneg.check=FALSE) {
     M <- dsm.is.canonical(model$M, nonneg.check=nonneg.check)
     M$ok <- TRUE
   } else {
-    M <- list(ok=FALSE)
+    M <- data.frame(ok=FALSE)
   }
+  rownames(M) <- "M"
   
   if ("S" %in% slots) {
     S <- dsm.is.canonical(model$S, nonneg.check=nonneg.check)
     S$ok <- TRUE
   } else {
-    S <- list(ok=FALSE)
+    S <- data.frame(ok=FALSE)
   }
+  rownames(S) <- "S"
 
   stopifnot(M$ok || S$ok) # need to have either frequency matrix or score matrix (or both)
   stopifnot(all(c("rows", "cols", "globals") %in% slots))

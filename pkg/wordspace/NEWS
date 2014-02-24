@@ -2,9 +2,9 @@ Changes in version 0.2-0
 
   - this will be the first public release with a hopefully stable basic API
 
-Pre-release milestones
+Pre-release history
 
-  - v0.1-0: partial re-design of DSM objects and basic functions
+  - v0.1-x: partial re-design of DSM objects and basic functions
     - handling of sparse and non-negative co-occurrence matrices has been re-thought
     - not compatible with v0.0 series
     

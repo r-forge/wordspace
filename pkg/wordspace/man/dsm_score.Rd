@@ -1,7 +1,7 @@
 \name{dsm.score}
 \alias{dsm.score}
 \title{
-  Weighting, Scaling and Normalisation of Cooccurrence Matrix (wordspace)
+  Weighting, Scaling and Normalisation of Co-occurrence Matrix (wordspace)
 }
 \description{
 
@@ -10,13 +10,13 @@
 }
 \usage{
 
-  dsm.score(model,
-            score=c("frequency", "simple-ll", "t-score", "z-score", "Dice", "MI", "tf.idf", "reweight"),
-            sparse=FALSE,
-            transform=c("none", "log", "root", "sigmoid"),
-            scale=c("none", "standardize", "center"),
-            normalize=FALSE, method="euclidean", p=2,
-            matrix.only=FALSE, update.nnzero=FALSE)
+dsm.score(model,
+          score = c("frequency", "simple-ll", "t-score", "z-score", "Dice", "MI", "tf.idf", "reweight"),
+          sparse = TRUE, negative.ok = NA,
+          transform = c("none", "log", "root", "sigmoid"),
+          scale = c("none", "standardize", "center", "scale"),
+          normalize = FALSE, method = "euclidean", p = 2,
+          matrix.only = FALSE, update.nnzero = FALSE)
 
 }
 \arguments{
@@ -26,19 +26,23 @@
   }
 
   \item{score}{
-    the association measure to be used for feature weighting (see "Details" below)
+    the association measure to be used for feature weighting (see \dQuote{Details} below)
   }
 
   \item{sparse}{
-    if \code{TRUE} compute sparse non-negative association scores.  Currently, \code{sparse=TRUE} \strong{must} be used if the DSM model is stored in sparse format (cf. \code{\link{check.dsm}})
+    if \code{TRUE} (the default), compute sparse non-negative association scores (see \dQuote{Details} below).  Non-sparse association scores are only allowed if \code{negative.ok=TRUE}.
   }
 
+  \item{negative.ok}{
+    whether operations that introduce negative values into the score matrix (non-sparse association scores, standardization of columns, etc.) are allowed.  The default (\code{negative.ok}) is \code{TRUE} if the co-occurrence matrix \eqn{M} is dense, and \code{FALSE} if it is sparse.
+  }
+    
   \item{transform}{
-    scale transformation to be applied to association scores (see "Details" below)
+    scale transformation to be applied to association scores (see \dQuote{Details} below)
   }
 
   \item{scale}{
-    if not \code{"none"}, standardize columns of scored matrix by z-transformation (\code{"standardize"}) or center columns without rescaling (\code{"center"})
+    if not \code{"none"}, standardize columns of scored matrix by z-transformation (\code{"standardize"}), center without rescaling (\code{"center"}, or scale to unit variance without centering (\code{"scale"})
   }
 
   \item{normalize}{
@@ -54,7 +58,7 @@
   }
   
   \item{update.nnzero}{
-    if \code{TRUE} and a full DSM model is returned, update the counts of nonzero entries in rows and columns according to the matrix of scores (may have fewer nonzero entries for sparse association scores)
+    if \code{TRUE} and a full DSM model is returned, update the counts of nonzero entries in rows and columns according to the matrix of scores (there may be fewer nonzero entries with sparse association scores, or more from dense association scores and/or column scaling)
   }
 }
 \details{

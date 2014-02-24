@@ -10,13 +10,14 @@
 }
 \usage{
 
- normalize.rows(M, \dots)
+normalize.rows(M, \dots)
 
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
 
   \item{M}{
+    a dense or sparse numeric matrix
   }
 
   \item{\dots}{
@@ -29,7 +30,7 @@
 }
 \value{
 
-  A numeric vector containing one norm value for each row of \code{M}.
+  A row-normalized matrix with the same dimensions as \eqn{M}.
 
 }
 \references{
