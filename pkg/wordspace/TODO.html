@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
 <title>TODO sheet for wordspace package development</title>
-<!-- 2014-02-24 Mon 17:41 -->
+<!-- 2014-02-24 Mon 23:55 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="generator" content="Org-mode" />
 <meta  name="author" content="Stefan Evert" />
@@ -159,16 +159,6 @@ for the JavaScript code in this tag.
 <h2 id="sec-1"><span class="section-number-2">1</span> Internal redesign</h2>
 <div class="outline-text-2" id="text-1">
 <ul class="org-ul">
-<li><code>normalize.rows()</code>; <code>scale.margins()</code>
-</li>
-<li><code>dsm.projection()</code>; adapt to new interals, leave other modifications for later stage
-<ul class="org-ul">
-<li>any changes to <code>rsvd()</code> needed?
-</li>
-</ul>
-</li>
-<li><code>context.vectors()</code> and <code>nearest.neighbours()</code>
-</li>
 <li>what about <code>match.split()</code>?
 </li>
 <li><code>subset.dsm()</code> should preserve <code>nonneg</code> attribute
@@ -202,13 +192,9 @@ for the JavaScript code in this tag.
 <h2 id="sec-3"><span class="section-number-2">3</span> Non-negative matrices and projections</h2>
 <div class="outline-text-2" id="text-3">
 <ul class="org-ul">
-<li><code>dsm.score()</code> mit neuem Parameter <code>non.negative=NA</code> statt <code>sparse=FALSE</code>, wird für sparse M automatisch auf TRUE gesetzt
-</li>
-<li><code>non.negative=FALSE</code> wandelt M in dense matrix um, dann auch Standardisierung der Spalten erlaubt
-</li>
 <li>Matrizen werden mit Attribut ="non.negative"= versehen; Frequenzmatrix M muss nonneg sein (wird von Konstruktor überprüft); S wird überprüft und entsprechend markiert
 </li>
-<li>diverse Funktionen wie <code>dsm.score()</code>, <code>dsm.projection()</code>, <code>dist.matrix()</code>, &#x2026;  erlauben bestimmte Optionen / Algorithmen nur für nonneg-Matrizen; diese werden am Attribut ="non.negative"= erkannt; wenn Attribut fehlt, wird die Eingabematrix geprüft; evtl. expliziter Override mit <code>non.negative=TRUE</code> (aber sinnvoll?)
+<li>diverse Funktionen wie <code>dsm.score()</code>, <code>dsm.projection()</code>, <code>dist.matrix()</code>, &#x2026;  erlauben bestimmte Optionen / Algorithmen nur für nonneg-Matrizen; diese werden am Attribut <code>non.negative</code> erkannt; wenn Attribut fehlt, wird die Eingabematrix geprüft; evtl. expliziter Override mit <code>non.negative=TRUE</code> (aber sinnvoll?)
 </li>
 <li>dafür C-Funktion, um Vektor/Matrix speichereffizient auf nonneg zu testen; in Methode <code>is.nonnegative()</code> einbinden, mit Methoden für numeric, matrix, und Matrix (csr oder triplet)
 </li>
@@ -223,11 +209,11 @@ for the JavaScript code in this tag.
 <ul class="org-ul">
 <li><code>pair.distances()</code> mit <code>rank</code>"none"=, ="fwd"=, ="bwd"=, ="avg"= und <code>avg.method</code>"arithmetic"=, ="geometric"=, ="harmonic"=
 </li>
-<li><code>as.dist.matrix(M, sim=FALSE)</code> to mark as distance matrix (so <code>nearest.neighbours</code>, <code>pair.distances</code>, etc. can be used); perhaps with method for dist objects –&gt; has to support and preserve sparse matrix!
+<li><code>as.dist.matrix(M, sim=FALSE)</code> to mark as distance matrix (so <code>nearest.neighbours</code>, <code>pair.distances</code>, etc. can be used); perhaps with method for dist objects &#x2013;&gt; has to support and preserve sparse matrix!
 </li>
-<li><code>nearest.neighbours()</code> and <code>pair.distances()</code> should work with M2(=M) for cross-distance computations –&gt; may conflict with efficient implementation of avg. rank!
+<li><code>nearest.neighbours()</code> and <code>pair.distances()</code> should work with M2 (= M) for cross-distance computations &#x2013;&gt; may conflict with efficient implementation of avg. rank!
 </li>
-<li><code>pair.distances()</code> should accept pre-computed <code>dist.matrix</code> (both distance and similarity) –&gt; may conflict with implementation of cross-distances
+<li><code>pair.distances()</code> should accept pre-computed <code>dist.matrix</code> (both distance and similarity) &#x2013;&gt; may conflict with implementation of cross-distances
 </li>
 <li>also see hand-written notes
 </li>
@@ -312,6 +298,8 @@ for the JavaScript code in this tag.
 <h2 id="sec-9"><span class="section-number-2">9</span> Miscellaneous</h2>
 <div class="outline-text-2" id="text-9">
 <ul class="org-ul">
+<li>re-implement <code>scaleMargins()</code> in C for more memory-efficient row/column scaling of a large matrix
+</li>
 <li>implement in-place row and column scaling in C (dense matrix only) to conserve memory in cosine distance measure (worthwhile?)
 </li>
 </ul>
@@ -320,7 +308,7 @@ for the JavaScript code in this tag.
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Stefan Evert</p>
-<p class="date">Created: 2014-02-24 Mon 17:41</p>
+<p class="date">Created: 2014-02-24 Mon 23:55</p>
 <p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.3.1 (<a href="http://orgmode.org">Org</a> mode 8.2.5h)</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>

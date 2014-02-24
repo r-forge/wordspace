@@ -1,5 +1,4 @@
-pair.distances <-
-function (w1, w2, M, rank=FALSE, ..., batchsize=10e6, verbose=FALSE) {
+pair.distances <- function (w1, w2, M, rank=FALSE, ..., batchsize=10e6, verbose=FALSE) {
   w1 <- as.character(w1)
   w2 <- as.character(w2)
   stopifnot(length(w1) == length(w2))
@@ -8,7 +7,8 @@ function (w1, w2, M, rank=FALSE, ..., batchsize=10e6, verbose=FALSE) {
   types2 <- if (rank) NULL else unique(w2)
   n.types1 <- as.double(length(types1))
   n.types2 <- as.double(length(types2))
-
+  M <- find.canonical.matrix(M) # ensure matrix is in canonical format, or extract from DSM object
+  
   if (rank) {
     pair.ranks(w1, w2, M, ..., batchsize=batchsize, verbose=verbose) # dispatch to specialised function for computing neighbour ranks
   } else {

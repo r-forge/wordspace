@@ -58,8 +58,14 @@ subset.dsm <- function (x, subset=NULL, select=NULL, recursive=FALSE, drop.zeroe
   y <- list(rows=x$rows[row.idx, , drop=FALSE],   # mandatory components
             cols=x$cols[col.idx, , drop=FALSE],
             globals=x$globals)
-  if (info$M$ok) y$M <- x$M[row.idx, col.idx, drop=FALSE]
-  if (info$S$ok) y$S <- x$S[row.idx, col.idx, drop=FALSE]
+  if (info$M$ok) {
+    y$M <- x$M[row.idx, col.idx, drop=FALSE]
+    if (!is.na(info$M$nonneg)) attr(y$M, "nonneg") <- info$M$nonneg
+  }
+  if (info$S$ok) {
+    y$S <- x$S[row.idx, col.idx, drop=FALSE]
+    if (!is.na(info$S$nonneg)) attr(y$S, "nonneg") <- info$S$nonneg
+  }
 
   ## if rows and/or columns may have been deleted, update the relevant nonzero counts
   if (drop.zeroes) {

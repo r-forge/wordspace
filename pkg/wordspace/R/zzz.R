@@ -11,7 +11,7 @@ find.canonical.matrix <- function (x, triplet=FALSE) {
   if (inherits(x, "dsm")) {
     info <- check.dsm(x)
     M <- if (info$S$ok) x$S else x$M
-  } else if (is.matrix(x)) {
+  } else if (is.matrix(x) || is(x, "dMatrix")) {
     M <- x
   } else {
     stop("first argument must be an object of class 'dsm' or a co-occurrence/score matrix")
