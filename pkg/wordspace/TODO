@@ -1,15 +1,15 @@
 # -*-org-*-
 #+TITLE: TODO sheet for wordspace package development
 
-* Next steps
+* Internal redesign
 
-  - =dsm()= als Konstruktor für DSM-Objekte; soweit möglich in =read.dsm.*= nutzen
-    - evtl. mit Option =sparse=FALSE=, um M als dense matrix zu erzeugen
-    - überprüft, dass M nonneg ist (für S keine Einschränkung); M (oder S) wird entsprechend mit =attr(,"nonneg")= markiert
-  - re-think and redesign DSM objects
-    - separate storage mode for M and S; attached as attribute to matrix; functions check respective input matrix, not DSM object
-    - DSM object has no =dense= or =nonneg= flag
-    - helper functions to check input matrix (dense/sparse, nonneg/general)
+  - =context.vectors()= and =nearest.neighbours()=
+  - what about =match.split()=?
+  - =subset.dsm()= should preserve =nonneg= attribute
+  - =rbind.dsm()= and =merge.dsm()= need to be updated and documented properly
+  - =cbind.dsm()= hasn't been implemented yet
+  - planned extensions to =rbind=, =cbind= and =merge= (e.g. efficient =rbind= and =cbind= for more than 2 arguments)
+
 
 * Combining DSM objects
   - implement all=TRUE option for merge.dsm ("expanding merge")
@@ -67,4 +67,5 @@
 
 * Miscellaneous
 
+  - re-implement =scaleMargins()= in C for more memory-efficient row/column scaling of a large matrix
   - implement in-place row and column scaling in C (dense matrix only) to conserve memory in cosine distance measure (worthwhile?)

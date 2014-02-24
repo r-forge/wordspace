@@ -7,7 +7,7 @@
 
   Compute a symmetric matrix of distances (or similarities) between the rows or columns of a matrix;
   or compute cross-distances between the rows or columns of two different matrices.
-  This implementation is faster than \code{\link{dist}} and can operate on sparse matrices (class \code{dgCMatrix}).
+  This implementation is faster than \code{\link{dist}} and can operate on sparse matrices (in canonical DSM format).
 
 }
 \usage{
@@ -15,26 +15,26 @@
 dist.matrix(M, M2 = NULL,
             method = c("cosine", "euclidean", "maximum", "manhattan", "minkowski", "canberra"), p = 2, 
             normalized = FALSE, byrow = TRUE, convert = TRUE, as.dist = FALSE, 
-            terms=NULL, terms2=terms, skip.missing=FALSE)
+            terms = NULL, terms2 = terms, skip.missing = FALSE)
 
 }
 \arguments{
 
   \item{M}{
-    a dense or sparse matrix representing a scored DSM
+    a dense or sparse matrix representing a scored DSM, or an object of class \code{dsm}
   }
   
   \item{M2}{
-    an optional dense or sparse matrix representing a second scored DSM.
+    an optional dense or sparse matrix representing a second scored DSM, or an object of class \code{dsm}.
     If present, cross-distances between the rows (or columns) of \code{M} and those of \code{M2} will be computed.
   }
 
   \item{method}{
-    distance or similarity measure to be used (see "Distance Measures" below for details)
+    distance or similarity measure to be used (see \dQuote{Distance Measures} below for details)
   }
   
   \item{p}{
-    exponent of the \code{minkowski} p-metric, a numeric value in the range \eqn{1\le p\le \infty}
+    exponent of the \code{minkowski} p-metric, a numeric value in the range \eqn{1 \le p \le \infty}
   }
   
   \item{normalized}{
@@ -84,6 +84,9 @@ dist.matrix(M, M2 = NULL,
 %% ...
 }
 \section{Distance Measures}{
+
+  \bold{TODO}
+
   metric vs. distance measure vs. similarity measure
   
   explain for each similarity measure how the conversion to a distance is accomplished

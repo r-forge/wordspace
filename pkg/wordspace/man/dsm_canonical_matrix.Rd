@@ -1,4 +1,5 @@
 \name{dsm.canonical.matrix}
+\alias{dsm.is.canonical}
 \alias{dsm.canonical.matrix}
 \title{
   Canonical Formats for a DSM Co-occurrence Matrix (wordspace)
@@ -48,7 +49,7 @@ dsm.canonical.matrix(x, triplet = FALSE, annotate = FALSE, nonneg.check = FALSE)
 }
 \value{
 
-  \code{dsm.is.canonical()} returns a list with the following items:
+  \code{dsm.is.canonical()} returns a data frame containing a single row with the following items:
 
   \item{sparse}{whether \code{x} is a sparse (\code{TRUE}) or dense (\code{TRUE}) matrix}
   \item{canonical}{whether \code{x} is in canonical format}

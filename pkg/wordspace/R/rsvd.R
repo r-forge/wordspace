@@ -1,12 +1,13 @@
 rsvd <- function (M, n, q=2, oversampling=2, transpose=FALSE, verbose=FALSE) {
-  ## --- randomized SVD according to Halko, Martinsson & Tropp (2009, p. 9) ---
-
+  ## --- randomized SVD according to Halko, Martinsson & Tropp (2009, p. 9) ---  
+  
   ## We can apply the rSVD algorithm either to A = M or to A = t(M), depending on the format of M.
   ## Preliminary testing suggested that the original algorithm (A = M) is suitable for a matrix with many columns,
   ## while the transpose algorithm (A = t(M)) works better if the matrix has many rows and a limited number of columns.
   ## With the current implementation, which uses SVD rather than QR decomposition to obtain an orthonormal basis,
   ## there does not seem to be a substantial difference.
   
+  dsm.is.canonical(M) # ensure that M is a suitable matrix (we don't need to enforce canonical format)
   nR <- nrow(M)
   nC <- ncol(M)
   if (n < 1 || n > min(nR, nC)) stop(sprintf("number of singular components out of range n = 1 ... %d", min(nR, nC)))

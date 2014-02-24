@@ -1,16 +1,7 @@
-dsm.projection <- function (model, method=c("svd", "rsvd", "asvd", "ri", "ri+svd"), n=NA, oversampling=NA, q=2, rate=.01, with.basis=FALSE, verbose=FALSE, use.C=TRUE, blocksize=100000) {
+dsm.projection <- function (model, method=c("svd", "rsvd", "asvd", "ri", "ri+svd"), n=NA, oversampling=NA, q=2, rate=.01, with.basis=FALSE, verbose=FALSE) {
   method <- match.arg(method)
-  if (is.matrix(model) || inherits(model, "Matrix")) {
-    M <- model
-  } else if (inherits(model, "dsm")) {
-    model.info <- check.dsm(model)
-    if (!model.info$have.S) stop("use dsm.score() to compute scored and weighted matrix first")
-    M <- model$S
-  } else {
-    stop("first argument of dsm.projection() must be DSM object or numeric matrix")
-  }
-
-  is.sparse <- is(M, "Matrix") # whether to use sparse or dense algorithms
+  M <- find.canonical.matrix(model)
+  info <- dsm.is.canonical(M) # to find out whether M is sparse or dense
   
   nR <- nrow(M)
   nC <- ncol(M)
@@ -83,7 +74,7 @@ dsm.projection <- function (model, method=c("svd", "rsvd", "asvd", "ri", "ri+svd
     }
     if (verbose) cat(sprintf("Random Indexing in %d dimensions:\n", nRI))
     
-    if (!is.sparse) {
+    if (!info$sparse) {
       ## if original matrix can be stored in dense representation, RI should not pose any memory problems
       n.fill <- as.integer(nC * rate) # number of nonzero entries in each random vector
       scale <- 1 / sqrt(n.fill)       # scale random vectors so they are normalised
@@ -99,57 +90,25 @@ dsm.projection <- function (model, method=c("svd", "rsvd", "asvd", "ri", "ri+svd
       S <- tcrossprod(M, Q)
       rm(Q)
     } else {
-      
-      if (use.C) {
-        ## experimental C implementation of RI for sparse matrix
-        if (!is(M, "dgCMatrix")) stop("sparse matrix must be in normal form (dgCMatrix) for random indexing")
-        S <- matrix(0.0, nrow=nR, ncol=nRI) # pre-allocate projected matrix for C code
-        .C(
-          C_random_indexing_sparse,
-          S,  # will be modified inplace
-          as.integer(nR),
-          as.integer(nC),
-          as.integer(M@p),
-          as.integer(M@i),
-          as.double(M@x),
-          as.integer(nRI),
-          as.double(rate),
-          as.logical(verbose),
-          DUP=FALSE, NAOK=FALSE
+      ## efficient C implementation of RI for sparse matrix (which is guaranteed to be in canonical format)
+      S <- matrix(0.0, nrow=nR, ncol=nRI) # pre-allocate projected matrix for C code
+      .C(
+        C_random_indexing_sparse,
+        S,  # will be modified inplace
+        as.integer(nR),
+        as.integer(nC),
+        as.integer(M@p),
+        as.integer(M@i),
+        as.double(M@x),
+        as.integer(nRI),
+        as.double(rate),
+        as.logical(verbose),
+        DUP=FALSE, NAOK=FALSE
         )
-      } else {
-        ## standard R implementation of RI for sparse matrix
-        ## for sparse matrix, perform RI in blocks of <blocksize> dimensions, iteratively updating the projected vectors    
-        S <- matrix(0.0, nrow=nR, ncol=nRI) # pre-allocate projected matrix for block updates
-        cumulative.fill <- 0 # total number of nonzero entries (+1 / -1) in random projection vectors
-        for (start in seq(1, nC, blocksize)) {
-          end <- min(start + blocksize - 1, nC)
-          n.cols <- end - start + 1
-          n.fill <- as.integer(n.cols * rate) # number of nonzero entries in each random vector
-          cumulative.fill <- cumulative.fill + n.fill
-
-          if (verbose) cat(sprintf(" - generating %d sparse random vectors with %d of %d nonzero elements\n", nRI, n.fill, n.cols))
-          .i <- integer(n.fill * nRI) # 0-based row offsets of nonzero entries
-          for (.d in 0:(nRI-1)) {
-            .i[ .d * n.fill + (1:n.fill) ] <- sort(sample.int(n.cols, n.fill)) - 1L
-          }
-          .p <- n.fill * (0:nRI)    # 0-based offset pointers into .i
-          .x <- 1 - 2*rbinom(n.fill * nRI, 1, .5)
-          Qt <- new("dgCMatrix", Dim=as.integer(c(n.cols, nRI)), p=.p, i=.i, x=.x)
-
-          if (verbose) cat(" - updating projection into random subspace\n")
-          S <- S + as.matrix(M[,start:end] %*% Qt)  # make sure result is a dense matrix
-          rm(Qt, .i, .p, .x)
-        }
-
-        # all random vectors have Euclidean length sqrt(cumulative.fill), so adjust RI coordinates
-        S <- S / sqrt(cumulative.fill)  
-      }
-
     }
     
     if (method == "ri+svd") {
-      S <- dsm.projection(S, "rsvd", n, q=q, oversampling=2, verbose=verbose, with.basis=FALSE)
+      S <- dsm.projection(S, "svd", n, verbose=verbose, with.basis=FALSE) # use plain SVD since matrix is already dense
     }
     R2 <- norm(S, "F")^2 / norm(M, "F")^2 
    

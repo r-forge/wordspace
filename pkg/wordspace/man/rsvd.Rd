@@ -10,7 +10,7 @@
 }
 \usage{
 
-  rsvd(M, n, q = 2, oversampling = 2, transpose = FALSE, verbose = FALSE)
+rsvd(M, n, q = 2, oversampling = 2, transpose = FALSE, verbose = FALSE)
 
 }
 \arguments{

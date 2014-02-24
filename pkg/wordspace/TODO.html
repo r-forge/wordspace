@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
 <title>TODO sheet for wordspace package development</title>
-<!-- 2014-02-19 Wed 16:22 -->
+<!-- 2014-02-24 Mon 17:41 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="generator" content="Org-mode" />
 <meta  name="author" content="Stefan Evert" />
@@ -142,7 +142,7 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#sec-1">1. Next steps</a></li>
+<li><a href="#sec-1">1. Internal redesign</a></li>
 <li><a href="#sec-2">2. Combining DSM objects</a></li>
 <li><a href="#sec-3">3. Non-negative matrices and projections</a></li>
 <li><a href="#sec-4">4. Support for evaluation experiments</a></li>
@@ -156,30 +156,33 @@ for the JavaScript code in this tag.
 </div>
 
 <div id="outline-container-sec-1" class="outline-2">
-<h2 id="sec-1"><span class="section-number-2">1</span> Next steps</h2>
+<h2 id="sec-1"><span class="section-number-2">1</span> Internal redesign</h2>
 <div class="outline-text-2" id="text-1">
 <ul class="org-ul">
-<li><code>dsm()</code> als Konstruktor für DSM-Objekte; soweit möglich in <code>read.dsm.*</code> nutzen
-<ul class="org-ul">
-<li>evtl. mit Option <code>sparse=FALSE</code>, um M als dense matrix zu erzeugen
+<li><code>normalize.rows()</code>; <code>scale.margins()</code>
 </li>
-<li>überprüft, dass M nonneg ist (für S keine Einschränkung); M (oder S) wird entsprechend mit <code>attr(,"nonneg")</code> markiert
+<li><code>dsm.projection()</code>; adapt to new interals, leave other modifications for later stage
+<ul class="org-ul">
+<li>any changes to <code>rsvd()</code> needed?
 </li>
 </ul>
 </li>
-<li>re-think and redesign DSM objects
-<ul class="org-ul">
-<li>separate storage mode for M and S; attached as attribute to matrix; functions check respective input matrix, not DSM object
+<li><code>context.vectors()</code> and <code>nearest.neighbours()</code>
 </li>
-<li>DSM object has no <code>dense</code> or <code>nonneg</code> flag
+<li>what about <code>match.split()</code>?
 </li>
-<li>helper functions to check input matrix (dense/sparse, nonneg/general)
+<li><code>subset.dsm()</code> should preserve <code>nonneg</code> attribute
 </li>
-</ul>
+<li><code>rbind.dsm()</code> and <code>merge.dsm()</code> need to be updated and documented properly
+</li>
+<li><code>cbind.dsm()</code> hasn't been implemented yet
+</li>
+<li>planned extensions to <code>rbind</code>, <code>cbind</code> and <code>merge</code> (e.g. efficient <code>rbind</code> and <code>cbind</code> for more than 2 arguments)
 </li>
 </ul>
 </div>
 </div>
+
 <div id="outline-container-sec-2" class="outline-2">
 <h2 id="sec-2"><span class="section-number-2">2</span> Combining DSM objects</h2>
 <div class="outline-text-2" id="text-2">
@@ -317,7 +320,7 @@ for the JavaScript code in this tag.
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Stefan Evert</p>
-<p class="date">Created: 2014-02-19 Wed 16:22</p>
+<p class="date">Created: 2014-02-24 Mon 17:41</p>
 <p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.3.1 (<a href="http://orgmode.org">Org</a> mode 8.2.5h)</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>

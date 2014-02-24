@@ -8,11 +8,11 @@ dist.matrix <- function (M, M2=NULL, method=c("cosine", "euclidean", "maximum", 
   if (as.dist && similarity) stop("cannot create 'dist' object from similarity matrix")
   if (as.dist && cross.distance) stop("cannot create 'dist' object from cross-distance matrix")
 
-  sparse.M <- inherits(M, "Matrix") # check that M (and optional M2) are appropriate matrices
-  if (!(is.matrix(M) || sparse.M)) stop("M must be a dense or sparse matrix")
+  M <- find.canonical.matrix(M) # extract co-occurence matrix from DSM object, ensure canonical format
+  sparse.M <- dsm.is.canonical(M)$sparse
   if (cross.distance) {
-    sparse.M2 <- inherits(M2, "Matrix")
-    if (!(is.matrix(M2) || sparse.M2)) stop("M2 must be a dense or sparse matrix")
+    M2 <- find.canonical.matrix(M2)
+    sparse.M2 <- dsm.is.canonical(M2)$sparse
     if (byrow) {
       if (ncol(M) != ncol(M2)) stop("M and M2 are not conformable (must have same number of columns)")
     } else {
@@ -24,9 +24,9 @@ dist.matrix <- function (M, M2=NULL, method=c("cosine", "euclidean", "maximum", 
     targets.M <- if (byrow) rownames(M) else colnames(M)
     targets.M2 <- if (is.null(M2)) targets.M else if (byrow) rownames(M2) else colnames(M2)
 
-    if (!missing(terms2)) cross.distance <- TRUE # if different filters are applied, we're always dealing with a cross-distance calculation
+    if (!is.null(terms2)) cross.distance <- TRUE # if different filters are applied, we're always dealing with a cross-distance calculation
 
-    # if cross.distance is FALSE, both M2 and terms2 must be missing (and hence M2=M and terms2=terms), so leave M2 set to NULL
+    ## if cross.distance is FALSE, both M2 and terms2 must be missing (and hence M2=M and terms2=terms), so leave M2 set to NULL
     if (cross.distance) {
       if (!is.null(terms2)) {
         terms2 <- as.character(terms2) # in case terms2 is a factor
@@ -41,7 +41,7 @@ dist.matrix <- function (M, M2=NULL, method=c("cosine", "euclidean", "maximum", 
       } else {
         if (is.null(M2)) M2 <- M # cross-distances with terms2=NULL -> M2 = copy of M before subsetting
       }
-      sparse.M2 <- inherits(M2, "Matrix") # define/update sparse.M2
+      sparse.M2 <- dsm.is.canonical(M2)$sparse # define/update sparse.M2
     }
 
     if (!is.null(terms)) {
@@ -62,7 +62,7 @@ dist.matrix <- function (M, M2=NULL, method=c("cosine", "euclidean", "maximum", 
     } else {
       result <- if (is.null(M2)) crossprod(M) else crossprod(M, M2)
     }
-    result <- as.matrix(result) # ensure that cosine similarity matrix is dense matrix
+    result <- as.matrix(result) # ensure that cosine similarity matrix is in dense representation
     if (!normalized) {
       norms.M <- if (byrow) rowNorms(M, "euclidean") else colNorms(M, "euclidean")
       if (is.null(M2)) {
@@ -102,12 +102,9 @@ dist.matrix <- function (M, M2=NULL, method=c("cosine", "euclidean", "maximum", 
   } else {
     ## other distance measures are implemented in C code, working on columns (transposed matrix) for efficiency
 
-    if (sparse.M && !is(M, "dgCMatrix")) stop("sparse matrix M must be in normal form (dgCMatrix)")
     .M <- if (byrow) t(M) else M
-
     if (cross.distance) {
-      if (sparse.M2 && !is(M2, "dgCMatrix")) stop("sparse matrix M2 must be in normal form (dgCMatrix)")
-      if (sparse.M != sparse.M2) stop("M and M2 must be both in dense format or both in sparse format")
+      if (sparse.M != sparse.M2) stop("M and M2 must either be both in dense format or both in sparse format")
       .M2 <- if (byrow) t(M2) else M2
     } else {
       .M2 <- .M
@@ -162,27 +159,3 @@ dist.matrix <- function (M, M2=NULL, method=c("cosine", "euclidean", "maximum", 
     result
   }
 }
-
-cosine <- function (M, M2=M, angles=FALSE, normalized=FALSE) {
-  # tcrossprod(M, M2) == M %*% t(M2) calculates dot products between rows of M and rows of M2
-  sim <- if (missing(M2)) tcrossprod(M) else tcrossprod(M, M2)
-  # need to coerce to regular matrix if sparse (for pmin/pmax, but generally more efficient)
-  sim <- as.matrix(sim) # ensure this is a dense matrix
-  if (!normalized) {
-    norms.M <- rowNorms(M, "euclidean") # norms of row vectors (if not normalised yet)
-    norms.M2 <- if (missing(M2)) norms.M else rowNorms(M2, "euclidean")
-    sim <- sim / outer(norms.M, norms.M2)
-  }
-
-  if (angles) {
-    stopifnot(all(sim >= -(1+1e-6) & sim <= 1+1e-6)) # check that cosines are in appropriate range
-    sim[sim < -1] <- -1           # clamp to range [-1, 1]
-    sim[sim > 1] <- 1             # (pmin/pmax eat many GiB of memory for Matrix class??)
-    sim <- acos(sim) / pi * 180   # angles are returned in degrees
-  }
-
-  rownames(sim) <- rownames(M)
-  colnames(sim) <- rownames(M2)
-  return(sim)
-}
-

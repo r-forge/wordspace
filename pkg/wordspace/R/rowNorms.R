@@ -15,10 +15,9 @@
 rowNorms <- function (M, method = c("euclidean", "maximum", "manhattan", "minkowski"), p = 2) {
   method <- match.arg(method)
   norm <- .check.norm(method, p)
-  
-  sparse.M <- inherits(M, "Matrix")
-  if (!(is.matrix(M) || sparse.M)) stop("first argumnet must be dense or sparse matrix")
-  if (sparse.M && !is(M, "dgCMatrix")) stop("sparse matrix must be in normal form (dgCMatrix)")
+
+  info <- dsm.is.canonical(M)
+  if (!info$canonical) M <- dsm.canonical.matrix(M)
 
   result <- double(nrow(M))
   if (sparse.M) {
@@ -55,9 +54,8 @@ colNorms <- function (M, method = c("euclidean", "maximum", "manhattan", "minkow
   method <- match.arg(method)
   norm <- .check.norm(method, p)
   
-  sparse.M <- inherits(M, "Matrix")
-  if (!(is.matrix(M) || sparse.M)) stop("first argumnet must be dense or sparse matrix")
-  if (sparse.M && !is(M, "dgCMatrix")) stop("sparse matrix must be in normal form (dgCMatrix)")
+  info <- dsm.is.canonical(M)
+  if (!info$canonical) M <- dsm.canonical.matrix(M)
 
   result <- double(ncol(M))
   if (sparse.M) {
@@ -88,30 +86,4 @@ colNorms <- function (M, method = c("euclidean", "maximum", "manhattan", "minkow
 
   names(result) <- colnames(M)
   result
-}
-
-.sparse.rowMax <- function (M) {
-  # compute the maximum of each row of a sparse matrix in a reasonably efficient way
-  M <- abs(M)
-  idx <- which(M > 0, arr.ind=TRUE)
-  tapply(1:nrow(idx), list(idx[,1]), function (k) max( M[ idx[k,,drop=FALSE] ]))
-}
-
-rowNorms.old <- function (M, method = c("euclidean", "maximum", "manhattan", "minkowski"), p = 2) {
-  method <- match.arg(method)
-  if (method == "minkowski" && p == Inf) {
-    method <- "maximum"
-    p <- 2
-  }
-  stopifnot(p >= 1 && p < Inf)
-
-  sparse.M <- inherits(M, "Matrix")
-  stopifnot(is.matrix(M) || sparse.M)
-
-  switch(method,
-    euclidean = sqrt(rowSums(M * M)),
-    maximum = if (sparse.M) .sparse.rowMax(M) else apply(M, 1, function (x) max(abs(x))),
-    manhattan = rowSums(abs(M)),
-    minkowski = (rowSums(abs(M) ^ p)) ^ (1/p)
-  )
 }

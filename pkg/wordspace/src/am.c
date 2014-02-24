@@ -48,7 +48,7 @@ double am_MI(double f, double f1, double f2, double N, int sparse) {
 
 double am_tf_idf(double f, double f1, double f2, double N, int sparse) {
   /* f1 = dummy, f2 = df, N = total document count (set to 1 if f2 holds relative df) */
-  return f * log((N + 1) / (f2 + 1)); /* use discounted df to avoid division by zero */
+  return (f2 > 0) ? f * log(N / f2) : 0; /* avoid division by zero if f2 == 0 */
 }
 
 double transform(double x, int method) {
