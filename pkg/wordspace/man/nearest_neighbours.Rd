@@ -11,13 +11,15 @@
 }
 \usage{
 
-nearest.neighbours(M, term, n=10, drop=TRUE, skip.missing=FALSE, min.distance=1e-6, byrow=TRUE, \dots, batchsize=50e6, verbose=FALSE)
+nearest.neighbours(M, term, n = 10, drop = TRUE, skip.missing = FALSE,
+                   min.distance = 1e-6, byrow = TRUE, \dots,
+                   batchsize=50e6, verbose=FALSE)
 
 }
 \arguments{
 
   \item{M}{
-    either a dense or sparse matrix representing a scored DSM, or a pre-computed distance matrix returned by \code{dist.matrix} (as an object of class \code{dist.matrix}).  Note that the compact representation returned by the \code{dist} function (class \code{dist}) is not accepted.
+    either a dense or sparse matrix representing a scored DSM (or an object of class \code{dsm}), or a pre-computed distance matrix returned by \code{dist.matrix} (as an object of class \code{dist.matrix}).  Note that the compact representation returned by the \code{dist} function (class \code{dist}) is not accepted.
   }
 
   \item{term}{

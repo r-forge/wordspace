@@ -20,7 +20,7 @@ rowNorms <- function (M, method = c("euclidean", "maximum", "manhattan", "minkow
   if (!info$canonical) M <- dsm.canonical.matrix(M)
 
   result <- double(nrow(M))
-  if (sparse.M) {
+  if (info$sparse) {
     .C(
       C_row_norms_sparse,
       result,
@@ -58,7 +58,7 @@ colNorms <- function (M, method = c("euclidean", "maximum", "manhattan", "minkow
   if (!info$canonical) M <- dsm.canonical.matrix(M)
 
   result <- double(ncol(M))
-  if (sparse.M) {
+  if (info$sparse) {
     .C(
       C_col_norms_sparse,
       result,

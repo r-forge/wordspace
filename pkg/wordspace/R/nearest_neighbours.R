@@ -1,8 +1,6 @@
 nearest.neighbours <-function (M, term, n=10, drop=TRUE, skip.missing=FALSE, min.distance=1e-6, byrow=TRUE, ..., batchsize=50e6, verbose=FALSE) {
   is.dist <- inherits(M, "dist.matrix")
-  if (!is.dist) {
-    if (!(is.matrix(M) || is(M, "Matrix"))) stop("M must be either a dense or sparse DSM matrix, or a pre-computed dist.matrix object")
-  }
+  if (!is.dist) M <- find.canonical.matrix(M) # ensure that M is a suitable matrix, or extract from DSM object
 
   term.labels <- if (byrow) rownames(M) else colnames(M)
   found <- term %in% term.labels
@@ -14,7 +12,7 @@ nearest.neighbours <-function (M, term, n=10, drop=TRUE, skip.missing=FALSE, min
   ## unless input is a pre-computed dist.matrix, process vector of lookup terms in moderately sized batches
   if (!is.dist) {
     n.cand <- if (byrow) nrow(M) else ncol(M)
-    if ((1.0 * n.terms) * n.cand > batchsize) {
+    if (n.cand > 1 && as.double(n.terms) * n.cand > batchsize) {
       items.per.batch <- ceiling(batchsize / n.cand)
       res.list <- lapply(seq(1, n.terms, items.per.batch), function (i.start) {
         i.end <- min(i.start + items.per.batch - 1, n.terms)
@@ -26,7 +24,7 @@ nearest.neighbours <-function (M, term, n=10, drop=TRUE, skip.missing=FALSE, min
   }
   
   if (!is.dist) {
-    M.term <- if (byrow) M[term,, drop=FALSE] else M[,term, drop=FALSE]
+    M.term <- if (byrow) M[term, , drop=FALSE] else M[, term, drop=FALSE]
     M <- dist.matrix(M=M.term, M2=M, byrow=byrow, ...)
     byrow <- TRUE  # dist.matrix computed on the fly is always accessed by row
   }
@@ -34,7 +32,7 @@ nearest.neighbours <-function (M, term, n=10, drop=TRUE, skip.missing=FALSE, min
   if (is.null(similarity)) similarity <- FALSE
   
   result <- lapply(term, function (.t) {
-    neighbours <- if (byrow) M[.t,] else M[,.t]
+    neighbours <- if (byrow) M[.t, ] else M[, .t]
     if (!similarity && min.distance > 0) neighbours <- neighbours[neighbours >= min.distance]
     neighbours <- sort(neighbours, decreasing=similarity)
     head(neighbours, n)

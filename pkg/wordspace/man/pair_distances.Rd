@@ -10,11 +10,13 @@
   Compute semantic distances (or similarities) between pairs of words based on a scored DSM matrix \code{M},
   according to any of the distance measures supported by \code{\link{dist.matrix}}.
   If one of the words in a pair is not represented in the DSM, the distance is set to \code{Inf}
-  (or to \code{-Inf} in the case of a similarity measure)
+  (or to \code{-Inf} in the case of a similarity measure).
 
 }
 \usage{
-  pair.distances(w1, w2, M, rank=FALSE, \dots, batchsize=10e6, verbose=FALSE)
+
+pair.distances(w1, w2, M, rank=FALSE, \dots, batchsize = 10e6, verbose = FALSE)
+
 }
 \arguments{
 
@@ -22,7 +24,7 @@
 
   \item{w2}{a character vector of the same length as \code{w1}, specifying the second word of each pair}
   
-  \item{M}{a scored DSM matrix, suitable for passing to \code{\link{dist.matrix}}}
+  \item{M}{a sparse or dense DSM matrix, suitable for passing to \code{\link{dist.matrix}}, or an object of class \code{dsm}}
   
   \item{rank}{if \code{TRUE}, return neighbour rank of second word rather than distance}
   
