@@ -24,9 +24,9 @@ dist.matrix <- function (M, M2=NULL, method=c("cosine", "euclidean", "maximum", 
     targets.M <- if (byrow) rownames(M) else colnames(M)
     targets.M2 <- if (is.null(M2)) targets.M else if (byrow) rownames(M2) else colnames(M2)
 
-    if (!is.null(terms2)) cross.distance <- TRUE # if different filters are applied, we're always dealing with a cross-distance calculation
+    if (!missing(terms2)) cross.distance <- TRUE # if different filters are applied, we're always dealing with a cross-distance calculation
 
-    ## if cross.distance is FALSE, both M2 and terms2 must be missing (and hence M2=M and terms2=terms), so leave M2 set to NULL
+    ## if cross.distance is FALSE, M2 must be NULL and terms2 unspecified (i.e. M2=M and terms2=terms), so leave M2 set to NULL
     if (cross.distance) {
       if (!is.null(terms2)) {
         terms2 <- as.character(terms2) # in case terms2 is a factor
@@ -53,7 +53,7 @@ dist.matrix <- function (M, M2=NULL, method=c("cosine", "euclidean", "maximum", 
     }
   
   }
-
+  
   if (method == "cosine") {
     ## cosine / angular measure is computed as very efficient matrix crossproduct
     

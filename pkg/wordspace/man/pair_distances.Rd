@@ -15,7 +15,9 @@
 }
 \usage{
 
-pair.distances(w1, w2, M, rank=FALSE, \dots, batchsize = 10e6, verbose = FALSE)
+pair.distances(w1, w2, M, \dots, rank = c("none", "fwd", "bwd", "avg"), transform = NULL,
+               avg.method = c("arithmetic", "geometric", "harmonic"),
+               batchsize = 10e6, verbose = FALSE)
 
 }
 \arguments{
@@ -26,25 +28,36 @@ pair.distances(w1, w2, M, rank=FALSE, \dots, batchsize = 10e6, verbose = FALSE)
   
   \item{M}{a sparse or dense DSM matrix, suitable for passing to \code{\link{dist.matrix}}, or an object of class \code{dsm}}
   
-  \item{rank}{if \code{TRUE}, return neighbour rank of second word rather than distance}
-  
   \item{\dots}{further arguments are passed to \code{dist.matrix} and determine the distance or similarity measure to be used (see \code{\link{dist.matrix}} for details)}
 
+  \item{rank}{whether to return the distance between the two words (\code{"none"}) or the neighbour rank (see \dQuote{Details} below)}
+
+  \item{transform}{an optional transformation function applied to the distance, similarity or rank values (e.g. \code{transform=log10} for logarithmic ranks). This option is provided as a convenience for evaluation code that calls \code{pair.distances} with user-specified arguments.}
+
+  \item{avg.method}{with \code{rank="avg"}, whether to compute the arithmetic, geometric or harmonic mean of forward and backward rank}
+  
   \item{batchsize}{maximum number of similarity values to compute per batch. This parameter has an essential influence on efficiency and memory use of the algorithm and has to be tuned carefully for optimal performance.}
   
   \item{verbose}{if \code{TRUE}, display some progress messages indicating how data are split into batches}
 
 }
 \details{
-%%  ~~ If necessary, more details than the description above ~~
+
+  The \code{rank} argument controls whether semantic distance is measured directly by geometric distance (\code{none}),
+  by forward neighbour rank (\code{fwd}), by backward neighbour rank (\code{bwd}), or by the average of forward and backward rank (\code{avg}).
+  Forward neighbour rank is the rank of \code{w2} among the nearest neighbours of \code{w1}.
+  Backward neighbour rank is the rank of \code{w1} among the nearest neighbours of \code{w2}.
+  The average can be computed as an arithmetic, geometric or harmonic mean, depending on \code{avg.method}; 
+  for logarithmic ranks, \code{avg.method="geometric"} is a suitable choice.
+ 
 }
 \value{
   
-  If \code{rank=FALSE} (the default), a numeric vector of the same length as \code{w1} and \code{w2}
-  specifying the distances between the word pairs, according to the selected distance measure.
+  If \code{rank="none"} (the default), a numeric vector of the same length as \code{w1} and \code{w2}
+  specifying the distances or similarities between the word pairs, according to the metric selected with the extra arguments (\code{\dots}).
   
-  If \code{rank=TRUE}, an integer or numeric vector of the same length as \code{w1} and \code{w2}
-  specifying the neighbour rank of the second word.
+  Otherwise, an integer or numeric vector of the same length as \code{w1} and \code{w2} specifying
+  forward, backward or average neighbour rank for the two words.
   
   In either case, a distance of \code{Inf} (or similarity of \code{-Inf}) is returned for any word pair not represented in the DSM.
 
