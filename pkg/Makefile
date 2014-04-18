@@ -18,6 +18,7 @@ default:
 .PHONY:	build check install release clean
 
 build:
+	Rscript --default-packages=Rcpp -e 'compileAttributes("wordspace")'
 	R CMD build wordspace
 
 check:	clean build $(PKG)

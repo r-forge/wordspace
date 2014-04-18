@@ -1,4 +1,5 @@
 import(Matrix)
+importFrom(Rcpp, evalCpp)
 
 useDynLib(wordspace, .registration=TRUE)
 

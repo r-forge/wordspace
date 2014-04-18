@@ -2,7 +2,7 @@
  *  Compute different association measures from frequency signatures
  */
 
-#ifndef wordspace_a_h
+#ifndef wordspace_am_h
 #define wordspace_am_h
 
 typedef double (*am_func)(double f, double f1, double f2, double N, int sparse); 
