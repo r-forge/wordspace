@@ -19,31 +19,10 @@ rowNorms <- function (M, method = c("euclidean", "maximum", "manhattan", "minkow
   info <- dsm.is.canonical(M)
   if (!info$canonical) M <- dsm.canonical.matrix(M)
 
-  result <- double(nrow(M))
   if (info$sparse) {
-    .C(
-      C_row_norms_sparse,
-      result,
-      as.integer(nrow(M)),
-      as.integer(ncol(M)),
-      as.integer(M@p),
-      as.integer(M@i),
-      as.double(M@x),
-      norm$code,
-      norm$p,
-      DUP=FALSE, NAOK=FALSE
-    )
+    result <- CPP_row_norms_sparse(nrow(M), ncol(M), M@p, M@i, M@x, norm$code, norm$p)
   } else {
-    .C(
-      C_row_norms_dense,
-      result,
-      as.integer(nrow(M)),
-      as.integer(ncol(M)),
-      as.double(M),
-      norm$code,
-      norm$p,
-      DUP=FALSE, NAOK=FALSE
-    )
+    result <- CPP_row_norms_dense(M, norm$code, norm$p)
   }
 
   names(result) <- rownames(M)
@@ -57,31 +36,10 @@ colNorms <- function (M, method = c("euclidean", "maximum", "manhattan", "minkow
   info <- dsm.is.canonical(M)
   if (!info$canonical) M <- dsm.canonical.matrix(M)
 
-  result <- double(ncol(M))
-  if (info$sparse) {
-    .C(
-      C_col_norms_sparse,
-      result,
-      as.integer(nrow(M)),
-      as.integer(ncol(M)),
-      as.integer(M@p),
-      as.integer(M@i),
-      as.double(M@x),
-      norm$code,
-      norm$p,
-      DUP=FALSE, NAOK=FALSE
-    )
+  if (info$sparse) {  
+    result <- CPP_col_norms_sparse(nrow(M), ncol(M), M@p, M@i, M@x, norm$code, norm$p)
   } else {
-    .C(
-      C_col_norms_dense,
-      result,
-      as.integer(nrow(M)),
-      as.integer(ncol(M)),
-      as.double(M),
-      norm$code,
-      norm$p,
-      DUP=FALSE, NAOK=FALSE
-    )
+    result <- CPP_col_norms_dense(M, norm$code, norm$p)
   }
 
   names(result) <- colnames(M)
