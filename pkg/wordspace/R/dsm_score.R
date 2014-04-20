@@ -82,7 +82,8 @@ dsm.score <- function (model,
   } else if (scale == "center") {
     scores <- scale(scores, center=TRUE, scale=FALSE)
   } else if (scale == "scale") {
-    scores <- scaleMargins(scores, cols = 1 / colNorms(scores, "euclidean")) # preserves sparse matrix representation
+    rms <- colNorms(scores, "euclidean") / sqrt(nrow(scores) - 1) # root mean square according to ?scale
+    scores <- scaleMargins(scores, cols = 1 / rms) # preserves sparse matrix representation
   } else {
     # no scaling
   }
