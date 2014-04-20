@@ -69,40 +69,12 @@ dsm.score <- function (model,
   if (cooc.sparse) {
     ## compute association scores for sparse matrix (in canonical dgCMatrix format)
     scores.x <- double(length(cooc.matrix@x))
-    .C(
-      C_dsm_score_sparse,
-      scores.x,
-      as.integer(model.info$ncol),
-      as.integer(cooc.matrix@p),
-      as.integer(cooc.matrix@i),
-      as.double(cooc.matrix@x),
-      as.double(f1),
-      as.double(f2),
-      as.double(N),
-      as.integer(score.code),
-      as.logical(sparse),
-      as.integer(transform.code),
-      DUP=FALSE, NAOK=FALSE
-    )
+    scores.x <- CPP_dsm_score_sparse(model.info$nrow, model.info$ncol, cooc.matrix@p, cooc.matrix@i, cooc.matrix@x, f1, f2, N, score.code, sparse, transform.code)
     scores <- new("dgCMatrix", Dim=as.integer(c(model.info$nrow, model.info$ncol)), p=cooc.matrix@p, i=cooc.matrix@i, x=scores.x)
     rm(scores.x)
   } else {
     ## compute dense or sparse association scores for dense matrix
-    scores <- matrix(0.0, nrow=model.info$nrow, ncol=model.info$ncol)
-    .C(
-      C_dsm_score_dense,
-      scores,
-      as.integer(model.info$nrow),
-      as.integer(model.info$ncol),
-      as.double(cooc.matrix),
-      as.double(f1),
-      as.double(f2),
-      as.double(N),
-      as.integer(score.code),
-      as.logical(sparse),
-      as.integer(transform.code),
-      DUP=FALSE, NAOK=FALSE
-    )
+    scores <- CPP_dsm_score_dense(cooc.matrix, f1, f2, N, score.code, sparse, transform.code)
   }
 
   if (scale == "standardize") {

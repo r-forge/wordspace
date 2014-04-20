@@ -17,3 +17,11 @@ CPP_col_norms_sparse <- function(nr, nc, p, row_of, x, norm_code, p_norm = 2.0) 
     .Call('wordspace_CPP_col_norms_sparse', PACKAGE = 'wordspace', nr, nc, p, row_of, x, norm_code, p_norm)
 }
 
+CPP_dsm_score_dense <- function(f, f1, f2, N, am_code, sparse, transform_code) {
+    .Call('wordspace_CPP_dsm_score_dense', PACKAGE = 'wordspace', f, f1, f2, N, am_code, sparse, transform_code)
+}
+
+CPP_dsm_score_sparse <- function(nr, nc, p, row_of, f, f1, f2, N, am_code, sparse, transform_code) {
+    .Call('wordspace_CPP_dsm_score_sparse', PACKAGE = 'wordspace', nr, nc, p, row_of, f, f1, f2, N, am_code, sparse, transform_code)
+}
+

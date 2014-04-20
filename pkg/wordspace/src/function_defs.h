@@ -10,9 +10,6 @@
 extern int have_openmp;
 extern int openmp_threads;
 
-void dsm_score_dense(double *scores, int *nr, int *nc, double *f, double *f1, double *f2, double *N, int *am_code, int *sparse, int *transform_code);
-void dsm_score_sparse(double *scores, int *nc, int *p, int *row, double *f, double *f1, double *f2, double *N, int *am_code, int *sparse, int *transform_code);
-
 void col_dist_dense(double *dist, int *nr, int *nc1, int *nc2, double *x, double *y, int *metric_code, double *param1, int *symmetric);
 void col_dist_sparse(double *dist, int *nc1, int *nc2, int *xp, int *xrow, double *x, int *yp, int *yrow, double *y, int *metric_code, double *param1, int *symmetric);
 

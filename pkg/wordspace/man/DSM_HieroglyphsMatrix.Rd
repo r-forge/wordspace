@@ -1,5 +1,5 @@
-\name{hieroglyphs_example}
-\alias{hieroglyphs_example}
+\name{DSM_HieroglyphsMatrix}
+\alias{DSM_HieroglyphsMatrix}
 \docType{data}
 \title{
   TODO (wordspace)
@@ -10,8 +10,8 @@
 
 }
 \usage{
-  
-  data(hieroglyphs_example)
+
+DSM_HieroglyphsMatrix
 
 }
 \format{
@@ -27,7 +27,6 @@
 %%  ~~ possibly secondary sources and usages ~~
 }
 \examples{
-data(hieroglyphs_example)
-## maybe str(hieroglyphs_example) ; plot(hieroglyphs_example) ...
+## TODO
 }
 \keyword{datasets}

@@ -81,3 +81,49 @@ BEGIN_RCPP
     return __sexp_result;
 END_RCPP
 }
+// CPP_dsm_score_dense
+NumericMatrix CPP_dsm_score_dense(NumericMatrix f, NumericVector f1, NumericVector f2, double N, int am_code, int sparse, int transform_code);
+RcppExport SEXP wordspace_CPP_dsm_score_dense(SEXP fSEXP, SEXP f1SEXP, SEXP f2SEXP, SEXP NSEXP, SEXP am_codeSEXP, SEXP sparseSEXP, SEXP transform_codeSEXP) {
+BEGIN_RCPP
+    SEXP __sexp_result;
+    {
+        Rcpp::RNGScope __rngScope;
+        Rcpp::traits::input_parameter< NumericMatrix >::type f(fSEXP );
+        Rcpp::traits::input_parameter< NumericVector >::type f1(f1SEXP );
+        Rcpp::traits::input_parameter< NumericVector >::type f2(f2SEXP );
+        Rcpp::traits::input_parameter< double >::type N(NSEXP );
+        Rcpp::traits::input_parameter< int >::type am_code(am_codeSEXP );
+        Rcpp::traits::input_parameter< int >::type sparse(sparseSEXP );
+        Rcpp::traits::input_parameter< int >::type transform_code(transform_codeSEXP );
+        NumericMatrix __result = CPP_dsm_score_dense(f, f1, f2, N, am_code, sparse, transform_code);
+        PROTECT(__sexp_result = Rcpp::wrap(__result));
+    }
+    UNPROTECT(1);
+    return __sexp_result;
+END_RCPP
+}
+// CPP_dsm_score_sparse
+NumericVector CPP_dsm_score_sparse(int nr, int nc, IntegerVector p, IntegerVector row_of, NumericVector f, NumericVector f1, NumericVector f2, double N, int am_code, int sparse, int transform_code);
+RcppExport SEXP wordspace_CPP_dsm_score_sparse(SEXP nrSEXP, SEXP ncSEXP, SEXP pSEXP, SEXP row_ofSEXP, SEXP fSEXP, SEXP f1SEXP, SEXP f2SEXP, SEXP NSEXP, SEXP am_codeSEXP, SEXP sparseSEXP, SEXP transform_codeSEXP) {
+BEGIN_RCPP
+    SEXP __sexp_result;
+    {
+        Rcpp::RNGScope __rngScope;
+        Rcpp::traits::input_parameter< int >::type nr(nrSEXP );
+        Rcpp::traits::input_parameter< int >::type nc(ncSEXP );
+        Rcpp::traits::input_parameter< IntegerVector >::type p(pSEXP );
+        Rcpp::traits::input_parameter< IntegerVector >::type row_of(row_ofSEXP );
+        Rcpp::traits::input_parameter< NumericVector >::type f(fSEXP );
+        Rcpp::traits::input_parameter< NumericVector >::type f1(f1SEXP );
+        Rcpp::traits::input_parameter< NumericVector >::type f2(f2SEXP );
+        Rcpp::traits::input_parameter< double >::type N(NSEXP );
+        Rcpp::traits::input_parameter< int >::type am_code(am_codeSEXP );
+        Rcpp::traits::input_parameter< int >::type sparse(sparseSEXP );
+        Rcpp::traits::input_parameter< int >::type transform_code(transform_codeSEXP );
+        NumericVector __result = CPP_dsm_score_sparse(nr, nc, p, row_of, f, f1, f2, N, am_code, sparse, transform_code);
+        PROTECT(__sexp_result = Rcpp::wrap(__result));
+    }
+    UNPROTECT(1);
+    return __sexp_result;
+END_RCPP
+}

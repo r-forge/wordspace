@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
 <title>TODO sheet for wordspace package development</title>
-<!-- 2014-03-05 Wed 00:11 -->
+<!-- 2014-04-18 Fri 23:00 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="generator" content="Org-mode" />
 <meta  name="author" content="Stefan Evert" />
@@ -134,6 +134,48 @@ for the JavaScript code in this tag.
  }
 /*]]>*///-->
 </script>
+<script type="text/javascript" src="http://orgmode.org/mathjax/MathJax.js"></script>
+<script type="text/javascript">
+<!--/*--><![CDATA[/*><!--*/
+    MathJax.Hub.Config({
+        // Only one of the two following lines, depending on user settings
+        // First allows browser-native MathML display, second forces HTML/CSS
+        //  config: ["MMLorHTML.js"], jax: ["input/TeX"],
+            jax: ["input/TeX", "output/HTML-CSS"],
+        extensions: ["tex2jax.js","TeX/AMSmath.js","TeX/AMSsymbols.js",
+                     "TeX/noUndefined.js"],
+        tex2jax: {
+            inlineMath: [ ["\\(","\\)"] ],
+            displayMath: [ ['$$','$$'], ["\\[","\\]"], ["\\begin{displaymath}","\\end{displaymath}"] ],
+            skipTags: ["script","noscript","style","textarea","pre","code"],
+            ignoreClass: "tex2jax_ignore",
+            processEscapes: false,
+            processEnvironments: true,
+            preview: "TeX"
+        },
+        showProcessingMessages: true,
+        displayAlign: "center",
+        displayIndent: "2em",
+
+        "HTML-CSS": {
+             scale: 100,
+             availableFonts: ["STIX","TeX"],
+             preferredFont: "TeX",
+             webFont: "TeX",
+             imageFont: "TeX",
+             showMathMenu: true,
+        },
+        MMLorHTML: {
+             prefer: {
+                 MSIE:    "MML",
+                 Firefox: "MML",
+                 Opera:   "HTML",
+                 other:   "HTML"
+             }
+        }
+    });
+/*]]>*///-->
+</script>
 </head>
 <body>
 <div id="content">
@@ -159,6 +201,8 @@ for the JavaScript code in this tag.
 <h2 id="sec-1"><span class="section-number-2">1</span> Internal redesign</h2>
 <div class="outline-text-2" id="text-1">
 <ul class="org-ul">
+<li>change native C code from deprecated .C() to Rcpp
+</li>
 <li><code>rbind.dsm()</code> and <code>merge.dsm()</code> need to be updated and documented properly
 </li>
 <li>further testing and bug fixes
@@ -200,8 +244,6 @@ for the JavaScript code in this tag.
 <h2 id="sec-4"><span class="section-number-2">4</span> Support for evaluation experiments</h2>
 <div class="outline-text-2" id="text-4">
 <ul class="org-ul">
-<li><code>pair.distances()</code> mit <code>rank</code>"none"=, ="fwd"=, ="bwd"=, ="avg"= und <code>avg.method</code>"arithmetic"=, ="geometric"=, ="harmonic"=
-</li>
 <li><code>as.dist.matrix(M, sim=FALSE)</code> to mark as distance matrix (so <code>nearest.neighbours</code>, <code>pair.distances</code>, etc. can be used); perhaps with method for dist objects &#x2013;&gt; has to support and preserve sparse matrix!
 </li>
 <li><code>nearest.neighbours()</code> and <code>pair.distances()</code> should work with M2 (= M) for cross-distance computations &#x2013;&gt; may conflict with efficient implementation of avg. rank!
@@ -221,7 +263,7 @@ for the JavaScript code in this tag.
 </li>
 <li>KL-Divergenz + Jensen-Shannon metric (Endres &amp; Schindelin 2003) für nichtnegative Vektoren (Eingabematrizen werden überprüft!)
 <ul class="org-ul">
-<li>KL-Divergenz –&gt; skew divergence (Lee 2001)?
+<li>KL-Divergenz &#x2013;&gt; skew divergence (Lee 2001)?
 </li>
 </ul>
 </li>
@@ -295,13 +337,17 @@ for the JavaScript code in this tag.
 </li>
 <li>implement in-place row and column scaling in C (dense matrix only) to conserve memory in cosine distance measure (worthwhile?)
 </li>
+<li><code>print()</code> and <code>summary()</code> methods for <code>dsm</code> objects?
+</li>
+<li>implement <code>head()</code> for <code>dsm</code> object: <code>head(M, n)</code> shows first \(n\) rows and columns; <code>head(M, n, k)</code> shows first \(n\) rows and \(k\) columns; automatically selects <code>$S</code> (if available) or <code>$M</code>
+</li>
 </ul>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Stefan Evert</p>
-<p class="date">Created: 2014-03-05 Wed 00:11</p>
+<p class="date">Created: 2014-04-18 Fri 23:00</p>
 <p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.3.1 (<a href="http://orgmode.org">Org</a> mode 8.2.5h)</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>

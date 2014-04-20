@@ -3,6 +3,7 @@
 
 * Internal redesign
 
+  - change native C code from deprecated .C() to Rcpp
   - =rbind.dsm()= and =merge.dsm()= need to be updated and documented properly
   - further testing and bug fixes
 
@@ -27,10 +28,9 @@
   - also see hand-written notes
 
 * Additional metrics
-
   - Dice und/oder Jaccard coefficient (nach Lin 1998) –> für nicht-positive Vektoren sinnvoll?
   - KL-Divergenz + Jensen-Shannon metric (Endres & Schindelin 2003) für nichtnegative Vektoren (Eingabematrizen werden überprüft!)
-    - KL-Divergenz –> skew divergence (Lee 2001)?
+    - KL-Divergenz --> skew divergence (Lee 2001)?
 
 * New projection methods
 
@@ -61,3 +61,5 @@
 
   - re-implement =scaleMargins()= in C for more memory-efficient row/column scaling of a large matrix
   - implement in-place row and column scaling in C (dense matrix only) to conserve memory in cosine distance measure (worthwhile?)
+  - =print()= and =summary()= methods for =dsm= objects?
+  - implement =head()= for =dsm= object: =head(M, n)= shows first $n$ rows and columns; =head(M, n, k)= shows first $n$ rows and $k$ columns; automatically selects =$S= (if available) or =$M=
