@@ -42,7 +42,7 @@ dsm.score(model,
   }
 
   \item{scale}{
-    if not \code{"none"}, standardize columns of scored matrix by z-transformation (\code{"standardize"}), center without rescaling (\code{"center"}, or scale to unit variance without centering (\code{"scale"})
+    if not \code{"none"}, standardize columns of scored matrix by z-transformation (\code{"standardize"}), center without rescaling (\code{"center"}, or scale to unit RMS without centering (\code{"scale"})
   }
 
   \item{normalize}{
