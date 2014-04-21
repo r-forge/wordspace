@@ -44,42 +44,42 @@ S rSVD to 100 dim. wordspace             3.378 106572.00   3.731  309.2
 Retina MacBook Pro 10,1 (2012), Intel Core i7 2.6 GHz (4 cores + hyperthreading), 6MB L2 Cache, GeForce 8600M GT
 Mac OS X 10.8.5, R 3.1.0, 64-bit, vecLib BLAS, no OpenMP support, wordspace v0.1-10
                                           time      MOPS CPUTime     MB
-D sqrt(t-score) R                        3.735     92.81   2.943 1511.2
-D sqrt(t-score) wordspace                0.643    539.10   0.550    0.1
-S sqrt(t-score) wordspace                0.103   3365.44   0.088   29.3
-D L2-norm rows R                         0.356    278.23   0.241  377.9
-D L2-norm columns R                      0.376    263.43   0.272  377.8
-S L2-norm rows R                         1.114     88.91   0.956  481.9
-S L2-norm columns R                      0.988    100.25   0.896  481.8
-D L2-norm rows wordspace                 0.058   1707.76   0.058    0.1
-D L2-norm columns wordspace              0.048   2063.54   0.048    0.0
+D sqrt(t-score) R                        3.916     88.52   3.096 1511.2
+D sqrt(t-score) wordspace                0.657    527.61   0.544    0.1
+S sqrt(t-score) wordspace                0.103   3365.44   0.089   29.3
+D L2-norm rows R                         0.364    272.12   0.246  377.9
+D L2-norm columns R                      0.379    261.35   0.275  377.8
+S L2-norm rows R                         1.174     84.37   0.999  481.9
+S L2-norm columns R                      0.998     99.25   0.910  481.8
+D L2-norm rows wordspace                 0.061   1623.77   0.060    0.1
+D L2-norm columns wordspace              0.047   2107.45   0.046    0.0
 S L2-norm rows wordspace                 0.006  16508.33   0.006    0.1
 S L2-norm columns wordspace              0.004  24762.50   0.004    0.0
-D normalize R                            0.608    244.35   0.406  378.0
-S normalize R                            1.157    128.41   1.040  583.5
-D normalize wordspace                    0.294    505.32   0.197    0.1
-S normalize wordspace                    0.091   1632.58   0.091   72.6
-D L1 distances R                         6.311    379.34   6.308    0.0
-D L1 distances wordspace                 0.788   3038.07   0.773   66.0
-S L1 distances wordspace                 0.509   4703.34   0.504    8.9
-D L3 distances R                        15.701    203.30  15.697    0.0
-D L3 distances wordspace                 9.190    347.33   9.176   65.9
-S L3 distances wordspace                 2.125   1502.12   2.123    8.9
-D cosine distances R                     0.051  31454.13   0.184   33.0
-S cosine distances R                     0.184   8718.26   0.163   72.6
-D cosine distances wordspace             0.046  34873.05   0.175   11.1
-S cosine distances wordspace             0.070  22916.58   0.067   13.7
-SVD-100 L1 distances R                   2.930   1255.15   2.886    0.0
-SVD-100 L1 distances wordspace           2.201   1670.88   1.955  755.9
-SVD-100 cosine distances R               0.550   4504.10   0.660  378.2
-SVD-100 cosine distances wordspace       1.756   1410.74   1.363  935.6
-D 20 nearest neighbours wordspace        1.534  32286.46   3.552  351.8
-S 20 nearest neighbours wordspace        1.520  32583.83   1.472  326.7
-SVD-100 20 nearest neighbours wordspace  0.611    822.63   0.624  313.8
-D SVD to 100 dim. R                      8.906  40422.21  30.131  459.7
-D SVD to 100 dim. wordspace              8.872  40577.12  30.177  465.8
-D rSVD to 100 dim. wordspace             1.735 207492.91   3.985  287.4
-S rSVD to 100 dim. wordspace             3.409 105602.87   3.756  309.2
+D normalize R                            0.609    243.95   0.401  378.0
+S normalize R                            1.166    127.41   1.049  583.5
+D normalize wordspace                    0.300    495.22   0.194    0.1
+S normalize wordspace                    0.092   1614.84   0.092   72.6
+D L1 distances R                         6.622    361.52   6.600    0.0
+D L1 distances wordspace                 0.790   3030.38   0.773   66.0
+S L1 distances wordspace                 0.532   4500.00   0.526    8.9
+D L3 distances R                        15.778    202.31  15.759    0.0
+D L3 distances wordspace                 9.184    347.56   9.170   65.9
+S L3 distances wordspace                 2.121   1504.95   2.120    8.9
+D cosine distances R                     0.053  30267.18   0.188   33.0
+S cosine distances R                     0.184   8718.26   0.162   72.6
+D cosine distances wordspace             0.048  33420.01   0.178   11.1
+S cosine distances wordspace             0.069  23248.70   0.066   13.7
+SVD-100 L1 distances R                   2.795   1315.78   2.759    0.0
+SVD-100 L1 distances wordspace           2.145   1714.50   1.897  755.9
+SVD-100 cosine distances R               0.552   4487.78   0.671  378.2
+SVD-100 cosine distances wordspace       1.766   1402.75   1.378  935.6
+D 20 nearest neighbours wordspace        1.551  31932.58   3.524  351.8
+S 20 nearest neighbours wordspace        1.538  32202.49   1.487  326.7
+SVD-100 20 nearest neighbours wordspace  0.571    880.26   0.579  313.8
+D SVD to 100 dim. R                      9.603  37488.31  32.162  459.7
+D SVD to 100 dim. wordspace              8.977  40102.51  30.463  465.8
+D rSVD to 100 dim. wordspace             1.809 199005.09   4.306  287.4
+S rSVD to 100 dim. wordspace             3.420 105263.22   3.765  309.2
 
 
 ------------------------------------------------------------------------

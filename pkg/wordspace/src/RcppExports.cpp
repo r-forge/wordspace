@@ -6,7 +6,7 @@
 using namespace Rcpp;
 
 // CPP_col_dist_dense
-NumericVector CPP_col_dist_dense(NumericMatrix x, NumericMatrix y, int metric_code, double param1, bool symmetric);
+NumericMatrix CPP_col_dist_dense(NumericMatrix x, NumericMatrix y, int metric_code, double param1, bool symmetric);
 RcppExport SEXP wordspace_CPP_col_dist_dense(SEXP xSEXP, SEXP ySEXP, SEXP metric_codeSEXP, SEXP param1SEXP, SEXP symmetricSEXP) {
 BEGIN_RCPP
     SEXP __sexp_result;
@@ -17,7 +17,32 @@ BEGIN_RCPP
         Rcpp::traits::input_parameter< int >::type metric_code(metric_codeSEXP );
         Rcpp::traits::input_parameter< double >::type param1(param1SEXP );
         Rcpp::traits::input_parameter< bool >::type symmetric(symmetricSEXP );
-        NumericVector __result = CPP_col_dist_dense(x, y, metric_code, param1, symmetric);
+        NumericMatrix __result = CPP_col_dist_dense(x, y, metric_code, param1, symmetric);
+        PROTECT(__sexp_result = Rcpp::wrap(__result));
+    }
+    UNPROTECT(1);
+    return __sexp_result;
+END_RCPP
+}
+// CPP_col_dist_sparse
+NumericMatrix CPP_col_dist_sparse(int nc1, IntegerVector xp, IntegerVector xrow, NumericVector x, int nc2, IntegerVector yp, IntegerVector yrow, NumericVector y, int metric_code, double param1, bool symmetric);
+RcppExport SEXP wordspace_CPP_col_dist_sparse(SEXP nc1SEXP, SEXP xpSEXP, SEXP xrowSEXP, SEXP xSEXP, SEXP nc2SEXP, SEXP ypSEXP, SEXP yrowSEXP, SEXP ySEXP, SEXP metric_codeSEXP, SEXP param1SEXP, SEXP symmetricSEXP) {
+BEGIN_RCPP
+    SEXP __sexp_result;
+    {
+        Rcpp::RNGScope __rngScope;
+        Rcpp::traits::input_parameter< int >::type nc1(nc1SEXP );
+        Rcpp::traits::input_parameter< IntegerVector >::type xp(xpSEXP );
+        Rcpp::traits::input_parameter< IntegerVector >::type xrow(xrowSEXP );
+        Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP );
+        Rcpp::traits::input_parameter< int >::type nc2(nc2SEXP );
+        Rcpp::traits::input_parameter< IntegerVector >::type yp(ypSEXP );
+        Rcpp::traits::input_parameter< IntegerVector >::type yrow(yrowSEXP );
+        Rcpp::traits::input_parameter< NumericVector >::type y(ySEXP );
+        Rcpp::traits::input_parameter< int >::type metric_code(metric_codeSEXP );
+        Rcpp::traits::input_parameter< double >::type param1(param1SEXP );
+        Rcpp::traits::input_parameter< bool >::type symmetric(symmetricSEXP );
+        NumericMatrix __result = CPP_col_dist_sparse(nc1, xp, xrow, x, nc2, yp, yrow, y, metric_code, param1, symmetric);
         PROTECT(__sexp_result = Rcpp::wrap(__result));
     }
     UNPROTECT(1);

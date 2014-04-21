@@ -75,7 +75,7 @@ NumericMatrix CPP_col_dist_dense(NumericMatrix x, NumericMatrix y, int metric_co
   }
   
   if (symmetric) mk_symmetric_matrix(dist);
-  return(dist);
+  return dist;
 }
 
 // [[Rcpp::export]]
@@ -83,6 +83,10 @@ NumericMatrix CPP_col_dist_sparse(int nc1, IntegerVector xp, IntegerVector xrow,
   check_metric(metric_code, param1);
   /* average number of entries scanned when comparing two columns */
   double avg_nr = (xp[nc1] - xp[0] + 0.0) / nc1 + (yp[nc2] - yp[0] + 0.0) / nc2; 
+  NumericVector::iterator _x = x.begin();
+  NumericVector::iterator _y = y.begin();
+  IntegerVector::iterator _xrow = xrow.begin();
+  IntegerVector::iterator _yrow = yrow.begin();
 
   NumericMatrix dist(nc1, nc2);
 
@@ -98,28 +102,29 @@ NumericMatrix CPP_col_dist_sparse(int nc1, IntegerVector xp, IntegerVector xrow,
       int xi_max = xp[col1 + 1];
       int xi = xp[col1];
       int yi = yp[col2];
-      int xrow_curr = (xi < xi_max) ? xrow[xi] : INT_MAX;
-      int yrow_curr = (yi < yi_max) ? yrow[yi] : INT_MAX;
+      int xrow_curr = (xi < xi_max) ? _xrow[xi] : INT_MAX;
+      int yrow_curr = (yi < yi_max) ? _yrow[yi] : INT_MAX;
       
       double accum = 0.0;
-      int d_xy, x_plus_y;
+      double x_curr, y_curr;
+      double d_xy, x_plus_y;
       while (xi < xi_max || yi < yi_max) {
 
         if (xrow_curr < yrow_curr) {
-          x_curr = x[xi]; y_curr = 0;
+          x_curr = _x[xi]; y_curr = 0.0;
           xi++;
-          xrow_curr = (xi < xi_max) ? xrow[xi] : INT_MAX;
+          xrow_curr = (xi < xi_max) ? _xrow[xi] : INT_MAX;
         }
         else if (xrow_curr == yrow_curr) {
-          x_curr = x[xi]; y_curr = y[yi];
+          x_curr = _x[xi]; y_curr = _y[yi];
           xi++; yi++;
-          xrow_curr = (xi < xi_max) ? xrow[xi] : INT_MAX;
-          yrow_curr = (yi < yi_max) ? yrow[yi] : INT_MAX;
+          xrow_curr = (xi < xi_max) ? _xrow[xi] : INT_MAX;
+          yrow_curr = (yi < yi_max) ? _yrow[yi] : INT_MAX;
         }
         else {
-          x_curr = 0; y_curr = y[yi];
+          x_curr = 0; y_curr = _y[yi];
           yi++;
-          yrow_curr = (yi < yi_max) ? yrow[yi] : INT_MAX;          
+          yrow_curr = (yi < yi_max) ? _yrow[yi] : INT_MAX;          
         }
         
         switch (metric_code) {
@@ -165,5 +170,5 @@ NumericMatrix CPP_col_dist_sparse(int nc1, IntegerVector xp, IntegerVector xrow,
   } /* for (col2) */
   
   if (symmetric) mk_symmetric_matrix(dist);
-  return(dist);
+  return dist;
 }
