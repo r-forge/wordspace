@@ -93,7 +93,7 @@ NumericMatrix CPP_col_dist_sparse(int nc1, IntegerVector xp, IntegerVector xrow,
 #pragma omp parallel for \
         if (openmp_threads > 1 && (nc1 + 0.0) * (nc2 + 0.0) * avg_nr > 40e6) \
         num_threads(openmp_threads) \
-        shared(dist)
+        shared(dist, nc1, xp, _xrow, _x, nc2, yp, _yrow, _y, metric_code, param1)
   for (int col2 = 0; col2 < nc2; col2++) {
     int col1_max = (symmetric) ? col2 + 1 : nc1;
     int yi_max = yp[col2 + 1];
