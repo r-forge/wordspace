@@ -12,8 +12,7 @@
 #include <Rcpp.h>
 using namespace Rcpp;
 
-void
-check_norm(int norm_code, double p) {
+void check_norm(int norm_code, double p) {
   if (norm_code < 0 || norm_code > 3)
     stop("internal error -- invalid norm code");
   if (norm_code == 3 && (!R_FINITE(p) || p < 1))
