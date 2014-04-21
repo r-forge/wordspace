@@ -10,7 +10,7 @@ include local/config.mk
 ##   jpeg2ps  (converts JPG images to EPS, using the JPG support of newer PostScript dialects)
 ##   convert  (graphics format conversion utility from the ImageMagick suite)
 
-LATEXMK = perl util/latexmk.perl -silent -pdf
+LATEXMK = perl util/latexmk.perl -pdf -silent
 
 EXTRA_CLEAN := $(EXTRA_CLEAN) workspace.pdf template.pdf
 
@@ -77,7 +77,7 @@ test:	$(IMAGES)
 	-rm -f $*.pdf
 	$(LATEXMK) $*.tex
 	-rm -f $@
-	pdfnup --nup 2x2 --paper a4paper --orient landscape --trim "-8mm -8mm -8mm -8mm" --outfile $@ $*.pdf
+	pdfnup --nup 2x2 --paper a4paper --landscape --trim "-8mm -8mm -8mm -8mm" --outfile $@ $*.pdf
 
 %.notes.pdf:	%.tex $(IMAGES)
 	perl util/EditFile.perl -HANDOUT +NOTES -SLIDES -NEVER $*.tex
@@ -85,7 +85,7 @@ test:	$(IMAGES)
 	-rm -f $*.pdf
 	$(LATEXMK) $*.tex
 	-rm -f $@
-	pdfnup --nup 2x2 --paper a4paper --orient landscape --trim "-8mm -8mm -8mm -8mm" --outfile $@ $*.pdf
+	pdfnup --nup 2x2 --paper a4paper --landscape --trim "-8mm -8mm -8mm -8mm" --outfile $@ $*.pdf
 
 %:	%.slides.pdf %.handout.pdf %.notes.pdf
 	@echo "Done"

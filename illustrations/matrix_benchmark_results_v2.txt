@@ -286,7 +286,7 @@ SVD trunc IRLBA S       0.969 38136.46   3.890
 
 ------------------------------------------------------------------------
 Retina MacBook Pro 10,1 (2012), Intel Core i7 2.6 GHz (4-core + hyperthreading), 6MB L2 Cache, GeForce 8600M GT
-Mac OS X 10.8.2, R 2.15.2, 64-bit, vecLib BLAS, wordspace v0.21 with experimental OpenMP support
+Mac OS X 10.8.2, R 2.15.2, 64-bit, vecLib BLAS, wordspace v0.0-21 with experimental OpenMP support
                          Time      MOPS CPUTime
 transpose D             0.078    100.83   0.077
 normalise D             0.215     36.58   0.190
@@ -362,7 +362,7 @@ SVD trunc IRLBA S       0.869  42525.00   1.641
 
 ------------------------------------------------------------------------
 Fujitsu Celcius R920, 2 x Intel Xeon E5-2530 (Sandy Bridge) 2.3 GHz (6-core + hyperthreading), 15 MB L2 Cache
-Ubuntu Linux 12.04 LTS (Kernel 3.0.8), 64-bit, optimised OpenBLAS, wordspace v0.21 with experimental OpenMP support
+Ubuntu Linux 12.04 LTS (Kernel 3.0.8), 64-bit, optimised OpenBLAS, wordspace v0.0-21 with experimental OpenMP support
                          Time      MOPS CPUTime
 transpose D             0.123     63.94   0.100
 normalise D             0.307     25.62   0.272
