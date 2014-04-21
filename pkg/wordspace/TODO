@@ -6,6 +6,7 @@
   - change native C code from deprecated .C() to Rcpp
   - =rbind.dsm()= and =merge.dsm()= need to be updated and documented properly
   - further testing and bug fixes
+    - OpenMP doesn't seem to work with Rcpp implementation (results correct, but no speedup from multiple threads)
 
 * Combining DSM objects
   - implement =cbind.dsm()=
