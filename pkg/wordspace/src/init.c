@@ -34,8 +34,6 @@ set_openmp_threads(int *num_threads) {
 #endif    
 }
 
-R_NativePrimitiveArgType col_dist_sparse_args[12] = {REALSXP, INTSXP, INTSXP, INTSXP, INTSXP, REALSXP, INTSXP, INTSXP, REALSXP, INTSXP, REALSXP, LGLSXP};
-
 R_NativePrimitiveArgType similarity_to_distance_args[5] = {REALSXP, INTSXP, INTSXP, REALSXP, INTSXP};
 
 R_NativePrimitiveArgType random_indexing_sparse_args[9] = {REALSXP, INTSXP, INTSXP, INTSXP, INTSXP, REALSXP, INTSXP, REALSXP, LGLSXP};
@@ -44,7 +42,6 @@ R_NativePrimitiveArgType get_openmp_threads_args[2] = {INTSXP, INTSXP};
 R_NativePrimitiveArgType set_openmp_threads_args[1] = {INTSXP};
 
 const R_CMethodDef cMethods[] = {
-  {"C_col_dist_sparse",  (DL_FUNC) &col_dist_sparse,  12, col_dist_sparse_args},
   {"C_similarity_to_distance", (DL_FUNC) &similarity_to_distance, 5, similarity_to_distance_args},
   {"C_random_indexing_sparse", (DL_FUNC) &random_indexing_sparse, 9, random_indexing_sparse_args},
   {"C_get_openmp_threads", (DL_FUNC) &get_openmp_threads, 2, get_openmp_threads_args},

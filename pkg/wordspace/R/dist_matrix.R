@@ -114,23 +114,7 @@ dist.matrix <- function (M, M2=NULL, method=c("cosine", "euclidean", "maximum", 
     param1 <- switch(method, euclidean=0, maximum=0, manhattan=0, minkowski=p, canberra=0)
   
     if (sparse.M) {
-      result <- matrix(0.0, nrow=ncol(.M), ncol=ncol(.M2))
-      .C(
-        C_col_dist_sparse,
-        result,
-        as.integer(ncol(.M)),
-        as.integer(ncol(.M2)),
-        as.integer(.M@p),
-        as.integer(.M@i),
-        as.double(.M@x),
-        as.integer(.M2@p),
-        as.integer(.M2@i),
-        as.double(.M2@x),
-        as.integer(method.code),
-        as.double(param1),
-        as.logical(symmetric && !cross.distance),
-        DUP=FALSE, NAOK=FALSE
-      )    
+      result <- CPP_col_dist_sparse(ncol(.M), .M@p, .M@i, .M@x, ncol(.M2), .M2@p, .M2@i, .M2@x, method.code, param1, symmetric && !cross.distance)
     } else {
       result <- CPP_col_dist_dense(.M, .M2, method.code, param1, symmetric && !cross.distance)
     }

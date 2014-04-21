@@ -86,45 +86,89 @@ S rSVD to 100 dim. wordspace             3.409 105602.87   3.756  309.2
 Fujitsu Celcius R920, 2 x Intel Xeon E5-2530 (Sandy Bridge) 2.3 GHz (6 cores + hyperthreading), 15 MB L2 Cache
 Ubuntu Linux 12.04 LTS (Kernel 3.2.0), 64-bit, optimised OpenBLAS, OpenMP, wordspace v0.1-5
                                           time      MOPS CPUTime     MB
-D sqrt(t-score) R                        5.827     59.49   4.720 1511.2
-D sqrt(t-score) wordspace                2.107    164.52   1.780  378.0
-S sqrt(t-score) wordspace                0.174   1992.18   0.168    0.2
-D L2-norm rows R                         0.379    261.35   0.240  377.9
-D L2-norm columns R                      0.273    362.82   0.152  377.8
-S L2-norm rows R                         1.527     64.87   1.292  481.9
-S L2-norm columns R                      1.387     71.41   1.180  481.8
-D L2-norm rows wordspace                 0.524    189.03   0.380  378.0
-D L2-norm columns wordspace              0.505    196.14   0.352  377.9
+D sqrt(t-score) R                        5.492     63.12   4.272 1511.2
+D sqrt(t-score) wordspace                2.104    164.75   1.764  378.0
+S sqrt(t-score) wordspace                0.173   2003.70   0.156    0.2
+D L2-norm rows R                         0.376    263.43   0.260  377.9
+D L2-norm columns R                      0.272    364.15   0.148  377.8
+S L2-norm rows R                         1.531     64.70   1.288  481.9
+S L2-norm columns R                      1.383     71.62   1.172  481.8
+D L2-norm rows wordspace                 0.523    189.39   0.380  378.0
+D L2-norm columns wordspace              0.504    196.53   0.372  377.9
 S L2-norm rows wordspace                 0.025   3962.00   0.024    0.1
 S L2-norm columns wordspace              0.022   4502.27   0.020    0.0
-D normalize R                            0.719    206.63   0.436  378.0
-S normalize R                            1.671     88.91   1.424  583.5
-D normalize wordspace                    0.630    235.82   0.488  378.1
+D normalize R                            0.718    206.91   0.436  378.0
+S normalize R                            1.673     88.80   1.420  583.5
+D normalize wordspace                    0.633    234.70   0.496  378.1
 S normalize wordspace                    0.166    894.97   0.164   72.6
-D L1 distances R                        24.436    153.16  24.413    0.0
-D L1 distances wordspace                 1.694   2209.27   1.688  122.3
-S L1 distances wordspace                 1.024   3654.79   1.020   12.4
-D L1 distances wordspace (2 threads)     1.395   2682.80   1.792  122.2
-S L1 distances wordspace (2 threads)     0.734   5098.77   1.032   12.4
-D L1 distances wordspace (4 threads)     0.925   4045.95   2.032  124.1
-S L1 distances wordspace (4 threads)     0.439   8525.06   1.064   14.3
-D cosine distances R                     0.071  35285.22   0.424   42.0
-S cosine distances R                     0.302   8295.53   0.300   96.2
-D cosine distances wordspace             0.120  20877.09   0.700   55.4
-S cosine distances wordspace             0.143  17519.23   0.140   21.4
-SVD-100 L1 distances R                  12.484    294.59  12.477    0.0
-SVD-100 L1 distances wordspace           2.422   1518.42   2.128  759.8
-SVD-100 cosine distances R               0.651   3805.30   1.728  378.2
-SVD-100 cosine distances wordspace       2.155   1149.54   2.680  939.4
-D 20 nearest neighbours wordspace        1.422  34829.41   9.297  351.8
-S 20 nearest neighbours wordspace        2.168  22844.75   2.164  326.7
-SVD-100 20 nearest neighbours wordspace  0.834    602.67   1.236  313.8
-D SVD to 100 dim. R                     19.356  18598.89  94.718  459.7
-D SVD to 100 dim. wordspace             19.572  18393.63  98.302  465.9
-D rSVD to 100 dim. wordspace             2.534 142067.96  17.173  287.5
-S rSVD to 100 dim. wordspace             4.857  74119.87  11.576  309.2
+D L1 distances R                        13.769    173.87  13.765    0.0
+D L1 distances wordspace                 1.086   2204.42   1.084   96.7
+S L1 distances wordspace                 0.689   3474.60   0.688    8.9
+D L1 distances wordspace (2 threads)     1.001   2391.61   1.225   96.6
+S L1 distances wordspace (2 threads)     0.485   4936.08   0.696    8.9
+D L1 distances wordspace (4 threads)     0.632   3787.97   1.280   97.8
+S L1 distances wordspace (4 threads)     0.279   8580.65   0.700   10.1
+D L3 distances R                        29.539    108.06  29.526    0.0
+D L3 distances wordspace                28.849    110.65  28.829   96.6
+S L3 distances wordspace                 9.745    327.55   9.741    9.0
+D cosine distances R                     0.052  30849.24   0.296   33.0
+S cosine distances R                     0.215   7461.21   0.212   72.7
+D cosine distances wordspace             0.077  20833.25   0.424   41.6
+S cosine distances wordspace             0.098  16368.98   0.100   13.7
+SVD-100 L1 distances R                  12.382    297.01  12.377    0.0
+SVD-100 L1 distances wordspace           2.408   1527.24   2.120  759.8
+SVD-100 cosine distances R               0.637   3888.94   1.608  378.3
+SVD-100 cosine distances wordspace       2.143   1155.97   2.657  939.5
+D 20 nearest neighbours wordspace        1.350  36686.98   9.452  351.8
+S 20 nearest neighbours wordspace        2.048  24183.31   2.044  326.6
+SVD-100 20 nearest neighbours wordspace  0.797    630.65   1.169  313.9
+D SVD to 100 dim. R                     19.355  18599.86  99.078  459.7
+D SVD to 100 dim. wordspace             19.102  18846.20  94.050  465.8
+D rSVD to 100 dim. wordspace             2.398 150125.19  16.089  287.5
+S rSVD to 100 dim. wordspace             4.704  76530.65  10.464  309.2
 
 
 ------------------------------------------------------------------------
 Fujitsu Celcius R920, 2 x Intel Xeon E5-2530 (Sandy Bridge) 2.3 GHz (6 cores + hyperthreading), 15 MB L2 Cache
 Ubuntu Linux 12.04 LTS (Kernel 3.2.0), 64-bit, optimised OpenBLAS, OpenMP, wordspace v0.1-10
+                                          time      MOPS CPUTime     MB
+D sqrt(t-score) R                        5.501     63.01   4.380 1511.1
+D sqrt(t-score) wordspace                0.904    383.45   0.764    0.1
+S sqrt(t-score) wordspace                0.155   2236.39   0.132   29.2
+D L2-norm rows R                         0.378    262.04   0.241  377.8
+D L2-norm columns R                      0.272    364.15   0.120  377.9
+S L2-norm rows R                         1.514     65.42   1.340  481.9
+S L2-norm columns R                      1.371     72.25   1.148  481.8
+D L2-norm rows wordspace                 0.065   1523.85   0.068    0.0
+D L2-norm columns wordspace              0.064   1547.66   0.064    0.0
+S L2-norm rows wordspace                 0.009  11005.56   0.008    0.0
+S L2-norm columns wordspace              0.006  16508.33   0.008    0.0
+D normalize R                            0.716    207.49   0.448  377.9
+S normalize R                            1.655     89.77   1.368  583.4
+D normalize wordspace                    0.178    834.63   0.180    0.1
+S normalize wordspace                    0.151    983.87   0.152   72.6
+D L1 distances R                        13.772    173.83  13.761    0.1
+D L1 distances wordspace                 1.045   2290.91   1.044   65.9
+S L1 distances wordspace                 0.651   3677.42   0.648    8.9
+D L1 distances wordspace (2 threads)     1.050   2280.00   1.048   66.0
+S L1 distances wordspace (2 threads)     0.496   4826.61   0.696    9.0
+D L1 distances wordspace (4 threads)     1.046   2288.72   1.044   67.2
+S L1 distances wordspace (4 threads)     0.289   8283.74   0.740   10.2
+D L3 distances R                        29.423    108.49  29.402    0.0
+D L3 distances wordspace                28.588    111.66  28.573   65.9
+S L3 distances wordspace                 9.721    328.36   9.717    8.9
+D cosine distances R                     0.052  30849.24   0.368   33.0
+S cosine distances R                     0.210   7638.86   0.212   72.6
+D cosine distances wordspace             0.040  40104.01   0.184   11.1
+S cosine distances wordspace             0.096  16710.00   0.096   13.7
+SVD-100 L1 distances R                  12.324    298.41  12.269    0.0
+SVD-100 L1 distances wordspace           2.707   1358.55   2.372  755.9
+SVD-100 cosine distances R               0.734   3375.00   1.140  378.2
+SVD-100 cosine distances wordspace       2.242   1104.93   2.040  935.6
+D 20 nearest neighbours wordspace        1.418  34927.66   9.664  351.8
+S 20 nearest neighbours wordspace        2.048  24183.31   2.048  326.7
+SVD-100 20 nearest neighbours wordspace  0.791    635.43   1.108  313.8
+D SVD to 100 dim. R                     19.460  18499.50 102.143  459.7
+D SVD to 100 dim. wordspace             19.335  18619.09 100.038  465.8
+D rSVD to 100 dim. wordspace             2.547 141342.83  16.765  287.4
+S rSVD to 100 dim. wordspace             4.917  73215.42  12.137  309.2
