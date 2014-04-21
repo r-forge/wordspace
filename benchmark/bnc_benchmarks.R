@@ -201,7 +201,7 @@ matrix.equal(svd100.dense.R, svd100.dense)
 
 ## print summary report
 cat("\n")
-cat("===== Benchmark results =====\n")
+cat(sprintf("===== Benchmark results for wordspace v%s (%s) =====\n", packageVersion("wordspace"), version$version.string))
 
 print(do.call(rbind, L))
 

@@ -1,0 +1,14 @@
+------------------------------------------------------------------------
+Retina MacBook Pro 10,1 (2012), Intel Core i7 2.6 GHz (4 cores + hyperthreading), 6MB L2 Cache, GeForce 8600M GT
+Mac OS X 10.8.5, R 3.1.0, 64-bit, vecLib BLAS, no OpenMP support, wordspace v0.1-5
+
+
+
+------------------------------------------------------------------------
+Retina MacBook Pro 10,1 (2012), Intel Core i7 2.6 GHz (4 cores + hyperthreading), 6MB L2 Cache, GeForce 8600M GT
+Mac OS X 10.8.5, R 3.1.0, 64-bit, vecLib BLAS, no OpenMP support, wordspace v0.1-10
+
+
+------------------------------------------------------------------------
+Fujitsu Celcius R920, 2 x Intel Xeon E5-2530 (Sandy Bridge) 2.3 GHz (6 cores + hyperthreading), 15 MB L2 Cache
+Ubuntu Linux 12.04 LTS (Kernel 3.2.0), 64-bit, optimised OpenBLAS, OpenMP, wordspace v0.1-5 with experimental OpenMP support
