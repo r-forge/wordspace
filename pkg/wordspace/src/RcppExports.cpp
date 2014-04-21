@@ -5,6 +5,25 @@
 
 using namespace Rcpp;
 
+// CPP_col_dist_dense
+NumericVector CPP_col_dist_dense(NumericMatrix x, NumericMatrix y, int metric_code, double param1, bool symmetric);
+RcppExport SEXP wordspace_CPP_col_dist_dense(SEXP xSEXP, SEXP ySEXP, SEXP metric_codeSEXP, SEXP param1SEXP, SEXP symmetricSEXP) {
+BEGIN_RCPP
+    SEXP __sexp_result;
+    {
+        Rcpp::RNGScope __rngScope;
+        Rcpp::traits::input_parameter< NumericMatrix >::type x(xSEXP );
+        Rcpp::traits::input_parameter< NumericMatrix >::type y(ySEXP );
+        Rcpp::traits::input_parameter< int >::type metric_code(metric_codeSEXP );
+        Rcpp::traits::input_parameter< double >::type param1(param1SEXP );
+        Rcpp::traits::input_parameter< bool >::type symmetric(symmetricSEXP );
+        NumericVector __result = CPP_col_dist_dense(x, y, metric_code, param1, symmetric);
+        PROTECT(__sexp_result = Rcpp::wrap(__result));
+    }
+    UNPROTECT(1);
+    return __sexp_result;
+END_RCPP
+}
 // CPP_row_norms_dense
 NumericVector CPP_row_norms_dense(NumericMatrix x, int norm_code, double p_norm = 2.0);
 RcppExport SEXP wordspace_CPP_row_norms_dense(SEXP xSEXP, SEXP norm_codeSEXP, SEXP p_normSEXP) {

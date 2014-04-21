@@ -92,7 +92,10 @@ dist.matrix(M, M2 = NULL,
   explain for each similarity measure how the conversion to a distance is accomplished
   
   Canberra distance is implemented for compatibility with R's builtin \code{\link{dist}} function, but is probably not very useful for DSMs.
+
   NB: definition of Canberra distance for opposite signs follows the Wikipedia page (\eqn{\sum_i |x_i - y_i| / |x_i| + |y_i|}{SUM(i) |x_i - y_i| / |x_i| + |y_i|}) and is different from that used by \code{\link{dist}} (\eqn{\sum_i |x_i - y_i| / |x_i + y_i|}{SUM(i) |x_i - y_i| / |x_i + y_i|})
+
+  NB: Canberra also differs from \code{dist()} if \eqn{x_i = y_i = 0}; the R implementation rescales the value by a factor length / entries used, which corresponds to imputing distance contribution for missing entries as average over existing ones; this makes sense for \code{NA} (which \code{wordspace} doesn't handle), but not for \eqn{x_i = y_i = 0}.
 }
 \references{
 %% ~put references to the literature/web site here ~
