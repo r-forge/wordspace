@@ -5,6 +5,10 @@ CPP_col_dist_dense <- function(x, y, metric_code, param1, symmetric) {
     .Call('wordspace_CPP_col_dist_dense', PACKAGE = 'wordspace', x, y, metric_code, param1, symmetric)
 }
 
+CPP_col_dist_sparse <- function(nc1, xp, xrow, x, nc2, yp, yrow, y, metric_code, param1, symmetric) {
+    .Call('wordspace_CPP_col_dist_sparse', PACKAGE = 'wordspace', nc1, xp, xrow, x, nc2, yp, yrow, y, metric_code, param1, symmetric)
+}
+
 CPP_row_norms_dense <- function(x, norm_code, p_norm = 2.0) {
     .Call('wordspace_CPP_row_norms_dense', PACKAGE = 'wordspace', x, norm_code, p_norm)
 }
