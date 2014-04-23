@@ -320,8 +320,18 @@ $1 \leq i \leq n$
 \item measure (Pearson) correlation between vector distances and R\&G average judgments \citep{Pado:Lapata:07}
 \end{enumerate}
 \end{itemize}
-  
-    \pause
+\end{frame}  
+
+\begin{frame}
+\frametitle{Semantic similarity judgments: example}
+\ungap[1]
+\begin{center}
+  \includegraphics[width=9cm]{img/bnc_rg65}
+\end{center}
+\end{frame}
+
+\begin{frame}
+\frametitle{Semantic similarity judgments: results}
     \begin{center}
       \begin{tabular}{|l|r|}
       \hline
@@ -337,13 +347,15 @@ $1 \leq i \leq n$
       window & 0.63\\
       \hline
     \end{tabular}
+
+    \gap[1]
+    \primary{Results for RG65 task}
       \end{center}
 \end{frame}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %\subsection{Noun categorization}
-
 
 
 \begin{frame}
@@ -435,6 +447,21 @@ artifacts) and 2-way (natural and artificial entities) clusterings
 \end{frame}
 
 
+\begin{frame}
+\frametitle{Noun categorization: example}
+\ungap[1]
+\begin{center}
+  \only<beamer:1| handout:0>{\includegraphics[width=8cm]{img/hieroglyph_clustering}}%
+  \only<beamer:2-| handout:1>{\includegraphics[width=8cm]{img/hieroglyph_clustering_6}}%
+\end{center}
+\ungap[1]
+\begin{itemize}
+\item<3-> majority labels: greens, birds, vehicles, tools, tools, tools
+\item<3-> correct: 5/11, 5/9, 6/11, 8/8, 1/1, 4/4
+\item<4-> purity = 30 correct out of 44 = 68.2\%
+\end{itemize}
+
+\end{frame}
 
 
 \frame{
