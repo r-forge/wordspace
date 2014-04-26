@@ -5,45 +5,54 @@ $| = 1;
 use Getopt::Long;
 use DirHandle;
 
+our $VERSION = "1.0.2";
+
 ## hard-coded cleanup specifications (filenames and patterns):
-sub unconditional_delete {			## always delete these files:
-  local($_ = shift);
+sub unconditional_delete {      ## always delete these files:
+  local($_) = shift;
   return 1 if /~$/ or /^\#.*\#$/ or /\.(xyc|blg)$/;       # emacs backup files, .xyc .blg
   return 1 if $_ eq "texput.log" or $_ eq "missfont.log"; # special tex log files
   return 0;
 } # 0 = don't delete, 1 = delete
-sub tex_delete {				## delete these files if corresponding *.tex exists
-  local($_ = shift);
-  return (1, $`) if /\.(aux|bbl|dvi|out|toc|lot|lof)$/;	  # .aux .bbl .dvi .out .toc .lot .lof
-  return (1, $`) if /\.aux\.bak$/;			  # .aux.bak created by latexmk.perl
-  return (2, $`) 				          # .ent .idx .ilg .ind .log .nav .ndx .nin .ps .snm .vrb
-    if /\.(ent|idx|ilg|ind|log|nav|ndx|nin|ps|snm|vrb)$/;
+sub tex_delete {        ## delete these files if corresponding *.tex exists
+  local($_) = shift;
+  return (1, $`) if /\.(aux|aux\.bak|bbl|dvi|out|toc|lot|lof|fls|synctex.gz)$/;    # .aux .bbl .dvi .out .toc .lot .lof
+  return (2, $`)                  # .ent .idx .ilg .ind .log .nav .ndx .nin .ps .snm .vrb .tdo
+    if /\.(ent|idx|ilg|ind|log|nav|ndx|nin|nlo|ps|snm|tdo|vrb|fdb_latexmk)$/;
   return 0;
 } # 0 = don't delete, 1 = delete if *.tex exists or --all, 2 = only delete if *.tex exists 
-sub conditional_delete {			## delete these files if a "base file" exists
-  local($_ = shift);
-  return $` if /\.flc$/;			          # .flc (emacs font lock cache)
+sub conditional_delete {      ## delete these files if a "base file" exists 
+  local($_) = shift;
+  return $` if /\.flc$/;                # .flc (emacs font lock cache)
   return 0;
 } # 0 = don't delete, $file = delete if $file exists
+sub macosx_delete{    ## delete unconditionally with --macosx
+  local($_) = shift;
+  return 1 if /^\.DS_Store$/;
+  return 1 if /^\._/;
+  return 0;
+}
 
 
-$Opt_Recurse = 0;		# recurse into subdirectories?
-$Opt_All = 0;			# delete TeX temporary files even if there is no associated .tex?
-$Opt_Dry = 0;			# dry run: don't delete any files, just show what would have been done
-$Opt_Verbose = 0;		# verbose: show which files are deleted
+$Opt_Recurse = 0;   # recurse into subdirectories?
+$Opt_All = 0;       # delete TeX temporary files even if there is no associated .tex?
+$Opt_OSX = 0;       # delete files specific to Mac OS X (when sharing data with other operating systems)
+$Opt_Dry = 0;       # dry run: don't delete any files, just show what would have been done
+$Opt_Verbose = 0;   # verbose: show which files are deleted
 $Opt_Help = 0;
 
 Getopt::Long::Configure(qw<no_auto_abbrev permute bundling>);
 $ok = GetOptions(
-		 "recurse|r" => \$Opt_Recurse,
-		 "all|a" => \$Opt_All,
-		 "dry-run|n" => \$Opt_Dry,
-		 "verbose|v" => \$Opt_Verbose,
-		 "help|h" => \$Opt_Help,
-		);
+     "recurse|r" => \$Opt_Recurse,
+     "all|a" => \$Opt_All,
+     "macosx|mac|m" => \$Opt_OSX,
+     "dry-run|n" => \$Opt_Dry,
+     "verbose|v" => \$Opt_Verbose,
+     "help|h" => \$Opt_Help,
+    );
 usage()
   if $Opt_Help or not $ok; 
-$Opt_Verbose = 1		# always report file names in dry run
+$Opt_Verbose = 1    # always report file names in dry run
     if $Opt_Dry;
 
 @ARGV = "."
@@ -76,7 +85,7 @@ sub hoover_dir {
   @files = grep {not -l "$dir/$_"} @files;
   # split into directories (for recursion) and plain files (for deletion)
   my @dirs = grep {-d} map {"$dir/$_"} grep {not /^\.+$/} @files;
-  @files = grep {-f "$dir/$_"} @files;	# special files etc. are ignored
+  @files = grep {-f "$dir/$_"} @files;  # special files etc. are ignored
   # delete files conditionally or unconditionally
   foreach $file (@files) {
     # remove these files unconditionally
@@ -87,14 +96,18 @@ sub hoover_dir {
     ($delete, $basename) = tex_delete($file);
     if ($delete) {
       delete_file($dir, $file)
-	if exists $lookup{"$basename.tex"} or ($Opt_All and $delete == 1);
+        if exists $lookup{"$basename.tex"} or ($Opt_All and $delete == 1);
       next;
     }
     $test_file = conditional_delete($file);
     if ($test_file) {
       delete_file($dir, $file)
-	if exists $lookup{$test_file};
+        if exists $lookup{$test_file};
       next;
+    }
+    if ($Opt_OSX) {
+      delete_file($dir, $file)
+        if macosx_delete($file);
     }
   }
   if ($Opt_Recurse) {
@@ -124,7 +137,7 @@ sub delete_file {
 #   print short usage information and exit
 sub usage {
   print STDERR "\n";
-  print STDERR "Usage:  Hoover [-r] [-a] [-n] [<dir> ...]\n\n";
+  print STDERR "Usage:  Hoover [-r] [-a] [-m] [-n] [<dir> ...]\n\n";
   print STDERR "Hoover deletes all sorts of temporary files (including\n";
   print STDERR "emacs backup / autosave files and TeX temporary files)\n";
   print STDERR "in the specified directories, or in the current directory\n";
@@ -135,6 +148,9 @@ sub usage {
   print STDERR "  --all, -a\n";
   print STDERR "      always delete TeX temporary files (use with caution!)\n";
   print STDERR "      (default: delete only when corresponding *.tex is found)\n";
+  print STDERR "  --macosx, --mac, -m\n";
+  print STDERR "      remove Mac OS X-specific files (.DS_Store, extended attributes)\n";
+  print STDERR "      use with great caution!\n";
   print STDERR "  --dry-run, -n\n";
   print STDERR "      only show what _would_ have been deleted\n";
   print STDERR "  --verbose, -v\n";
@@ -143,7 +159,7 @@ sub usage {
   print STDERR "      show this help page\n";
   print STDERR "\n";
   print STDERR "Type 'perldoc Hoover' for more information and terms of use.\n";
-  print STDERR "© 2003-2005 by Stefan Evert (http://purl.org/stefan.evert)\n";
+  print STDERR "Hoover v$VERSION Copyright (C) 2003-2013 by Stefan Evert\n";
   print STDERR "\n";
   exit 2;
 }
@@ -152,11 +168,11 @@ __END__
 
 =head1 NAME
 
-Hoover - Clean up temporary files  from TeX and Emacs
+Hoover - Clean up temporary files from TeX and Emacs
 
 =head1 SYNOPSIS
 
-  Hoover [-r] [-a] [-n] [<dir> ...]
+  Hoover [-r] [-a] [-m] [-n] [<dir> ...]
 
 =head1 DESCRIPTION
 
@@ -177,6 +193,11 @@ run (C<--dry-run> or C<-n>), which only prints the names of detected temporary
 files but does not delete them.  The C<--all> (or C<-a>) option forces
 deletion of certain file types even if no corresponding C<.tex> file can be
 found. I<Use with caution and read L<"DELETION RULES"> below!>
+
+The C<--macosx> (or C<--mac> or C<-m>) option additionally deletes some files
+specific to Mac OS X (C<.DS_Store>, C<._*> for extended attributes on non-HFS
+volumes).  This can be useful to clean up directories shared with other
+operating systems, but I<use this option with great caution>!
 
 When invoked with the C<--help> (or C<-h>) option, B<Hoover> prints a short
 usage summary.  Note that unlike most other Perl scripts, B<Hoover> allows
@@ -229,8 +250,8 @@ when there is a file F<manual.tex> in the same directory.
 =item *
 
 Files with one of the following extensions: C<.aux>, C<.bbl>, C<.dvi>,
-C<.ent>, C<.idx>, C<.ilg>, C<.ind>, C<.log>, C<.nav>, C<.ndx>, C<.nin>,
-C<.out>, C<.ps>, C<.snm>, C<.toc>, C<.vrb>
+C<.ent>, C<.idx>, C<.ilg>, C<.ind>, C<.log>, C<.nav>, C<.ndx>, C<.nin>, C<.nlo>,
+C<.out>, C<.ps>, C<.snm>, C<.toc>, C<.tdo>, C<.vrb>, C<.fdb_latexmk>
 
 =item *
 
@@ -260,6 +281,21 @@ I<Use the C<--all> option with great caution!> You should always perform a dry
 run (C<--dry-run>, C<-n>) first to make sure no important files are deleted
 accidentally.
 
+=head3 Optional deletes
+
+Further deletes can be activated with command-line options.  Use these
+I<with great caution> and always perform a C<--dry-run> first in order to
+make sure that no important files are accidentally deleted.
+
+=over 4
+
+=item *
+
+Files named C<.DS_Store> and files starting with C<._> will be deleted if
+the option C<--macosx> (or C<--mac> or C<-m>) is specified.
+
+=back
+
 
 =head1 COPYRIGHT
 
@@ -272,7 +308,7 @@ INCIDENTAL OR SPECIAL DAMAGES, INCLUDING ANY LOST PROFITS OR LOST
 SAVINGS, EVEN IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH
 DAMAGES, OR FOR ANY CLAIM BY ANY THIRD PARTY.
 
-Copyright (C) 2003-2005 by Stefan Evert (L<http://purl.org/stefan.evert>).
+Copyright (C) 2003-2013 by Stefan Evert (L<http://purl.org/stefan.evert>).
 
 =cut
 
