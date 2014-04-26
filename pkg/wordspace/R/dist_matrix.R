@@ -76,18 +76,8 @@ dist.matrix <- function (M, M2=NULL, method=c("cosine", "euclidean", "maximum", 
     if (convert) {
       n <- prod(dim(result))
       transform_code <- 0L # cosine -> angle transformation
-      n.clamped <- 0L
       tol <- 1e-12
-      .C(
-        C_similarity_to_distance,
-        result,
-        as.integer(n),
-        transform_code,
-        tol,
-        n.clamped,
-        DUP=FALSE, NAOK=FALSE
-      )
-      if (n.clamped > 0) warning("angular distance may be inaccurate (some cosine values out of range)")
+      result <- CPP_similarity_to_distance(result, transform_code, tol, duplicate=FALSE) # can operate inplace on <result>
       
       # tol <- 1e-12 # rounding errors tolerated for very small angles (cosine approx. 1 or -1)
       # if(!all(result >= -(1+tol) & result <= 1+tol)) warning("angular distance may be inaccurate (some cosine values out of range)")

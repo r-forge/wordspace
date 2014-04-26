@@ -171,3 +171,21 @@ BEGIN_RCPP
     return __sexp_result;
 END_RCPP
 }
+// CPP_similarity_to_distance
+NumericMatrix CPP_similarity_to_distance(NumericMatrix M, int opcode, double tol, bool duplicate = true);
+RcppExport SEXP wordspace_CPP_similarity_to_distance(SEXP MSEXP, SEXP opcodeSEXP, SEXP tolSEXP, SEXP duplicateSEXP) {
+BEGIN_RCPP
+    SEXP __sexp_result;
+    {
+        Rcpp::RNGScope __rngScope;
+        Rcpp::traits::input_parameter< NumericMatrix >::type M(MSEXP );
+        Rcpp::traits::input_parameter< int >::type opcode(opcodeSEXP );
+        Rcpp::traits::input_parameter< double >::type tol(tolSEXP );
+        Rcpp::traits::input_parameter< bool >::type duplicate(duplicateSEXP );
+        NumericMatrix __result = CPP_similarity_to_distance(M, opcode, tol, duplicate);
+        PROTECT(__sexp_result = Rcpp::wrap(__result));
+    }
+    UNPROTECT(1);
+    return __sexp_result;
+END_RCPP
+}

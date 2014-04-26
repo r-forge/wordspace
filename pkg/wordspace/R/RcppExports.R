@@ -33,3 +33,7 @@ CPP_dsm_score_sparse <- function(nr, nc, p, row_of, f, f1, f2, N, am_code, spars
     .Call('wordspace_CPP_dsm_score_sparse', PACKAGE = 'wordspace', nr, nc, p, row_of, f, f1, f2, N, am_code, sparse, transform_code)
 }
 
+CPP_similarity_to_distance <- function(M, opcode, tol, duplicate = TRUE) {
+    .Call('wordspace_CPP_similarity_to_distance', PACKAGE = 'wordspace', M, opcode, tol, duplicate)
+}
+
