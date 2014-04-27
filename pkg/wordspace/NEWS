@@ -6,7 +6,8 @@ Pre-release history
 
   - v0.1-10: use Rcpp instead of deprecated .C() native code interface
     - for performance reasons, .C() was used with DUP=FALSE, which is no longer allowed as of R 3.1.0
-    - package now depends on Rcpp (>= 0.11.0) and R (>= 3.0.0)
+    - in addition, some package tests for dsm.score(), dist.matrix() and dsm.projection() were added
+    - the package now depends on Rcpp (>= 0.11.0) and R (>= 3.0.0)
 
   - v0.1-x: partial re-design of DSM objects and basic functions
     - handling of sparse and non-negative co-occurrence matrices has been re-thought

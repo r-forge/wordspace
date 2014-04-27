@@ -108,8 +108,9 @@ dist.matrix <- function (M, M2=NULL, method=c("cosine", "euclidean", "maximum", 
     } else {
       result <- CPP_col_dist_dense(.M, .M2, method.code, param1, symmetric && !cross.distance)
     }
-    rownames(result) <- colnames(.M)
-    colnames(result) <- colnames(.M2)
+    dimnames(result) <- list(colnames(.M), colnames(.M2))
+    ## rownames(result) <- colnames(.M)
+    ## colnames(result) <- colnames(.M2)
 
   }
 

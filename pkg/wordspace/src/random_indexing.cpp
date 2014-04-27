@@ -29,6 +29,7 @@ NumericMatrix CPP_random_indexing_sparse(int nr, int nc, IntegerVector p, Intege
 
   NumericMatrix res(nr, n_ri);                      /* allocate matrix of projected vectors (should be 0-initialised!) */
   for (int i = 0; i < n_ri; i++) Q_norms[i] = 0.0;  /* initialise array of basis vector norms */
+  if (rate < 1.0 / n_ri) rate = 1.0 / n_ri; // make sure at least one nonzero entry is expected in each column
 
   for (int col = 0; col < nc; col++) {
     /* generate column of Q as random vector with fill rate <rate> and values +1 / -1 with equal probability */
@@ -59,9 +60,11 @@ NumericMatrix CPP_random_indexing_sparse(int nr, int nc, IntegerVector p, Intege
   
   /* rescale columns of <res>, i.e. random dimensions, with Euclidean norm of basis vectors */
   for (int rd = 0; rd < n_ri; rd++) {
-    double factor = 1.0 / sqrt(Q_norms[rd]);
-    NumericMatrix::Column v = res(_, rd);
-    v = v * factor;
+    if (Q_norms[rd] > 0) {
+      double factor = 1.0 / sqrt(Q_norms[rd]);
+      NumericMatrix::Column v = res(_, rd);
+      v = v * factor;
+    } // else this dimension is all zeroes (both basis vector and projection)
   }
   
   return res;
