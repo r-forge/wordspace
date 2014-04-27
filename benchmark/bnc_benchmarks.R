@@ -186,7 +186,7 @@ ok <- all.equal(nn.dense, nn.sparse)
 if (!isTRUE(ok)) print(ok)
 
 
-## dimensionality reduction
+## dimensionality reduction with SVD vs. randomized SVD
 nr.svd <- 2000
 nc.svd <- 5000
 svd.dim <- 100
@@ -200,12 +200,26 @@ svd.proj <- function (M, n) {
 ops <- 4 * nc.svd * nc.svd * nr.svd + 8 * nc.svd * nr.svd * nr.svd # complexity of full SVD according to Wikipedia talk page (which assumes nr >> nc, so this is calculated for t(M))
 ops <- ops + nr.svd * svd.dim # U %*% diag(d) = rescaling of columns
 
-L <- append.list(L, benchmark( svd100.dense.R <- svd.proj(Dense.svd, 100), "D SVD to 100 dim. R", ops ))
-L <- append.list(L, benchmark( svd100.dense <- dsm.projection(Dense.svd, n=100, method="svd", verbose=FALSE), "D SVD to 100 dim. wordspace", ops ))
-L <- append.list(L, benchmark( rsvd100.dense <- dsm.projection(Dense.svd, n=100, method="rsvd", oversampling=4, verbose=TRUE), "D rSVD to 100 dim. wordspace", ops ))
-L <- append.list(L, benchmark( rsvd100.sparse <- dsm.projection(Sparse.svd, n=100, method="rsvd", oversampling=4, verbose=TRUE), "S rSVD to 100 dim. wordspace", ops ))
+L <- append.list(L, benchmark( svd100.dense.R <<- svd.proj(Dense.svd, 100), "D SVD to 100 dim. R", ops ))
+L <- append.list(L, benchmark( svd100.dense <<- dsm.projection(Dense.svd, n=100, method="svd", verbose=FALSE), "D SVD to 100 dim. wordspace", ops ))
+L <- append.list(L, benchmark( rsvd100.dense <<- dsm.projection(Dense.svd, n=100, method="rsvd", oversampling=4, verbose=TRUE), "D rSVD to 100 dim. wordspace", ops ))
+L <- append.list(L, benchmark( rsvd100.sparse <<- dsm.projection(Sparse.svd, n=100, method="rsvd", oversampling=4, verbose=TRUE), "S rSVD to 100 dim. wordspace", ops ))
 
 matrix.equal(svd100.dense.R, svd100.dense)
+
+
+## dimensionality reduction with random indexing
+ri.dim <- 2000
+ri.rate <- .05
+## FP op count assumes semi-sparse implementation using only non-zero entries of random projection matrix Q 
+ops <- 2 * (ri.dim * nc * ri.rate) + (nr * ri.dim * nc * ri.rate) + (nr * ri.dim) # generate Q, matrix multiplication, rescale random dimensions
+
+set.seed(42)
+L <- append.list(L, benchmark( ri2k.dense <<- dsm.projection(Dense.scored$S, n=ri.dim, method="ri", rate=ri.rate, verbose=TRUE), "D RI to 2000 dim. wordspace", ops ))
+set.seed(42)
+L <- append.list(L, benchmark( ri2k.sparse <<- dsm.projection(Sparse.scored$S, n=ri.dim, method="ri", rate=ri.rate, verbose=TRUE), "S RI to 2000 dim. wordspace", ops ))
+## cannot compare results because random numbers are generated in different ways by R code and C code
+
 
 
 ## print summary report

@@ -49,6 +49,28 @@ BEGIN_RCPP
     return __sexp_result;
 END_RCPP
 }
+// CPP_random_indexing_sparse
+NumericMatrix CPP_random_indexing_sparse(int nr, int nc, IntegerVector p, IntegerVector row_of, NumericVector x, int n_ri, double rate, bool verbose = true);
+RcppExport SEXP wordspace_CPP_random_indexing_sparse(SEXP nrSEXP, SEXP ncSEXP, SEXP pSEXP, SEXP row_ofSEXP, SEXP xSEXP, SEXP n_riSEXP, SEXP rateSEXP, SEXP verboseSEXP) {
+BEGIN_RCPP
+    SEXP __sexp_result;
+    {
+        Rcpp::RNGScope __rngScope;
+        Rcpp::traits::input_parameter< int >::type nr(nrSEXP );
+        Rcpp::traits::input_parameter< int >::type nc(ncSEXP );
+        Rcpp::traits::input_parameter< IntegerVector >::type p(pSEXP );
+        Rcpp::traits::input_parameter< IntegerVector >::type row_of(row_ofSEXP );
+        Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP );
+        Rcpp::traits::input_parameter< int >::type n_ri(n_riSEXP );
+        Rcpp::traits::input_parameter< double >::type rate(rateSEXP );
+        Rcpp::traits::input_parameter< bool >::type verbose(verboseSEXP );
+        NumericMatrix __result = CPP_random_indexing_sparse(nr, nc, p, row_of, x, n_ri, rate, verbose);
+        PROTECT(__sexp_result = Rcpp::wrap(__result));
+    }
+    UNPROTECT(1);
+    return __sexp_result;
+END_RCPP
+}
 // CPP_row_norms_dense
 NumericVector CPP_row_norms_dense(NumericMatrix x, int norm_code, double p_norm = 2.0);
 RcppExport SEXP wordspace_CPP_row_norms_dense(SEXP xSEXP, SEXP norm_codeSEXP, SEXP p_normSEXP) {

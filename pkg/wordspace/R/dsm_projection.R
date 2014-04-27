@@ -91,36 +91,25 @@ dsm.projection <- function (model, method=c("svd", "rsvd", "asvd", "ri", "ri+svd
       rm(Q)
     } else {
       ## efficient C implementation of RI for sparse matrix (which is guaranteed to be in canonical format)
-      S <- matrix(0.0, nrow=nR, ncol=nRI) # pre-allocate projected matrix for C code
-      .C(
-        C_random_indexing_sparse,
-        S,  # will be modified inplace
-        as.integer(nR),
-        as.integer(nC),
-        as.integer(M@p),
-        as.integer(M@i),
-        as.double(M@x),
-        as.integer(nRI),
-        as.double(rate),
-        as.logical(verbose),
-        DUP=FALSE, NAOK=FALSE
-        )
+      S <- CPP_random_indexing_sparse(nR, nC, M@p, M@i, M@x, nRI, rate, verbose)
     }
     
     if (method == "ri+svd") {
       S <- dsm.projection(S, "svd", n, verbose=verbose, with.basis=FALSE) # use plain SVD since matrix is already dense
     }
-    R2 <- norm(S, "F")^2 / norm(M, "F")^2 
+    R2 <- norm(S, "F")^2 / norm(M, "F")^2
    
   } else {
     stop("dimensionality reduction method '", method, "' has not been implemented yet")
   }
 
-  rownames(S) <- rownames(M)
-  colnames(S) <- paste(method, 1:n, sep="")
+  dimnames(S) <- list(rownames(M), paste(method, 1:n, sep=""))
+  ## rownames(S) <- rownames(M)
+  ## colnames(S) <- paste(method, 1:n, sep="")
   if (with.basis) {
-    rownames(B) <- colnames(M)
-    colnames(B) <- colnames(S)
+    dimnames(B) <- list(colnames(M), colnames(S))
+    ## rownames(B) <- colnames(M)
+    ## colnames(B) <- colnames(S)
     attr(S, "basis") <- B
   }
   attr(S, "R2") <- R2
