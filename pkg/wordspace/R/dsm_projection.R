@@ -64,7 +64,8 @@ dsm.projection <- function (model, method=c("svd", "rsvd", "asvd", "ri", "ri+svd
 
   } else if (method %in% c("ri", "ri+svd")) {
     ## --- straightforward random indexing (with specified fill rate), optionally followed by rSVD ---
-
+    if (rate < 0 || rate > 1) stop("RI rate= must be between 0 and 1")
+    
     ## *** TODO: check references on statistical guarantees, appropriate fill rates, etc. ***
     if (method == "ri+svd") {
       nRI <- n * oversampling       # number of intermediate random dimensions
@@ -77,6 +78,7 @@ dsm.projection <- function (model, method=c("svd", "rsvd", "asvd", "ri", "ri+svd
     if (!info$sparse) {
       ## if original matrix can be stored in dense representation, RI should not pose any memory problems
       n.fill <- as.integer(nC * rate) # number of nonzero entries in each random vector
+      if (n.fill < 1) n.fill <- 1
       scale <- 1 / sqrt(n.fill)       # scale random vectors so they are normalised
 
       if (verbose) cat(sprintf(" - generating %d random vectors with %d of %d nonzero elements\n", nRI, n.fill, nC))
