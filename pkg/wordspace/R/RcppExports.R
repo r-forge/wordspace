@@ -9,6 +9,14 @@ CPP_col_dist_sparse <- function(nc1, xp, xrow, x, nc2, yp, yrow, y, metric_code,
     .Call('wordspace_CPP_col_dist_sparse', PACKAGE = 'wordspace', nc1, xp, xrow, x, nc2, yp, yrow, y, metric_code, param1, symmetric)
 }
 
+CPP_get_openmp_threads <- function() {
+    .Call('wordspace_CPP_get_openmp_threads', PACKAGE = 'wordspace')
+}
+
+CPP_set_openmp_threads <- function(n) {
+    invisible(.Call('wordspace_CPP_set_openmp_threads', PACKAGE = 'wordspace', n))
+}
+
 CPP_random_indexing_sparse <- function(nr, nc, p, row_of, x, n_ri, rate, verbose = TRUE) {
     .Call('wordspace_CPP_random_indexing_sparse', PACKAGE = 'wordspace', nr, nc, p, row_of, x, n_ri, rate, verbose)
 }
