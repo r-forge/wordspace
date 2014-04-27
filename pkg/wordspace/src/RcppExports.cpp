@@ -49,6 +49,32 @@ BEGIN_RCPP
     return __sexp_result;
 END_RCPP
 }
+// CPP_get_openmp_threads
+DataFrame CPP_get_openmp_threads();
+RcppExport SEXP wordspace_CPP_get_openmp_threads() {
+BEGIN_RCPP
+    SEXP __sexp_result;
+    {
+        Rcpp::RNGScope __rngScope;
+        DataFrame __result = CPP_get_openmp_threads();
+        PROTECT(__sexp_result = Rcpp::wrap(__result));
+    }
+    UNPROTECT(1);
+    return __sexp_result;
+END_RCPP
+}
+// CPP_set_openmp_threads
+void CPP_set_openmp_threads(int n);
+RcppExport SEXP wordspace_CPP_set_openmp_threads(SEXP nSEXP) {
+BEGIN_RCPP
+    {
+        Rcpp::RNGScope __rngScope;
+        Rcpp::traits::input_parameter< int >::type n(nSEXP );
+        CPP_set_openmp_threads(n);
+    }
+    return R_NilValue;
+END_RCPP
+}
 // CPP_random_indexing_sparse
 NumericMatrix CPP_random_indexing_sparse(int nr, int nc, IntegerVector p, IntegerVector row_of, NumericVector x, int n_ri, double rate, bool verbose = true);
 RcppExport SEXP wordspace_CPP_random_indexing_sparse(SEXP nrSEXP, SEXP ncSEXP, SEXP pSEXP, SEXP row_ofSEXP, SEXP xSEXP, SEXP n_riSEXP, SEXP rateSEXP, SEXP verboseSEXP) {
