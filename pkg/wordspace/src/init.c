@@ -34,13 +34,10 @@ set_openmp_threads(int *num_threads) {
 #endif    
 }
 
-R_NativePrimitiveArgType random_indexing_sparse_args[9] = {REALSXP, INTSXP, INTSXP, INTSXP, INTSXP, REALSXP, INTSXP, REALSXP, LGLSXP};
-
 R_NativePrimitiveArgType get_openmp_threads_args[2] = {INTSXP, INTSXP};
 R_NativePrimitiveArgType set_openmp_threads_args[1] = {INTSXP};
 
 const R_CMethodDef cMethods[] = {
-  {"C_random_indexing_sparse", (DL_FUNC) &random_indexing_sparse, 9, random_indexing_sparse_args},
   {"C_get_openmp_threads", (DL_FUNC) &get_openmp_threads, 2, get_openmp_threads_args},
   {"C_set_openmp_threads", (DL_FUNC) &set_openmp_threads, 1, set_openmp_threads_args},
   {NULL, NULL, 0}
