@@ -83,13 +83,14 @@ dsm.score <- function (model,
     scores <- scale(scores, center=TRUE, scale=FALSE)
   } else if (scale == "scale") {
     rms <- colNorms(scores, "euclidean") / sqrt(nrow(scores) - 1) # root mean square according to ?scale
-    scores <- scaleMargins(scores, cols = 1 / rms) # preserves sparse matrix representation
+    scores <- scaleMargins(scores, cols = 1 / rms, duplicate=FALSE) # transform in-place (scores has been allocated above)
   } else {
     # no scaling
   }
 
   if (normalize) {
-    scores <- normalize.rows(scores, method=method, p=p)
+    ## carry out normalize.rows() operation in-place (because scores has been newly allocated above)
+    scores <- scaleMargins(scores, 1 / rowNorms(scores, method=method, p=p), duplicate=FALSE)
   }
 
   dimnames(scores) <- dimnames(cooc.matrix) # make sure that row and column names are preserved

@@ -113,18 +113,18 @@ matrix.equal(as.matrix(distances.L1.R), distances.L1.ws)
 matrix.equal(distances.L1.ws, distances.L1.ws.sparse)
 
 if (wordspace.openmp()$available) {
-  wordspace.openmp(2)
-  L <- append.list(L, benchmark( distances.L1.wsOMP <<- dist.matrix(M1.dense, method="manhattan"), "D L1 distances wordspace (2 threads)", ops ))
-  L <- append.list(L, benchmark( distances.L1.wsOMP.sparse <<- dist.matrix(M1.sparse, method="manhattan"), "S L1 distances wordspace (2 threads)", ops ))
-  matrix.equal(distances.L1.ws, distances.L1.wsOMP)
-  matrix.equal(distances.L1.ws, distances.L1.wsOMP.sparse)
-  wordspace.openmp(4)
-  L <- append.list(L, benchmark( distances.L1.wsOMP <<- dist.matrix(M1.dense, method="manhattan"), "D L1 distances wordspace (4 threads)", ops ))
-  L <- append.list(L, benchmark( distances.L1.wsOMP.sparse <<- dist.matrix(M1.sparse, method="manhattan"), "S L1 distances wordspace (4 threads)", ops ))
-  matrix.equal(distances.L1.ws, distances.L1.wsOMP)
-  matrix.equal(distances.L1.ws, distances.L1.wsOMP.sparse)
+  for (n.threads in c(2, 4, 8)) {
+    if (n.threads <= wordspace.openmp()$max) {
+      wordspace.openmp(n.threads)
+      L <- append.list(L, benchmark( distances.L1.wsOMP <<- dist.matrix(M1.dense, method="manhattan"), sprintf("D L1 distances wordspace (%d threads)", n.threads), ops ))
+      L <- append.list(L, benchmark( distances.L1.wsOMP.sparse <<- dist.matrix(M1.sparse, method="manhattan"), sprintf("S L1 distances wordspace (%d threads)", n.threads), ops ))
+      matrix.equal(distances.L1.ws, distances.L1.wsOMP)
+      matrix.equal(distances.L1.ws, distances.L1.wsOMP.sparse)
+    }
+  }
   wordspace.openmp(1)
 }
+
 
 ## Minkowski distances (p = 3)
 ops <- (nr1 * (nr1 - 1) / 2) * (nc * 4) # approx. FP ops = (diff + abs + exp + sum) per vector element over all pairs of row vectors
@@ -135,6 +135,17 @@ L <- append.list(L, benchmark( distances.L3.ws.sparse <<- dist.matrix(M1.sparse,
 
 matrix.equal(as.matrix(distances.L3.R), distances.L3.ws)
 matrix.equal(distances.L3.ws, distances.L3.ws.sparse)
+
+if (wordspace.openmp()$available) {
+  for (n.threads in c(2, 4, 8)) {
+    if (n.threads <= wordspace.openmp()$max) {
+      wordspace.openmp(n.threads)
+      L <- append.list(L, benchmark( distances.L3.wsOMP.sparse <<- dist.matrix(M1.sparse, method="minkowski", p=3), sprintf("S L3 distances wordspace (%d threads)", n.threads), ops ))
+      matrix.equal(distances.L3.ws, distances.L3.wsOMP.sparse)
+    }
+  }
+  wordspace.openmp(1)
+}
 
 
 ## cosine similarities (conversion to angular distance has numerical problems in naive implementation)

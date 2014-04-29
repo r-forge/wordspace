@@ -70,7 +70,7 @@ dist.matrix <- function (M, M2=NULL, method=c("cosine", "euclidean", "maximum", 
       } else {
         norms.M2 <- if (byrow) rowNorms(M2, "euclidean") else colNorms(M2, "euclidean")        
       }
-      result <- scaleMargins(result, rows=1/norms.M, cols=1/norms.M2)
+      result <- scaleMargins(result, rows=1/norms.M, cols=1/norms.M2, duplicate=FALSE) # transform in-place (newly allocated above)
     }
 
     if (convert) {

@@ -5,20 +5,20 @@
 }
 \description{
 
-  This function provides a reasonably memory-efficient way to scale the rows and/or columns
+  This function provides a fast and memory-efficient way to scale the rows and/or columns
   of a dense or sparse matrix.
 
 }
 \usage{
 
-  scaleMargins(M, rows=NULL, cols=NULL)
+  scaleMargins(M, rows=NULL, cols=NULL, duplicate=TRUE)
 
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
 
   \item{M}{
-    a dense or sparse matrix.  A sparse matrix must be given in \code{\link[=dgCMatrix-class]{dgCMatrix}} format.
+    a dense or sparse matrix in canonical format
   }
 
   \item{rows}{
@@ -31,12 +31,21 @@
     If missing or \code{NULL}, the columns of M are not rescaled.
   }
 
+  \item{duplicate}{
+    if \code{FALSE}, modify the matrix \code{M} in place.  Don't ever set this argument to \code{FALSE}.
+  }
 }
 \details{
   
   NB: This function should be called \code{scale.margins}, but then it would be misinterpreted as an S3 method
   for the generic function \code{\link{scale}}.
 
+  If \code{M} is not in canonical format (dense numeric matrix or sparse matrix of class \code{dgCMatrix}),
+  it will automatically be converted.  In this case, the precise behaviour of \code{duplicate=FALSE} is undefined.
+
+  \code{duplicate=FALSE} is intended for internal use only.
+  
+  
 }
 \value{
 
@@ -47,6 +56,7 @@
 %% ~put references to the literature/web site here ~
 }
 \seealso{
+  \code{\link{dsm.is.canonical}}
 }
 \examples{
 ## TODO

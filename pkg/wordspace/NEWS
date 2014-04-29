@@ -4,6 +4,9 @@ Changes in version 0.3-0
 
 Pre-release history
 
+  - v0.1-???
+    - Rcpp implementation of scaleMargins() further reduces memory overhead (with in-place operation for internal use)
+
   - v0.1-10: use Rcpp instead of deprecated .C() native code interface
     - for performance reasons, .C() was used with DUP=FALSE, which is no longer allowed as of R 3.1.0
     - in addition, some package tests for dsm.score(), dist.matrix() and dsm.projection() were added
