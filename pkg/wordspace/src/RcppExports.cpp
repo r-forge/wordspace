@@ -173,6 +173,42 @@ BEGIN_RCPP
     return __sexp_result;
 END_RCPP
 }
+// CPP_scale_margins_dense
+NumericMatrix CPP_scale_margins_dense(NumericMatrix M, NumericVector rows, NumericVector cols, bool duplicate = true);
+RcppExport SEXP wordspace_CPP_scale_margins_dense(SEXP MSEXP, SEXP rowsSEXP, SEXP colsSEXP, SEXP duplicateSEXP) {
+BEGIN_RCPP
+    SEXP __sexp_result;
+    {
+        Rcpp::RNGScope __rngScope;
+        Rcpp::traits::input_parameter< NumericMatrix >::type M(MSEXP );
+        Rcpp::traits::input_parameter< NumericVector >::type rows(rowsSEXP );
+        Rcpp::traits::input_parameter< NumericVector >::type cols(colsSEXP );
+        Rcpp::traits::input_parameter< bool >::type duplicate(duplicateSEXP );
+        NumericMatrix __result = CPP_scale_margins_dense(M, rows, cols, duplicate);
+        PROTECT(__sexp_result = Rcpp::wrap(__result));
+    }
+    UNPROTECT(1);
+    return __sexp_result;
+END_RCPP
+}
+// CPP_scale_margins_sparse
+S4 CPP_scale_margins_sparse(S4 M, NumericVector rows, NumericVector cols, bool duplicate = true);
+RcppExport SEXP wordspace_CPP_scale_margins_sparse(SEXP MSEXP, SEXP rowsSEXP, SEXP colsSEXP, SEXP duplicateSEXP) {
+BEGIN_RCPP
+    SEXP __sexp_result;
+    {
+        Rcpp::RNGScope __rngScope;
+        Rcpp::traits::input_parameter< S4 >::type M(MSEXP );
+        Rcpp::traits::input_parameter< NumericVector >::type rows(rowsSEXP );
+        Rcpp::traits::input_parameter< NumericVector >::type cols(colsSEXP );
+        Rcpp::traits::input_parameter< bool >::type duplicate(duplicateSEXP );
+        S4 __result = CPP_scale_margins_sparse(M, rows, cols, duplicate);
+        PROTECT(__sexp_result = Rcpp::wrap(__result));
+    }
+    UNPROTECT(1);
+    return __sexp_result;
+END_RCPP
+}
 // CPP_dsm_score_dense
 NumericMatrix CPP_dsm_score_dense(NumericMatrix f, NumericVector f1, NumericVector f2, double N, int am_code, int sparse, int transform_code);
 RcppExport SEXP wordspace_CPP_dsm_score_dense(SEXP fSEXP, SEXP f1SEXP, SEXP f2SEXP, SEXP NSEXP, SEXP am_codeSEXP, SEXP sparseSEXP, SEXP transform_codeSEXP) {

@@ -3,11 +3,7 @@
 
 * Internal redesign
 
-  - change native C code from deprecated .C() to Rcpp
   - =rbind.dsm()= and =merge.dsm()= need to be updated and documented properly
-  - further testing and bug fixes
-    - OpenMP doesn't seem to work with Rcpp implementation (results correct, but no speedup from multiple threads)
-    - write test scripts for core functionality (comparison against plain R code / builtins)
 
 * Combining DSM objects
   - implement =cbind.dsm()=
@@ -59,9 +55,14 @@
   - remove dsm.score.old, rowNorms.old, normalize.rows.old, ... (NAMESPACE, R/...) when new C implementation has been tested sufficiently
   - replace as.double(), as.integer() in .C() calls by functions that check whether argument already is a double/int vector or matrix and pass through without dropping attributes etc. in this case (to keep R's pseudo-refcounting from making unnecessary copies in some cases)
 
+* Optimization
+
+  - investigate memory overhead shown by benchmarks
+    - cosine distance for dense (and possibly also sparse) matrix; very substantial overhead in "SVD-100 cosine distances" benchmark
+    - dense dist.matrix() compared to dist()
+  - =dsm.projection()= could have option =renormalized= that performs row normalization in-place (with additional arguments passed on to rowNorms())
+
 * Miscellaneous
 
-  - re-implement =scaleMargins()= in C for more memory-efficient row/column scaling of a large matrix
-  - implement in-place row and column scaling in C (dense matrix only) to conserve memory in cosine distance measure (worthwhile?)
   - =print()= and =summary()= methods for =dsm= objects?
   - implement =head()= for =dsm= object: =head(M, n)= shows first $n$ rows and columns; =head(M, n, k)= shows first $n$ rows and $k$ columns; automatically selects =$S= (if available) or =$M=

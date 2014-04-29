@@ -37,6 +37,14 @@ CPP_col_norms_sparse <- function(nr, nc, p, row_of, x, norm_code, p_norm = 2.0) 
     .Call('wordspace_CPP_col_norms_sparse', PACKAGE = 'wordspace', nr, nc, p, row_of, x, norm_code, p_norm)
 }
 
+CPP_scale_margins_dense <- function(M, rows, cols, duplicate = TRUE) {
+    .Call('wordspace_CPP_scale_margins_dense', PACKAGE = 'wordspace', M, rows, cols, duplicate)
+}
+
+CPP_scale_margins_sparse <- function(M, rows, cols, duplicate = TRUE) {
+    .Call('wordspace_CPP_scale_margins_sparse', PACKAGE = 'wordspace', M, rows, cols, duplicate)
+}
+
 CPP_dsm_score_dense <- function(f, f1, f2, N, am_code, sparse, transform_code) {
     .Call('wordspace_CPP_dsm_score_dense', PACKAGE = 'wordspace', f, f1, f2, N, am_code, sparse, transform_code)
 }
