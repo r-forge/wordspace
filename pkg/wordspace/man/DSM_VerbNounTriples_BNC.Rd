@@ -13,7 +13,7 @@
 }
 \usage{
   
-head(DSM_VerbNounTriples_BNC, 20)
+DSM_VerbNounTriples_BNC
 
 }
 \format{
