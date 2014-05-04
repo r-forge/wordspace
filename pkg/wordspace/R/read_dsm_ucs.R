@@ -42,12 +42,12 @@ read.dsm.ucs <- function (filename, encoding=getOption("encoding"), verbose=FALS
 
   if (verbose) cat(" - marginal frequencies of targets (row information)\n")
   fh <- .access.file(archive, "rows.tbl", encoding)
-  rows <- read.delim(fh, colClasses=c(term="character", f="double"), quote="", comment.char="", stringsAsFactors=FALSE)
+  rows <- read.delim(fh, colClasses=c(term="character", f="double"), quote="", comment.char="", stringsAsFactors=FALSE, na.strings="")
   close(fh)
   
   if (verbose) cat(" - marginal frequencies of features (column information)\n")
   fh <- .access.file(archive, "cols.tbl", encoding)
-  cols <- read.delim(fh, colClasses=c(term="character", f="double"), quote="", comment.char="", stringsAsFactors=FALSE)
+  cols <- read.delim(fh, colClasses=c(term="character", f="double"), quote="", comment.char="", stringsAsFactors=FALSE, na.strings="")
   close(fh)
   
   n.rows <- nrow(rows)

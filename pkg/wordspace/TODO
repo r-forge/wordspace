@@ -61,6 +61,10 @@
     - cosine distance for dense (and possibly also sparse) matrix; very substantial overhead in "SVD-100 cosine distances" benchmark
     - dense dist.matrix() compared to dist()
   - =dsm.projection()= could have option =renormalized= that performs row normalization in-place (with additional arguments passed on to rowNorms())
+  - implement optimized file I/O functions in Rcpp
+    - https://github.com/romainfrancois/fastread shows how to use connections from Rcpp
+    - e.g. two-pass =read.dsm.triplet()=, memory-friendly =write.matrix()=, etc.
+    - perhaps I/O code for (co-occurrence) frequency tables and other forms of corpus data should be part of a separate package
 
 * Miscellaneous
 
