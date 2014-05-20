@@ -17,3 +17,20 @@ DSM_VerbNounTriples_BNC <- subset(bnc.vn, f >= 2, c("noun", "rel", "verb", "f", 
 
 str(DSM_VerbNounTriples_BNC)
 save(DSM_VerbNounTriples_BNC, file="data/DSM_VerbNounTriples_BNC.rda", compress="xz", compression_level=6)
+
+if (TRUE) {
+  ## validate new data extraction (without duplicate entries) against old data sets
+  ## NB: new tuples are sorted lexicographically, so need to resort DSM matrices for comparison
+ 
+  bnc.vn.old <- read.delim("orig/bnc_cc_vn_triples_old.txt.gz", header=FALSE, quote="", col.names=c("f", "noun", "rel", "verb", "mode"), colClasses=c("numeric", "character", "character", "character", "factor"), fileEncoding="utf8")
+  Mold <- with(bnc.vn.old, dsm(target=noun, feature=paste(rel, verb), score=f, raw.freq=TRUE, sort=TRUE, verbose=TRUE))
+  Mnew <- with(bnc.vn, dsm(target=noun, feature=paste(rel, verb), score=f, raw.freq=TRUE, sort=TRUE, verbose=TRUE))
+  all.equal(dim(Mold), dim(Mnew))
+  all.equal(Mold$M, Mnew$M)
+
+  desc.vn.old <- read.delim("orig/desc_cc_vn_triples_old.txt.gz", header=FALSE, quote="", col.names=c("f", "noun", "rel", "verb"), colClasses=c("numeric", "character", "character", "character"), fileEncoding="utf8")
+  Mold <- with(desc.vn.old, dsm(target=noun, feature=paste(rel, verb), score=f, raw.freq=TRUE, sort=TRUE, verbose=TRUE))
+  Mnew <- with(desc.vn, dsm(target=noun, feature=paste(rel, verb), score=f, raw.freq=TRUE, sort=TRUE, verbose=TRUE))
+  all.equal(dim(Mold), dim(Mnew))
+  all.equal(Mold$M, Mnew$M)
+}

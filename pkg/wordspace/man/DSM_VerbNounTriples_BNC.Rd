@@ -1,4 +1,4 @@
-\name{DSM_VerbNounTriples_BNC}
+    \name{DSM_VerbNounTriples_BNC}
 \alias{DSM_VerbNounTriples_BNC}
 \docType{data}
 \title{
@@ -17,7 +17,7 @@ DSM_VerbNounTriples_BNC
 
 }
 \format{
-  A data frame with 715112 rows and the following columns:
+  A data frame with 775283 rows and the following columns:
   \describe{
     \item{\code{noun}:}{noun lemma}
     \item{\code{rel}:}{syntactic relation (\code{subj} or \code{obj})}

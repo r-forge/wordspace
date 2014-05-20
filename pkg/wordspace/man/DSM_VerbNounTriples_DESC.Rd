@@ -17,7 +17,7 @@ DSM_VerbNounTriples_DESC
 
 }
 \format{
-  A data frame with 311538 rows and the following columns:
+  A data frame with 307941 rows and the following columns:
   \describe{
     \item{\code{noun}:}{noun lemma}
     \item{\code{rel}:}{syntactic relation (\code{subj} or \code{obj})}
