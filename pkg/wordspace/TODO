@@ -1,18 +1,33 @@
 # -*-org-*-
 #+TITLE: TODO sheet for wordspace package development
+#+AUTHOR: Stefan Evert
+#+EMAIL:  stefan.evert@fau.de
+#+LANGUAGE:  en
+#+OPTIONS:   H:3 num:t toc:nil \n:nil @:t ::t |:t ^:t -:t f:t *:t <:t
+#+OPTIONS:   TeX:t LaTeX:t skip:nil d:nil todo:t pri:nil tags:not-in-toc
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="etc/orgmode.css" />
 
 * Urgent updates for COLING paper submission
 
   - implement =as.dsm()= generic with method =as.dsm.TermDocumentMatrix= for import from =tm= package + simple test script
+    - can be extended to other conversions, e.g. from matrix or dgCMatrix with row and column names
   - move evaluation functions and some gold standards from =wordspaceEval= to =wordspace=
   - (optional) implement "network" plot as =plot.dist.matrix()= method
   - implement =head.dsm()= method: =head(M, n)= shows first $n$ rows and columns; =head(M, n, k)= shows first $n$ rows and $k$ columns; automatically selects =$S= (if available) or =$M=
   - special case optimization in =subset.dsm()=: return input unchanged if no rows or columns are dropped (to avoid unnecessary duplication with recursive=TRUE)
-  - =write.matrix()= as safe wrapper around =write()= for very large output files
-    - shouldn't be called =write.matrix()=, which already exists in MASS
-    - perhaps as =write.dsm.dissect()= with options to save row/column names and dense/sparse matrices
+  - =write.dsm.matrix()= as safe wrapper around =write()= for very large output files
+    - can't be called =write.matrix()=, which already exists in MASS (but doesn't look very optimal)
+    - should have options to save row/column names and dense/sparse matrices in various text formats
   - basic documentation and usage examples for all functions
-  
+  - =nearest.neighbours()= should optionally return =dist.matrix= of target term and its nearest neighbours
+    - index of target term in matrix annotated as =attr("selected")=
+  - method =plot.dist.matrix()= for visualization of semantic maps
+    - options to show/hide labels, choice of MDS methods
+    - option to show "spiderweb" plot of semantic neighbourhood; points indicated by =attr("selected")= are highlighted automatically
+    - possible extension: class of points indicated by colour + legend box (for semantic maps); overrides highlighting(?)
+    - returns MDS coordinates with terms as =rowlabels()=
+  - interface to sparse SVD using SVDLIBC
+    - as separate R package =sparseSVD= or so, required by =wordspace=
 
 * Internal redesign
 
@@ -33,32 +48,50 @@
 
 * Support for evaluation experiments
 
-  - =as.dist.matrix(M, sim=FALSE)= to mark as distance matrix (so =nearest.neighbours=, =pair.distances=, etc. can be used); perhaps with method for dist objects --> has to support and preserve sparse matrix!
-  - =nearest.neighbours()= and =pair.distances()= should work with M2 (= M) for cross-distance computations --> may conflict with efficient implementation of avg. rank!
-  - =pair.distances()= should accept pre-computed =dist.matrix= (both distance and similarity) --> may conflict with implementation of cross-distances
+  - =as.dist.matrix(M, sim=FALSE)= to mark as distance matrix (so =nearest.neighbours=, =pair.distances=, etc. can be used)
+    - methods for dense and sparse canonical matrix (perhaps as =as.dist.matrix.default=)
+    - method for =dist= objects, which converts them to full symmetric matrix
+  - =nearest.neighbours()= and =pair.distances()= should work with M2 (= M) for cross-distance computations
+    - don't exclude $d(x,y) = 0$ in =nearest.neighbours()=, which may be valid in certain spaces (and certainly in the cross-distance setting)
+    - instead, exclude term as its own nearest neighbour if =M2=NULL=, but apply no other filters
+    - in =pair.distances()=, adjust ranks by one only if =M2=NULL=
+  - =pair.distances()= should accept pre-computed =dist.matrix= (both distance and similarity scores, marked appropriately)
+    - may be difficult to integrate with implementation of cross-distances (and a more efficient implementation of average rank)
+    - can be used to safely read out association scores from "fake" distance matrix (marked with =as.dist.matrix=)
   - also see hand-written notes
 
 * Additional metrics
-  - Dice und/oder Jaccard coefficient (nach Lin 1998) –> für nicht-positive Vektoren sinnvoll?
-  - KL-Divergenz + Jensen-Shannon metric (Endres & Schindelin 2003) für nichtnegative Vektoren (Eingabematrizen werden überprüft!)
-    - KL-Divergenz --> skew divergence (Lee 2001)?
+  - Dice and/or Jaccard coefficient (Lin 1998) –-> is there a meaningful formulation for non-negative vectors?
+  - KL divergence and Jensen-Shannon metric (Endres & Schindelin 2003) for non-negative vectors
+    - input matrices have to be checked unless they're already marked
+    - KL divergence --> skew divergence (Lee 2001)?
 
 * New projection methods
 
-  - power scaling for =dsm.projection= (Caron 2001); needs built-in renormalization, I think, or keep total R2 same
-  - what is a sensible relative R2 for different =dsm.projection= methods? especially SVD without centering and non-orthogonal projections
-  - =nndsvd()= nach Boutsidis & Gallopoulos (2008); wandelt SVD-Zerlegung in nichtnegative Approximation um
+  - power scaling for =dsm.projection= (Caron 2001); needs built-in renormalization, I think, or keep total $R^2$ same
+  - what is a sensible relative $R^2$ for different =dsm.projection= methods? especially SVD without centering and non-orthogonal projections
+  - implement =nndsvd()= according to Boutsidis & Gallopoulos (2008)
+    - transforms given SVD into an approximate non-negative decomposition
     - can this be interpreted as a (non-orthogonal) projection? what are the basis vectors?
-    - wie kann R2 hier abgeschätzt werden?
-    - unbedingt Tests zu Genauigkeit / Anwendungsnutzen dieser Approximation
-    - in dsm.projection() evtl. eine Option =non.negative=TRUE= anbieten, die nur für nonneg-Eingabematrix zulässig ist und auf eine nonneg-Matrix projiziert (nonneg-Basis für RI, NNDSVD für SVD)
-  - NMF implementieren (multiplicative updates, nach Python-Vorlage)
-    - benötigt C-Funktion, die =crossprod()= nur für nonzero entries einer sparse matrix berechnet
-    - diese Funktion kann ggf. auch modifiziert werden, um Approximationsfehler der Zerlegung einer sparse matrix exakt zu bestimmen
-    - Initialisierung mit =nndsvd()= bzw. NNDSVDar; alternativ mehrere Runs mit zufälligen Initialisierungen -> beste Approximation auswählen
+    - what is a sensible $R^2$ in this case?
+    - requires thorough validation test to determine approximation quality and usefulness of this decomposition
+  - =dsm.projection()= could have an Option =non.negative=TRUE=
+    - only valid if input matrix is non-negative
+    - guarantees that projection is also non-negative (by using a non-negative basis with RI, and NNDSVD with SVD)
+  - implement NMF (multiplicative updates, cf. Python code)
+    - key element: C/C++ function to compute =crossprod()= only for nonzero entries of a given sparse matrix
+    - possibly modified version of this function in order to compute approximation error of sparse matrix decomposition
+    - NMF can be initialized with =nndsvd()= or NNDSVDar (but only reproducible if the initialization is not obtained by rSVD)
+    - alternatively, carry out multiple runs with random initializations and select the best approximation
+    - should also experiment with more sophisticated variants of NMF that include regularization terms (--> similar to sparse priors)
+  - experiment with LDA and similar topic models
+    - use implementation in =topicmodels= package
+    - can this deal with arbitrary non-negative scores, or only (binary?) frequency counts?
+    - can this still be interpreted as a projection method, or do we need a second function =dsm.decomp()=?
 
 * Analysis support
-  - Chinese Whispers implementieren (verschiedene Varianten: batch update in R, single updates in C)
+  - implement Chinese Whispers clustering algorithm
+    - try different versions: batch update with R code, single updates implemented in C/C++
 
 * Cleanup and documentation
 
@@ -80,3 +113,5 @@
 * Miscellaneous
 
   - =print()= and =summary()= methods for =dsm= objects?
+  - =normalize=TRUE= in =dsm.score()= might automatically filter out invalid rows (with $\|x\| = 0$) or keep them at 0 (rather than =NA=)
+  - do we need to apply =normalizePath()= to input/output filenames?

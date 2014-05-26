@@ -2,9 +2,6 @@
  *  Compute different association measures from frequency signatures
  */
 
-#include "function_defs.h"
-#include "am.h"
-
 double am_frequency(double f, double f1, double f2, double N, int sparse) {
   return f;
 }
@@ -56,13 +53,14 @@ double transform(double x, int method) {
     case 0:       /* 0 = none */
       return x;
     case 1:       /* 1 = signed log */
-      return sign(x) * log(fabs(x) + 1);
+      return R::sign(x) * log(fabs(x) + 1);
     case 2:       /* 2 = signed square root */
-      return sign(x) * sqrt(fabs(x));
+      return R::sign(x) * sqrt(fabs(x));
     case 3:       /* 3 = sigmoid (tanh) */
       return tanh(x);
     default:
-      error("score transformation #%d is not defined -- internal error", method);
+      stop("internal error -- invalid score transformation code");
+      return 0.0; /* just to keep clang from bitching */
   }
 }
 

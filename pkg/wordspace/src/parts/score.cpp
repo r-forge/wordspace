@@ -2,11 +2,6 @@
  *  Compute association scores for dense or sparse matrix
  */
 
-#include <Rcpp.h>
-using namespace Rcpp;
-
-#include "am.h"
-
 // [[Rcpp::export]]
 NumericMatrix CPP_dsm_score_dense(NumericMatrix f, NumericVector f1, NumericVector f2, double N, int am_code, int sparse, int transform_code) {
   if (am_code < 0 || am_code >= am_table_entries)

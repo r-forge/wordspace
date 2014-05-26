@@ -6,9 +6,6 @@
  *  0 = cosine -> angle
 */
 
-#include <Rcpp.h>
-using namespace Rcpp;
-
 // [[Rcpp::export]]
 NumericMatrix CPP_similarity_to_distance(NumericMatrix M, int opcode, double tol, bool duplicate = true) {
   if (!R_FINITE(opcode) || opcode < 0 || opcode > 0)

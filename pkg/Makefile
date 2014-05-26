@@ -18,6 +18,7 @@ default:
 .PHONY:	build check install release clean
 
 build:
+	cat wordspace/src/parts/HEADER wordspace/src/parts/*.h wordspace/src/parts/*.cpp > wordspace/src/wordspace.cpp
 	Rscript --default-packages=Rcpp -e 'compileAttributes("wordspace")'
 	R CMD build wordspace
 

@@ -13,9 +13,6 @@
  * but it needs only a minimal amount of extra working memory.
  */
 
-#include <Rcpp.h>
-using namespace Rcpp;
-
 // [[Rcpp::export]]
 NumericMatrix CPP_random_indexing_sparse(int nr, int nc, IntegerVector p, IntegerVector row_of, NumericVector x, int n_ri, double rate, bool verbose = true) {
   int target_fill = n_ri * rate;                    /* expected number of nonzero entries in each column of Q */
