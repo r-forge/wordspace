@@ -12,5 +12,4 @@ extern am_func am_table[];
 
 double transform(double x, int method);
 
-
 #endif /* wordspace_am_h */

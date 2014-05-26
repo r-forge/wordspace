@@ -2,11 +2,6 @@
  * check OpenMP availability and set desired number of threads
  */
 
-#include <Rcpp.h>
-using namespace Rcpp;
-
-#include "globals.h"
-
 #ifdef _OPENMP
 #include <omp.h>
 #endif

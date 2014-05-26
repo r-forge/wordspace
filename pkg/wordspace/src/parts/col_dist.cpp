@@ -10,11 +10,6 @@
  *  4 = canberra
  */
 
-#include <Rcpp.h>
-using namespace Rcpp;
-
-#include "globals.h"
-
 /* make symmetric matrix from right upper triangle */
 void mk_symmetric_matrix(NumericMatrix x) {
   int nr = x.nrow(), nc = x.ncol();

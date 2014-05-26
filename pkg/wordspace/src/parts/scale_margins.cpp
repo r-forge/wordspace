@@ -2,9 +2,6 @@
  *  Scale rows and columns of a dense or sparse matrix
  */
 
-#include <Rcpp.h>
-using namespace Rcpp;
-
 // [[Rcpp::export]]
 NumericMatrix CPP_scale_margins_dense(NumericMatrix M, NumericVector rows, NumericVector cols, bool duplicate = true) {
   int nr = M.nrow(), nc = M.ncol();

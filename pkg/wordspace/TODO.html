@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
 <title>TODO sheet for wordspace package development</title>
-<!-- 2014-04-29 Tue 11:28 -->
+<!-- 2014-05-25 Sun 18:11 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="generator" content="Org-mode" />
 <meta  name="author" content="Stefan Evert" />
@@ -88,6 +88,7 @@
     { background-color: #ffff00; color: #000000; font-weight: bold; }
   /*]]>*/-->
 </style>
+<link rel="stylesheet" type="text/css" href="etc/orgmode.css" />
 <script type="text/javascript">
 /*
 @licstart  The following is the entire license notice for the
@@ -180,36 +181,74 @@ for the JavaScript code in this tag.
 <body>
 <div id="content">
 <h1 class="title">TODO sheet for wordspace package development</h1>
-<div id="table-of-contents">
-<h2>Table of Contents</h2>
-<div id="text-table-of-contents">
-<ul>
-<li><a href="#sec-1">1. Internal redesign</a></li>
-<li><a href="#sec-2">2. Combining DSM objects</a></li>
-<li><a href="#sec-3">3. Non-negative matrices and projections</a></li>
-<li><a href="#sec-4">4. Support for evaluation experiments</a></li>
-<li><a href="#sec-5">5. Additional metrics</a></li>
-<li><a href="#sec-6">6. New projection methods</a></li>
-<li><a href="#sec-7">7. Analysis support</a></li>
-<li><a href="#sec-8">8. Cleanup and documentation</a></li>
-<li><a href="#sec-9">9. Optimization</a></li>
-<li><a href="#sec-10">10. Miscellaneous</a></li>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> Urgent updates for COLING paper submission</h2>
+<div class="outline-text-2" id="text-1">
+<ul class="org-ul">
+<li>implement <code>as.dsm()</code> generic with method <code>as.dsm.TermDocumentMatrix</code> for import from <code>tm</code> package + simple test script
+<ul class="org-ul">
+<li>can be extended to other conversions, e.g. from matrix or dgCMatrix with row and column names
+</li>
+</ul>
+</li>
+<li>move evaluation functions and some gold standards from <code>wordspaceEval</code> to <code>wordspace</code>
+</li>
+<li>(optional) implement "network" plot as <code>plot.dist.matrix()</code> method
+</li>
+<li>implement <code>head.dsm()</code> method: <code>head(M, n)</code> shows first \(n\) rows and columns; <code>head(M, n, k)</code> shows first \(n\) rows and \(k\) columns; automatically selects <code>$S</code> (if available) or <code>$M</code>
+</li>
+<li>special case optimization in <code>subset.dsm()</code>: return input unchanged if no rows or columns are dropped (to avoid unnecessary duplication with recursive=TRUE)
+</li>
+<li><code>write.dsm.matrix()</code> as safe wrapper around <code>write()</code> for very large output files
+<ul class="org-ul">
+<li>can't be called <code>write.matrix()</code>, which already exists in MASS (but doesn't look very optimal)
+</li>
+<li>should have options to save row/column names and dense/sparse matrices in various text formats
+</li>
+</ul>
+</li>
+<li>basic documentation and usage examples for all functions
+</li>
+<li><code>nearest.neighbours()</code> should optionally return <code>dist.matrix</code> of target term and its nearest neighbours
+<ul class="org-ul">
+<li>index of target term in matrix annotated as <code>attr("selected")</code>
+</li>
+</ul>
+</li>
+<li>method <code>plot.dist.matrix()</code> for visualization of semantic maps
+<ul class="org-ul">
+<li>options to show/hide labels, choice of MDS methods
+</li>
+<li>option to show "spiderweb" plot of semantic neighbourhood; points indicated by <code>attr("selected")</code> are highlighted automatically
+</li>
+<li>possible extension: class of points indicated by colour + legend box (for semantic maps); overrides highlighting(?)
+</li>
+<li>returns MDS coordinates with terms as <code>rowlabels()</code>
+</li>
+</ul>
+</li>
+<li>interface to sparse SVD using SVDLIBC
+<ul class="org-ul">
+<li>as separate R package <code>sparseSVD</code> or so, required by <code>wordspace</code>
+</li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
-
-<div id="outline-container-sec-1" class="outline-2">
-<h2 id="sec-1"><span class="section-number-2">1</span> Internal redesign</h2>
-<div class="outline-text-2" id="text-1">
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2"><span class="section-number-2">2</span> Internal redesign</h2>
+<div class="outline-text-2" id="text-2">
 <ul class="org-ul">
 <li><code>rbind.dsm()</code> and <code>merge.dsm()</code> need to be updated and documented properly
 </li>
 </ul>
 </div>
 </div>
-<div id="outline-container-sec-2" class="outline-2">
-<h2 id="sec-2"><span class="section-number-2">2</span> Combining DSM objects</h2>
-<div class="outline-text-2" id="text-2">
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3"><span class="section-number-2">3</span> Combining DSM objects</h2>
+<div class="outline-text-2" id="text-3">
 <ul class="org-ul">
 <li>implement <code>cbind.dsm()</code>
 </li>
@@ -222,9 +261,9 @@ for the JavaScript code in this tag.
 </ul>
 </div>
 </div>
-<div id="outline-container-sec-3" class="outline-2">
-<h2 id="sec-3"><span class="section-number-2">3</span> Non-negative matrices and projections</h2>
-<div class="outline-text-2" id="text-3">
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4"><span class="section-number-2">4</span> Non-negative matrices and projections</h2>
+<div class="outline-text-2" id="text-4">
 <ul class="org-ul">
 <li>Matrizen werden mit Attribut <code>non.negative</code> versehen; Frequenzmatrix M muss nonneg sein (wird von Konstruktor überprüft); S wird überprüft und entsprechend markiert
 </li>
@@ -237,63 +276,52 @@ for the JavaScript code in this tag.
 </ul>
 </div>
 </div>
-<div id="outline-container-sec-4" class="outline-2">
-<h2 id="sec-4"><span class="section-number-2">4</span> Support for evaluation experiments</h2>
-<div class="outline-text-2" id="text-4">
+<div id="outline-container-sec-5" class="outline-2">
+<h2 id="sec-5"><span class="section-number-2">5</span> Support for evaluation experiments</h2>
+<div class="outline-text-2" id="text-5">
 <ul class="org-ul">
-<li><code>as.dist.matrix(M, sim=FALSE)</code> to mark as distance matrix (so <code>nearest.neighbours</code>, <code>pair.distances</code>, etc. can be used); perhaps with method for dist objects &#x2013;&gt; has to support and preserve sparse matrix!
+<li><code>as.dist.matrix(M, sim=FALSE)</code> to mark as distance matrix (so <code>nearest.neighbours</code>, <code>pair.distances</code>, etc. can be used)
+<ul class="org-ul">
+<li>methods for dense and sparse canonical matrix (perhaps as <code>as.dist.matrix.default</code>)
 </li>
-<li><code>nearest.neighbours()</code> and <code>pair.distances()</code> should work with M2 (= M) for cross-distance computations &#x2013;&gt; may conflict with efficient implementation of avg. rank!
+<li>method for <code>dist</code> objects, which converts them to full symmetric matrix
 </li>
-<li><code>pair.distances()</code> should accept pre-computed <code>dist.matrix</code> (both distance and similarity) &#x2013;&gt; may conflict with implementation of cross-distances
+</ul>
+</li>
+<li><code>nearest.neighbours()</code> and <code>pair.distances()</code> should work with M2 (= M) for cross-distance computations
+<ul class="org-ul">
+<li>don't exclude \(d(x,y) = 0\) in <code>nearest.neighbours()</code>, which may be valid in certain spaces (and certainly in the cross-distance setting)
+</li>
+<li>instead, exclude term as its own nearest neighbour if <code>M2=NULL</code>, but apply no other filters
+</li>
+<li>in <code>pair.distances()</code>, adjust ranks by one only if <code>M2=NULL</code>
+</li>
+</ul>
+</li>
+<li><code>pair.distances()</code> should accept pre-computed <code>dist.matrix</code> (both distance and similarity scores, marked appropriately)
+<ul class="org-ul">
+<li>may be difficult to integrate with implementation of cross-distances (and a more efficient implementation of average rank)
+</li>
+<li>can be used to safely read out association scores from "fake" distance matrix (marked with <code>as.dist.matrix</code>)
+</li>
+</ul>
 </li>
 <li>also see hand-written notes
 </li>
 </ul>
 </div>
 </div>
-<div id="outline-container-sec-5" class="outline-2">
-<h2 id="sec-5"><span class="section-number-2">5</span> Additional metrics</h2>
-<div class="outline-text-2" id="text-5">
-<ul class="org-ul">
-<li>Dice und/oder Jaccard coefficient (nach Lin 1998) –&gt; für nicht-positive Vektoren sinnvoll?
-</li>
-<li>KL-Divergenz + Jensen-Shannon metric (Endres &amp; Schindelin 2003) für nichtnegative Vektoren (Eingabematrizen werden überprüft!)
-<ul class="org-ul">
-<li>KL-Divergenz &#x2013;&gt; skew divergence (Lee 2001)?
-</li>
-</ul>
-</li>
-</ul>
-</div>
-</div>
 <div id="outline-container-sec-6" class="outline-2">
-<h2 id="sec-6"><span class="section-number-2">6</span> New projection methods</h2>
+<h2 id="sec-6"><span class="section-number-2">6</span> Additional metrics</h2>
 <div class="outline-text-2" id="text-6">
 <ul class="org-ul">
-<li>power scaling for <code>dsm.projection</code> (Caron 2001); needs built-in renormalization, I think, or keep total R2 same
+<li>Dice and/or Jaccard coefficient (Lin 1998) –-&gt; is there a meaningful formulation for non-negative vectors?
 </li>
-<li>what is a sensible relative R2 for different <code>dsm.projection</code> methods? especially SVD without centering and non-orthogonal projections
-</li>
-<li><code>nndsvd()</code> nach Boutsidis &amp; Gallopoulos (2008); wandelt SVD-Zerlegung in nichtnegative Approximation um
+<li>KL divergence and Jensen-Shannon metric (Endres &amp; Schindelin 2003) for non-negative vectors
 <ul class="org-ul">
-<li>can this be interpreted as a (non-orthogonal) projection? what are the basis vectors?
+<li>input matrices have to be checked unless they're already marked
 </li>
-<li>wie kann R2 hier abgeschätzt werden?
-</li>
-<li>unbedingt Tests zu Genauigkeit / Anwendungsnutzen dieser Approximation
-</li>
-<li>in dsm.projection() evtl. eine Option <code>non.negative=TRUE</code> anbieten, die nur für nonneg-Eingabematrix zulässig ist und auf eine nonneg-Matrix projiziert (nonneg-Basis für RI, NNDSVD für SVD)
-</li>
-</ul>
-</li>
-<li>NMF implementieren (multiplicative updates, nach Python-Vorlage)
-<ul class="org-ul">
-<li>benötigt C-Funktion, die <code>crossprod()</code> nur für nonzero entries einer sparse matrix berechnet
-</li>
-<li>diese Funktion kann ggf. auch modifiziert werden, um Approximationsfehler der Zerlegung einer sparse matrix exakt zu bestimmen
-</li>
-<li>Initialisierung mit <code>nndsvd()</code> bzw. NNDSVDar; alternativ mehrere Runs mit zufälligen Initialisierungen -&gt; beste Approximation auswählen
+<li>KL divergence &#x2013;&gt; skew divergence (Lee 2001)?
 </li>
 </ul>
 </li>
@@ -301,17 +329,76 @@ for the JavaScript code in this tag.
 </div>
 </div>
 <div id="outline-container-sec-7" class="outline-2">
-<h2 id="sec-7"><span class="section-number-2">7</span> Analysis support</h2>
+<h2 id="sec-7"><span class="section-number-2">7</span> New projection methods</h2>
 <div class="outline-text-2" id="text-7">
 <ul class="org-ul">
-<li>Chinese Whispers implementieren (verschiedene Varianten: batch update in R, single updates in C)
+<li>power scaling for <code>dsm.projection</code> (Caron 2001); needs built-in renormalization, I think, or keep total \(R^2\) same
+</li>
+<li>what is a sensible relative \(R^2\) for different <code>dsm.projection</code> methods? especially SVD without centering and non-orthogonal projections
+</li>
+<li>implement <code>nndsvd()</code> according to Boutsidis &amp; Gallopoulos (2008)
+<ul class="org-ul">
+<li>transforms given SVD into an approximate non-negative decomposition
+</li>
+<li>can this be interpreted as a (non-orthogonal) projection? what are the basis vectors?
+</li>
+<li>what is a sensible \(R^2\) in this case?
+</li>
+<li>requires thorough validation test to determine approximation quality and usefulness of this decomposition
+</li>
+</ul>
+</li>
+<li><code>dsm.projection()</code> could have an Option <code>non.negative=TRUE</code>
+<ul class="org-ul">
+<li>only valid if input matrix is non-negative
+</li>
+<li>guarantees that projection is also non-negative (by using a non-negative basis with RI, and NNDSVD with SVD)
+</li>
+</ul>
+</li>
+<li>implement NMF (multiplicative updates, cf. Python code)
+<ul class="org-ul">
+<li>key element: C/C++ function to compute <code>crossprod()</code> only for nonzero entries of a given sparse matrix
+</li>
+<li>possibly modified version of this function in order to compute approximation error of sparse matrix decomposition
+</li>
+<li>NMF can be initialized with <code>nndsvd()</code> or NNDSVDar (but only reproducible if the initialization is not obtained by rSVD)
+</li>
+<li>alternatively, carry out multiple runs with random initializations and select the best approximation
+</li>
+<li>should also experiment with more sophisticated variants of NMF that include regularization terms (&#x2013;&gt; similar to sparse priors)
+</li>
+</ul>
+</li>
+<li>experiment with LDA and similar topic models
+<ul class="org-ul">
+<li>use implementation in <code>topicmodels</code> package
+</li>
+<li>can this deal with arbitrary non-negative scores, or only (binary?) frequency counts?
+</li>
+<li>can this still be interpreted as a projection method, or do we need a second function <code>dsm.decomp()</code>?
+</li>
+</ul>
 </li>
 </ul>
 </div>
 </div>
 <div id="outline-container-sec-8" class="outline-2">
-<h2 id="sec-8"><span class="section-number-2">8</span> Cleanup and documentation</h2>
+<h2 id="sec-8"><span class="section-number-2">8</span> Analysis support</h2>
 <div class="outline-text-2" id="text-8">
+<ul class="org-ul">
+<li>implement Chinese Whispers clustering algorithm
+<ul class="org-ul">
+<li>try different versions: batch update with R code, single updates implemented in C/C++
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-sec-9" class="outline-2">
+<h2 id="sec-9"><span class="section-number-2">9</span> Cleanup and documentation</h2>
+<div class="outline-text-2" id="text-9">
 <ul class="org-ul">
 <li>write complete (rough) documentation for basic functions
 </li>
@@ -319,16 +406,12 @@ for the JavaScript code in this tag.
 </li>
 <li>add usage examples to all functions
 </li>
-<li>remove dsm.score.old, rowNorms.old, normalize.rows.old, &#x2026; (NAMESPACE, R/&#x2026;) when new C implementation has been tested sufficiently
-</li>
-<li>replace as.double(), as.integer() in .C() calls by functions that check whether argument already is a double/int vector or matrix and pass through without dropping attributes etc. in this case (to keep R's pseudo-refcounting from making unnecessary copies in some cases)
-</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-sec-9" class="outline-2">
-<h2 id="sec-9"><span class="section-number-2">9</span> Optimization</h2>
-<div class="outline-text-2" id="text-9">
+<div id="outline-container-sec-10" class="outline-2">
+<h2 id="sec-10"><span class="section-number-2">10</span> Optimization</h2>
+<div class="outline-text-2" id="text-10">
 <ul class="org-ul">
 <li>investigate memory overhead shown by benchmarks
 <ul class="org-ul">
@@ -340,16 +423,28 @@ for the JavaScript code in this tag.
 </li>
 <li><code>dsm.projection()</code> could have option <code>renormalized</code> that performs row normalization in-place (with additional arguments passed on to rowNorms())
 </li>
+<li>implement optimized file I/O functions in Rcpp
+<ul class="org-ul">
+<li><a href="https://github.com/romainfrancois/fastread">https://github.com/romainfrancois/fastread</a> shows how to use connections from Rcpp
+</li>
+<li>e.g. two-pass <code>read.dsm.triplet()</code>, memory-friendly <code>write.matrix()</code>, etc.
+</li>
+<li>perhaps I/O code for (co-occurrence) frequency tables and other forms of corpus data should be part of a separate package
+</li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-sec-10" class="outline-2">
-<h2 id="sec-10"><span class="section-number-2">10</span> Miscellaneous</h2>
-<div class="outline-text-2" id="text-10">
+<div id="outline-container-sec-11" class="outline-2">
+<h2 id="sec-11"><span class="section-number-2">11</span> Miscellaneous</h2>
+<div class="outline-text-2" id="text-11">
 <ul class="org-ul">
 <li><code>print()</code> and <code>summary()</code> methods for <code>dsm</code> objects?
 </li>
-<li>implement <code>head()</code> for <code>dsm</code> object: <code>head(M, n)</code> shows first \(n\) rows and columns; <code>head(M, n, k)</code> shows first \(n\) rows and \(k\) columns; automatically selects <code>$S</code> (if available) or <code>$M</code>
+<li><code>normalize=TRUE</code> in <code>dsm.score()</code> might automatically filter out invalid rows (with \(\|x\| = 0\)) or keep them at 0 (rather than <code>NA</code>)
+</li>
+<li>do we need to apply <code>normalizePath()</code> to input/output filenames?
 </li>
 </ul>
 </div>
@@ -357,7 +452,7 @@ for the JavaScript code in this tag.
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Stefan Evert</p>
-<p class="date">Created: 2014-04-29 Tue 11:28</p>
+<p class="date">Created: 2014-05-25 Sun 18:11</p>
 <p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.3.1 (<a href="http://orgmode.org">Org</a> mode 8.2.5h)</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
