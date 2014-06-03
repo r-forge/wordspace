@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
 <title>TODO sheet for wordspace package development</title>
-<!-- 2014-05-25 Sun 18:11 -->
+<!-- 2014-06-03 Tue 12:46 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="generator" content="Org-mode" />
 <meta  name="author" content="Stefan Evert" />
@@ -186,14 +186,6 @@ for the JavaScript code in this tag.
 <h2 id="sec-1"><span class="section-number-2">1</span> Urgent updates for COLING paper submission</h2>
 <div class="outline-text-2" id="text-1">
 <ul class="org-ul">
-<li>implement <code>as.dsm()</code> generic with method <code>as.dsm.TermDocumentMatrix</code> for import from <code>tm</code> package + simple test script
-<ul class="org-ul">
-<li>can be extended to other conversions, e.g. from matrix or dgCMatrix with row and column names
-</li>
-</ul>
-</li>
-<li>move evaluation functions and some gold standards from <code>wordspaceEval</code> to <code>wordspace</code>
-</li>
 <li>(optional) implement "network" plot as <code>plot.dist.matrix()</code> method
 </li>
 <li>implement <code>head.dsm()</code> method: <code>head(M, n)</code> shows first \(n\) rows and columns; <code>head(M, n, k)</code> shows first \(n\) rows and \(k\) columns; automatically selects <code>$S</code> (if available) or <code>$M</code>
@@ -446,13 +438,19 @@ for the JavaScript code in this tag.
 </li>
 <li>do we need to apply <code>normalizePath()</code> to input/output filenames?
 </li>
+<li>new methods for <code>as.dsm()</code>
+<ul class="org-ul">
+<li>possibly also convenience methods for <code>matrix</code> and <code>dgCMatrix</code>, which would just be thin wrappers around <code>dsm()</code>
+</li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Stefan Evert</p>
-<p class="date">Created: 2014-05-25 Sun 18:11</p>
+<p class="date">Created: 2014-06-03 Tue 12:46</p>
 <p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.3.1 (<a href="http://orgmode.org">Org</a> mode 8.2.5h)</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>

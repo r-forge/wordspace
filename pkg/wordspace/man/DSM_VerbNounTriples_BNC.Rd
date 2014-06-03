@@ -32,12 +32,14 @@ DSM_VerbNounTriples_BNC
   This should not lead to a substantial distortion of the frequency counts for mid- to high-frequency nouns and verbs.
 }
 \source{
-%%  ~~ reference to a publication or URL from which the data were obtained ~~
+  TODO
 }
 \references{
-%%  ~~ possibly secondary sources and usages ~~
+  TODO
 }
 \examples{
+
 ## TODO: how to compile different DSMs from the table
+
 }
 \keyword{datasets}

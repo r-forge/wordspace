@@ -11,7 +11,7 @@
 }
 \usage{
 
-  scaleMargins(M, rows=NULL, cols=NULL, duplicate=TRUE)
+scaleMargins(M, rows=NULL, cols=NULL, duplicate=TRUE)
 
 }
 %- maybe also 'usage' for other objects documented here.

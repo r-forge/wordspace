@@ -9,9 +9,6 @@
 
 * Urgent updates for COLING paper submission
 
-  - implement =as.dsm()= generic with method =as.dsm.TermDocumentMatrix= for import from =tm= package + simple test script
-    - can be extended to other conversions, e.g. from matrix or dgCMatrix with row and column names
-  - move evaluation functions and some gold standards from =wordspaceEval= to =wordspace=
   - (optional) implement "network" plot as =plot.dist.matrix()= method
   - implement =head.dsm()= method: =head(M, n)= shows first $n$ rows and columns; =head(M, n, k)= shows first $n$ rows and $k$ columns; automatically selects =$S= (if available) or =$M=
   - special case optimization in =subset.dsm()=: return input unchanged if no rows or columns are dropped (to avoid unnecessary duplication with recursive=TRUE)
@@ -115,3 +112,5 @@
   - =print()= and =summary()= methods for =dsm= objects?
   - =normalize=TRUE= in =dsm.score()= might automatically filter out invalid rows (with $\|x\| = 0$) or keep them at 0 (rather than =NA=)
   - do we need to apply =normalizePath()= to input/output filenames?
+  - new methods for =as.dsm()=
+    - possibly also convenience methods for =matrix= and =dgCMatrix=, which would just be thin wrappers around =dsm()=

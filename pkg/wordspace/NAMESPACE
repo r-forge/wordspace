@@ -5,8 +5,6 @@ useDynLib(wordspace, .registration=TRUE)
 
 export(wordspace.openmp)
 
-# export(dsm.score.old, rowNorms.old, normalize.rows.old, cosine)
-
 export(dsm, check.dsm)
 export(dsm.is.canonical, dsm.canonical.matrix)
 export(read.dsm.ucs, read.dsm.triplet)
@@ -17,6 +15,7 @@ export(dsm.projection)
 export(dist.matrix, nearest.neighbours, pair.distances)
 export(match.split)
 export(context.vectors)
+export(convert.lemma, eval.multiple.choice, eval.clustering, eval.similarity.correlation)
 
 S3method(dim, dsm)
 S3method(t, dsm)
@@ -27,3 +26,10 @@ S3method(rbind, dsm)
 S3method(cbind, dsm)
 
 S3method(merge, dsm)
+
+S3method(print, eval.similarity.correlation)
+S3method(plot, eval.similarity.correlation)
+
+export(as.dsm)
+S3method(as.dsm, TermDocumentMatrix)
+S3method(as.dsm, DocumentTermMatrix)

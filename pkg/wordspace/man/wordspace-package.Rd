@@ -9,7 +9,7 @@
 
   A toy laboratory for research and experimentation in distributional semantics.
 
-  \strong{Important note:} This package is currently in alpha stage.  All code and interfaces should be considered experimental and may change at any time without notice.
+  \strong{Important note:} This package is currently in beta stage.  Code and interfaces should still be considered experimental and may change before the official release.
 
 }
 \details{
@@ -17,8 +17,8 @@
   \tabular{ll}{
     Package: \tab wordspace\cr
     Type: \tab Package\cr
-    Version: \tab 0.0-18\cr
-    Date: \tab 2012-06-07\cr
+    Version: \tab 0.1-13\cr
+    Date: \tab 2014-06-02\cr
     License: \tab GPL-3\cr
     LazyLoad: \tab yes\cr
   }

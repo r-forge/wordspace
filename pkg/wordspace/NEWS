@@ -4,8 +4,12 @@ Changes in version 0.3-0
 
 Pre-release history
 
-  - v0.1-???
+  - v0.1-13
     - Rcpp implementation of scaleMargins() further reduces memory overhead (with in-place operation for internal use)
+    - as.dsm() method converts term-document and document-term matrices from tm package into DSM objects
+    - added support functions for evaluation of DSMs in standard tasks (multiple choice, similarity correlation and clustering)
+    - new sample data sets: tables of verb-noun cooccurrences from BNC and DESC corpora
+    - new evaluation tasks: RG65, WordSim353, ESSLLI08_Nouns
 
   - v0.1-10: use Rcpp instead of deprecated .C() native code interface
     - for performance reasons, .C() was used with DUP=FALSE, which is no longer allowed as of R 3.1.0

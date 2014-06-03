@@ -6,7 +6,7 @@
 }
 \description{
 
-  %%  ~~ A concise (1-5 lines) description of what the function does. ~~
+  Efficiently compute the norms of all row or column vectors of a dense or sparse matrix.
 
 }
 \usage{

@@ -5,7 +5,7 @@
 }
 \description{
 
-  %%  ~~ A concise (1-5 lines) description of what the function does. ~~
+  Efficientl normalize the row vectors of a dense or sparse matrix to unit length.
 
 }
 \usage{

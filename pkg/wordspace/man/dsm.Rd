@@ -100,9 +100,9 @@ dsm(M = NULL, target = NULL, feature = NULL, score = NULL, rowinfo = NULL, colin
   \item{rows}{
     A data frame with information about the target terms, corresponding to the rows of the co-occurrence matrix.  The data frame usually has at least three columns:
     \describe{
-      \item{rows$term}{the target term = row label}
-      \item{rows$f}{marginal frequency of the target term; must be present if the DSM object contains a raw co-occurrence matrix \code{M}}
-      \item{rows$nnzero}{number of nonzero entries in the corresponding row of the co-occurrence matrix}
+      \item{\code{rows$term}}{the target term = row label}
+      \item{\code{rows$f}}{marginal frequency of the target term; must be present if the DSM object contains a raw co-occurrence matrix \code{M}}
+      \item{\code{rows$nnzero}}{number of nonzero entries in the corresponding row of the co-occurrence matrix}
     }
     Further columns may provide additional information.
   }
@@ -114,8 +114,8 @@ dsm(M = NULL, target = NULL, feature = NULL, score = NULL, rowinfo = NULL, colin
   \item{globals}{
     A list of global variables.  The following variables have a special meaning:
     \describe{
-      \item{globals$N}{effective sample size of the underlying corpus; may be \code{NA} if raw co-occurrence counts are not available}
-      \item{globals$locked}{if \code{TRUE}, the marginal frequencies are no longer valid due to a \code{merge}, \code{rbind} or \code{cbind} operation; in this case, association scores cannot be computed from the co-occurrence frequencies \code{M}}
+      \item{\code{globals$N}}{effective sample size of the underlying corpus; may be \code{NA} if raw co-occurrence counts are not available}
+      \item{\code{globals$locked}}{if \code{TRUE}, the marginal frequencies are no longer valid due to a \code{merge}, \code{rbind} or \code{cbind} operation; in this case, association scores cannot be computed from the co-occurrence frequencies \code{M}}
     }
   }
 
