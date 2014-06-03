@@ -5,7 +5,9 @@
 }
 \description{
 
-  %%  ~~ A concise (1-5 lines) description of what the function does. ~~
+  Reduce dimensionality of DSM by linear projection of row vectors
+  into a lower-dimensional subspace.  Various projections methods with
+  different properties are available.
 
 }
 \usage{
@@ -59,9 +61,9 @@ dsm.projection(model, method = c("svd", "rsvd", "asvd", "ri", "ri+svd"), n = NA,
 
     \item{asvd}{approximate SVD, which determines latent dimensions from a random sample of matrix rows including  \code{oversampling * n} data points.}
 
-    \item{ri}{random indexing (RI) -- \bold{TODO}}
+    \item{ri}{random indexing (RI) -- \bold{TODO:} describe RI algorithm in detail}
 
-    \item{ri+svd}{RI to \code{oversampling * n} dimensions, followed by SVD to pick the final \code{n} dimensions -- \bold{TODO}}
+    \item{ri+svd}{RI to \code{oversampling * n} dimensions, followed by SVD to pick the final \code{n} dimensions -- \bold{TODO:} describe algorithm in detail}
 
   }
   

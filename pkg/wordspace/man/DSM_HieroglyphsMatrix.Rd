@@ -2,11 +2,13 @@
 \alias{DSM_HieroglyphsMatrix}
 \docType{data}
 \title{
-  TODO (wordspace)
+  A Small Co-occurrence Matrix (wordspace)
 }
 \description{
 
-  %%  ~~ A concise (1-5 lines) description of the dataset. ~~
+  A small co-occurrence matrix of verb-object combinations from the British National Corpus (BNC)
+  Verbs correspond to columns of the matrix and their object nouns to rows.
+  This matrix is shown as the "hieroglyphs" example in the DSM turorial.
 
 }
 \usage{
@@ -15,18 +17,28 @@ DSM_HieroglyphsMatrix
 
 }
 \format{
-%% ~~ TODO ~~
+  
+  A numeric matrix with 7 rows and 6 columns.
+  
 }
 \details{
-%%  ~~ If necessary, more details than the __description__ above ~~
+
+  TODO
+  
 }
 \source{
-%%  ~~ reference to a publication or URL from which the data were obtained ~~
+
+  TODO
+  
 }
 \references{
-%%  ~~ possibly secondary sources and usages ~~
+
+  TODO
+  
 }
 \examples{
-## TODO
+
+## TODO: illustrate basic DSM operations with this matrix
+
 }
 \keyword{datasets}

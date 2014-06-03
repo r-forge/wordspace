@@ -11,7 +11,7 @@
 }
 \usage{
 
-  wordspace.openmp(threads=NULL)
+wordspace.openmp(threads=NULL)
 
 }
 \arguments{

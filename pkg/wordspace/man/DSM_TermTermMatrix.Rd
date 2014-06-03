@@ -2,11 +2,12 @@
 \alias{DSM_TermTermMatrix}
 \docType{data}
 \title{
-  TODO (wordspace)
+  Example of a Term-Term Co-occurrence Matrix (wordspace)
 }
 \description{
 
-  %%  ~~ A concise (1-5 lines) description of the dataset. ~~
+  This matrix is a typical example of a term-term DSM co-occurrence matrix,
+  obtained from the English Wikipedia.
 
 }
 \usage{
@@ -15,16 +16,24 @@ DSM_TermTermMatrix
 
 }
 \format{
-%% ~~ TODO ~~
+
+  A numeric matrix with 7 rows and 7 columns.
+
 }
 \details{
-%%  ~~ If necessary, more details than the __description__ above ~~
+
+  TODO
+  
 }
 \source{
-%%  ~~ reference to a publication or URL from which the data were obtained ~~
+
+  TODO: WaCkypedia corpus
+  
 }
-\references{
-%%  ~~ possibly secondary sources and usages ~~
+\seealso{
+
+  This matrix covers the same target terms as the term-context matrix \code{\link{DSM_TermContextMatrix}}.
+
 }
 \examples{
 ## TODO
