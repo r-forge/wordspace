@@ -4,6 +4,9 @@ Changes in version 0.3-0
 
 Pre-release history
 
+  - v0.1-14
+    - new evaluation task: SemCorWSD
+
   - v0.1-13
     - Rcpp implementation of scaleMargins() further reduces memory overhead (with in-place operation for internal use)
     - as.dsm() method converts term-document and document-term matrices from tm package into DSM objects

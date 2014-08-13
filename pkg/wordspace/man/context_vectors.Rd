@@ -10,7 +10,7 @@
 }
 \usage{
 
-context.vectors(M, contexts, split = "\\\\s+", drop.missing = TRUE)
+context.vectors(M, contexts, split = "\\\\s+", drop.missing = TRUE, row.names=NA)
 
 }
 %- maybe also 'usage' for other objects documented here.
@@ -32,6 +32,9 @@ context.vectors(M, contexts, split = "\\\\s+", drop.missing = TRUE)
     if \code{TRUE} (default), contexts that do not contain any known terms are silently dropped; otherwise the corresponding context vectors will be all zeroes.
   }
 
+  \item{row.names}{
+    a character vector of the same length as \code{contexts}, specifying row names for the resulting matrix of centroid vectors
+  }
 }
 \details{
 
@@ -40,7 +43,7 @@ context.vectors(M, contexts, split = "\\\\s+", drop.missing = TRUE)
 }
 \value{
 
-  A numeric matrix with the same number of columns as \code{M} and one row for each context (excluding contexts without known terms if \code{drop.missing=TRUE}).  If the vector \code{contexts} has names, the matrix rows will be labelled accordingly.  Otherwise the row labels correspond to the indices of the corresponding contexts in \code{contexts}, so matrix rows can be identified unambiguously if \code{drop.missing=TRUE}.
+  A numeric matrix with the same number of columns as \code{M} and one row for each context (excluding contexts without known terms if \code{drop.missing=TRUE}).  If the vector \code{contexts} has names or \code{row.names} is specified, the matrix rows will be labelled accordingly.  Otherwise the row labels correspond to the indices of the respective entries in \code{contexts}, so matrix rows can always be identified unambiguously if \code{drop.missing=TRUE}.
   
 }
 \references{

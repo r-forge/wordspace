@@ -9,8 +9,12 @@
 
 * Urgent updates for COLING paper submission
 
+  - =eval.similarity.correlation()= fails with =convert=FALSE=
+    - probably mistake in weeding out missing values from similarity scores (doesn't check attribute?)
   - (optional) implement "network" plot as =plot.dist.matrix()= method
   - implement =head.dsm()= method: =head(M, n)= shows first $n$ rows and columns; =head(M, n, k)= shows first $n$ rows and $k$ columns; automatically selects =$S= (if available) or =$M=
+  - implement =print.dsm()= method, which just displays information from =check.dsm()= in a user-friendly form
+    - perhaps with option to show details about row/column data etc., or implement =summary.dsm()= for this purpose
   - special case optimization in =subset.dsm()=: return input unchanged if no rows or columns are dropped (to avoid unnecessary duplication with recursive=TRUE)
   - =write.dsm.matrix()= as safe wrapper around =write()= for very large output files
     - can't be called =write.matrix()=, which already exists in MASS (but doesn't look very optimal)
@@ -25,6 +29,7 @@
     - returns MDS coordinates with terms as =rowlabels()=
   - interface to sparse SVD using SVDLIBC
     - as separate R package =sparseSVD= or so, required by =wordspace=
+  - add =inst/CITATION= with reference to software demonstration paper (when published)
 
 * Internal redesign
 
