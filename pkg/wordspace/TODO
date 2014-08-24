@@ -9,8 +9,6 @@
 
 * Urgent updates for COLING paper submission
 
-  - =eval.similarity.correlation()= fails with =convert=FALSE=
-    - probably mistake in weeding out missing values from similarity scores (doesn't check attribute?)
   - (optional) implement "network" plot as =plot.dist.matrix()= method
   - implement =head.dsm()= method: =head(M, n)= shows first $n$ rows and columns; =head(M, n, k)= shows first $n$ rows and $k$ columns; automatically selects =$S= (if available) or =$M=
   - implement =print.dsm()= method, which just displays information from =check.dsm()= in a user-friendly form
@@ -29,7 +27,6 @@
     - returns MDS coordinates with terms as =rowlabels()=
   - interface to sparse SVD using SVDLIBC
     - as separate R package =sparseSVD= or so, required by =wordspace=
-  - add =inst/CITATION= with reference to software demonstration paper (when published)
 
 * Internal redesign
 

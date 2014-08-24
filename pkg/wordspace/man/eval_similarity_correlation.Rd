@@ -25,11 +25,11 @@ eval.similarity.correlation(task, M, dist.fnc=pair.distances,
 
   \item{M}{a scored DSM matrix, passed to \code{dist.fnc}}
   
-  \item{dist.fnc}{a callback function used to compute distances between word pairs.
+  \item{dist.fnc}{a callback function used to compute distances or similarities between word pairs.
     It will be invoked with character vectors containing the components of the word pairs as first and second argument,
-    the DSM matrix \code{M} as third argument, plus any additional arguments (\code{\dots}) passed to \code{eval.multiple.choice}.
+    the DSM matrix \code{M} as third argument, plus any additional arguments (\code{\dots}) passed to \code{eval.similarity.correlation}.
     The return value must be a numeric vector of appropriate length.  If one of the words in a pair is not represented in the DSM,
-    the corresponding distance value should be set to \code{Inf}.
+    the corresponding distance value should be set to \code{Inf} (or \code{-Inf} in the case of similarities).
   }
 
   \item{details}{if \code{TRUE}, a detailed report with information on each task item is returned (see Value below for details)}
@@ -54,7 +54,7 @@ eval.similarity.correlation(task, M, dist.fnc=pair.distances,
   The function also reports a confidence interval for Pearson correlation, which might require suitable transformation
   to ensure a near-linear relationship in order to be meaningful.
   
-  \bold{NB:} Since the correlation between similarity ratings and DSM distance will usually be negative, the evaluation
+  \bold{NB:} Since the correlation between similarity ratings and DSM distances will usually be negative, the evaluation
   report omits minus signs on the correlation coefficients.
 
   With the default \code{dist.fnc}, the distance values can optionally be transformed through an arbitrary function specified in the \code{transform} argument (see \code{\link{pair.distances}} for details).
@@ -64,9 +64,9 @@ eval.similarity.correlation(task, M, dist.fnc=pair.distances,
   will remain unchanged.
 
   If one or both words of a pair are not found in the DSM, the distance is set to a fixed value 10\% above the
-  maximum of all other DSM distances.  This is done in order to avoid numerical and visualization problems with
-  \code{Inf} values; it does not affect the rank correlation coefficient.  Note that this procedure requires that
-  \code{dist.fcn} returns \emph{distance} rather than \emph{similarity} values!
+  maximum of all other DSM distances, or 10\% below the minimum in the case of similarity values.
+  This is done in order to avoid numerical and visualization problems with \code{Inf} values;
+  the particular value used does not affect the rank correlation coefficient.
     
   With the default \code{dist.fnc} callback, additional arguments \code{method} and \code{p} can be used to select 
   a distance measure (see \code{\link{dist.matrix}} for details); \code{rank=TRUE} can be specified in order to 
