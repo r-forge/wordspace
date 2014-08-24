@@ -15,11 +15,13 @@
 }
 \usage{
 eval.similarity.correlation(task, M, dist.fnc=pair.distances,
-                            details=FALSE, format=NA, taskname=NA, \dots)
+                            details=FALSE, format=NA, taskname=NA,
+                            word1.name="word1", word2.name="word2", score.name="score",
+                            \dots)
 }
 \arguments{
 
-  \item{task}{a data frame containing word pairs (in columns \code{word1} and \code{word2}) with similarity ratings (in column \code{score}); any other columns will be ignored}
+  \item{task}{a data frame containing word pairs (usually in columns \code{word1} and \code{word2}) with similarity ratings (usually in column \code{score}); any other columns will be ignored}
 
   \item{M}{a scored DSM matrix, passed to \code{dist.fnc}}
   
@@ -37,6 +39,12 @@ eval.similarity.correlation(task, M, dist.fnc=pair.distances,
   \item{taskname}{optional row label for the short report (\code{details=FALSE})}
   
   \item{\dots}{any further arguments are passed to \code{dist.fnc} and can be used e.g. to select a distance measure}
+
+  \item{word1.name}{the name of the column of \code{task} containing the first word of each pair}
+
+  \item{word2.name}{the name of the column of \code{task} containing the second word of each pair}
+
+  \item{score.name}{the name of the column of \code{task} containing the corresponding similarity ratings}
 
 }
 \details{

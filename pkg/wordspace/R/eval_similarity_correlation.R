@@ -1,26 +1,35 @@
 eval.similarity.correlation <-
-function (task, M, dist.fnc=pair.distances, details=FALSE, format=NA, taskname=NA, ...) {
+function (task, M, dist.fnc=pair.distances, details=FALSE, format=NA, taskname=NA, word1.name="word1", word2.name="word2", score.name="score", ...) {
   if (is.na(taskname)) taskname <- deparse(substitute(task))
-  stopifnot(all(c("word1", "word2", "score") %in% colnames(task)))
+  for (varname in c(word1.name, word2.name, score.name)) {
+    if (!(varname %in% colnames(task))) stop(sprintf("gold standard does not have a column labelled '%s'", varname))
+  }
   n.items <- nrow(task)
 
-  w1 <- as.character(task$word1)
-  w2 <- as.character(task$word2)
+  w1 <- as.character(task[, word1.name])
+  w2 <- as.character(task[, word2.name])
   if (!is.na(format)) {
     w1 <- convert.lemma(w1, format)
     w2 <- convert.lemma(w2, format)
   }
-  distance <- dist.fnc(w1, w2, M, ...)   # vector of DSM distances between word pairs
+  score <- task[, score.name]
+  distance <- dist.fnc(w1, w2, M, ...)   # vector of DSM distances between word pairs (can also be similarities)
 
-  is.missing <- distance == Inf          # missing data (one or both words not in DSM)
+  if (any(is.na(distance))) stop("missing values in distance/similarity vector must be replaced by +Inf or -Inf")
+  is.pinf <- distance == Inf             # missing data points in case of distance 
+  is.minf <- distance == -Inf            # missing data points in case of similarity
+  is.missing <- is.pinf | is.minf
   n.missing <- sum(is.missing)
-  max.dist <- max(distance[!is.missing]) # fill in missing data with maximum of other distances + 10%
-  distance[is.missing] <- max.dist * 1.10
+  if (all(is.missing)) stop("no distance/similarity values available, can't compute correlation")
+  dist.range <- range(distance[!is.missing]) # fill in missing data with appropriate extreme of value range extended by 10%
+  surrogates <- dist.range + diff(dist.range) * c(-.1, +.1) 
+  distance[is.pinf] <- surrogates[2]
+  distance[is.minf] <- surrogates[1]
 
-  spearman <- cor.test(task$score, distance, method="spearman", exact=FALSE)
+  spearman <- cor.test(score, distance, method="spearman", exact=FALSE)
   rho <- abs(spearman$estimate)
   rho.pvalue <- spearman$p.value
-  pearson <- cor.test(task$score, distance, method="pearson", conf.level=.95)
+  pearson <- cor.test(score, distance, method="pearson", conf.level=.95)
   r <- abs(pearson$estimate)
   r.confint <- if (pearson$estimate < 0) -rev(pearson$conf.int) else pearson$conf.int
 

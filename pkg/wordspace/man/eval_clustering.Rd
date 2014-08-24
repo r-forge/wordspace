@@ -21,7 +21,7 @@ eval.clustering(task, M, dist.fnc = pair.distances, \dots,
 }
 \arguments{
 
-  \item{task}{a data frame listing words and their classes}
+  \item{task}{a data frame listing words and their classes, usually in columns named \code{word} and \code{class}}
 
   \item{M}{a scored DSM matrix, passed to \code{dist.fnc}}
 
