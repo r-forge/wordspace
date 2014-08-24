@@ -74,6 +74,7 @@ dist.matrix(M, M2 = NULL,
 \value{
   By default, a matrix of class \code{dist.matrix}, specifying distances or similarities between term vectors.
   A similarity matrix is marked by an additional attribute \code{similarity} with value \code{TRUE}.
+  If the distance or similarity matrix is symmetric (i.e. neither a cross-distance matrix nor based on an asymmetric distance measure), it is marked by an attribute \code{symmetric} with value \code{TRUE}.
   
   If \code{as.dist=TRUE}, the matrix is compacted to an object of class \code{dist}.
 
