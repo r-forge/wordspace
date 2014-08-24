@@ -1,5 +1,6 @@
 \name{SemCorWSD}
 \alias{SemCorWSD}
+\encoding{UTF-8}
 \docType{data}
 \title{
   SemCor Word Sense Disambiguation Task (wordspace)
@@ -17,7 +18,7 @@ SemCorWSD
 }
 \format{
 
-  A data frame with 253 rows and the following 8 columns (all of type character):
+  A data frame with 647 rows and the following 8 columns (all of type character):
 
   \describe{
     \item{\code{id}}{Unique item ID}
@@ -33,20 +34,34 @@ SemCorWSD
 }
 \details{
 
-  TODO
+  Target words and senses must meet the following criteria in order to be included in the data set:
+  \itemize{
+    \item{sense occurs \eqn{f \ge 5} times in SemCor 3.0}
+    \item{sense accounts for at least 10\% of all occurrences of the target}
+    \item{at least two senses of target remain after previous two filters}
+  }
 
+  \code{SemCorWSD} contains sentence contexts for the following target words:
+  \itemize{
+    \item{ambiguous nouns from Schütze (1998): \emph{interest}, \emph{plant}, \emph{space}, \emph{vessel}}
+    \item{misc. ambiguous nouns: \emph{bank}}
+    \item{misc. ambiguous verbs: \emph{find}, \emph{grasp}, \emph{open}, \emph{run}}
+  }
+  
 }
 \source{
 
-  TODO (SemCor reference, NLTK extraction)
+  \bold{TODO} (SemCor reference, NLTK extraction)
 
 }
-%% \references{
-%%  TODO
-%% }
+\references{
+
+  Schütze, Hinrich (1998). Automatic word sense discrimination. \emph{Computational Linguistics}, \bold{24}(1), 97--123.
+
+}
 \examples{
 
-with(SemCorWSD, table(target, sense))
+with(SemCorWSD, table(sense, target))
 
 with(SemCorWSD, sort(unique(paste0(target, " ", sense, ": ", gloss))))
 
