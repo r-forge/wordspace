@@ -6,14 +6,14 @@
 }
 \description{
 
-  Find the nearest neighbours of a term vector in a DSM, given either as a scored cooccurrence matrix or a pre-computed distance matrix.  The target term is selected by name, so the cooccurrence or distance matrix must be labelled appropriately.
+  Find the nearest neighbours of a term vector in a DSM, given either as a scored cooccurrence matrix or a pre-computed distance matrix.  The target term can either be specified as a vector or selected by name (in which case the cooccurrence or distance matrix must be labelled appropriately).
 
 }
 \usage{
 
-nearest.neighbours(M, term, n = 10, drop = TRUE, skip.missing = FALSE,
-                   min.distance = 1e-6, byrow = TRUE, \dots,
-                   batchsize=50e6, verbose=FALSE)
+nearest.neighbours(M, term, n = 10, M2 = NULL, byrow = TRUE,
+                   drop = TRUE, skip.missing = FALSE, dist.matrix = FALSE,
+                   \dots, batchsize=50e6, verbose=FALSE)
 
 }
 \arguments{
@@ -23,27 +23,31 @@ nearest.neighbours(M, term, n = 10, drop = TRUE, skip.missing = FALSE,
   }
 
   \item{term}{
-    a character vector specifying one or more target terms for which nearest neighbours will be found
+    either a character vector specifying one or more target terms for which nearest neighbours will be found, or a matrix specifying the target vectors directly. A plain vector is interpreted as a single-row matrix.
   }
 
   \item{n}{
     an integer giving the number of nearest neighbours to be returned for each target term
   }
 
+  \item{M2}{
+    an optional dense or sparse matrix (or object of class \code{dsm}). If specified, nearest neighbours are found among the rows (default) or columns (\code{byrow=FALSE}) of \code{M2}, allowing for NN search in a cross-distance setting.
+  }
+  
+  \item{byrow}{
+    whether target terms are looked up in rows (default) or columns (\code{byrow=FALSE}) of \code{M}.  NB: Target vectors in the \code{term} argument are always given as row vectors, even if \code{byrow=FALSE}.
+  }
+
   \item{drop}{
-    if \code{TRUE}, the return value is simplified to a vector if it contains nearest neighbours for exactly one target term (default).  Set \code{drop=FALSE} to ensure that \code{nearest.neighbours} always returns a list.
+    if \code{TRUE}, the return value is simplified to a vector (or distance matrix) if it contains nearest neighbours for exactly one target term (default).  Set \code{drop=FALSE} to ensure that \code{nearest.neighbours} always returns a list.
   }
 
   \item{skip.missing}{
     if \code{TRUE}, silently ignores target terms not found in the DSM or distance matrix.  By default (\code{skip.missing=FALSE}) an error is raised in this case.
   }
-  
-  \item{min.distance}{
-    in most cases, the nearest neighbour of a target term will be the term itself at a distance of 0.  By default, this entry is automatically removed from the list of neighbours, using a threshold of \code{min.distance} to allow for rounding errors in the distance computation.  Set \code{min.distance=0} to include the target term among the nearest neighbours.  Note that this feature does \emph{not} apply to similarity measures.
-  }
 
-  \item{byrow}{
-    wether target terms are looked up in rows (default) or columns (\code{byrow=FALSE}) of \code{M}
+  \item{dist.matrix}{
+    if \code{TRUE}, return a full distance matrix between the target term and its nearest neighbours (instead of a vector of neighbours)
   }
 
   \item{\dots}{
@@ -56,20 +60,29 @@ nearest.neighbours(M, term, n = 10, drop = TRUE, skip.missing = FALSE,
    
 }
 \details{
-%%  ~~ If necessary, more details than the description above ~~
+
+  In most cases, the target term itself is automatically excluded from the list of neighbours.  There are two exceptions:
+  \enumerate{
+    \item{The target term is given as a vector rather than by name.}
+    \item{Nearest neighbours are determined in a cross-distance setting.  This is the case if (i) \code{M2} is specified or (ii) \code{M} is a pre-computed distance matrix and not marked to be symmetric.}
+  }
+
+  With \code{dist.matrix=TRUE}, the returned distance matrix always includes the target term.
+  
 }
 \value{
 
-  A list with one entry for each target \code{term} found in \code{M}, giving the nearest neighbours as a numeric vector of distances or similarities labelled with the corresponding terms and ordered by distance.
+  A list with one entry for each target \code{term} found in \code{M}, giving
+  \itemize{
+    \item{\code{dist.matrix=FALSE} (default): the nearest neighbours as a numeric vector of distances or similarities labelled with the corresponding terms and ordered by distance}
+    \item{\code{dist.matrix=TRUE}: a full distance or similarity matrix for the target term and its nearest neighbours (as an object of class \code{dist.matrix}). An additional attribute \code{selected} contains a logical vector indicating the position of the target term in the matrix.}
+  }
 
-  If \code{drop=TRUE}, a list containing only a single target term will be simplified to a plain vector.
+  If \code{drop=TRUE}, a list containing only a single target term will be simplified to a plain vector or distance matrix.
 
-}
-\references{
-%% ~put references to the literature/web site here ~
 }
 \seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
+  \bold{TODO}
 }
 \examples{
 ## TODO

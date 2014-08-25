@@ -5,7 +5,13 @@ Changes in version 0.3-0
 Pre-release history
 
   - v0.1-14
-    - new evaluation task: SemCorWSD
+    - new evaluation task: SemCorWSD (preliminary version)
+    - CITATION entry with official reference (Evert 2014)
+    - enhanced functionality in nearest.neighbours()
+      - support for cross-distance setting
+      - targets can be given as vectors or by name
+      - neighbour search in pre-computed distance or similarity matrix
+      - optionally return distance matrix for target and its neighbours
 
   - v0.1-13
     - Rcpp implementation of scaleMargins() further reduces memory overhead (with in-place operation for internal use)

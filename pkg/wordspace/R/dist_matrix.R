@@ -119,7 +119,7 @@ dist.matrix <- function (M, M2=NULL, method=c("cosine", "euclidean", "maximum", 
   } else {
     class(result) <- c("dist.matrix", "matrix")
     if (similarity) attr(result, "similarity") <- TRUE
-    if (symmetric && !cross.distance) attr(result, "symmmetric") <- TRUE
+    if (symmetric && !cross.distance) attr(result, "symmetric") <- TRUE
     result
   }
 }
