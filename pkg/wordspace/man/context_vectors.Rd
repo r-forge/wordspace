@@ -10,7 +10,7 @@
 }
 \usage{
 
-context.vectors(M, contexts, split = "\\\\s+", drop.missing = TRUE, row.names=NA)
+context.vectors(M, contexts, split = "\\\\s+", drop.missing = TRUE, row.names=NULL)
 
 }
 %- maybe also 'usage' for other objects documented here.

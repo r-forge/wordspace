@@ -1,8 +1,8 @@
-context.vectors <- function (M, contexts, split="\\s+", drop.missing=TRUE, row.names=NA) {
+context.vectors <- function (M, contexts, split="\\s+", drop.missing=TRUE, row.names=NULL) {
   M <- find.canonical.matrix(M) # ensure that M is a suitable matrix, or extract matrix from DSM
   known.terms <- rownames(M)
   nC <- ncol(M)
-  if (is.na(row.names)) {
+  if (is.null(row.names)) {
     if (is.null(names(contexts))) 1:length(contexts) else names(contexts)
   } else {
     if (length(row.names) != length(contexts)) stop("row.names= must have same length as contexts=")
