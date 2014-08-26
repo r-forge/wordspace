@@ -7,25 +7,19 @@
 #+OPTIONS:   TeX:t LaTeX:t skip:nil d:nil todo:t pri:nil tags:not-in-toc
 #+HTML_HEAD: <link rel="stylesheet" type="text/css" href="etc/orgmode.css" />
 
-* Urgent updates for COLING paper submission
+* Urgent updates
 
-  - method =plot.dist.matrix()= for visualization of semantic maps
-    - options to show/hide labels, choice of MDS methods
-    - option to show "spiderweb" plot of semantic neighbourhood; points indicated by =attr("selected")= are highlighted automatically
-    - possible extension: class of points indicated by colour + legend box (for semantic maps); overrides highlighting(?)
-    - returns MDS coordinates with terms as =rowlabels()=
-    - should only apply to =dist.matrix= that is marked to be symmetric and not a similarity matrix
   - implement =head.dsm()= method: =head(M, n)= shows first $n$ rows and columns; =head(M, n, k)= shows first $n$ rows and $k$ columns; automatically selects =$S= (if available) or =$M=
   - implement =print.dsm()= method, which just displays information from =check.dsm()= in a user-friendly form
     - perhaps with option to show details about row/column data etc., or implement =summary.dsm()= for this purpose
   - =write.dsm.matrix()= as safe wrapper around =write()= for very large output files
     - can't be called =write.matrix()=, which already exists in MASS (but doesn't look very optimal)
     - should have options to save row/column names and dense/sparse matrices in various text formats
-  - write basic documentation for all function
-  - design basic Web page
+  - write basic documentation for all functions
   - upload package to CRAN
     - pre-release version could be made available on the homepage (using WinBuilder)
   - =normalize=TRUE= in =dsm.score()= might automatically filter out invalid rows (with $\|x\| = 0$) or keep them at 0 (rather than =NA=)
+  - improve Web page
 
 * Internal redesign
 
