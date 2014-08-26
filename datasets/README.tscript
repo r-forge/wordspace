@@ -1,0 +1,31 @@
+
+  EVALUATION TASKS & SAMPLE DATA FOR THE WORDSPACE PACKAGE
+
+
+1) Artifical examples
+
+ - sample co-occurrence matrices ets. defined in R code
+ - saved directly to data/ directory of wordspace package
+
+$ R --no-save -f examples_matrix.R
+
+
+2) Real co-occurrence data
+
+ - verb-noun triples from BNC and DESC (English subtitles) corpora
+ - saved to local data/ directoy, copy manually to package
+
+$ R --no-save -f examples_cooc.R
+
+
+3) Evaluation tasks
+
+ - various standard tasks already available in .rda format from other work
+ 
+ - WSD based on manually disambiguated words in SemCor 3.0 corpus
+ - extract test sentences with Python/NLTK script (ca. 4 minutes)
+ - target words are hard-coded in the script
+ - final subset selected with R script: sense f >= 5, at least 10% of target instances, discard targets with 1 remaining sense
+
+$ time python3 task_semcor_wsd.py > task/semcor_wsd.txt
+$ R --no-save -f task_semcor_wsd.R
