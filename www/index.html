@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+<head>
+<title>The wordspace package</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="author" content="Stefan Evert" />
+  <meta name="description" content="An interactive laboratory for research in distributional semantics." />
+  <meta name="keywords" content="Distributional Semantics, DSM, NLP, Computational Linguistics, Corpus-based Linguistics, R" />
+  <meta name="robots" content="index, follow" />
+</head>
+
+<body>
+
+<table>
+  <tr>
+    <td valign="top">
+      <a name="top"><h1>Distributional semantics in R with the <code>wordspace</code> package</h1></a>
+      <ul>
+        <li><a href="#intro">Introduction</a></li>
+        <li><a href="#obtain">Download &amp; installation</a></li>
+        <!-- <li><a href="#start">Getting started</a></li> -->
+        <li><a href="#contact">Contact information <!-- &amp; mailing list --></a></li>
+        <!-- <li><a href="#refs">Background reading</a></li>
+        <li><a href="#versions">Old versions</a></li> -->
+        <li><a href="http://wordspace.collocations.de/" target="_blank">Wordspace Wiki</a> <img src="img/link_external_blue.png" alt="external link" /></li>
+        <li><a href="http://r-forge.r-project.org/projects/wordspace/" target="_blank">R-Forge project page</a> <img src="img/link_external_blue.png" alt="external link" /></li>
+      </ul>
+    </td>
+    <td valign="top" align="right" width="300">
+      <!-- <a href="materials/zipfR-poster.pdf" target="_blank"> -->
+        <img src="img/wordspace_logo.png" alt="wordspace logo" width="120" border="0"/>
+      <!-- </a> -->
+      <br/>
+      <small>current version: <b>0.1-14</b> <i>(August 2014)</i><br/>
+        <span style="color:#3366A0;">&mdash; available from CRAN soon &mdash;</span></small>
+    </td>
+  </tr>
+</table>
+
+<hr size="2" noshade="noshade"/> <!-- ============================================================ -->
+
+<div style="float:right; margin-left:2em; margin-right:10px; margin-top:4px; margin-bottom:1em; width: 200px; text-align: center;">
+  <a href="pdf/wordspace_coling2014.pdf"><img src="img/wordspace_coling2014.png" alt="Coling 2014 Poster" border="0"/></a><br/>
+  <small>Poster presented at <a href="http://www.coling-2014.org/" target="_blank">Coling 2014</a></small>
+</div>
+
+<a name="intro"><h2>Introduction</h2></a>
+
+<p>The <strong>wordspace</strong> package turns <a href="http://www.r-project.org/" target="_blank"><strong>R</strong></a> into an interactive laboratory for empirical research on distributional semantic models (DSM).
+  It consists of a small set of carefully designed functions, most of which (i) encapsulate non-trivial R operations in a user-friendly manner or (ii) provide efficient and memory-lean C implementations of key operations.
+</p>
+<p>The package includes various example data sets, ranging from verb-noun co-occurrence data to standard evaluation tasks.  Additional large pre-compiled models will be made available from the Web site.
+</p>
+<p>See <a href="pdf/coling2014_wordspace_final.pdf" target="_blank">Evert (2014)</a> for a more detailed description of the package, including benchmarks and a sample session.
+</p>
+
+<p>If you use <strong>wordspace</strong> in published research, it would be nice of you to cite the following paper:</p>
+<ul>
+<li>Evert, Stefan (2014).
+<a href="http://anthology.aclweb.org/C/C14/C14-2024.pdf" target="_blank">Distributional semantics in R with the wordspace package.</a>
+In <i>Proceedings of COLING 2014, the 25th International Conference on Computational Linguistics: System Demonstrations</i>, pages 110&ndash;114, Dublin, Ireland.</li>
+</ul>
+
+<p align="right" style="clear: both;"><small>
+    <a href="#top">Back to the top</a>
+</small></p>
+
+<hr size="2" noshade="noshade"/> <!-- ============================================================ -->
+
+<a name="obtain"><h2>Download &amp; installation</h2></a>
+
+<!--
+<p>
+  Source code and binary versions of the <strong>wordspace</strong> package can conveniently be downloaded from <a href="http://cran.r-project.org/">CRAN</a>, the Comprehensive R Archive Network, using R's built-in package manager.
+</p>
+-->
+
+<p>The package will soon be made available on CRAN, the Comprehensive R Archive Network.  In the meantime, you can download a local copy of the current version <strong>v0.1-14</strong> and install it manually:
+</p>
+
+<ul>
+  <li>source package: <a href="downloads/wordspace_0.1-14.tar.gz" type="application/octet-stream"><code>wordspace_0.1-14.tar.gz</code></a> (2.7 MiB)</li>
+  <li>Mac OS X binary: <a href="downloads/wordspace_0.1-14.tgz" type="application/octet-stream"><code>wordspace_0.1-14.tgz</code></a> (6.2 MiB, for R 3.1.x)</li>
+</ul>
+
+
+<p>The <strong>wordspace</strong> package is free and open source. Like R itself, it is distributed under the GNU General Public License, version 3.
+
+
+<!-- <p>
+  Nightly builds of the cutting-edge version are available from the <a href="https://r-forge.r-project.org/">R-Forge</a> repository.  Note that these development builds may occasionally be buggy or unstable, so you should only use them if you feel comfortable as a beta tester (and it is highly recommended that you join the <a href="#contact">zipfR mailing list</a> in this case).  To install the cutting-edge version of <strong>zipfR</strong>, enter the <strong>R</strong> command
+</p>
+<p align="center">
+  <code>install.packages("zipfR", repos="http://R-Forge.R-project.org")</code>
+</p>
+<p>
+  or point your GUI package installer to the R-Forge repository at <code>http://R-Forge.R-project.org/</code>.
+</p> -->
+  
+<p align="right"><small>
+    <a href="#top">Back to the top</a>
+</small></p>
+
+<!-- <hr size="2" noshade="noshade"/> <!-- ============================================================ -->
+
+<!--
+<a name="start"><h2>Getting started</h2></a>
+
+<p>
+  The best way to get started with <strong>zipfR</strong> is to install it and work your way through the tutorial.  Now would also be a good time to sign up for the <a href="#contact">mailing list</a>.
+</p>
+
+<p align="center">
+  <a href="materials/zipfr-tutorial.pdf">Download the current version of the tutorial now!</a>
+</p>
+
+<p>
+  When you have finished the tutorial, you should browse the comprehensive package documentation to find out more about its functionalities. If you want to learn more about the motivation behind <strong>zipfR</strong>, the math and some applications, we recommend that you take a look at the materials from our ESSLLI course <a href="#counting_words"><i>Counting Words</i></a>. The papers listed in the <a href="#refs">Background reading</a> section below may also be of interest to you.
+</p>
+
+<p>
+  <a href="materials/zipfR_0.6-5.pdf">PDF version of the package documentation (version 0.6-5)</a>
+</p>
+
+<p align="right"><small>
+    <a href="#top">Back to the top</a>
+</small></p>
+
+-->
+
+<hr size="2" noshade="noshade"/> <!-- ============================================================ -->
+
+<a name="contact"><h2>Contact information <!-- &amp; <i>zipfR</i> mailing list --></h2></a>
+
+<p>
+  Developer and maintainer:
+</p>
+<ul>
+  <li>
+    Stefan Evert (Corpus Linguistics Group, FAU Erlangen-Nürnberg):<br />
+    <a href="mailto:stefan.evert@fau.de">stefan.evert@fau.de</a> <code>|</code> <a href="http://www.stefan-evert.de/" target="_blank">http://www.stefan-evert.de/</a> <img src="img/link_external_blue.png" alt="external link"/> <code>|</code> <a href="http://www.linguistik.fau.de/" target="_blank">http://www.linguistik.fau.de/</a> <img src="img/link_external_blue.png" alt="external link"/>
+  </li>
+</ul>
+
+<p>
+  You should also subscribe to the <a href="http://lists.r-forge.r-project.org/cgi-bin/mailman/listinfo/wordspace-users"><strong>wordspace</strong> mailing list</a>, where you can get help and discuss ideas with other users.
+</p>
+
+<p align="right"><small>
+    <a href="#top">Back to the top</a>
+</small></p>
+
+
+<!-- <hr size="2" noshade="noshade"/> <!-- ============================================================ -->
+<!--
+<a name="versions"><h2>Old versions</h2></a>
+
+<p>
+  Whenever possible, you should use the most recent version of the <b>zipfR</b> package from <a href="http://cran.r-project.org/">CRAN</a> or <a href="https://r-forge.r-project.org/">R-Forge</a> (see <a href="#obtain">installation instructions</a>).  Here, we provide source code packages of old versions as a fallback in case there are any incompatibilities with legacy platforms or existing <strong>R</strong> scripts.
+</p>
+
+<ul>
+  <li>
+    Version 0.6-3 (January 2007)<br />
+    <a href="software/zipfR_0.6-3.tar.gz">source code</a> &ndash;
+    <a href="materials/zipfR_0.6-3.pdf">PDF documentation</a>
+  </li>
+  <li>
+    Version 0.6 (first public release, August 2006)<br />
+    <a href="software/zipfR_0.6-0.tar.gz">source code</a> &ndash;
+    <a href="materials/zipfR_0.6-0.pdf">PDF documentation</a>
+  </li>
+</ul>
+
+
+<p align="right"><small>
+    <a href="#top">Back to the top</a>
+</small></p>
+
+-->
+
+<hr size="2" noshade="noshade"/> <!-- ============================================================ -->
+
+</body>
+
+</html>
