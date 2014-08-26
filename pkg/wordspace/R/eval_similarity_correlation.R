@@ -1,5 +1,4 @@
-eval.similarity.correlation <-
-function (task, M, dist.fnc=pair.distances, details=FALSE, format=NA, taskname=NA, word1.name="word1", word2.name="word2", score.name="score", ...) {
+eval.similarity.correlation <- function (task, M, dist.fnc=pair.distances, details=FALSE, format=NA, taskname=NA, word1.name="word1", word2.name="word2", score.name="score", ...) {
   if (is.na(taskname)) taskname <- deparse(substitute(task))
   for (varname in c(word1.name, word2.name, score.name)) {
     if (!(varname %in% colnames(task))) stop(sprintf("gold standard does not have a column labelled '%s'", varname))
@@ -51,15 +50,13 @@ function (task, M, dist.fnc=pair.distances, details=FALSE, format=NA, taskname=N
   }
 }
 
-print.eval.similarity.correlation <-
-function (x, ...) {
+print.eval.similarity.correlation <- function (x, ...) {
   NextMethod("print", x, ...) # print as data frame
   cat("Evaluation result:\n")
   print(attr(x, "eval.result"))
 }
 
-plot.eval.similarity.correlation <-
-function (x, y, line=TRUE, categories=NULL, cat.col=NA, cat.legend="bottomleft", pch=20, cex=1, xlim=NULL, ylim=NULL, xlab="human rating", ylab="distributional model", main=attr(x, "taskname"), ...) {
+plot.eval.similarity.correlation <- function (x, y, line=TRUE, categories=NULL, cat.col=NA, cat.legend="bottomleft", pch=20, cex=1, xlim=NULL, ylim=NULL, xlab="human rating", ylab="distributional model", main=attr(x, "taskname"), ...) {
   if (!missing(categories)) {
     categories <- eval(substitute(categories), x, parent.frame())
     categories <- as.factor(categories)
