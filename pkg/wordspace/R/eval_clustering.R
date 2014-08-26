@@ -55,7 +55,7 @@ eval.clustering <- function (task, M, dist.fnc=pair.distances, ..., details=FALS
     attr(distances, "Labels") <- known.words
 
     ## cluster assignments for known words, using the PAM algorithm
-    known.clusters <- cluster::pam(distances, n.clusters, diss=TRUE, cluster.only=TRUE) 
+    known.clusters <- pam(distances, n.clusters, diss=TRUE, cluster.only=TRUE) 
     clusters[known.words] <- known.clusters # fill in cluster assignments for known words
   }
     

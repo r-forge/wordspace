@@ -1,5 +1,7 @@
 import(Matrix)
 importFrom(Rcpp, evalCpp)
+importFrom(MASS, sammon, isoMDS)
+importFrom(cluster, pam)
 
 useDynLib(wordspace, .registration=TRUE)
 
@@ -26,6 +28,8 @@ S3method(rbind, dsm)
 S3method(cbind, dsm)
 
 S3method(merge, dsm)
+
+S3method(plot, dist.matrix)
 
 S3method(print, eval.similarity.correlation)
 S3method(plot, eval.similarity.correlation)

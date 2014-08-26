@@ -4,6 +4,9 @@ Changes in version 0.3-0
 
 Pre-release history
 
+  - v0.1-15
+    - plot() method for dist.matrix for easy visualization of neighbourhood graphs
+
   - v0.1-14
     - new evaluation task: SemCorWSD (preliminary version)
     - CITATION entry with official reference (Evert 2014)
