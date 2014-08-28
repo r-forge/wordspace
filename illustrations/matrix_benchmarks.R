@@ -8,7 +8,7 @@ library(wordspace) # for some optimised implementations in wordspace package
 
 load("data/bnc_vobj_basic.rda") # sample data set: 1678 x 4687 with 349378 nonzero cells (4.4% fill rate)
 
-M <- bnc.vobj.basic$M # operate on log-transformed frequency counts
+M <- bnc_vobj_basic$M # operate on log-transformed frequency counts
 M <- log10(M + 1)
 
 ## M <- M[seq(1,nrow(M),5), ] # -- reduce M for test runs
