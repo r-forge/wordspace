@@ -94,6 +94,7 @@ dsm.score <- function (model,
   }
 
   dimnames(scores) <- dimnames(cooc.matrix) # make sure that row and column names are preserved
+  if (!negative.ok) attr(scores, "nonneg") <- TRUE # S is known to be non-negative
   if (matrix.only) {
     return(scores)
   } else {
