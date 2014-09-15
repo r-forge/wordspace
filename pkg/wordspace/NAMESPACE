@@ -19,6 +19,8 @@ export(match.split)
 export(context.vectors)
 export(convert.lemma, eval.multiple.choice, eval.clustering, eval.similarity.correlation)
 
+S3method(print, dsm)
+S3method(head, dsm)
 S3method(dim, dsm)
 S3method(t, dsm)
 
@@ -29,6 +31,7 @@ S3method(cbind, dsm)
 
 S3method(merge, dsm)
 
+S3method(head, dist.matrix)
 S3method(plot, dist.matrix)
 
 S3method(print, eval.similarity.correlation)
