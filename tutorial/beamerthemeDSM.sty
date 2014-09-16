@@ -19,7 +19,6 @@
 \useinnertheme{default}
 \useoutertheme{infolines}
 
-% Tills' opinion: should be done in an inner theme, not here.
 \usesubitemizeitemtemplate{%
     \tiny\raise1.5pt\hbox{\color{beamerstructure}$\blacktriangleright$}%
 }
@@ -31,9 +30,9 @@
 
 % don't show Logo (bottom right corner) by default, but define commands so user can activate/deactivate it
 %% -- TODO: adapt to new DSM logo
-%\pgfdeclareimage[width=16mm]{uos-logo}{uos-logo-links-col}
-%\newcommand{\showLogo}{\logo{\pgfuseimage{uos-logo}}}
-%\newcommand{\hideLogo}{\logo{}}
+\pgfdeclareimage[width=16mm]{dsm-logo}{img/wordspace_wiki_logo}
+\newcommand{\showLogo}{\logo{\pgfuseimage{dsm-logo}}}
+\newcommand{\hideLogo}{\logo{}}
 
 \usecolortheme[named=dsmblue]{structure}
 \usecolortheme{rose} % -- despite the misleading name, this just sets coloured backgrounds for blocks
