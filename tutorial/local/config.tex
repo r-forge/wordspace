@@ -19,6 +19,7 @@
 \usepackage{tikz}
 \usepackage{alltt}              % code examples with nicely formatted comments
 \usepackage{hieroglf}           % hieroglyph font for the archeology example
+\usepackage{rotating}
 
 %% ----- general copyright message (authors may change between versions of the tutorial)
 \newcommand{\dsmcopyright}{%
@@ -47,5 +48,8 @@
   \color{black}\mdseries\end{footnotesize}}
 
 %% symbols for centroid vector and singular value matrix 
-\newcommand{\vmu}[1][]{\boldsymbol{\mu}\ifthenelse{\equal{#1}{}}{}{^{(#1)}}}
+%% \newcommand{\vmu}[1][]{\boldsymbol{\mu}\ifthenelse{\equal{#1}{}}{}{^{(#1)}}}
 \newcommand{\Msigma}{\boldsymbol{\Sigma}}
+
+%% rotated column labels for table (to fit long text into narrow columns
+\newcommand{\rotLabel}[2][60]{\begin{rotate}{#1}#2\end{rotate}}
