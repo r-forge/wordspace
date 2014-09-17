@@ -10,6 +10,7 @@ load(paste(large.dsm, "rda/web_150k_30k_l4r4_svd1000.rda", sep="/"), verbose=TRU
 
 ## vocabulary should cover basic evaluation tasks
 vocab <- ESSLLI08_Nouns$word
+vocab <- union(vocab, with(RG65, c(word1, word2)))
 vocab <- union(vocab, with(WordSim353, c(word1, word2)))
 vocab <- union(vocab, with(TOEFL80, c(target, correct, distractor1, distractor2, distractor3)))
 vocab <- union(vocab, AP402$word)
@@ -24,7 +25,7 @@ for (w in words) vocab <- union(vocab, names(nearest.neighbours(web_150k_30k_l4r
 
 
 vocab <- vocab[vocab %in% rownames(web_150k_30k_l4r4_svd1000)]
-length(vocab) # 1314 target words remaining
+length(vocab) # 1323 target words remaining
 
 DSM_Vectors <- web_150k_30k_l4r4_svd1000[vocab, 1:100]
 DSM_Vectors <- normalize.rows(DSM_Vectors) # renormalize row vectors
