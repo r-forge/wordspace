@@ -24,9 +24,10 @@ for (w in words) vocab <- union(vocab, names(nearest.neighbours(web_150k_30k_l4r
 
 
 vocab <- vocab[vocab %in% rownames(web_150k_30k_l4r4_svd1000)]
-length(vocab) # 1311 target words remaining
+length(vocab) # 1314 target words remaining
 
 DSM_Vectors <- web_150k_30k_l4r4_svd1000[vocab, 1:100]
+DSM_Vectors <- normalize.rows(DSM_Vectors) # renormalize row vectors
 dim(DSM_Vectors)
 cat(sprintf("Approx. size: %.2f MiB\n", object.size(DSM_Vectors) / 2^20))
 
