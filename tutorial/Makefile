@@ -88,6 +88,7 @@ test:	$(IMAGES)
 	pdfnup --nup 2x2 --paper a4paper --landscape --trim "-8mm -8mm -8mm -8mm" --outfile $@ $*.pdf
 
 %:	%.slides.pdf %.handout.pdf %.notes.pdf
+	perl util/EditFile.perl -HANDOUT -NOTES +SLIDES -NEVER $*.tex	
 	@echo "Done"
 
 img/%.pdf:	img/%.eps
