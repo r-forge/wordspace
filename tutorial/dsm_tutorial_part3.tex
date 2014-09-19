@@ -46,7 +46,564 @@
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+\section{What is semantic similarity?}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Semantic similarity and relatedness}
+
+\begin{frame}
+\frametitle{Distributional similarity as semantic similarity}
+
+\begin{itemize}
+\item DSMs interpret semantic similarity as a \primary{quantitative notion}
+\begin{itemize}
+\item if $\va$ is closer to $\vb$ than to $\Vector{c}$ in the distributional
+vector space, then $a$ is more semantically similar to $b$ than to $c$
+\end{itemize}
+\end{itemize}
+
+\begin{center}
+  \begin{tabular}{l|l|l}
+      \primary{rhino} & \primary{fall} & \primary{rock}\\
+      \hline
+      woodpecker&    rise&         lava\\
+      rhinoceros&    increase&     sand\\
+      swan&          fluctuation&  boulder\\
+      whale&         drop&         ice\\
+      ivory&         decrease&     jazz\\
+      plover&        reduction&    slab\\
+      elephant&      logarithm&    cliff\\
+      bear&          decline&      pop\\
+      satin&         cut&          basalt\\
+      sweatshirt&    hike&         crevice\\
+    \end{tabular}
+  \end{center}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Types of semantic relations in DSMs}
+
+Nearest DSM neighbors have different types of \primary{semantic relations}.
+
+\footnotesize
+ \begin{columns}[t]
+    \column{.5\textwidth}
+    \begin{block}{\emph{car} {\small (InfomapNLP on BNC; n = 2)}}
+      \begin{itemize}
+      \item  van {\color{counterpoint} co-hyponym}
+      \item vehicle {\color{counterpoint} hyperonym}
+      \item truck {\color{counterpoint} co-hyponym}
+      \item motorcycle {\color{counterpoint} co-hyponym}
+      \item driver {\color{counterpoint} related entity}
+      \item motor {\color{counterpoint} part}
+      \item lorry {\color{counterpoint} co-hyponym}
+      \item motorist {\color{counterpoint} related entity}
+      \item cavalier {\color{counterpoint} hyponym}
+      \item bike {\color{counterpoint} co-hyponym}
+\end{itemize}
+\end{block}
+\column{.5\textwidth}
+\begin{block} {\emph{car} {\small (InfomapNLP on BNC; n = 30)}}
+  \begin{itemize}
+  \item drive {\color{counterpoint} function}
+  \item park {\color{counterpoint} typical action}
+  \item bonnet {\color{counterpoint} part}
+  \item windscreen {\color{counterpoint} part}
+  \item hatchback {\color{counterpoint} part}
+\item headlight {\color{counterpoint} part}
+\item jaguar {\color{counterpoint} hyponym}
+\item garage {\color{counterpoint} location}
+\item cavalier {\color{counterpoint} hyponym}
+\item tyre {\color{counterpoint} part}
+\end{itemize}
+\end{block}
+  \end{columns}
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Semantic similarity and relatedness}
+
+\ungap[1]
+\begin{itemize}
+\item \primary{Attributional similarity} -- two words sharing a large number of salient features (attributes)
+\begin{itemize}
+\item synonymy (\emph{car/automobile})
+\item hyperonymy (\emph{car/vehicle)}
+\item co-hyponymy (\emph{car/van/truck})
+\end{itemize}
+
+\item<2-> \primary{Semantic relatedness} \citep{Budanitsky:Hirst:06} -- two words semantically associated without necessarily being similar
+\begin{itemize}
+\item function (\emph{car/drive})
+\item meronymy (\emph{car/tyre})
+\item location (\emph{car/road})
+\item attribute (\emph{car/fast})
+\end{itemize}
+
+\item<3-> \primary{Relational similarity} \citep{Turney:06} -- similar relation between pairs of words (analogy)
+  \begin{itemize}
+  \item \emph{policeman}$\,:\,$\emph{gun} $\;::\;$ \emph{teacher}$\,:\,$\emph{book}
+  \item \emph{mason}$\,:\,$\emph{stone} $\;::\;$ \emph{carpenter}$\,:\,$\emph{wood}
+  \item \emph{traffic}$\,:\,$\emph{street} $\;::\;$ \emph{water}$\,:\,$\emph{riverbed}
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Attributional similarity}
+
+\begin{frame}
+  \frametitle{DSMs and semantic similarity}
+  \begin{itemize}
+   \item DSMs are thought to represent \primary{paradigmatic} similarity
+   \begin{itemize}
+    \item words that tend to occur in the same contexts
+    \end{itemize}
+  \item Words that share many contexts will correspond to concepts
+    that share many attributes (\primary{attributional similarity}),
+    i.e. concepts that are \secondary{taxonomically/ontologically similar}
+    \begin{itemize}
+    \item synonyms (\emph{rhino/rhinoceros})
+    \item antonyms and values on a
+      scale (\emph{good/bad})
+      \item co-hyponyms (\emph{rock/jazz})
+      \item hyper- and hyponyms (\emph{rock/basalt})
+    \end{itemize}
+  \item Taxonomic similarity is seen as the \primary{fundamental semantic relation}, allowing categorization, generalization, inheritance
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Evaluation of attributional similarity}
+  
+  \begin{itemize}
+  \item \primary{Synonym identification}
+    \begin{itemize}
+    \item TOEFL test
+    \end{itemize}
+  \item \primary{Modeling semantic similarity} judgments
+    \begin{itemize}
+    \item Rubenstein/Goodenough norms
+    \item WordSim-353
+    \end{itemize}
+  \item \primary{Noun categorization}
+    \begin{itemize}
+    \item ESSLLI 2008 dataset
+    \item Almuhareb \& Poesio dataset (AP)
+    \item \ldots
+    \end{itemize}
+  \item \primary{Semantic priming}
+    \begin{itemize}
+    \item Hodgson dataset
+    \item Semantic Priming Project 
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Noun categorization}
+
+\begin{itemize}
+\item In \primary{categorization tasks}, subjects are typically asked to assign experimental items -- objects, images, words -- to a given category or group items belonging to the same category
+\begin{itemize}
+\item categorization requires an understanding of the relationship between the items in a category
+\end {itemize}
+\item Categorization is a basic cognitive operation presupposed by further semantic tasks
+\begin{itemize}
+\item \primary{inference}
+\begin{itemize}
+\item if X is a CAR then X is a VEHICLE
+\end{itemize}
+\item \primary{compositionality}
+\begin{itemize}
+\item $\lambda y: \text{FOOD}\; \lambda x:\text{ANIMATE} \; \bigl[ eat(x,y) \bigr]$
+\end{itemize}
+\end{itemize}
+\item ``Chicken-and-egg'' problem for relationship of categorization and similarity (cf.\ Goodman 1972, Medin et al.\ 1993)
+\end{itemize}
+\end{frame}
+
+
+\frame{
+\frametitle{Noun categorization: the ESSLLI 2008 dataset}
+
+  Dataset of 44 concrete nouns (ESSLLI 2008 Shared Task)
+  \begin{itemize}
+  \item 24 natural entities
+    \begin{itemize}
+    \item 15 animals: 7 birds (\emph{eagle}), 8 ground animals (\emph{lion})
+    \item 9 plants: 4 fruits (\emph{banana}), 5 greens (\emph{onion})
+    \end{itemize}
+  \item 20 artifacts
+    \begin{itemize}
+    \item 13 tools (\emph{hammer}), 7 vehicles (\emph{car})
+    \end{itemize}
+  \end{itemize}
+
+\pause
+\gap[1.5]
+DSMs and noun categorization
+\begin{itemize}
+\item categorization can be operationalized as a \primary{clustering task}
+\begin{enumerate}
+\item for each noun $w_i$ in the dataset, take its vector $\vw_i$
+\item use a \primary{clustering method} to group similar vectors $\vw_i$
+\item evaluate whether clusters correspond to gold-standard semantic
+  classes (purity, entropy, \ldots)
+\end{enumerate}
+\end{itemize}
+
+}
+
+
+\begin{frame}
+\frametitle{Noun categorization: example}
+\ungap[1]
+\begin{center}
+  \only<beamer:1| handout:0>{\includegraphics[width=8cm]{img/hieroglyph_clustering}}%
+  \only<beamer:2-| handout:1>{\includegraphics[width=8cm]{img/hieroglyph_clustering_6}}%
+\end{center}
+\ungap[1]
+\begin{itemize}
+\item<3-> majority labels: greens, birds, vehicles, tools, tools, tools
+\item<3-> correct: 5/11, 5/9, 7/11, 8/8, 1/1, 4/4
+\item<4-> purity = 30 correct out of 44 = 68.2\%
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{ESSLLI 2008 shared task}
+\begin{itemize}
+\item Clustering experiments with CLUTO (Karypis 2003)
+\begin{itemize}
+\item repeated bisection algorithm
+\item 6-way (birds, ground animals, fruits, greens,
+tools and vehicles), 3-way (animals, plants and
+artifacts) and 2-way (natural and artificial entities) clusterings
+\end{itemize}
+\pause
+\item Quantitative evaluation
+\begin{itemize}
+\item \primary{entropy} -- whether words from different classes are represented in the same cluster (\secondary{best = 0})
+\item \primary{purity} -- degree to which a cluster contains words from one class only (\secondary{best = 1})
+\item \primary{global score} across the three clustering experiments
+\begin{displaymath}
+\sum_{i=1}^3 \text{Purity}_i -  \sum_{i=1}^3 \text{Entropy}_i
+\end{displaymath}
+
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\frame{
+\frametitle{ESSLLI 2008 shared task}
+
+ \begin{center}
+  \begin{tabular}{|l|r|r||r|r||r|r||r|}
+      \hline
+      \emph{model} &\multicolumn{2}{|c||}{\emph{6-way}} &  \multicolumn{2}{|c||}{\emph{3-way}} & \multicolumn{2}{|c||}{\emph{2-way}}&  \multicolumn{1}{|c|}{\emph{global}}\\
+      \cline{2-7}
+      &   \emph{P} & \emph{E}  & \emph{P} & \emph{E}  & \emph{P} & \emph{E} &\\
+      \hline
+      \hline
+      Katrenko & 89 & 13 & 100 & 0 & 80 & 59 & 197\\ 
+      \hline
+      Peirsman+ & 82 & 23 & 84 & 34 & 86 & 55 & 140\\
+      \hline
+      dep-typed (DM) & 77 & 24 & 79 & 38 & 59 & 97 & 56\\
+      \hline
+      dep-filtered (DM) & 80 &28 & 75& 51& 61& 95 & 42\\
+      \hline
+      window (DM) & 75& 27&  68& 51& 68& 89   &44\\
+      \hline
+      Peirsman$-$ & 73 & 28 & 71 & 54 & 61 & 96 & 27\\
+      \hline
+      Shaoul & 41& 77& 52& 84 & 55& 93& -106\\
+      \hline
+    \end{tabular}
+\end{center}
+
+\begin{center}\footnotesize
+  {\tt Katrenko, Peirsman+/-, Shaoul}: ESSLLI 2008 Shared Task\\
+  {\tt DM}: Baroni \& Lenci (2009)
+\end{center}
+
+}
+
+\begin{frame}
+  \frametitle{Semantic priming}
+  \begin{itemize}
+  \item Hearing/reading a ``related'' prime facilitates access to a
+    target in various lexical tasks (naming, lexical decision,
+    reading)
+    \begin{itemize}
+  \item the word \emph{pear} is recognized faster if heard/read after \emph{apple}
+  \item[]
+    \end{itemize}
+  \item<2-> \citet{Hodgson:91} single word lexical decision task, 136
+    prime-target pairs \citep[cf.][]{Pado:Lapata:07}
+    \begin{itemize}
+  \item similar amounts of priming found for different  semantic relations between primes and targets ($\approx 23$ pairs
+    per relation)
+    \begin{itemize}
+    \item synonyms (synonym): \emph{to dread/to fear}
+    \item antonyms (antonym): \emph{short/tall}
+    \item coordinates (coord): \emph{train/truck}
+    \item super- and subordinate pairs (supersub): \emph{container/bottle}
+    \item free association pairs (freeass): \emph{dove/peace}
+    \item phrasal associates (phrasacc): \emph{vacant/building}
+    \end{itemize}
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}
+  \frametitle{Simulating semantic priming}
+  \framesubtitle{\citet{McDonald:Brew:04,Pado:Lapata:07}}
+ \begin{itemize}
+ \item DSMs and semantic priming
+  \begin{enumerate}
+  \item for each related prime-target pair, 
+  measure cosine-based similarity between items (e.g.,
+    \emph{to dread / to fear})
+    \pause
+  \item to estimate \primary{unrelated primes}, take average of cosine-based similarity of target with other primes from same semantic relation (e.g., \emph{value / to fear})
+    \pause
+  \item similarity between related items should be significantly higher
+    than average similarity between unrelated items
+    \item[]
+  \end{enumerate}
+\item<2-> Significant effects ($p < .01$) for all semantic relations 
+  \begin{itemize}
+  \item strongest effects for synonyms, antonyms \& coordinates
+  \item[]
+  \end{itemize}
+\item<3-> Alternative: \primary{classification} task
+  \begin{itemize}
+  \item given target and two primes, identify related prime\\ (\so multiple choice like TOEFL)
+  \end{itemize}
+  \end{itemize}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+\section{Parameter evaluation}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Evaluation strategies}
+
+\begin{frame}
+  \frametitle{DSM evaluation in published studies}
+
+  \begin{itemize}
+  \item \primary{One model, many tasks} \citep{Pado:Lapata:07,Baroni:Lenci:10}
+    \begin{itemize}
+    \item A novel DSM is proposed, with specific features \& parameters
+    \item This DSM is tested on a range of different tasks (e.g.\ TOEFL, priming, semantic clustering)
+    \item[]
+    \end{itemize}
+
+  \item<2-> \primary{Incremental tuning of parameters} \citep{Bullinaria:Levy:07,Bullinaria:Levy:12,Kiela:Clark:14,Polajnar:Clark:14}
+    \begin{itemize}
+    \item Several parameters (e.g., scoring measure, distance metric, dimensionality reduction) 
+    \item Many tasks (e.g.\ TOEFL, semantic \& syntactic clustering)
+    \item Varying granularity of parameter settings
+    \item One parameter (sometimes two) varied at a time, with all other parameters set to fixed values or optimized for each setting
+    \item Optimal parameter values are determined sequentially
+    \end{itemize}
+
+  \end{itemize}
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{An example (Bullinaria \& Levy 2007, 2012)}
+
+\begin{frame}
+  \frametitle{Bullinaria \& Levy (2007, 2012)}
+
+  \ungap[1]
+  \begin{itemize}
+  \item One of the first systematic evaluation studies
+  \item Test influence of many standard parameter settings
+    \begin{itemize}
+    \item frequency weighting + distance measure
+    \item co-occurrence window, structured \vs unstructured
+    \item corpus type \& size, number of feature dimensions
+    \item dimensionality reduction (SVD), number of latent dimension
+    \end{itemize}
+  \item<2-> In four different evaluation tasks
+    \begin{itemize}
+    \item TOEFL
+    \item distance comparison: related word \vs 10 random words
+    \item semantic categorization: nearest-centroid classifier
+    \item syntactic categorization (2007)
+    \item semantic clustering of nouns (2012)
+    \end{itemize}
+  \item<3-> Novel parameters
+    \begin{itemize}
+    \item skipping of first latent dimensions (with highest variance)
+    \item Caron's (\citeyear{Caron:01}) $P$: power-scaling of singular values
+    \end{itemize}
+  \end{itemize}
+\addnote{Note that B\&L do not test all commonly used parameter settings, e.g.\ log-likelihood or log frequency as feature weighting.}%
+\addnote{They also do not seem to normalize row vectors properly (frequency vectors are scaled to probabilities, i.e.\ $\norm[1]{x} = 1$), which might explain the poor results from Euclidean distance.}%
+\addnote{Noun clustering uses \citet{Mitchell:etc:08} dataset of 60 nouns from 12 categories, and CLUTO direct clustering with standard settings.}%
+\addnote{Incremental approach also across the two studies: B\&L (2012) builds on and extends results of B\&L (2007).}%
+\addnote{Note that B\&L's power scaling notation differs from \citet{Caron:01}: $P = 1 + p/2$}%
+\end{frame}
+
+\begin{frame}
+  \frametitle{TOEFL results: feature weighting \& distance measure}
+  \framesubtitle{\citep[p.~516, Fig.~1]{Bullinaria:Levy:07}}
+
+  \ungap[1.5]
+  \begin{center}
+    \includegraphics[width=7cm]{img/BullinariaLevy2007_p516_fig1_TOEFL_metric}
+  \end{center}
+
+  \ungap[1]
+  \secondary{\scriptsize
+   British National Corpus (BNC). Vectors not L2-normalized (frequency is L1-normalized). All other parameters optimized for each setting.
+    \par% terminate paragraph to recompute line spacing while \scriptsize is still in effect
+  }
+\end{frame}
+
+\begin{frame}
+  \frametitle{TOEFL results: size \& type of co-occurrence window}
+  \framesubtitle{\citep[p.~893, Fig.~1]{Bullinaria:Levy:12}}
+
+  \ungap[1]
+  \begin{center}
+    \includegraphics[width=8cm]{img/BullinariaLevy2012_p893_fig1_TOEFL_window}
+  \end{center}
+
+  \ungap[.5]
+  \secondary{\scriptsize
+    ukWaC Web corpus. Positive PMI + cosine \citep{Bullinaria:Levy:07}. Number of feature dimensions optimized for each window size \& task. No dimensionality reduction. L\&R = structured surface context (left/right).
+    \par%
+  }
+\end{frame}
+
+\begin{frame}
+  \frametitle{TOEFL results: corpus type \& size}
+  \framesubtitle{\citep[p.~894, Fig.~2]{Bullinaria:Levy:12}}
+
+  \ungap[1]
+  \begin{center}
+    \includegraphics[width=8cm]{img/BullinariaLevy2012_p894_fig2_TOEFL_size}
+  \end{center}
+
+  \ungap[.5]
+  \secondary{\scriptsize
+    L+R context of size 1. Average + standard error over equally-sized corpus slices. Other parameter settings unclear.
+    \par%
+  }
+\end{frame}
+
+\begin{frame}
+  \frametitle{TOEFL results: feature dimensions \& pre-processing}
+  \framesubtitle{\citep[p.~895, Fig.~4]{Bullinaria:Levy:12}}
+
+  \ungap[1]
+  \begin{center}
+    \includegraphics[width=8cm]{img/BullinariaLevy2012_p895_fig4_TOEFL_dim_stem}
+  \end{center}
+
+  \ungap[.5]
+  \secondary{\scriptsize
+    ukWaC corpus. L+R context of size 1. Other parameters presumably as above.
+    \par%
+  }
+\end{frame}
+
+\begin{frame}
+  \frametitle{TOEFL results: dimensionality reduction}
+  \framesubtitle{\citep[p.~898, Fig.~5]{Bullinaria:Levy:12}}
+
+  \ungap[1]
+  \begin{center}
+    \includegraphics[width=8cm]{img/BullinariaLevy2012_p898_fig5_TOEFL_reddim}
+  \end{center}
+
+  \ungap[.5]
+  \secondary{\scriptsize
+    ukWaC corpus. Positive PMI + cosine. Standard = no dimensionality reduction.
+    Other: number of latent dimensions for 12k, 25k and 50k original feature dimensions.
+    \par%
+  }
+\end{frame}
+
+\begin{frame}
+  \frametitle{Semantic Categorization: dimensionality reduction}
+  \framesubtitle{\citep[p.~898, Fig.~5]{Bullinaria:Levy:12}}
+
+  \ungap[1]
+  \begin{center}
+    \includegraphics[width=8cm]{img/BullinariaLevy2012_p898_fig5_SemCat_reddim}
+  \end{center}
+
+  \ungap[.5]
+  \secondary{\scriptsize
+    ukWaC corpus. Positive PMI + cosine. Standard = no dimensionality reduction.
+    Other: number of latent dimensions for 12k, 25k and 50k original feature dimensions.
+    \par%
+  }
+\end{frame}
+
+\begin{frame}
+  \frametitle{Combined results: skipping first latent dimensions}
+  \framesubtitle{\citep[p.~900, Fig.~7]{Bullinaria:Levy:12}}
+
+  \ungap[1.5]
+  \begin{center}
+    \includegraphics[width=8cm]{img/BullinariaLevy2012_p900_fig7_skipdim}
+  \end{center}
+
+  \ungap[.5]
+  \secondary{\scriptsize
+    ukWaC corpus with standard settings. 50k feature dimensions reduced to 5000 latent dimensions.
+    \par%
+  }
+\end{frame}
+
+\begin{frame}
+  \frametitle{TOEFL results: power scaling (Caron's $P$)}
+  \framesubtitle{\citep[p.~900, Fig.~7]{Bullinaria:Levy:12}}
+
+  \ungap[1.5]
+  \begin{center}
+    \includegraphics[width=8cm]{img/BullinariaLevy2012_p900_fig7_power}
+  \end{center}
+
+  \ungap[.5]
+  \secondary{\scriptsize
+    ukWaC corpus with standard settings. 50k feature dimensions reduced to 5000 latent dimensions.
+    Neutral value is $P = 1$.
+    \par%
+  }
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{A large scale evaluation study}
+
+\begin{frame}[c]
+  \centering
+
+  \hh{\large A (very) large-scale evaluation study}
+  
+  \gap[2]
+  Based on research by Gabriella Lapesa.
+\end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Tasks \& parameters}
@@ -78,7 +635,7 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{Models: general features}
+  \frametitle{Distributional models: general features}
   \begin{itemize}
   \item \primary{Term-term} distributional semantic models (bag-of-words)
   \item \secondary{Target} terms (rows)
@@ -100,7 +657,7 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{Evaluated Parameters}
+  \frametitle{Evaluated parameters}
   \framesubtitle{Building the co-occurrence matrix}
   \begin{enumerate}
   \item   \h{Source corpus}: BNC, Wackypedia, UkWac
@@ -117,13 +674,11 @@
     \begin{block}{}\small
       We expect those parameters to be crucial as they determine the granularity (direction) and amount (size) of shared context involved in the computation of similarity.  
     \end{block}          
-    
-    
   \end{enumerate}   
 \end{frame}
 
 \begin{frame}
-  \frametitle{Evaluated Parameters}
+  \frametitle{Evaluated parameters}
   \framesubtitle{Selecting dimensions from the co-occurrence matrix} 
   \begin{enumerate}
     \setcounter{enumi}{2} 
@@ -135,15 +690,13 @@
     \begin{block}{}\small
       How many context dimensions (words) are needed for DSMs to perform well in specific tasks? Are too many context dimensions detrimental? What is the best selection criterion? 
     \end{block}   
-    
   \end{enumerate}   
-
 \end{frame}
 
 
 \begin{frame}
-  \frametitle{Evaluated Parameters}
-  \framesubtitle{Manipulating the co-occurrence matrix} 
+  \frametitle{Evaluated parameters}
+  \framesubtitle{Weighting and scaling co-occurrence counts} 
   
   \begin{enumerate}
     \setcounter{enumi}{3}
@@ -157,16 +710,12 @@
     \begin{block}{}\small
       Transformations reduce the skewness of feature scores.
     \end{block}
-    
   \end{enumerate}   
-
 \end{frame}
 
-
-
 \begin{frame}
-  \frametitle{Evaluated Parameters}
-  \framesubtitle{Reducing the co-occurrence matrix}    
+  \frametitle{Evaluated parameters}
+  \framesubtitle{Dimensionality reduction}    
 
   \begin{enumerate}
     \setcounter{enumi}{5}
@@ -183,8 +732,8 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{Evaluated Parameters}
-  \framesubtitle{Building and browsing the distance matrix}   
+  \frametitle{Evaluated parameters}
+  \framesubtitle{Computation and usage of distances}   
 
   \begin{enumerate}
     \setcounter{enumi}{6}      
@@ -225,32 +774,9 @@
 \end{frame}
 
 
-
 \begin{frame}
-  \frametitle{Making sense of evaluation results}  
-  \framesubtitle{Traditional approaches to DSM evaluation}
-
-  \begin{itemize}
-  \item \primary{Incremental tuning of parameters} \citep{Bullinaria:Levy:07,Bullinaria:Levy:12,Kiela:Clark:14,Polajnar:Clark:14}
-    \begin{itemize}
-    \item Several parameters (e.g., scoring measure, distance metric, dimensionality reduction) 
-    \item Many tasks (e.g., TOEFL, semantic \& syntactic clustering)
-    \item Varying granularity of parameter settings
-    \item Optimal parameter values are determined sequentially
-    \end{itemize}
-
-  \item \primary{One model, many tasks} \citep{Pado:Lapata:07,Baroni:Lenci:10}
-    \begin{itemize}
-    \item A novel DSM is proposed, with specific features \& parameters
-    \item This DSM is tested on a different tasks (e.g., TOEFL, priming, semantic clustering)
-    \end{itemize}
-  \end{itemize}
-\end{frame}
-
-\begin{frame}
-  \frametitle{Evaluation methodology: our proposal}
-  \framesubtitle{Linear regression}
-
+  \frametitle{Evaluation methodology: linear regression}
+  \framesubtitle{Our proposal for a robust evaluation of DSM parameters}
 
   \begin{itemize}
   \item Attempts to predict the values of a ``dependent'' variable from one or more ``independent'' variables and their combinations
@@ -259,7 +785,7 @@
 
   \begin{block}{Example}
     \textbf{Dependent variable}: income \\
-    \textbf{Independent variables}: gender, age, ethnicity, education level, first letter of the surname
+    \textbf{Independent variables}: gender, age, ethnicity, education level, first letter of the surname \light{(hopefully not significant)}
   \end{block}
 
 
@@ -268,9 +794,8 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{Evaluation methodology: a proposal}
-  \framesubtitle{DSM evaluation and linear regression}
-
+  \frametitle{Evaluation methodology: linear regression}
+  \framesubtitle{Our proposal for a robust evaluation of DSM parameters}
 
   We use linear models to analyze the influence of different DSM parameters and their combinations on DSM performance
   \begin{itemize}
@@ -289,7 +814,7 @@
 
 \begin{frame}
   \frametitle{DSM evaluation and linear regression}
-  \framesubtitle{A toy example: a 2 * 2 * 2 design}
+  \framesubtitle{Toy example: a $2 \times 2 \times 2$ design}
   \centering
   \footnotesize
   \begin{tabular}{cccc}
@@ -307,7 +832,6 @@
     \hline
   \end{tabular}
 
-  %% 
   \begin{block}{}\small\ungap[2]
     \begin{align*}
       Accuracy &= \beta_{0} + \beta_1(\text{corpus})  + \beta_2(\text{window size}) +  \beta_3(\text{window direction}) \\
@@ -316,8 +840,9 @@
     \end{align*}
     \ungap[1.5]
   \end{block}
-  %% 
-
+  
+  \raggedright
+  \light{\footnotesize *we're aware that this regression model is almost saturated \ldots}
 \end{frame}
 
 \begin{frame}
@@ -346,7 +871,7 @@
 
 \begin{frame}
   \frametitle{DSM evaluation and linear regression}
-  \framesubtitle{Analysis of variance: Feature Ablation}
+  \framesubtitle{Analysis of variance: feature ablation}
 
   \begin{block}{Feature ablation}
     Proportion of variance explained by a parameter together with all its interactions, corresponding to the reduction in  $R^2$ of the linear model fit if this parameter is left out. 
@@ -385,7 +910,7 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{TOEFL task: Performance}
+  \frametitle{TOEFL task: performance}
   \framesubtitle{Unreduced versus Reduced Experiments}
   \centering
   
@@ -402,14 +927,14 @@
       \hspace*{-18pt} 
       \includegraphics[scale=0.30]{img/lapesa_hist_toefl_reduced}
       \begin{block}{}\footnotesize \centering
-        Min:  18.7; Max: \textbf{97.4};  Mean: 64.4
+        Min:  18.7; Max: \primary{97.4};  Mean: 64.4
       \end{block}
     \end{column}
   \end{columns}
 \end{frame}
 
 \begin{frame}
-  \frametitle{TOEFL task: Parameters and Explained Variance}
+  \frametitle{TOEFL task: parameters and explained variance}
   \framesubtitle{Reduced setting: feature Ablation  (model $R^{2}$: 89\%)}
   \centering
   \hspace*{-10pt}
@@ -418,7 +943,7 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{TOEFL task: Interactions}
+  \frametitle{TOEFL task: interactions}
   \framesubtitle{Reduced setting ($R^{2}$ $>$ 0.5)}
 
   \begin{center}
@@ -436,93 +961,79 @@
 
     \gap[1]
     \secondary{TOEFL task: interactions, $R^2$}
-  \end{center}
-  
+  \end{center}  
 \end{frame}
 
-
-
 \begin{frame}
-  \frametitle{TOEFL task: Partial Effects}
-  \framesubtitle{Most Explanatory Parameters: Metric, Score, Transformation} 
-  
-  \begin{columns}
-    
-    \begin{column}{0.5\textwidth}
-      \hspace*{-18pt} 
-      \includegraphics[scale=0.30]{img/lapesa_toefl_main_score_transformation}
-    \end{column}
+  \frametitle{TOEFL task: Metric, Score, Transformation}
+  \framesubtitle{Partial effect displays \citep{Fox:03}} 
 
-
-    \begin{column}{0.5\textwidth}
-      \centering
-      \hspace*{-18pt}   \includegraphics[scale=0.30]{img/lapesa_toefl_main_score_metric}
-
-    \end{column}
-  \end{columns}  
-  
+  \centering
+  \only<beamer:1-2| handout:0>{\ungap[1]}%
+  \only<beamer:1| handout:0>{\includegraphics[scale=0.48]{img/lapesa_toefl_main_score_transformation}}%
+  \only<beamer:2| handout:0>{\includegraphics[scale=0.48]{img/lapesa_toefl_main_score_metric}}%
+  \only<beamer:0| handout:1>{
+    \gap[1]\hspace*{-1cm}%
+    \begin{tabular}{c@{}c}
+      \includegraphics[scale=0.30]{img/lapesa_toefl_main_score_transformation} &
+      \includegraphics[scale=0.30]{img/lapesa_toefl_main_score_metric}
+    \end{tabular}
+  }
 \end{frame}
 
-
-
 \begin{frame}
-  \frametitle{TOEFL task: Partial Effects}
-  \framesubtitle{Most Explanatory Parameters: Dimensionality Reduction}
-  \begin{columns}
+  \frametitle{TOEFL task: Dimensionality Reduction}
+  \framesubtitle{Partial effect displays \citep{Fox:03}} 
 
-    \begin{column}{0.5\textwidth}
-      \centering
-      \hspace*{-18pt}   \includegraphics[scale=0.30]{img/lapesa_toefl_main_metric_n-dim}
-
-    \end{column}
-    \begin{column}{0.5\textwidth}
-      \hspace*{-18pt} 
+  \centering
+  \only<beamer:1-2| handout:0>{\ungap[1]}%
+  \only<beamer:1| handout:0>{\includegraphics[scale=0.48]{img/lapesa_toefl_main_metric_n-dim}}%
+  \only<beamer:2| handout:0>{\includegraphics[scale=0.48]{img/lapesa_toefl_main_metric_dim-skip}}%
+  \only<beamer:0| handout:1>{
+    \gap[1]\hspace*{-1cm}%
+    \begin{tabular}{c@{}c}
+      \includegraphics[scale=0.30]{img/lapesa_toefl_main_metric_n-dim} &
       \includegraphics[scale=0.30]{img/lapesa_toefl_main_metric_dim-skip}
-    \end{column}
-  \end{columns}
-  
+    \end{tabular}
+  }
 \end{frame}
 
-
 \begin{frame}
-  \frametitle{TOEFL task: Partial Effects}
-  \framesubtitle{Less Explanatory Parameters: Corpus and Number of Original Dimensions}
-  \begin{columns}
+  \frametitle{TOEFL task: Corpus and Number of Feature Dimensions}
+  \framesubtitle{Partial effect displays \citep{Fox:03}} 
 
-    \begin{column}{0.5\textwidth}
-      \centering
-      \hspace*{-18pt}   \includegraphics[scale=0.30]{img/lapesa_toefl_main_corpus}
-
-    \end{column}
-    \begin{column}{0.5\textwidth}
-      \hspace*{-18pt} 
+  \centering
+  \only<beamer:1-2| handout:0>{\ungap[1]}%
+  \only<beamer:1| handout:0>{\includegraphics[scale=0.48]{img/lapesa_toefl_main_corpus}}%
+  \only<beamer:2| handout:0>{\includegraphics[scale=0.48]{img/lapesa_toefl_main_origdim}}%
+  \only<beamer:0| handout:1>{
+    \gap[1]\hspace*{-1cm}%
+    \begin{tabular}{c@{}c}
+      \includegraphics[scale=0.30]{img/lapesa_toefl_main_corpus} &
       \includegraphics[scale=0.30]{img/lapesa_toefl_main_origdim}
-    \end{column}
-  \end{columns}
-  
+    \end{tabular}
+  }
 \end{frame}
 
-
 \begin{frame}
-  \frametitle{TOEFL task: Partial Effects}
-  \framesubtitle{Less Explanatory Parameters: Window and Relatedness Index}
-  \begin{columns}
+  \frametitle{TOEFL task: Window and Relatedness Index}
+  \framesubtitle{Partial effect displays \citep{Fox:03}} 
 
-    \begin{column}{0.5\textwidth}
-      \centering
-      \hspace*{-18pt}   \includegraphics[scale=0.30]{img/lapesa_toefl_main_window_transformation}
-
-    \end{column}
-    \begin{column}{0.5\textwidth}
-      \hspace*{-18pt} 
+  \centering
+  \only<beamer:1-2| handout:0>{\ungap[1]}%
+  \only<beamer:1| handout:0>{\includegraphics[scale=0.48]{img/lapesa_toefl_main_window_transformation}}%
+  \only<beamer:2| handout:0>{\includegraphics[scale=0.48]{img/lapesa_toefl_main_relindex}}%
+  \only<beamer:0| handout:1>{
+    \gap[1]\hspace*{-1cm}%
+    \begin{tabular}{c@{}c}
+      \includegraphics[scale=0.30]{img/lapesa_toefl_main_window_transformation} &
       \includegraphics[scale=0.30]{img/lapesa_toefl_main_relindex}
-    \end{column}
-  \end{columns}
-  
+    \end{tabular}
+  }
 \end{frame}
 
 \begin{frame}
-  \frametitle{TOEFL task: summing up}
+  \frametitle{TOEFL task: summary}
   \begin{exampleblock}{TOEFL: best setting}
     \begin{itemize}\footnotesize
     \item Corpus: ukWac
@@ -539,7 +1050,7 @@
 
 
 \begin{frame}
-  \frametitle{DSMs and Similarity Ratings}
+  \frametitle{DSMs and similarity ratings}
   \framesubtitle{Introducing the task}
 
   \ungap[1]
@@ -576,8 +1087,7 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{Correlation to Similarity Ratings: Performance}
-  \framesubtitle{Rubenstein and Goodenough dataset: Unreduced versus reduced experiments}
+  \frametitle{Similarity ratings: performance on RG65}
   \centering
   
   \begin{columns}
@@ -585,24 +1095,24 @@
       \centering
       \hspace*{-18pt}   \includegraphics[scale=0.30]{img/lapesa_hist_rg_unreduced}
       \begin{block}{}\footnotesize \centering
-        Min:  0.01 ; Max:  0.88;  Mean 0.59 
+        Min:  0.01; Max:  0.88;  Mean 0.59 \\
+        \secondary{unreduced}
       \end{block}
     \end{column}
     \begin{column}{0.5\textwidth}
       \hspace*{-18pt} 
       \includegraphics[scale=0.30]{img/lapesa_hist_rg_reduced}
       \begin{block}{}\footnotesize \centering
-        Min:  0.00; Max: \textbf{0.89};  Mean: 0.63
+        Min:  0.00; Max: \primary{0.89};  Mean: 0.63\\
+        \secondary{reduced}
       \end{block}
     \end{column}
   \end{columns}
  
 \end{frame}
 
-
 \begin{frame}
-  \frametitle{Correlation to Similarity Ratings: Performance}
-  \framesubtitle{WordSim353 dataset: Unreduced versus reduced experiments}
+  \frametitle{Similarity ratings: performance on WordSim353}
   \centering
   
   \begin{columns}
@@ -611,14 +1121,16 @@
       \centering
       \hspace*{-18pt} \includegraphics[scale=0.30]{img/lapesa_hist_ws_unreduced}
       \begin{block}{}\footnotesize \centering
-        Min:  0.00; \textbf{Max:  0.73};  Mean: 0.39
+        Min:  0.00; Max: \primary{0.73};  Mean: 0.39\\
+        \secondary{unreduced}
       \end{block}
     \end{column}
     \begin{column}{0.5\textwidth}
       \hspace*{-18pt} 
       \includegraphics[scale=0.30]{img/lapesa_hist_ws_reduced}
       \begin{block}{}\footnotesize \centering
-        Min:  0.00; Max: \textbf{0.73};  Mean: 0.43
+        Min:  0.00; Max: \primary{0.73};  Mean: 0.43\\
+        \secondary{reduced}
       \end{block}
     \end{column}
   \end{columns}  
@@ -626,8 +1138,8 @@
 
 
 \begin{frame}
-  \frametitle{Correlation to Ratings: Parameters and Explained Variance}
-  \framesubtitle{Reduced setting: feature Ablation  (model $R^{2}$:  RG65 86\%; WS353 90\%)}
+  \frametitle{Similarity ratings: parameters and explained variance}
+  \framesubtitle{Reduced setting: feature ablation  (full model $R^{2}$: RG65 86\%; WS353 90\%)}
   \centering
   \hspace*{-10pt}
   \includegraphics[scale=0.45]{img/lapesa_ratings_main_r2_reduced}
@@ -635,8 +1147,8 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{Correlation to Ratings: Interactions}
-  \framesubtitle{Reduced setting ($R^{2}$ $>$ 0.5 )}
+  \frametitle{Similarity ratings: interactions}
+  \framesubtitle{Reduced setting ($R^2 > 0.5$)}
 
   \begin{center}
     \begin{tabular}{lrrrr}
@@ -654,242 +1166,96 @@
     \end{tabular}
 
     \gap[1]
-    \secondary{Rating datasets: interactions, $R^2$} 
+    \secondary{Similarity ratings: interactions, $R^2$} 
   \end{center}
 
 \end{frame}
 
 
-
 \begin{frame}
-  \frametitle{Correlation to Ratings: Partial Effects}
-  \framesubtitle{Most Explanatory Parameters:  Score, Transformation} 
-  
-  \begin{columns}
-    
-    \begin{column}{0.5\textwidth}
-      \centering
-      \includegraphics[scale=0.30]{img/lapesa_rg_main_score_transformation}
+  \frametitle{Similarity ratings: Score, Transformation}
+  \framesubtitle{Partial effect displays \citep{Fox:03}} 
 
-      \gap[1]
-      \secondary{Rubenstein \& Goodenough}
-    \end{column}
-
-
-    \begin{column}{0.5\textwidth}
-      \centering
-      \includegraphics[scale=0.30]{img/lapesa_ws_main_score_transformation}
-      
-      \gap[1]
-      \secondary{WordSim353}
-
-    \end{column}
-  \end{columns}  
-  
-\end{frame}
-
-\begin{frame}
-  \frametitle{Correlation to Ratings: Partial Effects}
-  \framesubtitle{Most Explanatory Parameters:  Corpus} 
-  
-  \vspace{-18pt}
-  
-  \begin{columns}
-    
-    \begin{column}{0.5\textwidth}
-      \begin{figure} 
-        \hspace*{-18pt} 
-        \includegraphics[scale=0.30]{img/lapesa_rg_main_corpus}
-        \vspace{-10pt}
-        \caption{Rubenstein Goodenough dataset}
-      \end{figure}
-    \end{column}
-
-
-    \begin{column}{0.5\textwidth}
-      \centering
-      
-      \begin{figure}
-        \hspace*{-18pt}   
-        \includegraphics[scale=0.30]{img/lapesa_ws_main_corpus}
-        \vspace{-10pt}
-        \caption{WordSim353 dataset}
-      \end{figure}
-      
-    \end{column}
-  \end{columns}  
-  
+  \centering
+  \gap[1]\hspace*{-1cm}%
+  \begin{tabular}{c@{}c}
+    \includegraphics[scale=0.30]{img/lapesa_rg_main_score_transformation} &
+    \includegraphics[scale=0.30]{img/lapesa_ws_main_score_transformation} \\
+    \secondary{Rubenstein \& Goodenough} &
+    \secondary{WordSim-353}
+  \end{tabular}
 \end{frame}
 
 
 \begin{frame}
-  \frametitle{Correlation to Ratings: Partial Effects}
-  \framesubtitle{Most Explanatory Parameters:  Relatedness Index} 
-  
-  \vspace{-18pt}
-  
-  \begin{columns}
-    
-    \begin{column}{0.5\textwidth}
-      \begin{figure} 
-        \hspace*{-18pt} 
-        \includegraphics[scale=0.30]{img/lapesa_rg_main_relindex}
-        \vspace{-10pt}
-        \caption{Rubenstein Goodenough dataset}
-      \end{figure}
-    \end{column}
+  \frametitle{Similarity ratings: Relatedness Index}
+  \framesubtitle{Partial effect displays \citep{Fox:03}} 
 
-
-    \begin{column}{0.5\textwidth}
-      \centering
-      
-      \begin{figure}
-        \hspace*{-18pt}   
-        \includegraphics[scale=0.30]{img/lapesa_ws_main_relindex}
-        \vspace{-10pt}
-        \caption{WordSim353 dataset}
-      \end{figure}
-      
-    \end{column}
-  \end{columns}  
-  
+  \centering
+  \gap[1]\hspace*{-1cm}%
+  \begin{tabular}{c@{}c}
+    \includegraphics[scale=0.30]{img/lapesa_rg_main_relindex} &
+    \includegraphics[scale=0.30]{img/lapesa_ws_main_relindex} \\
+    \secondary{Rubenstein \& Goodenough} &
+    \secondary{WordSim-353}
+  \end{tabular}
 \end{frame}
 
 \begin{frame}
-  \frametitle{Correlation to Ratings: Partial Effects}
-  \framesubtitle{Most Explanatory Parameters: Metric (* Number of Original Dimensions)}
+  \frametitle{Similarity ratings: Metric, Number of Feature Dimensions}
+  \framesubtitle{Partial effect displays \citep{Fox:03}} 
 
-  \vspace{-18pt}
-
-  \begin{columns}
-    
-    \begin{column}{0.5\textwidth}
-      \begin{figure} 
-        \hspace*{-18pt} 
-        \includegraphics[scale=0.30]{img/lapesa_rg_main_metric_origdim}
-        \vspace{-10pt}
-        \caption{Rubenstein Goodenough dataset}
-      \end{figure}
-    \end{column}
-
-    \begin{column}{0.5\textwidth}
-      \centering
-      
-      \begin{figure}
-        \hspace*{-18pt}   
-        \includegraphics[scale=0.30]{img/lapesa_ws_main_metric_origdim}
-        \vspace{-10pt}
-        \caption{WordSim353 dataset}
-      \end{figure}
-      
-    \end{column}
-  \end{columns}  
-  
-\end{frame}
-
-
-
-\begin{frame}
-  \frametitle{Correlation to Ratings: Partial Effects}
-  \framesubtitle{Quite Explanatory Parameters:  Number of Latent Dimensions} 
-  
-  \vspace{-18pt}
-  
-  \begin{columns}
-    
-    \begin{column}{0.5\textwidth}
-      \begin{figure} 
-        \hspace*{-18pt} 
-        \includegraphics[scale=0.30]{img/lapesa_rg_main_metric_n-dim}
-        \vspace{-10pt}
-        \caption{Rubenstein Goodenough dataset}
-      \end{figure}
-    \end{column}
-
-
-    \begin{column}{0.5\textwidth}
-      \centering
-      
-      \begin{figure}
-        \hspace*{-18pt}   
-        \includegraphics[scale=0.30]{img/lapesa_ws_main_metric_n-dim}
-        \vspace{-10pt}
-        \caption{WordSim353 dataset}
-      \end{figure}
-      
-    \end{column}
-  \end{columns}  
-  
-\end{frame}
-
-
-
-\begin{frame}
-  \frametitle{Correlation to Ratings: Partial Effects}
-  \framesubtitle{Quite Explanatory Parameters: Number of Skipped Dimensions}
-
-  \vspace{-18pt}
-
-  \begin{columns}
-    
-    \begin{column}{0.5\textwidth}
-      \begin{figure} 
-        \hspace*{-18pt} 
-        \includegraphics[scale=0.30]{img/lapesa_rg_main_dimskip}
-        \vspace{-10pt}
-        \caption{Rubenstein Goodenough dataset}
-      \end{figure}
-    \end{column}
-
-    \begin{column}{0.5\textwidth}
-      \centering
-      
-      \begin{figure}
-        \hspace*{-18pt}   
-        \includegraphics[scale=0.30]{img/lapesa_ws_main_dimskip}
-        \vspace{-10pt}
-        \caption{WordSim353 dataset}
-      \end{figure}
-      
-    \end{column}
-  \end{columns}  
-  
+  \centering
+  \gap[1]\hspace*{-1cm}%
+  \begin{tabular}{c@{}c}
+    \includegraphics[scale=0.30]{img/lapesa_rg_main_metric_origdim} &
+    \includegraphics[scale=0.30]{img/lapesa_ws_main_metric_origdim} \\
+    \secondary{Rubenstein \& Goodenough} &
+    \secondary{WordSim-353}
+  \end{tabular}
 \end{frame}
 
 \begin{frame}
-  \frametitle{Correlation to Ratings: Partial Effects}
-  \framesubtitle{Quite Explanatory Parameters: Window * Transformation}
+  \frametitle{Similarity ratings: Number of Latent Dimensions}
+  \framesubtitle{Partial effect displays \citep{Fox:03}} 
 
-  \vspace{-18pt}
-
-  \begin{columns}
-    
-    \begin{column}{0.5\textwidth}
-      \begin{figure} 
-        \hspace*{-18pt} 
-        \includegraphics[scale=0.30]{img/lapesa_rg_main_window_transformation}
-        \vspace{-10pt}
-        \caption{Rubenstein Goodenough dataset}
-      \end{figure}
-    \end{column}
-
-    \begin{column}{0.5\textwidth}
-      \centering
-      
-      \begin{figure}
-        \hspace*{-18pt}   
-        \includegraphics[scale=0.30]{img/lapesa_ws_main_window_transformation}
-        \vspace{-10pt}
-        \caption{WordSim353 dataset}
-      \end{figure}
-      
-    \end{column}
-  \end{columns}  
-  
+  \centering
+  \gap[1]\hspace*{-1cm}%
+  \begin{tabular}{c@{}c}
+    \includegraphics[scale=0.30]{img/lapesa_rg_main_metric_n-dim} &
+    \includegraphics[scale=0.30]{img/lapesa_ws_main_metric_n-dim} \\
+    \secondary{Rubenstein \& Goodenough} &
+    \secondary{WordSim-353}
+  \end{tabular}
 \end{frame}
 
+\begin{frame}
+  \frametitle{Similarity ratings: Number of Skipped Dimensions}
+  \framesubtitle{Partial effect displays \citep{Fox:03}} 
 
+  \centering
+  \gap[1]\hspace*{-1cm}%
+  \begin{tabular}{c@{}c}
+    \includegraphics[scale=0.30]{img/lapesa_rg_main_dimskip} &
+    \includegraphics[scale=0.30]{img/lapesa_ws_main_dimskip} \\
+    \secondary{Rubenstein \& Goodenough} &
+    \secondary{WordSim-353}
+  \end{tabular}
+\end{frame}
 
+\begin{frame}
+  \frametitle{Similarity ratings: Window Size, Transformation}
+  \framesubtitle{Partial effect displays \citep{Fox:03}} 
+
+  \centering
+  \gap[1]\hspace*{-1cm}%
+  \begin{tabular}{c@{}c}
+    \includegraphics[scale=0.30]{img/lapesa_rg_main_window_transformation} &
+    \includegraphics[scale=0.30]{img/lapesa_rg_main_window_transformation} \\
+    \secondary{Rubenstein \& Goodenough} &
+    \secondary{WordSim-353}
+  \end{tabular}
+\end{frame}
 
 \begin{frame}
   \frametitle{Summing up: Ratings}
@@ -903,19 +1269,18 @@
     \item Distance Metric: cosine
     \item Index of Distributional Relatedness: neighbor rank
     \end{itemize}
-  \end{exampleblock}   
-  
+  \end{exampleblock}  
 \end{frame}
 
 
 \begin{frame}
-  \frametitle{DSMs and Semantic Clustering}
-  \framesubtitle{Introducing the task: the datasets}
+  \frametitle{DSMs and semantic clustering}
+  \framesubtitle{Introducing the task}
 
   \ungap[1.5]
   \begin{columns}
     \begin{column}{0.5 \textwidth}
-      \begin{exampleblock}{Almuhareb Poesio}
+      \begin{exampleblock}{Almuhareb \& Poesio}
         \textbf{402 nouns, 21 classes} \\
         \textit{day} $\Longrightarrow$ \textsc{TIME}   \\
         \textit{kiwi} $\Longrightarrow$ \textsc{FRUIT}  \\
@@ -950,7 +1315,7 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{DSMs and Semantic Clustering}
+  \frametitle{DSMs and semantic clustering}
   \framesubtitle{Introducing the task}
 
   \begin{itemize}
@@ -961,13 +1326,19 @@
     \item classification accuracy for optimal cluster labelling
     \item percentage of nouns that belong to the majority category within their cluster 
     \end{itemize}
+  \item<2-> \secondary{Partitioning around medoids} \citep{Kaufman:Rousseeuw:90}
+    \begin{itemize}
+    \item implemented as \texttt{pam()} in R standard library
+    \item direct comparison \so equal to or even better than CLUTO
+    \item works with arbitrary dissimilarity matrix
+    \end{itemize}
   \end{itemize}
 \end{frame}
 
 
 \begin{frame}
-  \frametitle{Semantic Clustering: Performance}
-  \framesubtitle{Overview: Unreduced versus Reduced Experiments}
+  \frametitle{Semantic clustering: performance}
+  \framesubtitle{Overview: unreduced versus reduced experiments}
 
   \begin{center}
     \begin{tabular}{|l|c|c|c|c|c|c|}
@@ -983,23 +1354,23 @@
     \end{tabular}
 
     \gap[1]
-    \secondary{Semantic Clustering: summary of performance (purity)} 
+    \secondary{Semantic clustering: summary of performance (purity)} 
   \end{center}
   
 \end{frame}
 
 \begin{frame}
-  \frametitle{Semantic Clustering: Parameters and Explained Variance}
-  \framesubtitle{Feature Ablation  (model $R^{2}$ - AP: 82\%;  BATTIG: 77\% ; ESSLLI  58\%; MITCHELL 73\%)}
+  \frametitle{Semantic clustering: parameters and explained variance}
+  \framesubtitle{Feature ablation  (model $R^{2}$ -- AP: 82\%;  BATTIG: 77\%; ESSLLI  58\%; MITCHELL 73\%)}
+
   \centering
   \hspace*{-10pt}
   \includegraphics[scale=0.45]{img/lapesa_clustering_main_r2_reduced}
-
 \end{frame}
 
 \begin{frame}
-  \frametitle{Semantic Clustering: Interactions and Explained Variance}
-  \framesubtitle{Reduced setting ($R^{2}$ $>$ 0.5 )}
+  \frametitle{Semantic clustering: interactions}
+  \framesubtitle{Reduced setting ($R^{2} > 0.5$)}
   
   \begin{center}\small
     \begin{tabular}{lrrrrr}
@@ -1021,243 +1392,109 @@
       %% transformation:dim.skip & 6 &   -   & 1.17 &  0.85  &  1.39    \\   
     \end{tabular}
 
-    \gap[1]
+    \gap[1]\normalsize
     \secondary{Clustering datasets: interactions, $R^2$} 
   \end{center}
   
 \end{frame}
 
-
 \begin{frame}
-  \frametitle{Semantic Clustering: Partial Effects}
-  \framesubtitle{Most Explanatory Parameters: Score * Transformation}
+  \frametitle{Semantic clustering: Score, Transformation}
+  \framesubtitle{Partial effect displays \citep{Fox:03}} 
 
-  \vspace{-18pt}
-
-  \begin{columns}
-    
-    \begin{column}{0.5\textwidth}
-      \begin{figure} 
-        \hspace*{-18pt} 
-        \includegraphics[scale=0.30]{img/lapesa_ap_main_score_transformation}
-        \vspace{-10pt}
-        \caption{AP dataset}
-      \end{figure}
-    \end{column}
-
-    \begin{column}{0.5\textwidth}
-      \centering
-      
-      \begin{figure}
-        \hspace*{-18pt}   
-        \includegraphics[scale=0.30]{img/lapesa_esslli_main_score_transformation}
-        \vspace{-10pt}
-        \caption{ESSLLI dataset}
-      \end{figure}
-      
-    \end{column}
-  \end{columns}  
-  
+  \centering
+  \gap[1]\hspace*{-1cm}%
+  \begin{tabular}{c@{}c}
+    \includegraphics[scale=0.30]{img/lapesa_ap_main_score_transformation} &
+    \includegraphics[scale=0.30]{img/lapesa_esslli_main_score_transformation} \\
+    \secondary{Almuhareb \& Poesio} &
+    \secondary{ESSLLI 2008}
+  \end{tabular}
 \end{frame}
 
 \begin{frame}
-  \frametitle{Semantic Clustering: Partial Effects}
-  \framesubtitle{Most Explanatory Parameters: Corpus}
+  \frametitle{Semantic clustering: Corpus}
+  \framesubtitle{Partial effect displays \citep{Fox:03}} 
 
-  \vspace{-18pt}
-
-  \begin{columns}
-    
-    \begin{column}{0.5\textwidth}
-      \begin{figure} 
-        \hspace*{-18pt} 
-        \includegraphics[scale=0.30]{img/lapesa_ap_main_corpus}
-        \vspace{-10pt}
-        \caption{AP dataset}
-      \end{figure}
-    \end{column}
-
-    \begin{column}{0.5\textwidth}
-      \centering
-      
-      \begin{figure}
-        \hspace*{-18pt}   
-        \includegraphics[scale=0.30]{img/lapesa_esslli_main_corpus}
-        \vspace{-10pt}
-        \caption{ESSLLI dataset}
-      \end{figure}
-      
-    \end{column}
-  \end{columns}  
-  
-\end{frame}
-
-
-
-\begin{frame}
-  \frametitle{Semantic Clustering: Partial Effects}
-  \framesubtitle{Most Explanatory Parameters: Window * Metric}
-  
-  \vspace{-18pt}   
-
-  \begin{columns}
-    
-    \begin{column}{0.5\textwidth}
-      \begin{figure} 
-        \hspace*{-18pt} 
-        \includegraphics[scale=0.30]{img/lapesa_ap_main_window_metric}
-        \vspace{-10pt}
-        \caption{AP dataset}
-      \end{figure}
-    \end{column}
-
-    \begin{column}{0.5\textwidth}
-      \centering
-      
-      \begin{figure}
-        \hspace*{-18pt}   
-        \includegraphics[scale=0.30]{img/lapesa_esslli_main_window_metric}
-        \vspace{-10pt}
-        \caption{ESSLLI dataset}
-      \end{figure}
-      
-    \end{column}
-  \end{columns}  
-  
-\end{frame}
-
-
-\begin{frame}
-  \frametitle{Semantic Clustering: Partial Effects}
-  \framesubtitle{Quite Explanatory Parameters: Metric * Number of Reduced Dimensions}
-  
-  \vspace{-18pt}   
-
-  \begin{columns}
-    
-    \begin{column}{0.5\textwidth}
-      \begin{figure} 
-        \hspace*{-18pt} 
-        \includegraphics[scale=0.30]{img/lapesa_ap_main_metric_n-dim}
-        \vspace{-10pt}
-        \caption{AP dataset}
-      \end{figure}
-    \end{column}
-
-    \begin{column}{0.5\textwidth}
-      \centering
-      
-      \begin{figure}
-        \hspace*{-18pt}   
-        \includegraphics[scale=0.30]{img/lapesa_esslli_main_metric_n-dim}
-        \vspace{-10pt}
-        \caption{ESSLLI dataset}
-      \end{figure}
-      
-    \end{column}
-  \end{columns}  
-  
+  \centering
+  \gap[1]\hspace*{-1cm}%
+  \begin{tabular}{c@{}c}
+    \includegraphics[scale=0.30]{img/lapesa_ap_main_corpus} &
+    \includegraphics[scale=0.30]{img/lapesa_esslli_main_corpus} \\
+    \secondary{Almuhareb \& Poesio} &
+    \secondary{ESSLLI 2008}
+  \end{tabular}
 \end{frame}
 
 \begin{frame}
-  \frametitle{Semantic Clustering: Partial Effects}
-  \framesubtitle{Quite Explanatory Parameters: Number of skipped dimensions}
+  \frametitle{Semantic clustering: Window Size, Metric}
+  \framesubtitle{Partial effect displays \citep{Fox:03}} 
 
-  \vspace{-18pt}
-
-  \begin{columns}
-    
-    \begin{column}{0.5\textwidth}
-      \begin{figure} 
-        \hspace*{-18pt} 
-        \includegraphics[scale=0.30]{img/lapesa_ap_main_dimskip}
-        \vspace{-10pt}
-        \caption{AP dataset}
-      \end{figure}
-    \end{column}
-
-    \begin{column}{0.5\textwidth}
-      \centering
-      
-      \begin{figure}
-        \hspace*{-18pt}   
-        \includegraphics[scale=0.30]{img/lapesa_esslli_main_dimskip}
-        \vspace{-10pt}
-        \caption{ESSLLI dataset}
-      \end{figure}
-      
-    \end{column}
-  \end{columns}  
-  
-\end{frame}
-
-
-
-
-\begin{frame}
-  \frametitle{Semantic Clustering: Partial Effects}
-  \framesubtitle{Less explanatory parameters: Relatedness Index}
-
-  \vspace{-18pt}
-
-  \begin{columns}
-    
-    \begin{column}{0.5\textwidth}
-      \begin{figure} 
-        \hspace*{-18pt} 
-        \includegraphics[scale=0.30]{img/lapesa_ap_main_relindex}
-        \vspace{-10pt}
-        \caption{AP dataset}
-      \end{figure}
-    \end{column}
-
-    \begin{column}{0.5\textwidth}
-      \centering
-      
-      \begin{figure}
-        \hspace*{-18pt}   
-        \includegraphics[scale=0.30]{img/lapesa_esslli_main_relindex}
-        \vspace{-10pt}
-        \caption{ESSLLI dataset}
-      \end{figure}
-      
-    \end{column}
-  \end{columns}  
-  
+  \centering
+  \gap[1]\hspace*{-1cm}%
+  \begin{tabular}{c@{}c}
+    \includegraphics[scale=0.30]{img/lapesa_ap_main_window_metric} &
+    \includegraphics[scale=0.30]{img/lapesa_esslli_main_window_metric} \\
+    \secondary{Almuhareb \& Poesio} &
+    \secondary{ESSLLI 2008}
+  \end{tabular}
 \end{frame}
 
 \begin{frame}
-  \frametitle{Semantic Clustering: Partial Effects}
-  \framesubtitle{Less explanatory parameters: Number of original dimensions}
+  \frametitle{Semantic clustering: Metric, Number of Latent Dimensions}
+  \framesubtitle{Partial effect displays \citep{Fox:03}} 
 
-  \vspace{-18pt}
-
-  \begin{columns}
-    
-    \begin{column}{0.5\textwidth}
-      \begin{figure} 
-        \hspace*{-18pt} 
-        \includegraphics[scale=0.30]{img/lapesa_ap_main_origdim}
-        \vspace{-10pt}
-        \caption{AP dataset}
-      \end{figure}
-    \end{column}
-
-    \begin{column}{0.5\textwidth}
-      \centering
-      
-      \begin{figure}
-        \hspace*{-18pt}   
-        \includegraphics[scale=0.30]{img/lapesa_esslli_main_origdim}
-        \vspace{-10pt}
-        \caption{ESSLLI dataset}
-      \end{figure}
-      
-    \end{column}
-  \end{columns}  
-  
+  \centering
+  \gap[1]\hspace*{-1cm}%
+  \begin{tabular}{c@{}c}
+    \includegraphics[scale=0.30]{img/lapesa_ap_main_metric_n-dim} &
+    \includegraphics[scale=0.30]{img/lapesa_esslli_main_metric_n-dim} \\
+    \secondary{Almuhareb \& Poesio} &
+    \secondary{ESSLLI 2008}
+  \end{tabular}
 \end{frame}
 
+\begin{frame}
+  \frametitle{Semantic clustering: Number of Skipped Dimensions}
+  \framesubtitle{Partial effect displays \citep{Fox:03}} 
+
+  \centering
+  \gap[1]\hspace*{-1cm}%
+  \begin{tabular}{c@{}c}
+    \includegraphics[scale=0.30]{img/lapesa_ap_main_dimskip} &
+    \includegraphics[scale=0.30]{img/lapesa_esslli_main_dimskip} \\
+    \secondary{Almuhareb \& Poesio} &
+    \secondary{ESSLLI 2008}
+  \end{tabular}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Semantic clustering: Relatedness Index}
+  \framesubtitle{Partial effect displays \citep{Fox:03}} 
+
+  \centering
+  \gap[1]\hspace*{-1cm}%
+  \begin{tabular}{c@{}c}
+    \includegraphics[scale=0.30]{img/lapesa_ap_main_relindex} &
+    \includegraphics[scale=0.30]{img/lapesa_esslli_main_relindex} \\
+    \secondary{Almuhareb \& Poesio} &
+    \secondary{ESSLLI 2008}
+  \end{tabular}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Semantic clustering: Number of Feature Dimensions}
+  \framesubtitle{Partial effect displays \citep{Fox:03}} 
+
+  \centering
+  \gap[1]\hspace*{-1cm}%
+  \begin{tabular}{c@{}c}
+    \includegraphics[scale=0.30]{img/lapesa_ap_main_origdim} &
+    \includegraphics[scale=0.30]{img/lapesa_esslli_main_origdim} \\
+    \secondary{Almuhareb \& Poesio} &
+    \secondary{ESSLLI 2008}
+  \end{tabular}
+\end{frame}
 
 \begin{frame}
   \frametitle{Summing up: Semantic Clustering}
@@ -1350,6 +1587,12 @@
 
     \gap[1]
     \secondary{\normalsize Best settings for each dataset} 
+
+    \gap[2]
+    \raggedright
+    \light{\small
+      w = window size, o.dim = number of feature dimensions, sc = scoring function, tr = transformation, m = metric, d.sk = number of skipped dimensions, best.s = performance of best setting for this dataset,\\ best.m = performance of best run for this dataset
+    }
   \end{center}
   
 \end{frame}
@@ -1369,14 +1612,15 @@
       TOEFL & ukwac & 2 &  5k & s-ll & log & cos & rank  & 900 & 100 \\   
       Rating & wacky & 4 & 50k & s-ll & log & cos & rank  & 300 & 50 \\  
       Clustering & wacky & 4 & 50k & s-ll & log  & cos & rank & 500 & 0 \\ 
-      General & wacky & 4 & 50k & s-ll & log  & cos & rank & 500 & 50 \\ \hline 
+      \primary{General} & \primary{wacky} & \primary{4} & \primary{50k} & \primary{s-ll} & \primary{log}  & \primary{cos} & \primary{rank} & \primary{500} & \primary{50} \\ 
+      \hline 
     \end{tabular}
 
     \gap[1]
     \secondary{\normalsize General best settings} 
 
     \gap[2]
-    \begin{tabular}{lccc>{\color{secondary}}c}
+    \begin{tabular}{lccc>{\color{primary}}c}
       \hline
       Task & TOEFL &  RATINGS &   CLUSTERING &  GENERAL  \\  
       \hline 
@@ -1397,7 +1641,6 @@
 
 \begin{frame}
   \frametitle{Conclusion}
-  \framesubtitle{Main findings}
 
   \begin{itemize}
   \item Our results show that it is possible to find a single DSM configuration that performs relatively well on every task
@@ -1422,7 +1665,6 @@
 
 \begin{frame}
   \frametitle{Conclusion}
-  \framesubtitle{Main findings}
   
   \begin{itemize}
   \item Among the source corpora, WaCkypedia appears to be a better option than UkWaC for all tasks but TOEFL
