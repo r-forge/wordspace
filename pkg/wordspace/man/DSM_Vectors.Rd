@@ -16,7 +16,7 @@ DSM_Vectors
 
 }
 \format{
-  A numeric matrix with 1314 rows and 100 columns.
+  A numeric matrix with 1323 rows and 100 columns.
   
   Row labels are disambiguated lemmas of the form \code{<headword>_<pos>}, where the part-of-speech code is one of
   \code{N} (noun), \code{V} (verb), \code{J} (adjective) or \code{R} (adverb).
