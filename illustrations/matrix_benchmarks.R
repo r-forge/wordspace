@@ -6,6 +6,8 @@ library(Matrix) # sparse matrix library
 library(irlba)  # fast algorithm for truncated SVD
 library(wordspace) # for some optimised implementations in wordspace package
 
+n.cores <- wordspace.openmp()$max
+
 load("data/bnc_vobj_basic.rda") # sample data set: 1678 x 4687 with 349378 nonzero cells (4.4% fill rate)
 
 M <- bnc_vobj_basic$M # operate on log-transformed frequency counts
@@ -81,8 +83,21 @@ results.dense <-
        benchmark(M.norm <<- normalise(M), "normalise D", nr * nc),
        benchmark(M.normrows <<- normalize.rows(M), "normalize.rows() D", nr * nc),
        benchmark(d1.dist <<- dist(M1, method="euclidean"), "dist() D", nr1 * nr1 * nc1),
-       benchmark(d1.distmatrix <<- dist.matrix(M1, method="euclidean"), "dist.matrix() D", nr1 * nr1 * nc1),
-       benchmark(d.inner <<- M %*% Mt, "inner M %*% t(M) D", nr * nr * nc),
+       benchmark(d1.distmatrix <<- dist.matrix(M1, method="euclidean"), "dist.matrix() D", nr1 * nr1 * nc1))
+if (n.cores > 1) {
+  k <- 2
+  while (k <= n.cores) {
+    label <- sprintf("dist.matrix() D (%dx)", k)
+    wordspace.openmp(k)
+    results.dense <- append(results.dense,
+      list(benchmark(mp.distmatrix <<- dist.matrix(M1, method="euclidean"), label, nr1 * nr1 * nc1)))
+    k <- k * 2
+  }
+  matrix.equal(mp.distmatrix, d1.distmatrix, "dist.matrix() with OpenMP == dist.matrix()")
+  wordspace.openmp(1)
+}
+results.dense <- append(results.dense,
+  list(benchmark(d.inner <<- M %*% Mt, "inner M %*% t(M) D", nr * nr * nc),
        benchmark(d.tcrossprod <<- tcrossprod(M), "inner tcrossprod D", nr * nr * nc),
        benchmark(d.crossprod <<- crossprod(Mt), "inner crossprod t(M) D", nr * nr * nc),
        benchmark(d.cosine1 <<- cosine(M, normalise=TRUE), "cosine normalised D", nr * nr * nc + 2 * nr * nc),
@@ -94,7 +109,7 @@ results.dense <-
        benchmark(svd.proj <<- svd.wrapper(M1, 42, TRUE), "SVD projection D", 4 * nc1*nc1*nr1 + 8 * nr1*nr1*nr1), # projection omits computation of V
        benchmark(svd.rsvd <<- dsm.projection(M1, n=42, method="rsvd", oversampling=4), "rSVD projection D", 4 * nc1*nc1*nr1 + 8 * nr1*nr1*nr1), 
        benchmark(svd.irlba <<- irlba(M1, nu=42, nv=42), "SVD trunc IRLBA D", 4 * nc1*nc1*nr1 + 8 * nc1*nr1*nr1 + 9 * nr1*nr1*nr1) # compare with standard truncated SVD
-       )
+       ))
 
 cat("----- validating results -----\n")
 matrix.equal(M.norm, M.normrows, "normalise(M) == normalize.rows(M)")
@@ -116,8 +131,21 @@ results.sparse <-
        benchmark(SM.norm <<- normalise(SM), "normalise S", nr * nc),
        benchmark(SM.normrows <<- normalize.rows(SM), "normalize.rows() S", nr * nc),
        benchmark(Sd1.dist <<- dist(SM1, method="euclidean"), "dist() S", nr1 * nr1 * nc1),
-       benchmark(Sd1.distmatrix <<- dist.matrix(SM1, method="euclidean"), "dist.matrix() S", nr1 * nr1 * nc1),
-       benchmark(Sd.inner <<- SM %*% SMt, "inner M %*% t(M) S", nr * nr * nc),
+       benchmark(Sd1.distmatrix <<- dist.matrix(SM1, method="euclidean"), "dist.matrix() S", nr1 * nr1 * nc1))
+if (n.cores > 1) {
+  k <- 2
+  while (k <= n.cores) {
+    label <- sprintf("dist.matrix() S (%dx)", k)
+    wordspace.openmp(k)
+    results.sparse <- append(results.sparse,
+      list(benchmark(Smp.distmatrix <<- dist.matrix(SM1, method="euclidean"), label, nr1 * nr1 * nc1)))
+    k <- k * 2
+  }
+  matrix.equal(Smp.distmatrix, Sd1.distmatrix, "dist.matrix() with OpenMP == dist.matrix()")
+  wordspace.openmp(1)
+}
+results.sparse <- append(results.sparse,
+  list(benchmark(Sd.inner <<- SM %*% SMt, "inner M %*% t(M) S", nr * nr * nc),
        benchmark(Sd.tcrossprod <<- tcrossprod(SM), "inner tcrossprod S", nr * nr * nc),
        benchmark(Sd.crossprod <<- crossprod(SMt), "inner crossprod t(M) S", nr * nr * nc),
        benchmark(Sd.cosine1 <<- cosine(SM, normalise=TRUE), "cosine normalised S", nr * nr * nc + 2 * nr * nc),
@@ -126,7 +154,7 @@ results.sparse <-
        benchmark(Sd1.euclid <<- euclid(SM1), "euclid() small S", nr1 * nr1 * nc1 + nr1 * nc1 + nr1 * nr1), # for validation against dist()
        benchmark(Ssvd.rsvd <<- dsm.projection(SM1, n=42, method="rsvd", oversampling=4), "rSVD projection S", 4 * nc1*nc1*nr1 + 8 * nr1*nr1*nr1), 
        benchmark(Ssvd.irlba <<- irlba(SM1, nu=42, nv=42), "SVD trunc IRLBA S", 4 * nc1*nc1*nr1 + 8 * nc1*nr1*nr1 + 9 * nr1*nr1*nr1) # compare with standard truncated SVD
-       )
+       ))
 
 cat("----- validating results -----\n")
 matrix.equal(SM.norm, SM.normrows, "normalise(M) == normalize.rows(M)")
