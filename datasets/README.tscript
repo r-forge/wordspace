@@ -18,7 +18,16 @@ $ R --no-save -f examples_matrix.R
 $ R --no-save -f examples_cooc.R
 
 
-3) Evaluation tasks
+3) Pre-compiled DSM vectors
+
+ - extracted from large Web-based DSM, using parameters suggested by Lapesa & Evert (2015)
+ - select ca. 1300 target terms covering standard tasks + examples, first 100 SVD dimensions
+ - NB: insert path to directory containing English Web-based DSMs below
+
+$ R --no-save -f precompiled_dsm.R --args /cip/corpora/DSM/Web_EN
+
+
+4) Evaluation tasks
 
  - various standard tasks already available in .rda format from other work
  
@@ -29,3 +38,4 @@ $ R --no-save -f examples_cooc.R
 
 $ time python3 task_semcor_wsd.py > task/semcor_wsd.txt
 $ R --no-save -f task_semcor_wsd.R
+
