@@ -10,6 +10,7 @@ Pre-release history
     - print() method for DSM objects, so users don't accidentally print a large co-occurrence matrix
     - new sample data set: DSM_Vectors with 100-dimensional pre-compiled representations for selected words
     - new sample data: typical singular values from term-context matrix
+    - new sample data: "goods" example illustrating dimensionality reduction based on correlations
 
   - v0.1-14
     - new evaluation task: SemCorWSD (preliminary version)
