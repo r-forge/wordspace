@@ -6,7 +6,7 @@ library(shiny)
 library(wordspace)
 
 argv <- commandArgs(trailingOnly=TRUE)
-if (!(length(argv) %in% 1:2)) stop("Usage:  R --no-save -e 'shiny::runApp()' model.rda [n.dims]")
+if (!(length(argv) %in% 1:2)) stop("Usage:  R --no-save -e 'shiny::runApp()' --args model.rda [n.dims]")
 
 model.file <- argv[1]
 n.dim <- if (length(argv) >= 2) as.integer(argv[2]) else Inf
@@ -23,3 +23,5 @@ if (n.dim < ncol(M)) {
   gc()
   cat(sprintf("Reduced to %d x %d matrix (%.1f MB)\n", nrow(M), ncol(M), object.size(M) / 2^20))
 }
+
+terms.sorted <- sort(rownames(M))
