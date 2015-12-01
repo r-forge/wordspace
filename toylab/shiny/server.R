@@ -2,16 +2,49 @@
 ##  Shiny semantic similarity GUI -- Server implementation
 ##
 
-shinyServer(function(input, output, session) {
-  terms.sorted <- sort(rownames(M))
-  TargetInfo <- data.frame(label=terms.sorted, value=terms.sorted)
-  updateSelectizeInput(session, "target", choices = TargetInfo, server = TRUE)
+max.cand <- 100 # max. number of completion candidates to show in UI
 
-  ENV <- reactiveValues(coord=NULL)
+shinyServer(function(input, output, session) {
+  ENV <- reactiveValues(
+    target="",
+    coord=NULL
+  )
   
+  observeEvent(input$candidates, {
+    if (length(input$candidates) > 0) {
+      candidate <- input$candidates[1]
+      updateTextInput(session, "target", value=candidate) # triggers display
+    }    
+  })
+  
+  observeEvent(c(input$target, input$candidates), {
+    target <- input$target    
+    if (grepl("%+$", target, perl=TRUE)) {
+      ## explicit prefix search
+      target <- sub("%+$", "", target, perl=TRUE)
+      target.complete <- FALSE
+    } else {
+      target.complete <- target %in% terms.sorted
+    }
+
+    if (target.complete) {
+      ENV$target <- target
+      updateSelectInput(session, "candidates", selected=character(0))
+    } else {
+      if (target == "") {
+        candidates <- character(0)
+      } else {
+        idx <- substr(terms.sorted, 1, nchar(target)) == target
+        candidates <- terms.sorted[idx]
+        if (length(candidates) > max.cand) candidates <- candidates[1:max.cand]
+      }
+      updateSelectInput(session, "candidates", choices=candidates, selected=character(0))
+    } 
+  })
+
   NN <- reactive({
-    target <- input$target
-    ok <- target %in% rownames(M)
+    target <- ENV$target
+    ok <- target %in% terms.sorted
     if (ok) {
       nearest.neighbours(M, target, n=input$NN, dist.matrix=TRUE)
     } else {
@@ -24,7 +57,7 @@ shinyServer(function(input, output, session) {
     par(mar=c(0,0,0,0))
     if (is.null(nn.dist)) {
       plot(0, 0, type="n", xlim=c(0, 2), ylim=c(0, 2), xaxt="n", yaxt="n", xlab="", ylab="")
-      text(1, 1, sprintf("%s not found in DSM", input$target))
+      text(1, 1, sprintf("%s not found in DSM", isolate(ENV$target)))
     } else {
       ENV$coord <- plot(nn.dist, expand=.1, cex=1.2, method=if (input$isoMDS) "isomds" else "sammon", show.edges=input$edges, edges.lwd=input$edgeWidth)
     }
@@ -33,7 +66,7 @@ shinyServer(function(input, output, session) {
   output$NNlist <- renderUI({
     nn.dist <- NN()
     if (is.null(nn.dist)) {
-      span(tags$em(input$target), "not found in DSM", style="color: red;")
+      span(tags$em(isolate(ENV$target)), "not found in DSM", style="color: red;")
     } else {
       nn.terms <- rownames(nn.dist)[-1]
       list.items <- lapply(nn.terms, function (.t) {
@@ -53,7 +86,8 @@ shinyServer(function(input, output, session) {
       idx <- which.min(distances)
       if (distances[idx] < scale/25) {
         target <- rownames(coord)[idx]
-        updateSelectizeInput(session, "target", choices=TargetInfo, selected=target, server=TRUE) # triggers re-display
+        updateTextInput(session, "target", value=target) # triggers re-display
+        updateSelectInput(session, "candidates", choices=character(0), selected=character(0))
       }
     }
   })
