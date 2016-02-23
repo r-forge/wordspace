@@ -34,7 +34,7 @@ dist.matrix(M, M2 = NULL,
   }
   
   \item{p}{
-    exponent of the \code{minkowski} p-metric, a numeric value in the range \eqn{1 \le p \le \infty}
+    exponent of the \code{minkowski} p-metric, a numeric value in the range \eqn{1 \le p \le \infty}. Values \eqn{.01 \le p < 1} are also permitted but do not correspond to a proper metric (because the triangle inequality is not satisfied).
   }
   
   \item{normalized}{

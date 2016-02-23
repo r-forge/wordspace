@@ -3,6 +3,7 @@ print.dsm <- function (x, ...) {
   cat(sprintf("Distributional Semantic Model with %d rows x %d columns\n", info$nrow, info$ncol))
   n.cells <- prod(info$nrow, info$ncol)
   qformat <- function (y) {
+    if (is.na(y)) return("N/A")
     if (y > 9.9999e9) return(sprintf("%.1fG", y/1e9))
     if (y > 9.9999e6) return(sprintf("%.1fM", y/1e6))
     if (y > 50e3) return(sprintf("%.1fk", y/1e3))

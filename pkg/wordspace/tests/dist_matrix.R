@@ -67,7 +67,7 @@ stopifnot(all(diag(M2.linf.ws) == 0))
 
 
 ## Minkowski distance
-for (p in c(1, 1.5, 2, 2.5, 3, 5, 10)) {
+for (p in c(.25, .5, 1, 1.5, 2, 2.5, 3, 5, 10)) {
   M1.lp.ws <- dist.matrix(M1, method="minkowski", p=p)
   M2.lp.ws <- dist.matrix(M2, method="minkowski", p=p)
 

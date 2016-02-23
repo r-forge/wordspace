@@ -3,9 +3,9 @@ read.dsm.triplet <- function (filename, freq=FALSE, value.first=FALSE, tokens=FA
   is.pipe <- grepl("\\|\\s*$", filename, perl=TRUE)
   if (is.pipe) {
     filename <- sub("\\s*\\|\\s*$", "", filename, perl=TRUE)
-    fh <- pipe(filename, open="rt", encoding=encoding)
+    fh <- pipe(filename, encoding=encoding) # don't open connection yet, so scan() always converts to UTF-8
   } else {
-    fh <- file(filename, open="rt", encoding=encoding)
+    fh <- file(filename, encoding=encoding)
   }
   
   if (tokens) {
