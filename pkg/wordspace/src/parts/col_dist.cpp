@@ -23,8 +23,8 @@ void mk_symmetric_matrix(NumericMatrix x) {
 void check_metric(int metric_code, double p1) {
   if (metric_code < 0 || metric_code > 4)
     stop("internal error -- invalid metric code");
-  if (metric_code == 3 && (!R_FINITE(p1) || p1 < 1))
-    stop("internal error -- Minkowski metric p out of range [1, Inf)");  
+  if (metric_code == 3 && (!R_FINITE(p1) || p1 < .01))
+    stop("internal error -- Minkowski p-parameter out of range [.01, Inf)");  
 }
 
 // [[Rcpp::export]]

@@ -28,7 +28,7 @@ colNorms(M, method = c("euclidean", "maximum", "manhattan", "minkowski"), p = 2)
   }
 
   \item{p}{
-    exponent of the \code{minkowski} p-norm, a numeric value in the range \eqn{1 \le p \le \infty}
+    exponent of the \code{minkowski} p-norm, a numeric value in the range \eqn{1 \le p \le \infty}. Values \eqn{.01 \le p < 1} are also permitted but do not correspond to a proper mathematical norm (because the triangle inequality is not satisfied).
   }
 
 }

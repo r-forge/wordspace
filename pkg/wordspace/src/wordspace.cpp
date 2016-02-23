@@ -130,8 +130,8 @@ void mk_symmetric_matrix(NumericMatrix x) {
 void check_metric(int metric_code, double p1) {
   if (metric_code < 0 || metric_code > 4)
     stop("internal error -- invalid metric code");
-  if (metric_code == 3 && (!R_FINITE(p1) || p1 < 1))
-    stop("internal error -- Minkowski metric p out of range [1, Inf)");  
+  if (metric_code == 3 && (!R_FINITE(p1) || p1 < .01))
+    stop("internal error -- Minkowski p-parameter out of range [.01, Inf)");  
 }
 
 // [[Rcpp::export]]
@@ -395,8 +395,8 @@ NumericMatrix CPP_random_indexing_sparse(int nr, int nc, IntegerVector p, Intege
 void check_norm(int norm_code, double p) {
   if (norm_code < 0 || norm_code > 3)
     stop("internal error -- invalid norm code");
-  if (norm_code == 3 && (!R_FINITE(p) || p < 1))
-    stop("internal error -- Minkowski norm p out of range [1, Inf)");  
+  if (norm_code == 3 && (!R_FINITE(p) || p < .01))
+    stop("internal error -- Minkowski p-parameter out of range [.01, Inf)");  
 }
 
 // [[Rcpp::export]]

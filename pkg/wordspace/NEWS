@@ -1,55 +1,68 @@
-Changes in version 0.3-0
+Version 0.3-0:
 
   - this will be the first public release with a hopefully stable basic API
 
-Pre-release history
+Version 0.1-17:
 
-  - v0.1-16
-    - plot() method for dist.matrix for easy visualization of neighbourhood graphs
-    - head() methods to extract top left corner of DSM object (dsm) or distance matrix (dist.matrix)
-    - print() method for DSM objects, so users don't accidentally print a large co-occurrence matrix
-    - new sample data set: DSM_Vectors with 100-dimensional pre-compiled representations for selected words
-    - new sample data: typical singular values from term-context matrix
-    - new sample data: "goods" example illustrating dimensionality reduction based on correlations
+  - Minkowski norm and metric generalized to .01 <= p < 1 (but doesn't satisfy triangle inequality in this case)
 
-  - v0.1-14
-    - new evaluation task: SemCorWSD (preliminary version)
-    - CITATION entry with official reference (Evert 2014)
-    - enhanced functionality in nearest.neighbours()
-      - support for cross-distance setting
-      - targets can be given as vectors or by name
-      - neighbour search in pre-computed distance or similarity matrix
-      - optionally return distance matrix for target and its neighbours
+Version 0.1-16:
 
-  - v0.1-13
-    - Rcpp implementation of scaleMargins() further reduces memory overhead (with in-place operation for internal use)
-    - as.dsm() method converts term-document and document-term matrices from tm package into DSM objects
-    - added support functions for evaluation of DSMs in standard tasks (multiple choice, similarity correlation and clustering)
-    - new sample data sets: tables of verb-noun cooccurrences from BNC and DESC corpora
-    - new evaluation tasks: RG65, WordSim353, ESSLLI08_Nouns
+  - plot() method for dist.matrix for easy visualization of neighbourhood graphs
+  - head() methods to extract top left corner of DSM object (dsm) or distance matrix (dist.matrix)
+  - print() method for DSM objects, so users don't accidentally print a large co-occurrence matrix
+  - new sample data set: DSM_Vectors with 100-dimensional pre-compiled representations for selected words
+  - new sample data: typical singular values from term-context matrix
+  - new sample data: "goods" example illustrating dimensionality reduction based on correlations
 
-  - v0.1-10: use Rcpp instead of deprecated .C() native code interface
-    - for performance reasons, .C() was used with DUP=FALSE, which is no longer allowed as of R 3.1.0
-    - in addition, some package tests for dsm.score(), dist.matrix() and dsm.projection() were added
-    - the package now depends on Rcpp (>= 0.11.0) and R (>= 3.0.0)
+Version 0.1-14:
 
-  - v0.1-x: partial re-design of DSM objects and basic functions
-    - handling of sparse and non-negative co-occurrence matrices has been re-thought
-    - not fully compatible with v0.0 series (but basic usage should not be affected)
+  - new evaluation task: SemCorWSD (preliminary version)
+  - CITATION entry with official reference (Evert 2014)
+  - enhanced functionality in nearest.neighbours(): support for cross-distance setting, targets can be given as vectors or by name, neighbour search in pre-computed distance or similarity matrix,  optionally return distance matrix for target and its neighbours
+
+Version 0.1-13:
+
+  - Rcpp implementation of scaleMargins() further reduces memory overhead (with in-place operation for internal use)
+  - as.dsm() method converts term-document and document-term matrices from tm package into DSM objects
+  - added support functions for evaluation of DSMs in standard tasks (multiple choice, similarity correlation and clustering)
+  - new sample data sets: tables of verb-noun cooccurrences from BNC and DESC corpora
+  - new evaluation tasks: RG65, WordSim353, ESSLLI08_Nouns
+
+Version 0.1-10:
+
+  - use Rcpp instead of deprecated .C() native code interface
+  - for performance reasons, .C() was used with DUP=FALSE, which is no longer allowed as of R 3.1.0
+  - in addition, some package tests for dsm.score(), dist.matrix() and dsm.projection() were added
+  - the package now depends on Rcpp (>= 0.11.0) and R (>= 3.0.0)
+
+Version 0.1:
+
+  - partial re-design of DSM objects and basic functions
+  - handling of sparse and non-negative co-occurrence matrices has been re-thought
+  - not fully compatible with v0.0 series (but basic usage should not be affected)
     
-  - v0.0-25: randomized SVD available as separate function rsvd()
+Version 0.0-25:
 
-  - v0.0-24: OpenMP no longer activated by default
-    - wordspace.openmp() to check for OpenMP support and select the number of parallel threads
+  - randomized SVD available as separate function rsvd()
 
-  - v0.0-23: further performance improvements
-    - dist.matrix() uses less memory and is considerably faster for cosine/angle distance measure
-    - new function pair.distances() computes distances or neighbour ranks for a list of word pairs efficiently
-    - nearest.neighbours() automatically processes a long list of lookup terms in moderately sized batches
+Version 0.0-24
 
-  - v0.0-21: experimental support for OpenMP on appropriate platforms
-    - n/a on Mac OS X in the default R installation (but achieves speed-up if expressly activated)
-    - parallelization only used if more than 100 M operations have to be carried out (purely heuristic limit)
-    - first experiments suggests that using more than 4 or 8 threads brings little benefit with enormous overhead
-    - setting OMP_NUM_THREADS is strongly recommended but may also affect BLAS matrix operations (e.g. with OpenBLAS)
+  - OpenMP no longer activated by default
+  - wordspace.openmp() to check for OpenMP support and select the number of parallel threads
+
+Version 0.0-23
+
+  - further performance improvements
+  - dist.matrix() uses less memory and is considerably faster for cosine/angle distance measure
+  - new function pair.distances() computes distances or neighbour ranks for a list of word pairs efficiently
+  - nearest.neighbours() automatically processes a long list of lookup terms in moderately sized batches
+
+Version 0.0-21:
+
+ - experimental support for OpenMP on appropriate platforms
+ - n/a on Mac OS X in the default R installation (but achieves speed-up if expressly activated)
+ - parallelization only used if more than 100 M operations have to be carried out (purely heuristic limit)
+ - first experiments suggests that using more than 4 or 8 threads brings little benefit with enormous overhead
+ - setting OMP_NUM_THREADS is strongly recommended but may also affect BLAS matrix operations (e.g. with OpenBLAS)
 

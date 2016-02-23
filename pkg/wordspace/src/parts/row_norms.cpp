@@ -12,8 +12,8 @@
 void check_norm(int norm_code, double p) {
   if (norm_code < 0 || norm_code > 3)
     stop("internal error -- invalid norm code");
-  if (norm_code == 3 && (!R_FINITE(p) || p < 1))
-    stop("internal error -- Minkowski norm p out of range [1, Inf)");  
+  if (norm_code == 3 && (!R_FINITE(p) || p < .01))
+    stop("internal error -- Minkowski p-parameter out of range [.01, Inf)");  
 }
 
 // [[Rcpp::export]]
