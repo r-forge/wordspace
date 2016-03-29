@@ -1,0 +1,2 @@
+useDynLib(sparsesvd, svdLAS2_)
+export(sparsesvd)
