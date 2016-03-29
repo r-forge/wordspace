@@ -7,7 +7,7 @@
 
 #include "svdlib.h"
 
-SEXP svdLAS2_(SEXP dim, SEXP i, SEXP p, SEXP x, SEXP dimensions, SEXP iterations, SEXP exclude, SEXP kappa) {
+SEXP svdLAS2_(SEXP dim, SEXP i, SEXP p, SEXP x, SEXP dimensions, SEXP exclude, SEXP kappa) {
   struct smat M;
   SVDRec svd;
   SEXP res, res_d, res_u, res_v, res_names;
@@ -28,7 +28,7 @@ SEXP svdLAS2_(SEXP dim, SEXP i, SEXP p, SEXP x, SEXP dimensions, SEXP iterations
   M.value = REAL(x);
   /* need to make copy of i and p because of different data type (long vs. int) */
   M.pointr = (long *) R_alloc(nC + 1, sizeof(long));
-  for (k = 0; k <= nR; k++)
+  for (k = 0; k <= nC; k++)
     M.pointr[k] = p_int[k];
   M.rowind = (long *) R_alloc(n_cells, sizeof(long));
   for (k = 0; k < n_cells; k++)
@@ -36,31 +36,33 @@ SEXP svdLAS2_(SEXP dim, SEXP i, SEXP p, SEXP x, SEXP dimensions, SEXP iterations
 
   /* execute sparse SVD */
   SVDVerbosity = 0;
-  svd = svdLAS2A(&M, 4);
+  svd = svdLAS2A(&M, INTEGER(dimensions)[0]);
   rank = svd->d;
 
   /* check matrix dimensions */
   n_row = svd->Ut->cols; /* Ut is the transposed matrix, hence swap row/col counts */
   n_col = svd->Ut->rows;
-  if ((n_col != rank) || (n_row != nR)) {
+  if ((n_col > rank) || (n_row != nR)) {
     svdFreeSVDRec(svd);
-    error("interal error (U is %d x %d matrix, expected %d x %d)", n_row, n_col, nR, rank);
+    error("internal error (U is %d x %d matrix, expected %d x %d)", n_row, n_col, nR, rank);
   }
-  n_row = svd->Vt->cols;
+  n_row = svd->Vt->cols; /* same for Vt */
   n_col = svd->Vt->rows;
-  if ((n_col != rank) || (n_row != nC)) {
+  if ((n_col > rank) || (n_row != nC)) {
     svdFreeSVDRec(svd);
-    error("interal error (V is %d x %d matrix, expected %d x %d)", n_row, n_col, nC, rank);
+    error("internal error (V is %d x %d matrix, expected %d x %d)", n_row, n_col, nC, rank);
   }
-
+  /* note that Ut and Vt may contain more eigenvectors than there are significant eigenvalues;
+     this is expected if some singular values are culled because of the kappa criterion */
+  
   /* extract singular values and matrices of singluar vectors into R objects */
   res_d = PROTECT(allocVector(REALSXP, rank));
   for (k = 0; k < rank; k++)
-    REAL(res_d)[k] = (svd->S)[k];
+    REAL(res_d)[k] = svd->S[k];
   res_u = PROTECT(allocMatrix(REALSXP, nR, rank));
   u_dbl = REAL(res_u);
   for (k = 0; k < rank; k++) {
-    mark = (svd->Ut->value)[k];
+    mark = svd->Ut->value[k];
     point = u_dbl + k * nR;
     for (j = 0; j < nR; j++)
       *point++ = *mark++;
@@ -68,7 +70,7 @@ SEXP svdLAS2_(SEXP dim, SEXP i, SEXP p, SEXP x, SEXP dimensions, SEXP iterations
   res_v = PROTECT(allocMatrix(REALSXP, nC, rank));
   v_dbl = REAL(res_v);
   for (k = 0; k < rank; k++) {
-    mark = (svd->Vt->value)[k];
+    mark = svd->Vt->value[k];
     point = v_dbl + k * nC;
     for (j = 0; j < nC; j++)
       *point++ = *mark++;
