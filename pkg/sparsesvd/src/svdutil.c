@@ -41,6 +41,8 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "svdlib.h"
 #include "svdutil.h"
 
+#include <R.h>
+
 #define BUNZIP2  "bzip2 -d"
 #define BZIP2    "bzip2 -1"
 #define UNZIP    "gzip -d"
@@ -75,14 +77,15 @@ double *svd_doubleArray(long size, char empty, char *name) {
 }
 
 void svd_beep(void) {
-  fputc('\a', stderr);
-  fflush(stderr);
+  /* fputc('\a', stderr); */
+  /* fflush(stderr); */
+  REprintf("DING!\n");
 }
 
 void svd_debug(char *fmt, ...) {
   va_list args;
   va_start(args, fmt);
-  vfprintf(stderr, fmt, args);
+  REvprintf(fmt, args);
   va_end(args);
 }
 
@@ -90,9 +93,9 @@ void svd_error(char *fmt, ...) {
   va_list args;
   va_start(args, fmt);
   svd_beep();
-  fprintf(stderr, "ERROR: ");
-  vfprintf(stderr, fmt, args);
-  fprintf(stderr, "\n");
+  REprintf("ERROR: ");
+  REvprintf(fmt, args);
+  REprintf("\n");
   va_end(args);
 }
 
@@ -100,11 +103,11 @@ void svd_fatalError(char *fmt, ...) {
   va_list args;
   va_start(args, fmt);
   svd_beep();
-  fprintf(stderr, "ERROR: ");
-  vfprintf(stderr, fmt, args);
-  fprintf(stderr, "\a\n");
+  REprintf( "ERROR: ");
+  REvprintf(fmt, args);
+  REprintf("\n");
   va_end(args);
-  exit(1);
+  error("error in SVDLIBC code");
 }
 
 static void registerPipe(FILE *p) {
@@ -122,7 +125,7 @@ static char isPipe(FILE *p) {
 
 static FILE *openPipe(char *pipeName, char *mode) {
   FILE *pipe;
-  fflush(stdout);
+  /* fflush(stdout); */
   if ((pipe = popen(pipeName, mode))) registerPipe(pipe);
   return pipe;
 }
@@ -154,7 +157,8 @@ FILE *svd_readFile(char *fileName) {
 
   /* Special file name */
   if (!strcmp(fileName, "-"))
-    return stdin;
+    /* return stdin; */
+    svd_fatalError("library code is not allowed to read from STDIN");
   
   /* If it is a pipe */
   if (fileName[0] == '|')
@@ -210,8 +214,9 @@ static FILE *writeZippedFile(char *fileName, char append) {
 FILE *svd_writeFile(char *fileName, char append) {
   /* Special file name */
   if (!strcmp(fileName, "-"))
-    return stdout;
-  
+    /* return stdout; */
+    svd_fatalError("library code is not allowed to write to STDOUT");
+    
   /* If it is a pipe */
   if (fileName[0] == '|')
     return openPipe(fileName + 1, "w");
@@ -225,7 +230,7 @@ FILE *svd_writeFile(char *fileName, char append) {
 
 /* Could be a file or a stream. */
 void svd_closeFile(FILE *file) {
-  if (file == stdin || file == stdout) return;
+  /* if (file == stdin || file == stdout) return; */
   if (isPipe(file)) pclose(file);
   else fclose(file);
 }

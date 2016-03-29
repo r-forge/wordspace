@@ -10,9 +10,9 @@ Authors@R: c(person("Doug", "Rohde", email="dr+svd@tedlab.mit.edu", role="aut"),
              person("Stefan", "Evert", email="stefan.evert@fau.de", role="cre", comment="http://www.stefan-evert.de/"))
 Description: Wrapper around the SVDLIBC library for (truncated) singular value decomposition of a sparse matrix.
              Currently, only the sparse matrices in the Matrix package format are supported.
-Depends: R (>= 3.0),
-         Matrix
-License: BSD_3_clause
+Depends: R (>= 3.0)
+Imports: Matrix
+License: BSD_3_clause + file LICENSE
 Copyright: Copyright (C) 2002, University of Tennessee Research Foundation
 URL: http://tedlab.mit.edu/~dr/SVDLIBC/
 NeedsCompilation: yes
