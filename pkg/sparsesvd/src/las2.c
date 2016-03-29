@@ -445,7 +445,7 @@ SVDRec svdLAS2(SMat A, long dimensions, long iterations, double end[2],
     svd_error("svdLAS2: allocation of R failed");
     goto cleanup;
   }
-  R->d  = /*svd_imin(nsig, dimensions)*/dimensions;
+  R->d  = svd_imin(neig, dimensions); /* EDIT: don't ask for more singular components than available (original code: <dimensions>) */
   R->Ut = svdNewDMat(R->d, A->rows);
   R->S  = svd_doubleArray(R->d, TRUE, "las2: R->s");
   R->Vt = svdNewDMat(R->d, A->cols);
