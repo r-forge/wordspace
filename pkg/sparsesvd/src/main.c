@@ -52,7 +52,7 @@ SEXP svdLAS2_(SEXP dim, SEXP i, SEXP p, SEXP x, SEXP dimensions, SEXP iterations
     svdFreeSVDRec(svd);
     error("interal error (V is %d x %d matrix, expected %d x %d)", n_row, n_col, nC, rank);
   }
-  
+
   /* extract singular values and matrices of singluar vectors into R objects */
   res_d = PROTECT(allocVector(REALSXP, rank));
   for (k = 0; k < rank; k++)

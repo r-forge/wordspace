@@ -38,6 +38,8 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "svdlib.h"
 #include "svdutil.h"
 
+#include <R.h>
+
 #define MAXLL 2
 
 #define LMTNW   100000000 /* max. size of working area allowed  */
@@ -244,20 +246,20 @@ long check_parameters(SMat A, long dimensions, long iterations,
 void write_header(long iterations, long dimensions, double endl, double endr, 
                   long vectors, double kappa, long nrow, long ncol, 
                   long vals) {
-  printf("SOLVING THE [A^TA] EIGENPROBLEM\n");
-  printf("NO. OF ROWS               = %6ld\n", nrow);
-  printf("NO. OF COLUMNS            = %6ld\n", ncol);
-  printf("NO. OF NON-ZERO VALUES    = %6ld\n", vals);
-  printf("MATRIX DENSITY            = %6.2f%%\n", 
-         ((float) vals / nrow) * 100 / ncol);
-  /* printf("ORDER OF MATRIX A         = %5ld\n", n); */
-  printf("MAX. NO. OF LANCZOS STEPS = %6ld\n", iterations);
-  printf("MAX. NO. OF EIGENPAIRS    = %6ld\n", dimensions);
-  printf("LEFT  END OF THE INTERVAL = %9.2E\n", endl);
-  printf("RIGHT END OF THE INTERVAL = %9.2E\n", endr);
-  printf("KAPPA                     = %9.2E\n", kappa);
-  /* printf("WANT S-VECTORS?   [T/F]   =     %c\n", (vectors) ? 'T' : 'F'); */
-  printf("\n");
+  Rprintf("SOLVING THE [A^TA] EIGENPROBLEM\n");
+  Rprintf("NO. OF ROWS               = %6ld\n", nrow);
+  Rprintf("NO. OF COLUMNS            = %6ld\n", ncol);
+  Rprintf("NO. OF NON-ZERO VALUES    = %6ld\n", vals);
+  Rprintf("MATRIX DENSITY            = %6.2f%%\n", 
+          ((float) vals / nrow) * 100 / ncol);
+  /* Rprintf("ORDER OF MATRIX A         = %5ld\n", n); */
+  Rprintf("MAX. NO. OF LANCZOS STEPS = %6ld\n", iterations);
+  Rprintf("MAX. NO. OF EIGENPAIRS    = %6ld\n", dimensions);
+  Rprintf("LEFT  END OF THE INTERVAL = %9.2E\n", endl);
+  Rprintf("RIGHT END OF THE INTERVAL = %9.2E\n", endr);
+  Rprintf("KAPPA                     = %9.2E\n", kappa);
+  /* Rprintf("WANT S-VECTORS?   [T/F]   =     %c\n", (vectors) ? 'T' : 'F'); */
+  Rprintf("\n");
   return;
 }
 
@@ -372,7 +374,7 @@ SVDRec svdLAS2(SMat A, long dimensions, long iterations, double end[2],
 
   /* If A is wide, the SVD is computed on its transpose for speed. */
   if (A->cols >= A->rows * 1.2) {
-    if (SVDVerbosity > 0) printf("TRANSPOSING THE MATRIX FOR SPEED\n");
+    if (SVDVerbosity > 0) Rprintf("TRANSPOSING THE MATRIX FOR SPEED\n");
     transpose = TRUE;
     A = svdTransposeS(A);
   }
@@ -418,13 +420,13 @@ SVDRec svdLAS2(SMat A, long dimensions, long iterations, double end[2],
 
   /* Print some stuff. */
   if (SVDVerbosity > 0) {
-    printf("NUMBER OF LANCZOS STEPS   = %6ld\n"
-           "RITZ VALUES STABILIZED    = %6ld\n", steps + 1, neig);
+    Rprintf("NUMBER OF LANCZOS STEPS   = %6ld\n"
+            "RITZ VALUES STABILIZED    = %6ld\n", steps + 1, neig);
   }
   if (SVDVerbosity > 2) {
-    printf("\nCOMPUTED RITZ VALUES  (ERROR BNDS)\n");
+    Rprintf("\nCOMPUTED RITZ VALUES  (ERROR BNDS)\n");
     for (i = 0; i <= steps; i++)
-      printf("%3ld  %22.14E  (%11.2E)\n", i + 1, ritz[i], bnd[i]);
+      Rprintf("%3ld  %22.14E  (%11.2E)\n", i + 1, ritz[i], bnd[i]);
   }
 
   SAFE_FREE(wptr[0]);
@@ -456,20 +458,20 @@ SVDRec svdLAS2(SMat A, long dimensions, long iterations, double end[2],
                 neig);
   
   if (SVDVerbosity > 1) {
-    printf("\nSINGULAR VALUES: ");
+    Rprintf("\nSINGULAR VALUES: ");
     svdWriteDenseArray(R->S, R->d, "-", FALSE);
 
     if (SVDVerbosity > 2) {
-      printf("\nLEFT SINGULAR VECTORS (transpose of U): ");
+      Rprintf("\nLEFT SINGULAR VECTORS (transpose of U): ");
       svdWriteDenseMatrix(R->Ut, "-", SVD_F_DT);
 
-      printf("\nRIGHT SINGULAR VECTORS (transpose of V): ");
+      Rprintf("\nRIGHT SINGULAR VECTORS (transpose of V): ");
       svdWriteDenseMatrix(R->Vt, "-", SVD_F_DT);
     }
   }
   if (SVDVerbosity > 0) {
-    printf("SINGULAR VALUES FOUND     = %6d\n"
-	   "SIGNIFICANT VALUES        = %6ld\n", R->d, nsig);
+    Rprintf("SINGULAR VALUES FOUND     = %6d\n"
+            "SIGNIFICANT VALUES        = %6ld\n", R->d, nsig);
   }
 
  cleanup:    
@@ -781,8 +783,8 @@ int lanso(SMat A, long iterations, long dimensions, double endl,
     svd_dsort2((j+1) / 2, j + 1, ritz, bnd);
 
     /*    for (i = 0; i < iterations; i++)
-      printf("%f ", ritz[i]);
-      printf("\n"); */
+      Rprintf("%f ", ritz[i]);
+      Rprintf("\n"); */
     
     /* massage error bounds for very close ritz values */
     neig = error_bound(&ENOUGH, endl, endr, ritz, bnd, j, tol);
@@ -799,7 +801,7 @@ int lanso(SMat A, long iterations, long dimensions, double endl,
     } else ENOUGH = TRUE;
     ENOUGH = ENOUGH || first >= iterations;
     /* id1++; */
-    /* printf("id1=%d dimen=%d first=%d\n", id1, dimensions, first); */
+    /* Rprintf("id1=%d dimen=%d first=%d\n", id1, dimensions, first); */
   }
   store(n, STORQ, j, wptr[1]);
   return j;
@@ -1764,7 +1766,7 @@ void machar(long *ibeta, long *it, long *irnd, long *machep, long *negep) {
  ***********************************************************************/
 
 void store(long n, long isw, long j, double *s) {
-  /* printf("called store %ld %ld\n", isw, j); */
+  /* Rprintf("called store %ld %ld\n", isw, j); */
   switch(isw) {
   case STORQ:
     if (!LanStore[j + MAXLL]) {
