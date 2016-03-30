@@ -39,6 +39,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "svdutil.h"
 
 #include <R.h>
+#include <Rinternals.h>
 
 #define MAXLL 2
 
