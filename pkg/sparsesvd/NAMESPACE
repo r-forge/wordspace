@@ -1,3 +1,5 @@
 importFrom(Matrix, sparseMatrix)
+importFrom(methods, as, is)
+
 useDynLib(sparsesvd, svdLAS2_)
 export(sparsesvd)

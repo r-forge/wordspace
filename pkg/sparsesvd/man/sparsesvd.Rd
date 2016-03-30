@@ -6,7 +6,7 @@
 }
 \arguments{
   \item{M}{a sparse real matrix in \bold{Matrix} package format.
-    The preferred format is a \code{\link[=dgCMatrix-class]{dgCMatrix}} and other storage formats will automatically be converted.
+    The preferred format is a \code{\link[=dgCMatrix-class]{dgCMatrix}} and other storage formats will automatically be converted if possible.
   }
   \item{rank}{an integer specifying the desired number of singular components, i.e. the rank of the truncated SVD.
     Specify 0 to return all singular values of magnitude larger than \code{tol} (default).

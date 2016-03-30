@@ -85,7 +85,7 @@ clean_wordspace:
 	-rm -f  wordspace_*.zip     # Windows binaries
 	-rm -rf wordspace.Rcheck    # working directory of R CMD check
 
-clean_sparsevd:
+clean_sparsesvd:
 	-rm -f  sparsesvd_*.tar.gz  # source package(s)
 	-rm -f  sparsesvd_*.tgz     # Mac binaries
 	-rm -f  sparsesvd_*.zip     # Windows binaries

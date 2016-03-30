@@ -37,11 +37,15 @@ POSSIBILITY OF SUCH DAMAGE.
 #include <math.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <netinet/in.h>
+#if defined (__unix__) || (defined (__APPLE__) && defined (__MACH__))
+/* EDIT: POSIX functions not available on Windows (and not needed anyway) */
+#include <arpa/inet.h>
+#endif
 #include "svdlib.h"
 #include "svdutil.h"
 
 #include <R.h>
+#include <Rinternals.h>
 
 #define BUNZIP2  "bzip2 -d"
 #define BZIP2    "bzip2 -1"
@@ -237,16 +241,23 @@ void svd_closeFile(FILE *file) {
 
 
 char svd_readBinInt(FILE *file, int *val) {
+#if defined (__unix__) || (defined (__APPLE__) && defined (__MACH__))
+  /* EDIT: POSIX functions not available on Windows (and not needed anyway) */
   int x;
   if (fread(&x, sizeof(int), 1, file) == 1) {
     *val = ntohl(x);
     return FALSE;
   }
   return TRUE;
+#else
+  error("binary I/O not available (not a POSIX platform)");
+#endif
 }
 
 /* This reads a float in network order and converts to a real in host order. */
 char svd_readBinFloat(FILE *file, float *val) {
+#if defined (__unix__) || (defined (__APPLE__) && defined (__MACH__))
+  /* EDIT: POSIX functions not available on Windows (and not needed anyway) */
   int x;
   float y;
   if (fread(&x, sizeof(int), 1, file) == 1) {
@@ -256,19 +267,32 @@ char svd_readBinFloat(FILE *file, float *val) {
     return FALSE;
   }
   return TRUE;
+#else
+  error("binary I/O not available (not a POSIX platform)");
+#endif
 }
 
 char svd_writeBinInt(FILE *file, int x) {
+#if defined (__unix__) || (defined (__APPLE__) && defined (__MACH__))
+  /* EDIT: POSIX functions not available on Windows (and not needed anyway) */
   int y = htonl(x);
   if (fwrite(&y, sizeof(int), 1, file) != 1) return TRUE;
   return FALSE;
+#else
+  error("binary I/O not available (not a POSIX platform)");
+#endif
 }
 
 /* This takes a real in host order and writes a float in network order. */
 char svd_writeBinFloat(FILE *file, float r) {
+#if defined (__unix__) || (defined (__APPLE__) && defined (__MACH__))
+  /* EDIT: POSIX functions not available on Windows (and not needed anyway) */
   int y = htonl(*((int *) &r));
   if (fwrite(&y, sizeof(int), 1, file) != 1) return TRUE;
   return FALSE;
+#else
+  error("binary I/O not available (not a POSIX platform)");
+#endif
 }
 
 
