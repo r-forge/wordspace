@@ -1,65 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-               "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
 <title>TODO sheet for wordspace package development</title>
-<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
-<meta name="title" content="TODO sheet for wordspace package development"/>
-<meta name="generator" content="Org-mode"/>
-<meta name="generated" content="2014-09-16T01:26+0530"/>
-<meta name="author" content="Stefan Evert"/>
-<meta name="description" content=""/>
-<meta name="keywords" content=""/>
+<!-- 2016-04-01 Fri 15:04 -->
+<meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta  name="generator" content="Org-mode" />
+<meta  name="author" content="Stefan Evert" />
 <style type="text/css">
  <!--/*--><![CDATA[/*><!--*/
-  html { font-family: Times, serif; font-size: 12pt; }
   .title  { text-align: center; }
-  .todo   { color: red; }
+  .todo   { font-family: monospace; color: red; }
   .done   { color: green; }
-  .tag    { background-color: #add8e6; font-weight:normal }
-  .target { }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
   .timestamp { color: #bebebe; }
   .timestamp-kwd { color: #5f9ea0; }
-  .right  {margin-left:auto; margin-right:0px;  text-align:right;}
-  .left   {margin-left:0px;  margin-right:auto; text-align:left;}
-  .center {margin-left:auto; margin-right:auto; text-align:center;}
-  p.verse { margin-left: 3% }
+  .right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
   pre {
-	border: 1pt solid #AEBDCC;
-	background-color: #F3F5F7;
-	padding: 5pt;
-	font-family: courier, monospace;
-        font-size: 90%;
-        overflow:auto;
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
   }
-  table { border-collapse: collapse; }
-  td, th { vertical-align: top;  }
-  th.right  { text-align:center;  }
-  th.left   { text-align:center;   }
-  th.center { text-align:center; }
-  td.right  { text-align:right;  }
-  td.left   { text-align:left;   }
-  td.center { text-align:center; }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  pre.src-sh:before    { content: 'sh'; }
+  pre.src-bash:before  { content: 'sh'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-R:before     { content: 'R'; }
+  pre.src-perl:before  { content: 'Perl'; }
+  pre.src-java:before  { content: 'Java'; }
+  pre.src-sql:before   { content: 'SQL'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.right  { text-align: center;  }
+  th.left   { text-align: center;   }
+  th.center { text-align: center; }
+  td.right  { text-align: right;  }
+  td.left   { text-align: left;   }
+  td.center { text-align: center; }
   dt { font-weight: bold; }
-  div.figure { padding: 0.5em; }
-  div.figure p { text-align: center; }
-  div.inlinetask {
-    padding:10px;
-    border:2px solid gray;
-    margin:10px;
+  .footpara:nth-child(2) { display: inline; }
+  .footpara { display: block; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
     background: #ffffcc;
   }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
   textarea { overflow-x: auto; }
-  .linenr { font-size:smaller }
-  .code-highlighted {background-color:#ffff00;}
-  .org-info-js_info-navigation { border-style:none; }
-  #org-info-js_console-label { font-size:10px; font-weight:bold;
-                               white-space:nowrap; }
-  .org-info-js_search-highlight {background-color:#ffff00; color:#000000;
-                                 font-weight:bold; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
   /*]]>*/-->
 </style>
+<link rel="stylesheet" type="text/css" href="etc/orgmode.css" />
 <script type="text/javascript">
 /*
 @licstart  The following is the entire license notice for the
@@ -106,57 +135,8 @@ for the JavaScript code in this tag.
  }
 /*]]>*///-->
 </script>
-<script type="text/javascript" src="http://orgmode.org/mathjax/MathJax.js">
-/**
- *
- * @source: http://orgmode.org/mathjax/MathJax.js
- *
- * @licstart  The following is the entire license notice for the
- *  JavaScript code in http://orgmode.org/mathjax/MathJax.js.
- *
- * Copyright (C) 2012-2013  MathJax
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
- * @licend  The above is the entire license notice
- * for the JavaScript code in http://orgmode.org/mathjax/MathJax.js.
- *
- */
-
-/*
-@licstart  The following is the entire license notice for the
-JavaScript code below.
-
-Copyright (C) 2012-2013 Free Software Foundation, Inc.
-
-The JavaScript code below is free software: you can
-redistribute it and/or modify it under the terms of the GNU
-General Public License (GNU GPL) as published by the Free Software
-Foundation, either version 3 of the License, or (at your option)
-any later version.  The code is distributed WITHOUT ANY WARRANTY;
-without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
-
-As additional permission under GNU GPL version 3 section 7, you
-may distribute non-source (e.g., minimized or compacted) forms of
-that code without the copy of the GNU GPL normally required by
-section 4, provided you include this license notice and a URL
-through which recipients can access the Corresponding Source.
-
-
-@licend  The above is the entire license notice
-for the JavaScript code below.
-*/
+<script type="text/javascript" src="http://orgmode.org/mathjax/MathJax.js"></script>
+<script type="text/javascript">
 <!--/*--><![CDATA[/*><!--*/
     MathJax.Hub.Config({
         // Only one of the two following lines, depending on user settings
@@ -199,103 +179,100 @@ for the JavaScript code below.
 </script>
 </head>
 <body>
-
-<div id="preamble">
-
-</div>
-
 <div id="content">
 <h1 class="title">TODO sheet for wordspace package development</h1>
 
-
-<div id="outline-container-1" class="outline-2">
+<div id="outline-container-sec-1" class="outline-2">
 <h2 id="sec-1"><span class="section-number-2">1</span> Urgent updates</h2>
 <div class="outline-text-2" id="text-1">
-
-
-<ul>
-<li><code>write.dsm.matrix()</code> as safe wrapper around <code>write()</code> for very large output files
-<ul>
-<li>can't be called <code>write.matrix()</code>, which already exists in MASS (but doesn't look very optimal)
-</li>
-<li>should have options to save row/column names and dense/sparse matrices in various text formats
+<ul class="org-ul">
+<li>write basic documentation for all functions
+<ul class="org-ul">
+<li>note that (dense) matrix should be saved to text format with <code>write.table()</code> rather than <code>write()</code> (inserts spurious line break every INT<sub>MAX</sub> chars), either in examples or in a (new) vignette
 </li>
 </ul>
-
-</li>
-<li>write basic documentation for all functions
 </li>
 <li>upload package to CRAN
-<ul>
+<ul class="org-ul">
 <li>pre-release version could be made available on the homepage (using WinBuilder)
 </li>
 </ul>
-
 </li>
 <li><code>normalize=TRUE</code> in <code>dsm.score()</code> might automatically filter out invalid rows (with \(\|x\| = 0\)) or keep them at 0 (rather than <code>NA</code>)
-<ul>
+<ul class="org-ul">
 <li>perhaps as an option to <code>normalize.rows()</code>, but <code>dsm.score()</code> would need to handle this specially and drop deleted rows from entire model
 </li>
 </ul>
-
 </li>
 <li>improve Web page
 </li>
 </ul>
-
-
+</div>
 </div>
 
-</div>
-
-<div id="outline-container-2" class="outline-2">
+<div id="outline-container-sec-2" class="outline-2">
 <h2 id="sec-2"><span class="section-number-2">2</span> Next steps</h2>
 <div class="outline-text-2" id="text-2">
-
-
-<ul>
-<li>interface to sparse SVD using SVDLIBC
-<ul>
-<li>as separate R package <code>sparseSVD</code> or so, required by <code>wordspace</code>
-</li>
-</ul>
-
-</li>
+<ul class="org-ul">
 <li>special case optimization in <code>subset.dsm()</code>: return input unchanged if no rows or columns are dropped (to avoid unnecessary duplication with recursive=TRUE)
 </li>
 <li>include pre-compiled large-corpus DSM for core vocabulary (e.g. from LargeDSM), e.g. basic English + words in included test sets
-<ul>
+<ul class="org-ul">
 <li>drop verb-noun triples from DESC to make some room
 </li>
 <li>should arrange for easy updates that automatically compile vocabulary from included data sets
 </li>
 </ul>
-
 </li>
 <li>add usage examples to all functions
-<ul>
+<ul class="org-ul">
 <li>distance and evaluation functions can be demonstrated with pre-compiled DSM
 </li>
 </ul>
-
 </li>
 <li>add further tests
 </li>
 </ul>
-
-
+</div>
 </div>
 
-</div>
-
-<div id="outline-container-3" class="outline-2">
-<h2 id="sec-3"><span class="section-number-2">3</span> Combining DSM objects after internal redesign</h2>
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3"><span class="section-number-2">3</span> Bug fixes and improvements</h2>
 <div class="outline-text-2" id="text-3">
+<ul class="org-ul">
+<li>handle zero rows more gracefully in <code>normalize.rows()</code>
+<ul class="org-ul">
+<li>perhaps leave untouched if row norm is below some <code>tol</code> parameter
+</li>
+<li>is normalization meaningful for Minkowski norm with \(p < 1\), which doesn't scale linearly in our generalization?
+</li>
+</ul>
+</li>
+<li>more efficient reading of triplet files
+<ul class="org-ul">
+<li><code>readr</code> package doesn't seem to help (faster, but even more memory overhead than scan)
+</li>
+<li>temporary triplet table requires at least 24 bytes / row, which cannot be avoided
+</li>
+<li>main issue is whether a copy of the table has to be made (e.g. because of reallocation while reading input file of unknown size)
+</li>
+<li>approach A: if input is file (rather than pipe), count lines first, then scan with <code>nmax</code> option; but doesn't seem to help much/systematically in some tests
+</li>
+<li>approach B: read input in chunks, then change dsm() constructor so it can work on the chunks and combine them as late as possible into the sparse matrix; it may be difficult to achieve substantial savings with this strategy
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
 
 
-<ul>
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4"><span class="section-number-2">4</span> Combining DSM objects after internal redesign</h2>
+<div class="outline-text-2" id="text-4">
+<ul class="org-ul">
 <li>rethink binding and merging
-<ul>
+<ul class="org-ul">
 <li><code>rbind</code> and <code>cbind</code> combine models for different targets with same features, or different features for same targets
 </li>
 <li>could be extended to allow for mismatches between columns (<code>rbind</code>) or rows (<code>cbind</code>); choose between including only common items or all items
@@ -303,7 +280,6 @@ for the JavaScript code below.
 <li><code>merge</code> is used to pool counts from multiple corpora for the same targets and features
 </li>
 </ul>
-
 </li>
 <li><code>rbind.dsm()</code> and <code>merge.dsm()</code> need to be updated and documented properly
 </li>
@@ -316,127 +292,101 @@ for the JavaScript code below.
 <li>efficient reimplementation of <code>rbind.dsm()</code> for sparse matrices (require all arguments to be sparse in normal form; use C code, work with triplet representation, or very clever code on <code>dgCMatrix</code> objects)
 </li>
 </ul>
-
-
+</div>
 </div>
 
-</div>
-
-<div id="outline-container-4" class="outline-2">
-<h2 id="sec-4"><span class="section-number-2">4</span> Non-negative matrices and projections</h2>
-<div class="outline-text-2" id="text-4">
-
-
-<ul>
+<div id="outline-container-sec-5" class="outline-2">
+<h2 id="sec-5"><span class="section-number-2">5</span> Non-negative matrices and projections</h2>
+<div class="outline-text-2" id="text-5">
+<ul class="org-ul">
 <li>Matrizen werden mit Attribut <code>non.negative</code> versehen; Frequenzmatrix M muss nonneg sein (wird von Konstruktor überprüft); S wird von <code>dsm.score()</code> markiert, falls sichergestellt ist, dass die Matrix keine negativen Elemente enthalten kann (<code>negative.ok=FALSE</code>)
 </li>
-<li>diverse Funktionen wie <code>dsm.score()</code>, <code>dsm.projection()</code>, <code>dist.matrix()</code>, &hellip;  erlauben bestimmte Optionen / Algorithmen nur für nonneg-Matrizen; diese werden am Attribut <code>non.negative</code> erkannt; wenn Attribut fehlt, wird die Eingabematrix geprüft; evtl. expliziter Override mit <code>non.negative=TRUE</code> (aber sinnvoll?)
+<li>diverse Funktionen wie <code>dsm.score()</code>, <code>dsm.projection()</code>, <code>dist.matrix()</code>, &#x2026;  erlauben bestimmte Optionen / Algorithmen nur für nonneg-Matrizen; diese werden am Attribut <code>non.negative</code> erkannt; wenn Attribut fehlt, wird die Eingabematrix geprüft; evtl. expliziter Override mit <code>non.negative=TRUE</code> (aber sinnvoll?)
 </li>
 <li>dafür C-Funktion, um Vektor/Matrix speichereffizient auf nonneg zu testen; in Methode <code>is.nonnegative()</code> einbinden, mit Methoden für numeric, matrix, und Matrix (csr oder triplet)
 </li>
 <li>Ausgabe von dsm.projection mit NMF oder anderem nonnoeg-Algorithmus wird ebenfalls mit Attribut <code>non.negative=TRUE</code> markiert
 </li>
 </ul>
-
-
+</div>
 </div>
 
-</div>
-
-<div id="outline-container-5" class="outline-2">
-<h2 id="sec-5"><span class="section-number-2">5</span> Support for evaluation experiments</h2>
-<div class="outline-text-2" id="text-5">
-
-
-<ul>
+<div id="outline-container-sec-6" class="outline-2">
+<h2 id="sec-6"><span class="section-number-2">6</span> Support for evaluation experiments</h2>
+<div class="outline-text-2" id="text-6">
+<ul class="org-ul">
 <li><code>as.dist.matrix(M, sim=FALSE)</code> to mark as distance matrix (so <code>nearest.neighbours</code>, <code>pair.distances</code>, etc. can be used)
-<ul>
+<ul class="org-ul">
 <li>methods for dense and sparse canonical matrix (perhaps as <code>as.dist.matrix.default</code>)
 </li>
 <li>method for <code>dist</code> objects, which converts them to full symmetric matrix
 </li>
 </ul>
-
 </li>
 <li><code>pair.distances()</code> should also work with M2 (= M) for cross-distance computations
-<ul>
+<ul class="org-ul">
 <li>in <code>pair.distances()</code>, adjust ranks by one only in non-cross-distance case (<code>M2=NULL</code>)
 </li>
 </ul>
-
 </li>
 <li><code>pair.distances()</code> should accept pre-computed <code>dist.matrix</code> (both distance and similarity scores, marked appropriately)
-<ul>
+<ul class="org-ul">
 <li>assumed to be cross-distance case if distance matrix is not marked symmetric
 </li>
 <li>can be used to safely read out association scores from "fake" distance matrix (marked with <code>as.dist.matrix</code>)
 </li>
 </ul>
-
 </li>
 <li>also see hand-written notes
 </li>
 </ul>
-
-
+</div>
 </div>
 
-</div>
-
-<div id="outline-container-6" class="outline-2">
-<h2 id="sec-6"><span class="section-number-2">6</span> Additional metrics</h2>
-<div class="outline-text-2" id="text-6">
-
-
-<ul>
+<div id="outline-container-sec-7" class="outline-2">
+<h2 id="sec-7"><span class="section-number-2">7</span> Additional metrics</h2>
+<div class="outline-text-2" id="text-7">
+<ul class="org-ul">
 <li>Dice and/or Jaccard coefficient (Lin 1998)
-<ul>
+<ul class="org-ul">
 <li>is there a meaningful formulation for non-negative vectors?
 </li>
 </ul>
-
 </li>
 <li>KL divergence and Jensen-Shannon metric (Endres &amp; Schindelin 2003) for non-negative vectors
-<ul>
+<ul class="org-ul">
 <li>input matrices have to be checked unless they're already marked
 </li>
-<li>KL divergence &ndash;&gt; skew divergence (Lee 2001)?
+<li>KL divergence &#x2013;&gt; skew divergence (Lee 2001)?
 </li>
-<li>JS metric &ndash;&gt; general Jensen-Shannon divergence with mix parameter \(\lambda\in (0,1)\)?
+<li>JS metric &#x2013;&gt; general Jensen-Shannon divergence with mix parameter \(\lambda\in (0,1)\)?
 </li>
 </ul>
-
 </li>
 <li>generalizations of vector norms/metrics that share aspects of Dice / KL?
 </li>
 </ul>
-
-
+</div>
 </div>
 
-</div>
-
-<div id="outline-container-7" class="outline-2">
-<h2 id="sec-7"><span class="section-number-2">7</span> New projection methods</h2>
-<div class="outline-text-2" id="text-7">
-
-
-<ul>
+<div id="outline-container-sec-8" class="outline-2">
+<h2 id="sec-8"><span class="section-number-2">8</span> New projection methods</h2>
+<div class="outline-text-2" id="text-8">
+<ul class="org-ul">
 <li>power scaling for <code>dsm.projection</code> (Caron 2001); needs built-in renormalization, I think, or keep total \(R^2\) same
 </li>
 <li>what is a sensible relative \(R^2\) for different <code>dsm.projection</code> methods? especially SVD without centering and non-orthogonal projections
 </li>
 <li>implement non-negative version of RI (increases correlations between dimensions adn resulting distortion)
-<ul>
+<ul class="org-ul">
 <li>what is the effect of distortion from non-orthogonality of dimensions?
 </li>
 <li>perhaps this might even be beneficial: is distortion likely to improve similarity of correlated targets?
 </li>
 </ul>
-
 </li>
 <li>guided random indexing?
-<ul>
+<ul class="org-ul">
 <li>generate random projections, then preserve the ones with high variance?
 </li>
 <li>will probably lead to stronger correlations between dimensions and resulting distortion effects (test this)
@@ -444,10 +394,9 @@ for the JavaScript code below.
 <li>need to experiment with various settings for random projection density, selection criterion, etc.
 </li>
 </ul>
-
 </li>
 <li>implement <code>nndsvd()</code> according to Boutsidis &amp; Gallopoulos (2008)
-<ul>
+<ul class="org-ul">
 <li>transforms given SVD into an approximate non-negative decomposition
 </li>
 <li>can this be interpreted as a (non-orthogonal) projection? what are the basis vectors?
@@ -457,19 +406,17 @@ for the JavaScript code below.
 <li>requires thorough validation test to determine approximation quality and usefulness of this decomposition
 </li>
 </ul>
-
 </li>
 <li><code>dsm.projection()</code> could have an Option <code>non.negative=TRUE</code>
-<ul>
+<ul class="org-ul">
 <li>only valid if input matrix is non-negative
 </li>
 <li>guarantees that projection is also non-negative (by using a non-negative basis with RI, and NNDSVD with SVD)
 </li>
 </ul>
-
 </li>
 <li>implement NMF (multiplicative updates, cf. Python code)
-<ul>
+<ul class="org-ul">
 <li>key element: C/C++ function to compute <code>crossprod()</code> only for nonzero entries of a given sparse matrix
 </li>
 <li>possibly modified version of this function in order to compute approximation error of sparse matrix decomposition
@@ -478,18 +425,16 @@ for the JavaScript code below.
 </li>
 <li>alternatively, carry out multiple runs with random initializations and select the best approximation
 </li>
-<li>should also experiment with more sophisticated variants of NMF that include regularization terms (&ndash;&gt; similar to sparse priors)
-<ul>
+<li>should also experiment with more sophisticated variants of NMF that include regularization terms (&#x2013;&gt; similar to sparse priors)
+<ul class="org-ul">
 <li>these might provide a fairly general and flexible projection framework
 </li>
 </ul>
-
 </li>
 </ul>
-
 </li>
 <li>experiment with LDA and similar topic models
-<ul>
+<ul class="org-ul">
 <li>use implementation in <code>topicmodels</code> package
 </li>
 <li>can this deal with arbitrary non-negative scores, or only (binary?) frequency counts?
@@ -499,19 +444,17 @@ for the JavaScript code below.
 <li>some authors claim that NMF is equivalent to probabilistic LSA, and it may be equivalent to LDA with suitable regularization
 </li>
 </ul>
-
 </li>
 <li>neural embeddings and sparseness
-<ul>
+<ul class="org-ul">
 <li>learned neural embeddings (esp. Mikolov's <i>word2vec</i>) seem to work extremely well (Baroni, Dinu &amp; Kruszewski 2014)
 </li>
 <li>should train word2vec embeddings on various corpora and include as pre-compiled models (Web downloads)
 </li>
 </ul>
-
 </li>
 <li>preliminary comparison suggests that learned embeddings are more homogeneous
-<ul>
+<ul class="org-ul">
 <li>column norms of reduced matrix are nearly constant for <i>word2vec</i>, whereas first SVD dimensions capture a large part of the variance
 </li>
 <li>similarly for Senne embeddings, though with only 50 dims and different training regime, they don't work very well in standard tasks
@@ -519,47 +462,35 @@ for the JavaScript code below.
 <li>can we generate homogenous embeddings from SVD projection?
 </li>
 </ul>
-
 </li>
 <li><i>word2vec</i>-like model trained on co-occurrence matrix?
-<ul>
+<ul class="org-ul">
 <li>what would be an appropriate goal criterion?
 </li>
 </ul>
-
 </li>
 </ul>
-
-
+</div>
 </div>
 
-</div>
-
-<div id="outline-container-8" class="outline-2">
-<h2 id="sec-8"><span class="section-number-2">8</span> Analysis support</h2>
-<div class="outline-text-2" id="text-8">
-
-<ul>
+<div id="outline-container-sec-9" class="outline-2">
+<h2 id="sec-9"><span class="section-number-2">9</span> Analysis support</h2>
+<div class="outline-text-2" id="text-9">
+<ul class="org-ul">
 <li>implement Chinese Whispers clustering algorithm
-<ul>
+<ul class="org-ul">
 <li>try different versions: batch update with R code, single updates implemented in C/C++
 </li>
 </ul>
-
 </li>
 </ul>
-
-
+</div>
 </div>
 
-</div>
-
-<div id="outline-container-9" class="outline-2">
-<h2 id="sec-9"><span class="section-number-2">9</span> Cleanup and documentation</h2>
-<div class="outline-text-2" id="text-9">
-
-
-<ul>
+<div id="outline-container-sec-10" class="outline-2">
+<h2 id="sec-10"><span class="section-number-2">10</span> Cleanup and documentation</h2>
+<div class="outline-text-2" id="text-10">
+<ul class="org-ul">
 <li>write complete (rough) documentation for basic functions
 </li>
 <li>include more small data sets for usage examples
@@ -567,31 +498,25 @@ for the JavaScript code below.
 <li>add usage examples to all functions
 </li>
 </ul>
-
-
+</div>
 </div>
 
-</div>
-
-<div id="outline-container-10" class="outline-2">
-<h2 id="sec-10"><span class="section-number-2">10</span> Optimization</h2>
-<div class="outline-text-2" id="text-10">
-
-
-<ul>
+<div id="outline-container-sec-11" class="outline-2">
+<h2 id="sec-11"><span class="section-number-2">11</span> Optimization</h2>
+<div class="outline-text-2" id="text-11">
+<ul class="org-ul">
 <li>investigate memory overhead shown by benchmarks
-<ul>
+<ul class="org-ul">
 <li>cosine distance for dense (and possibly also sparse) matrix; very substantial overhead in "SVD-100 cosine distances" benchmark
 </li>
 <li>dense dist.matrix() compared to dist()
 </li>
 </ul>
-
 </li>
 <li><code>dsm.projection()</code> could have option <code>renormalized</code> that performs row normalization in-place (with additional arguments passed on to rowNorms())
 </li>
 <li>implement optimized file I/O functions in Rcpp
-<ul>
+<ul class="org-ul">
 <li><a href="https://github.com/romainfrancois/fastread">https://github.com/romainfrancois/fastread</a> shows how to use connections from Rcpp
 </li>
 <li>e.g. two-pass <code>read.dsm.triplet()</code>, memory-friendly <code>write.matrix()</code>, etc.
@@ -599,51 +524,48 @@ for the JavaScript code below.
 <li>perhaps I/O code for (co-occurrence) frequency tables and other forms of corpus data should be part of a separate package
 </li>
 </ul>
-
 </li>
 </ul>
-
-
+</div>
 </div>
 
-</div>
-
-<div id="outline-container-11" class="outline-2">
-<h2 id="sec-11"><span class="section-number-2">11</span> Miscellaneous</h2>
-<div class="outline-text-2" id="text-11">
-
-
-<ul>
+<div id="outline-container-sec-12" class="outline-2">
+<h2 id="sec-12"><span class="section-number-2">12</span> Miscellaneous</h2>
+<div class="outline-text-2" id="text-12">
+<ul class="org-ul">
 <li>do we need to apply <code>normalizePath()</code> to input/output filenames?
 </li>
 <li>new methods for <code>as.dsm()</code>
-<ul>
+<ul class="org-ul">
 <li>possibly also convenience methods for <code>matrix</code> and <code>dgCMatrix</code>, which would just be thin wrappers around <code>dsm()</code>
 </li>
 </ul>
-
 </li>
 <li>include basic Shiny GUIs as functions in package?
-<ul>
+<ul class="org-ul">
 <li>so far: nearest neighbours explorer
 </li>
 <li>should try to load shiny package and abort with error if not installed
 </li>
 </ul>
-
+</li>
+<li>implement <code>write.dsm.matrix()</code> for various output formats for dense/sparse matrices?
+<ul class="org-ul">
+<li>can't be called <code>write.matrix()</code>, which already exists in MASS (but doesn't look very optimal)
+</li>
+<li>should have options to save row/column names and dense/sparse matrices in various text formats
 </li>
 </ul>
-
+</li>
+</ul>
 </div>
 </div>
 </div>
-
-<div id="postamble">
-<p class="date">Date: 2014-09-16T01:26+0530</p>
+<div id="postamble" class="status">
 <p class="author">Author: Stefan Evert</p>
-<p class="creator"><a href="http://orgmode.org">Org</a> version 7.9.3f with <a href="http://www.gnu.org/software/emacs/">Emacs</a> version 24</p>
-<a href="http://validator.w3.org/check?uri=referer">Validate XHTML 1.0</a>
-
+<p class="date">Created: 2016-04-01 Fri 15:04</p>
+<p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.5.1 (<a href="http://orgmode.org">Org</a> mode 8.2.10)</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
 </html>

@@ -3,7 +3,7 @@
     method <- "maximum"
     p <- 2
   }
-  if (method == "minkowski" && (p < .01 || !is.finite(p))) stop("Minkowski p-norm con only be computed for .01 <= p < Inf")
+  if (method == "minkowski" && (p < 0 || !is.finite(p))) stop("Minkowski p-norm con only be computed for 0 <= p < Inf")
   
   ## internal codes for selected norm (must match C code in <row_norms.c>)
   code <- switch(method, euclidean=0, maximum=1, manhattan=2, minkowski=3)

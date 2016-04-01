@@ -23,8 +23,8 @@ void mk_symmetric_matrix(NumericMatrix x) {
 void check_metric(int metric_code, double p1) {
   if (metric_code < 0 || metric_code > 4)
     stop("internal error -- invalid metric code");
-  if (metric_code == 3 && (!R_FINITE(p1) || p1 < .01))
-    stop("internal error -- Minkowski p-parameter out of range [.01, Inf)");  
+  if (metric_code == 3 && (!R_FINITE(p1) || p1 < 0.0))
+    stop("internal error -- Minkowski p-parameter out of range [0, Inf)");  
 }
 
 // [[Rcpp::export]]
@@ -59,7 +59,10 @@ NumericMatrix CPP_col_dist_dense(NumericMatrix x, NumericMatrix y, int metric_co
         break;
       case 3:
         accum = sum(pow(abs(vx - vy), param1));
-        dist(col1, col2) = pow(accum, 1.0 / param1);
+        if (param1 > 1.0)
+          dist(col1, col2) = pow(accum, 1.0 / param1);
+        else
+          dist(col1, col2) = accum;
         break;
       case 4:
         tmp = abs(vx) + abs(vy); // denominator |x_i| + |y_i|
@@ -157,7 +160,10 @@ NumericMatrix CPP_col_dist_sparse(int nc1, IntegerVector xp, IntegerVector xrow,
         dist(col1, col2) = accum;
         break;
       case 3:
-        dist(col1, col2) = pow(accum, 1.0 / param1);
+        if (param1 > 1.0)
+          dist(col1, col2) = pow(accum, 1.0 / param1);
+        else
+          dist(col1, col2) = accum;
         break;
       }
 

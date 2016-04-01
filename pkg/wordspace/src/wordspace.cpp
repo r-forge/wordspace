@@ -130,8 +130,8 @@ void mk_symmetric_matrix(NumericMatrix x) {
 void check_metric(int metric_code, double p1) {
   if (metric_code < 0 || metric_code > 4)
     stop("internal error -- invalid metric code");
-  if (metric_code == 3 && (!R_FINITE(p1) || p1 < .01))
-    stop("internal error -- Minkowski p-parameter out of range [.01, Inf)");  
+  if (metric_code == 3 && (!R_FINITE(p1) || p1 < 0.0))
+    stop("internal error -- Minkowski p-parameter out of range [0, Inf)");  
 }
 
 // [[Rcpp::export]]
@@ -166,7 +166,10 @@ NumericMatrix CPP_col_dist_dense(NumericMatrix x, NumericMatrix y, int metric_co
         break;
       case 3:
         accum = sum(pow(abs(vx - vy), param1));
-        dist(col1, col2) = pow(accum, 1.0 / param1);
+        if (param1 > 1.0)
+          dist(col1, col2) = pow(accum, 1.0 / param1);
+        else
+          dist(col1, col2) = accum;
         break;
       case 4:
         tmp = abs(vx) + abs(vy); // denominator |x_i| + |y_i|
@@ -264,7 +267,10 @@ NumericMatrix CPP_col_dist_sparse(int nc1, IntegerVector xp, IntegerVector xrow,
         dist(col1, col2) = accum;
         break;
       case 3:
-        dist(col1, col2) = pow(accum, 1.0 / param1);
+        if (param1 > 1.0)
+          dist(col1, col2) = pow(accum, 1.0 / param1);
+        else
+          dist(col1, col2) = accum;
         break;
       }
 
@@ -395,8 +401,8 @@ NumericMatrix CPP_random_indexing_sparse(int nr, int nc, IntegerVector p, Intege
 void check_norm(int norm_code, double p) {
   if (norm_code < 0 || norm_code > 3)
     stop("internal error -- invalid norm code");
-  if (norm_code == 3 && (!R_FINITE(p) || p < .01))
-    stop("internal error -- Minkowski p-parameter out of range [.01, Inf)");  
+  if (norm_code == 3 && (!R_FINITE(p) || p < 0.0))
+    stop("internal error -- Minkowski p-parameter out of range [0, Inf)");  
 }
 
 // [[Rcpp::export]]
@@ -420,8 +426,8 @@ NumericVector CPP_row_norms_dense(NumericMatrix x, int norm_code, double p_norm 
     }
   }
   
-  if (norm_code == 0)       norms = sqrt(norms);
-  else if (norm_code == 3)  norms = pow(norms, 1.0 / p_norm);
+  if      (norm_code == 0)                 norms = sqrt(norms);
+  else if (norm_code == 3 && p_norm > 1.0) norms = pow(norms, 1.0 / p_norm);
   /* no adjustment needed for Maximum and Manhattan norms */
   
   return norms;
@@ -448,8 +454,8 @@ NumericVector CPP_row_norms_sparse(int nr, int nc, IntegerVector p, IntegerVecto
     }
   }
 
-  if (norm_code == 0)       norms = sqrt(norms);
-  else if (norm_code == 3)  norms = pow(norms, 1.0 / p_norm);
+  if      (norm_code == 0)                 norms = sqrt(norms);
+  else if (norm_code == 3 && p_norm > 1.0) norms = pow(norms, 1.0 / p_norm);
   /* no adjustment needed for Maximum and Manhattan norms */
   
   return norms;
@@ -473,8 +479,8 @@ NumericVector CPP_col_norms_dense(NumericMatrix x, int norm_code, double p_norm 
     else if (norm_code == 3) norms[col] = sum(pow(abs(v), p_norm));
   }
 
-  if (norm_code == 0)       norms = sqrt(norms);
-  else if (norm_code == 3)  norms = pow(norms, 1.0 / p_norm);
+  if      (norm_code == 0)                 norms = sqrt(norms);
+  else if (norm_code == 3 && p_norm > 1.0) norms = pow(norms, 1.0 / p_norm);
   /* no adjustment needed for Maximum and Manhattan norms */
   
   return norms;
@@ -499,9 +505,9 @@ NumericVector CPP_col_norms_sparse(int nr, int nc, IntegerVector p, IntegerVecto
       else if (norm_code == 2) accum += fabs(_x[i]);
       else if (norm_code == 3) accum += pow(fabs(_x[i]), p_norm);
     }
-    if      (norm_code == 0) _norms[col] = sqrt(accum);
-    else if (norm_code == 3) _norms[col] = pow(accum, 1.0 / p_norm);
-    else /* other norms */   _norms[col] = accum;
+    if      (norm_code == 0)                 _norms[col] = sqrt(accum);
+    else if (norm_code == 3 && p_norm > 1.0) _norms[col] = pow(accum, 1.0 / p_norm);
+    else    /* other norms */                _norms[col] = accum;
   }
 
   return norms;

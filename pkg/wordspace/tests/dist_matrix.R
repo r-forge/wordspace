@@ -4,7 +4,7 @@
 library(wordspace)
 library(Matrix)
 
-matrix.equal <- function(x, y, name="matrix comparison", tol=1e-12, verbose=TRUE) {
+matrix.equal <- function(x, y, name="matrix comparison", tol=1e-10, verbose=TRUE) {
   if (nrow(x) == nrow(y) && ncol(x) == ncol(y)) {
     max.diff <- max(abs(x - y))
     if (max.diff < tol) {
@@ -67,10 +67,16 @@ stopifnot(all(diag(M2.linf.ws) == 0))
 
 
 ## Minkowski distance
-for (p in c(.25, .5, 1, 1.5, 2, 2.5, 3, 5, 10)) {
+for (p in c(.1, .25, .5, 1, 1.5, 2, 2.5, 3, 5, 10)) {
   M1.lp.ws <- dist.matrix(M1, method="minkowski", p=p)
   M2.lp.ws <- dist.matrix(M2, method="minkowski", p=p)
 
+  if (p < 1) {
+    ## dist.matrix() uses non-standard definition of Minkowski distance for p < 1
+    M1.lp.ws <- M1.lp.ws ^ (1/p)
+    M2.lp.ws <- M2.lp.ws ^ (1/p)
+  }
+  
   M1.lp.R <- dist(M1, method="minkowski", p=p) 
   M2.lp.R <- dist(M2, method="minkowski", p=p) # converts to dense matrix
 

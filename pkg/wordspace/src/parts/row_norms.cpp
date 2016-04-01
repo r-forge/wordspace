@@ -12,8 +12,8 @@
 void check_norm(int norm_code, double p) {
   if (norm_code < 0 || norm_code > 3)
     stop("internal error -- invalid norm code");
-  if (norm_code == 3 && (!R_FINITE(p) || p < .01))
-    stop("internal error -- Minkowski p-parameter out of range [.01, Inf)");  
+  if (norm_code == 3 && (!R_FINITE(p) || p < 0.0))
+    stop("internal error -- Minkowski p-parameter out of range [0, Inf)");  
 }
 
 // [[Rcpp::export]]
@@ -37,8 +37,8 @@ NumericVector CPP_row_norms_dense(NumericMatrix x, int norm_code, double p_norm 
     }
   }
   
-  if (norm_code == 0)       norms = sqrt(norms);
-  else if (norm_code == 3)  norms = pow(norms, 1.0 / p_norm);
+  if      (norm_code == 0)                 norms = sqrt(norms);
+  else if (norm_code == 3 && p_norm > 1.0) norms = pow(norms, 1.0 / p_norm);
   /* no adjustment needed for Maximum and Manhattan norms */
   
   return norms;
@@ -65,8 +65,8 @@ NumericVector CPP_row_norms_sparse(int nr, int nc, IntegerVector p, IntegerVecto
     }
   }
 
-  if (norm_code == 0)       norms = sqrt(norms);
-  else if (norm_code == 3)  norms = pow(norms, 1.0 / p_norm);
+  if      (norm_code == 0)                 norms = sqrt(norms);
+  else if (norm_code == 3 && p_norm > 1.0) norms = pow(norms, 1.0 / p_norm);
   /* no adjustment needed for Maximum and Manhattan norms */
   
   return norms;
@@ -90,8 +90,8 @@ NumericVector CPP_col_norms_dense(NumericMatrix x, int norm_code, double p_norm 
     else if (norm_code == 3) norms[col] = sum(pow(abs(v), p_norm));
   }
 
-  if (norm_code == 0)       norms = sqrt(norms);
-  else if (norm_code == 3)  norms = pow(norms, 1.0 / p_norm);
+  if      (norm_code == 0)                 norms = sqrt(norms);
+  else if (norm_code == 3 && p_norm > 1.0) norms = pow(norms, 1.0 / p_norm);
   /* no adjustment needed for Maximum and Manhattan norms */
   
   return norms;
@@ -116,9 +116,9 @@ NumericVector CPP_col_norms_sparse(int nr, int nc, IntegerVector p, IntegerVecto
       else if (norm_code == 2) accum += fabs(_x[i]);
       else if (norm_code == 3) accum += pow(fabs(_x[i]), p_norm);
     }
-    if      (norm_code == 0) _norms[col] = sqrt(accum);
-    else if (norm_code == 3) _norms[col] = pow(accum, 1.0 / p_norm);
-    else /* other norms */   _norms[col] = accum;
+    if      (norm_code == 0)                 _norms[col] = sqrt(accum);
+    else if (norm_code == 3 && p_norm > 1.0) _norms[col] = pow(accum, 1.0 / p_norm);
+    else    /* other norms */                _norms[col] = accum;
   }
 
   return norms;
