@@ -1,4 +1,49 @@
 ------------------------------------------------------------------------
+Retina MacBook Pro 10,1 (2012), Intel Core i7 2.6 GHz (4 cores + hyperthreading), 6MB L2 Cache, GeForce GT 650M
+Mac OS X 10.10.5, R 3.2.4, 64-bit, vecLib BLAS, no OpenMP support, wordspace v0.1-18 + sparsesvd
+                                          time      MOPS CPUTime     MB
+D sqrt(t-score) R                        3.846     90.13   3.128 1511.3
+D sqrt(t-score) wordspace                0.725    478.12   0.619    0.1
+S sqrt(t-score) wordspace                0.129   2687.13   0.111   29.4
+D L2-norm rows R                         0.350    283.00   0.253  377.9
+D L2-norm columns R                      0.241    411.00   0.148  377.9
+S L2-norm rows R                         1.116     88.75   0.952  481.9
+S L2-norm columns R                      0.970    102.11   0.864  481.9
+D L2-norm rows wordspace                 0.072   1375.69   0.072    0.0
+D L2-norm columns wordspace              0.049   2021.43   0.049    0.1
+S L2-norm rows wordspace                 0.007  14150.00   0.006    0.0
+S L2-norm columns wordspace              0.005  19810.00   0.004    0.0
+D normalize R                            0.670    221.74   0.443  377.9
+S normalize R                            1.243    119.52   1.081  583.5
+D normalize wordspace                    0.369    402.62   0.258    0.2
+S normalize wordspace                    0.024   6190.21   0.020    0.1
+D L1 distances R                         6.872    348.37   6.847    0.0
+D L1 distances wordspace                 0.865   2767.63   0.846   62.3
+S L1 distances wordspace                 0.520   4603.85   0.514    5.3
+D L3 distances R                        14.556    219.29  14.523    0.0
+D L3 distances wordspace                 9.986    319.65   9.931   62.2
+S L3 distances wordspace                 3.870    824.81   3.853    5.2
+D cosine distances R                     0.051  31454.13   0.202   33.0
+S cosine distances R                     0.171   9381.05   0.150   64.5
+D cosine distances wordspace             0.037  43355.69   0.188    7.4
+S cosine distances wordspace             0.072  22280.01   0.070   10.1
+SVD-100 L1 distances R                   3.387   1085.80   3.322    0.0
+SVD-100 L1 distances wordspace           2.206   1667.09   2.091  194.7
+SVD-100 cosine distances R               0.567   4369.05   0.779  378.3
+SVD-100 cosine distances wordspace       1.333   1858.40   0.875 1122.7
+D 20 nearest neighbours wordspace        1.446  34251.33   5.737  267.3
+S 20 nearest neighbours wordspace        1.513  32734.59   1.463  261.2
+SVD-100 20 nearest neighbours wordspace  0.485   1036.35   0.506  229.4
+D SVD to 100 dim. R                      8.956  40196.54  31.006  459.7
+D SVD to 100 dim. wordspace              9.385  38359.10  33.328  536.1
+D rSVD to 100 dim. wordspace             1.678 214541.24   6.282  278.3
+S SVD to 100 dim. wordspace              1.662 216606.62   1.647   23.8
+S rSVD to 100 dim. wordspace             4.235  85005.95   4.846  254.3
+D RI to 2000 dim. wordspace              3.122   1589.98  19.491  263.2
+S RI to 2000 dim. wordspace              3.302   1503.30   3.265    0.1
+
+
+------------------------------------------------------------------------
 Retina MacBook Pro 10,1 (2012), Intel Core i7 2.6 GHz (4 cores + hyperthreading), 6MB L2 Cache, GeForce 8600M GT
 Mac OS X 10.8.5, R 3.1.0, 64-bit, vecLib BLAS, no OpenMP support, wordspace v0.1-5
                                           time      MOPS CPUTime     MB

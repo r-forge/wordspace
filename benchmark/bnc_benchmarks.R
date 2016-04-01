@@ -213,10 +213,19 @@ ops <- ops + nr.svd * svd.dim # U %*% diag(d) = rescaling of columns
 
 L <- append.list(L, benchmark( svd100.dense.R <<- svd.proj(Dense.svd, 100), "D SVD to 100 dim. R", ops ))
 L <- append.list(L, benchmark( svd100.dense <<- dsm.projection(Dense.svd, n=100, method="svd", verbose=FALSE), "D SVD to 100 dim. wordspace", ops ))
+set.seed(42) # for reproducible rSVD
 L <- append.list(L, benchmark( rsvd100.dense <<- dsm.projection(Dense.svd, n=100, method="rsvd", oversampling=4, verbose=TRUE), "D rSVD to 100 dim. wordspace", ops ))
+L <- append.list(L, benchmark( svd100.sparse <<- dsm.projection(Sparse.svd, n=100, method="svd", verbose=FALSE), "S SVD to 100 dim. wordspace", ops ))
+set.seed(42) # for reproducible rSVD
 L <- append.list(L, benchmark( rsvd100.sparse <<- dsm.projection(Sparse.svd, n=100, method="rsvd", oversampling=4, verbose=TRUE), "S rSVD to 100 dim. wordspace", ops ))
 
 matrix.equal(svd100.dense.R, svd100.dense)
+matrix.equal(svd100.dense.R, svd100.sparse, ignore.sign=TRUE, tol=1e-6) # some numerical differences expected
+matrix.equal(rsvd100.dense, rsvd100.sparse, ignore.sign=TRUE, tol=1e-6) # dense and sparse rSVD reasonably close with same random matrices
+if (FALSE) {
+  ## randomized SVD results in some fairly big differences from "correct" solution 
+  matrix.equal(svd100.dense.R, rsvd100.dense, ignore.sign=TRUE)
+}
 
 
 ## dimensionality reduction with random indexing
