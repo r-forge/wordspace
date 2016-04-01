@@ -30,9 +30,16 @@ vector.equal <- function(x, y, name="vector comparison", tol=1e-12, verbose=TRUE
   }
 }
 
-matrix.equal <- function(x, y, name="matrix comparison", tol=1e-12, verbose=TRUE) {
+matrix.equal <- function(x, y, name="matrix comparison", tol=1e-12, ignore.sign=FALSE, verbose=TRUE) {
   if (nrow(x) == nrow(y) && ncol(x) == ncol(y)) {
-    max.diff <- max(abs(x - y))
+    if (ignore.sign) {
+      ## sign of columns is arbitrary in SVD projection
+      max.diff.col.1 <- apply(abs(x - y), 2, max) # max diff in each column (same sign)
+      max.diff.col.2 <- apply(abs(x + y), 2, max) # max diff in each column (opposite sign)
+      max.diff <- max(pmin(max.diff.col.1, max.diff.col.2)) # pick smaller diff for each col, then take maximum
+    } else {
+      max.diff <- max(abs(x - y))
+    }
     if (max.diff < tol) {
       invisible(TRUE)
     } else {
