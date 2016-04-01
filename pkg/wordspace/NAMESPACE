@@ -1,4 +1,6 @@
 import(Matrix)
+importFrom(sparsesvd, sparsesvd)
+importFrom(readr, read_delim, locale)
 importFrom(Rcpp, evalCpp)
 importFrom(MASS, sammon, isoMDS)
 importFrom(cluster, pam)

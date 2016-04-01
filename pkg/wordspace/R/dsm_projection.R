@@ -1,4 +1,4 @@
-dsm.projection <- function (model, method=c("svd", "rsvd", "asvd", "ri", "ri+svd"), n=NA, oversampling=NA, q=2, rate=.01, with.basis=FALSE, verbose=FALSE) {
+dsm.projection <- function (model, n, method=c("svd", "rsvd", "asvd", "ri", "ri+svd"), oversampling=NA, q=2, rate=.01, with.basis=FALSE, verbose=FALSE) {
   method <- match.arg(method)
   M <- find.canonical.matrix(model)
   info <- dsm.is.canonical(M) # to find out whether M is sparse or dense
@@ -16,24 +16,32 @@ dsm.projection <- function (model, method=c("svd", "rsvd", "asvd", "ri", "ri+svd
   if (is.na(oversampling)) {
     oversampling <- switch(method, svd=1, rsvd=2, asvd=10, ri=1, "ri+svd"=20)
   }
-  if (with.basis && method %in% c("ri", "ri+svd")) stop("with.basis=TRUE is not available for RI-based models")
-  
+  if (with.basis && method %in% c("ri", "ri+svd")) stop("with.basis=TRUE is not supported for RI-based models")
+
+  B <- NULL
+  R2 <- NULL
   if (method == "svd") {
     ## --- standard SVD algorithm (on dense matrix) ---
 
     if (verbose) cat(sprintf("SVD reduction to %d dimensions:\n", n))
     if (verbose) cat(" - SVD decomposition\n")
-    SVD <- svd(M, nu=n, nv=(if (with.basis) n else 0)) # we don't need right singular vectors for the dimensionality reduction
+    if (info$sparse) {
+      SVD <- sparsesvd(M, rank=n) # use SVDLIBC algorithm for truncated SVD of sparse matrix
+      if (ncol(SVD$u) < n) {      # in case poorly conditioned singular components have been removed
+        if (verbose) cat(sprintf(" - %d poorly conditioned singular components have been dropped\n", n - ncol(SVD$u)))
+        n <- ncol(SVD$u)
+      }
+    } else {
+      SVD <- svd(M, nu=n, nv=(if (with.basis) n else 0)) # we don't need right singular vectors for the dimensionality reduction
+    }
     if (verbose) cat(" - composing final matrix\n")
-    S <- SVD$u %*% diag(SVD$d[1:n], n, n) # dimensionality-reduced matrix
+    S <- scaleMargins(SVD$u, cols=SVD$d[1:n]) # dimensionality-reduced matrix
     if (with.basis) B <- SVD$v
-    R2 <- SVD$d[1:n] * SVD$d[1:n] / sum(SVD$d * SVD$d) # proportion of variance "explained" by SVD dimensions
+    R2 <- SVD$d[1:n]^2 / norm(M, "F")^2 # proportion of "variance" captured by SVD dimensions
     rm(SVD)
 
-    ## *** TODO: use SVDLIBC for efficient sparse SVD if available ***
-    
   } else if (method == "asvd") {
-    ## --- approximated SVD based on random sample of rows ---
+    ## --- approximated SVD based on random sample of rows (DEPRECATED) ---
 
     sub.size <- min(n * oversampling, nR)
     if (verbose) cat(sprintf("Approximate SVD reduction to %d dimensions, based on %d rows:\n", n, sub.size))
@@ -46,27 +54,26 @@ dsm.projection <- function (model, method=c("svd", "rsvd", "asvd", "ri", "ri+svd
     if (with.basis) B <- SVD$v
     rm(SVD)
     S <- as.matrix(S) # make sure result is an ordinary dense matrix (for efficient further processing)
-    R2 <- cumsum(colSums(S*S)) / norm(M, "F")^2 # this should be the proportion of "explained" variance
+    R2 <- colNorms(M, "euclidean")^2 / norm(M, "F")^2 # this should be the proportion of explained "variance"
 
   } else if (method == "rsvd") {
+    ## --- randomized SVD according to Halko, Martinsson & Tropp (2009, p. 9) ---
 
-    ## randomized SVD according to Halko, Martinsson & Tropp (2009, p. 9) 
-    ##  - preliminary testing suggests there is no substantial difference between the original and transposed rSVD algorithm
-    ##  - so we currently always use the original versions
+    ## preliminary testing suggests there is no substantial difference between the original and transposed rSVD algorith, so we currently always use the original version
     SVD <- rsvd(M, n=n, q=q, oversampling=oversampling, transpose=FALSE, verbose=verbose)
 
     S <- scaleMargins(SVD$u, cols=SVD$d)
-    ## -- still necessary? --
+    ## TODO: -- is this still necessary? --
     ## S <- as.matrix(S) # make sure result is an ordinary dense matrix
     if (with.basis) B <- SVD$v
-    R2 <- cumsum(SVD$d^2) / norm(M, "F")^2
+    R2 <- SVD$d^2 / norm(M, "F")^2
     rm(SVD)
 
   } else if (method %in% c("ri", "ri+svd")) {
     ## --- straightforward random indexing (with specified fill rate), optionally followed by rSVD ---
     if (rate < 0 || rate > 1) stop("RI rate= must be between 0 and 1")
     
-    ## *** TODO: check references on statistical guarantees, appropriate fill rates, etc. ***
+    ## TODO: -- check references on statistical guarantees, appropriate fill rates, etc.--
     if (method == "ri+svd") {
       nRI <- n * oversampling       # number of intermediate random dimensions
       nRI <- max(2*n, min(nRI, floor(nC / 2)))
@@ -99,7 +106,7 @@ dsm.projection <- function (model, method=c("svd", "rsvd", "asvd", "ri", "ri+svd
     if (method == "ri+svd") {
       S <- dsm.projection(S, "svd", n, verbose=verbose, with.basis=FALSE) # use plain SVD since matrix is already dense
     }
-    R2 <- norm(S, "F")^2 / norm(M, "F")^2
+    R2 <- NULL # partial R2 not accurate for non-orthogonal projection
    
   } else {
     stop("dimensionality reduction method '", method, "' has not been implemented yet")
@@ -114,6 +121,6 @@ dsm.projection <- function (model, method=c("svd", "rsvd", "asvd", "ri", "ri+svd
     ## colnames(B) <- colnames(S)
     attr(S, "basis") <- B
   }
-  attr(S, "R2") <- R2
+  if (!is.null(R2)) attr(S, "R2") <- R2
   return(S)
- }
+}

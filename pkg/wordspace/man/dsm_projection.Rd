@@ -12,7 +12,7 @@
 }
 \usage{
 
-dsm.projection(model, method = c("svd", "rsvd", "asvd", "ri", "ri+svd"), n = NA,
+dsm.projection(model, n, method = c("svd", "rsvd", "asvd", "ri", "ri+svd"),
                oversampling = NA, q = 2, rate = .01, with.basis = FALSE, verbose = FALSE)
 
 }
@@ -27,7 +27,7 @@ dsm.projection(model, method = c("svd", "rsvd", "asvd", "ri", "ri+svd"), n = NA,
   }
   
   \item{n}{
-    an integer specifying the number of target dimensions.  If unspecified, the maximal number of latent dimensions is used (i.e. the minimum of the number of rows and columns of the DSM matrix)
+    an integer specifying the number of target dimensions.  Use \code{n=NA} to generate as many latent dimensions as possible (i.e. the minimum of the number of rows and columns of the DSM matrix).
   }
 
   \item{oversampling}{
@@ -55,35 +55,39 @@ dsm.projection(model, method = c("svd", "rsvd", "asvd", "ri", "ri+svd"), n = NA,
   The following dimensionality reduction algorithms can be selected with the \code{method} argument:
   \describe{
 
-    \item{svd}{singular value decomposition (SVD).  Note that special efficient algorithms for sparse matrices are not implemented yet.  If the DSM has been scored with \code{scale="center"}, this method is equivalent to principal component analysis (PCA).}
+    \item{svd}{singular value decomposition (SVD), using the efficient SVDLIBC algorithm (Berry 1992) from package \bold{sparsesvd} if the input is a sparse matrix.  If the DSM has been scored with \code{scale="center"}, this method is equivalent to principal component analysis (PCA).}
 
     \item{rsvd}{randomized SVD (Halko \emph{et al.} 2009, p. 9) based on a factorization of rank \code{oversampling * n} with \code{q} power iterations.}
 
-    \item{asvd}{approximate SVD, which determines latent dimensions from a random sample of matrix rows including  \code{oversampling * n} data points.}
+    \item{asvd}{approximate SVD, which determines latent dimensions from a random sample of matrix rows including  \code{oversampling * n} data points.  This heuristic algorithm is highly inaccurate and has been \bold{deprecated}.}
 
     \item{ri}{random indexing (RI) -- \bold{TODO:} describe RI algorithm in detail}
 
     \item{ri+svd}{RI to \code{oversampling * n} dimensions, followed by SVD to pick the final \code{n} dimensions -- \bold{TODO:} describe algorithm in detail}
 
-  }
-  
+  }  
 }
 
 \value{
 
-  A numeric matrix with \code{n} columns (latent dimensions) and the same number of rows as the original DSM.  If \code{with.projection=TRUE}, an orthogonal basis \eqn{B} of the latent subspace is returned as attribute \code{"basis"} of the return value.  \eqn{B} is column-orthogonal, hence \eqn{B^T} projects into latent dimensions and \eqn{B B^T} is an orthogonal projection in the original coordinate system.
+  A numeric matrix with \code{n} columns (latent dimensions) and the same number of rows as the original DSM.  Some SVD-based algorithms may discard poorly conditioned singular values, returning fewer than \code{n} columns.
 
+  If \code{with.basis=TRUE} and an orthogonal projection is used, the corresponding orthogonal basis \eqn{B} of the latent subspace is returned as an attribute \code{"basis"}.  \eqn{B} is column-orthogonal, hence \eqn{B^T} projects into latent coordinates and \eqn{B B^T} is an orthogonal subspace projection in the original coordinate system.
+
+  For orthogonal projections, the attribute \code{"R2"} contains a numeric vector specifying the proportion of the squared Frobenius norm of the original matrix captured by each of the latent dimensions.  If the original matrix has been centered (so that a SVD projection is equivalent to PCA), this corresponds to the proportion of variance \dQuote{explained} by each dimension.
 }
 
 \references{
+  Berry, Michael~W. (1992). Large scale sparse singular value computations.
+  \emph{International Journal of Supercomputer Applications}, \bold{6}, 13--49.  
+  
   Halko, N., Martinsson, P. G., and Tropp, J. A. (2009).
   Finding structure with randomness: Stochastic algorithms for constructing approximate matrix decompositions. Technical Report 2009-05, ACM, California Institute of Technology.
 }
 \seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
+  \bold{TODO}
 }
 \examples{
 ## TODO
 }
 \author{Stefan Evert (\url{http://purl.org/stefan.evert})}
-\keyword{TODO}

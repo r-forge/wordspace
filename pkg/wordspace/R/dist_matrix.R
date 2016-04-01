@@ -4,7 +4,7 @@ dist.matrix <- function (M, M2=NULL, method=c("cosine", "euclidean", "maximum", 
   symmetric <- !(method %in% c()) # FALSE if distance/similarity measure is asymmetric
   cross.distance <- !is.null(M2)  # TRUE if calculating (rectangular) cross-distance matrix
 
-  if (method == "minkowski" && (p < .01 || !is.finite(p))) stop("Minkowski p-distance can only be computed for .01 <= p < Inf")
+  if (method == "minkowski" && (p < 0 || !is.finite(p))) stop("Minkowski p-distance can only be computed for 0 <= p < Inf")
   if (as.dist && similarity) stop("cannot create 'dist' object from similarity matrix")
   if (as.dist && cross.distance) stop("cannot create 'dist' object from cross-distance matrix")
 

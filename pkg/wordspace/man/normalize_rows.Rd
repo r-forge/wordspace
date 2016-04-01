@@ -5,7 +5,7 @@
 }
 \description{
 
-  Efficientl normalize the row vectors of a dense or sparse matrix to unit length.
+  Efficiently normalize the row vectors of a dense or sparse matrix to unit length.
 
 }
 \usage{
@@ -26,7 +26,7 @@ normalize.rows(M, \dots)
 
 }
 \details{
-%%  ~~ If necessary, more details than the description above ~~
+  Note that the generalized Minkowski length measure for \eqn{p < 1} cannot be normalized with \code{normalize.rows} because it doesn't satisfy the homogeneity axiom.  The Hamming length obtained for \eqn{p = 0} cannot be normalized at all.  See \code{\link{rowNorms}} for more information.
 }
 \value{
 

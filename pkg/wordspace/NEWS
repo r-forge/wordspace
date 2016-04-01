@@ -2,6 +2,11 @@ Version 0.3-0:
 
   - this will be the first public release with a hopefully stable basic API
 
+Version 0.1-18:
+
+  - efficient truncated SVD of sparse matrix using SVDLIBC code from 'sparsesvd' package
+  - faster reading of triplet files with 'readr' package (though not very memory-efficient)
+
 Version 0.1-17:
 
   - Minkowski norm and metric generalized to .01 <= p < 1 (but doesn't satisfy triangle inequality in this case)

@@ -34,7 +34,7 @@ dist.matrix(M, M2 = NULL,
   }
   
   \item{p}{
-    exponent of the \code{minkowski} p-metric, a numeric value in the range \eqn{1 \le p \le \infty}. Values \eqn{.01 \le p < 1} are also permitted but do not correspond to a proper metric (because the triangle inequality is not satisfied).
+    exponent of the \code{minkowski} p-metric, a numeric value in the range \eqn{1 \le p \le \infty}. Values \eqn{0 \le p < 1} are also permitted but do not correspond to a proper metric (see details below).
   }
   
   \item{normalized}{
@@ -69,7 +69,7 @@ dist.matrix(M, M2 = NULL,
   }
 }
 \details{
-%%  ~~ If necessary, more details than the description above ~~
+  %%  ~~ If necessary, more details than the description above ~~
 }
 \value{
   By default, a matrix of class \code{dist.matrix}, specifying distances or similarities between term vectors.
@@ -91,6 +91,19 @@ dist.matrix(M, M2 = NULL,
   metric vs. distance measure vs. similarity measure
   
   explain for each similarity measure how the conversion to a distance is accomplished
+
+  The Minkowski p-distance between vectors \eqn{x} and \eqn{y} is given by
+  \deqn{
+    d_p(x, y) = ( \sum_i |x_i - y_i|^p )^{1/p}
+  }
+  and is a translation-invariant and homogeneous metric induced by the corresponding Minkowski p-norm for \eqn{p \geq 1}.
+
+  The \bold{wordspace} package supports a generalization of Minkowski distances to \eqn{0\le p < 1}, which does not satisfy the triangle inequality (and is thus not a proper metric).  It uses a modified definition of the distance in this case:
+  \deqn{
+    d_p(x, y) = \sum_i | x_i - y_i |^p
+  }
+  While not homogeneous, this definition has the advantage that it does not diverge for \eqn{p \to 0}.  In fact, \eqn{d_0(x, y)} is the Hamming distance between \eqn{x} and \eqn{y}.
+  
   
   Canberra distance is implemented for compatibility with R's builtin \code{\link{dist}} function, but is probably not very useful for DSMs.
 

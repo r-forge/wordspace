@@ -8,11 +8,9 @@
 #+HTML_HEAD: <link rel="stylesheet" type="text/css" href="etc/orgmode.css" />
 
 * Urgent updates
-
-  - =write.dsm.matrix()= as safe wrapper around =write()= for very large output files
-    - can't be called =write.matrix()=, which already exists in MASS (but doesn't look very optimal)
-    - should have options to save row/column names and dense/sparse matrices in various text formats
+    
   - write basic documentation for all functions
+    - note that (dense) matrix should be saved to text format with =write.table()= rather than =write()= (inserts spurious line break every INT_MAX chars), either in examples or in a (new) vignette
   - upload package to CRAN
     - pre-release version could be made available on the homepage (using WinBuilder)
   - =normalize=TRUE= in =dsm.score()= might automatically filter out invalid rows (with $\|x\| = 0$) or keep them at 0 (rather than =NA=)
@@ -21,8 +19,6 @@
 
 * Next steps
 
-  - interface to sparse SVD using SVDLIBC
-    - as separate R package =sparseSVD= or so, required by =wordspace=
   - special case optimization in =subset.dsm()=: return input unchanged if no rows or columns are dropped (to avoid unnecessary duplication with recursive=TRUE)
   - include pre-compiled large-corpus DSM for core vocabulary (e.g. from LargeDSM), e.g. basic English + words in included test sets
     - drop verb-noun triples from DESC to make some room
@@ -30,6 +26,19 @@
   - add usage examples to all functions
     - distance and evaluation functions can be demonstrated with pre-compiled DSM
   - add further tests
+
+* Bug fixes and improvements
+
+ - handle zero rows more gracefully in =normalize.rows()=
+   - perhaps leave untouched if row norm is below some =tol= parameter
+   - is normalization meaningful for Minkowski norm with $p < 1$, which doesn't scale linearly in our generalization?
+ - more efficient reading of triplet files
+   - =readr= package doesn't seem to help (faster, but even more memory overhead than scan)
+   - temporary triplet table requires at least 24 bytes / row, which cannot be avoided
+   - main issue is whether a copy of the table has to be made (e.g. because of reallocation while reading input file of unknown size)
+   - approach A: if input is file (rather than pipe), count lines first, then scan with =nmax= option; but doesn't seem to help much/systematically in some tests
+   - approach B: read input in chunks, then change dsm() constructor so it can work on the chunks and combine them as late as possible into the sparse matrix; it may be difficult to achieve substantial savings with this strategy
+
 
 * Combining DSM objects after internal redesign
 
@@ -142,3 +151,6 @@
   - include basic Shiny GUIs as functions in package?
     - so far: nearest neighbours explorer
     - should try to load shiny package and abort with error if not installed
+  - implement =write.dsm.matrix()= for various output formats for dense/sparse matrices?
+    - can't be called =write.matrix()=, which already exists in MASS (but doesn't look very optimal)
+    - should have options to save row/column names and dense/sparse matrices in various text formats
