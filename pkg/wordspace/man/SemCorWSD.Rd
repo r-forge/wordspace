@@ -63,6 +63,7 @@ SemCorWSD
 
 with(SemCorWSD, table(sense, target))
 
+# all word senses with brief definitions ("glosses")
 with(SemCorWSD, sort(unique(paste0(target, " ", sense, ": ", gloss))))
 
 }

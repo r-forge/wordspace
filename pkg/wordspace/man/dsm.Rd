@@ -52,11 +52,11 @@ dsm(M = NULL, target = NULL, feature = NULL, score = NULL, rowinfo = NULL, colin
   }
   
   \item{raw.freq}{
-    if \code{TRUE}, entries of the co-occurrence matrix are interpreted as raw frequency counts. By default, it is assumed that some weighting/transformation has been applied.
+    if \code{TRUE}, entries of the co-occurrence matrix are interpreted as raw frequency counts. By default, it is assumed that some weighting/transformation has already been applied.
   }
 
   \item{sort}{
-    if \code{TRUE}, sort rows and columns of a co-occurrence matrix specified in triplet form alphabetically. If the matrix is given directly (\code{M}), rows and columns are never reordered.
+    if \code{TRUE}, sort rows and columns of a co-occurrence matrix specified in triplet form alphabetically. If the matrix is given directly (in argument \code{M}), rows and columns are never reordered.
   }
   
   \item{verbose}{
@@ -120,14 +120,26 @@ dsm(M = NULL, target = NULL, feature = NULL, score = NULL, rowinfo = NULL, colin
   }
 
 }
-\note{
-%%  ~~further notes~~
-}
 \seealso{
-See \code{\link{dsm.canonical.matrix}} for a description of the canonical matrix formats.  DSM objects are usually loaded directly from a disk file in UCS (\code{\link{read.dsm.ucs}}) or triplet (\code{\link{read.dsm.triplet}}) format.
+
+  See \code{\link{dsm.canonical.matrix}} for a description of the canonical matrix formats.  DSM objects are usually loaded directly from a disk file in UCS (\code{\link{read.dsm.ucs}}) or triplet (\code{\link{read.dsm.triplet}}) format.
+
 }
 \examples{
-## TODO
+
+MyDSM <- dsm(
+  target =  c("boat", "boat", "cat",  "dog", "dog"),
+  feature = c("buy",  "use",  "feed", "buy", "feed"),
+  score =   c(1,      3,      2,      1,     1),
+  raw.freq = TRUE
+)
+
+print(MyDSM)   # 3 x 3 matrix with 5 out of 9 nonzero cells
+print(MyDSM$M) # the actual co-occurrence matrix
+
+print(MyDSM$rows) # row information
+print(MyDSM$cols) # column information
+
 }
 \author{Stefan Evert (\url{http://purl.org/stefan.evert})}
 \keyword{classes}

@@ -1,7 +1,7 @@
 Package: wordspace
 Type: Package
 Title: Distributional semantic models (DSM) in R
-Version: 0.1-18
+Version: 0.1-19
 Date: 2016-04-01
 Author: Stefan Evert [http://www.stefan-evert.de/]
 Maintainer: Stefan Evert <stefan.evert@fau.de>
@@ -12,3 +12,5 @@ Description: An interactive laboratory for research on distributional semantic m
 License: GPL-3
 URL: http://wordspace.r-forge.r-project.org/
 LazyData: yes
+Suggests: knitr, rmarkdown, tm
+VignetteBuilder: knitr

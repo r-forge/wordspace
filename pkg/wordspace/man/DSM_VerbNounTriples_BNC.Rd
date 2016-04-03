@@ -1,4 +1,4 @@
-    \name{DSM_VerbNounTriples_BNC}
+\name{DSM_VerbNounTriples_BNC}
 \alias{DSM_VerbNounTriples_BNC}
 \docType{data}
 \title{
@@ -32,14 +32,29 @@ DSM_VerbNounTriples_BNC
   This should not lead to a substantial distortion of the frequency counts for mid- to high-frequency nouns and verbs.
 }
 \source{
-  TODO
+  Syntactic dependencies were extracted from the British National Corpus (Aston & Burnard 1998) using the C&C robust syntactic parser (Curran \emph{et al.} 2007).  Lemmatization and POS tagging are also based on the C&C output.
 }
 \references{
-  TODO
+  Aston, Guy and Burnard, Lou (1998). \emph{The BNC Handbook}. Edinburgh University Press, Edinburgh. See also the BNC homepage at \url{http://www.natcorp.ox.ac.uk/}.
+
+  Curran, James; Clark, Stephen; Bos, Johan (2007). Linguistically motivated large-scale NLP with {C\&C} and Boxer. In \emph{Proceedings of the 45th Annual Meeting of the Association for Computational Linguistics, Posters and Demonstrations Sessions}, pages 33--36, Prague, Czech Republic.
 }
 \examples{
 
-## TODO: how to compile different DSMs from the table
+# compile some typical DSMs for spoken part of BNC
+bncS <- subset(DSM_VerbNounTriples_BNC, mode == "spoken")
+dim(bncS) # ca. 50k verb-rel-noun triples
+
+# dependency-filtered DSM for nouns, using verbs as features
+# (note that multiple entries for same relation are collapsed automatically)
+bncS_depfilt <- dsm(
+  target=bncS$noun, feature=bncS$verb, score=bncS$f,
+  raw.freq=TRUE, verbose=TRUE)
+
+# dependency-structured DSM
+bncS_depstruc <- dsm(
+  target=bncS$noun, feature=paste(bncS$rel, bncS$verb, sep=":"), score=bncS$f,
+  raw.freq=TRUE, verbose=TRUE)
 
 }
 \keyword{datasets}

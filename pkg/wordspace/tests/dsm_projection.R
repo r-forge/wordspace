@@ -4,9 +4,16 @@
 library(wordspace)
 library(Matrix)
 
-matrix.equal <- function(x, y, name="matrix comparison", tol=1e-12, verbose=TRUE) {
+matrix.equal <- function(x, y, name="matrix comparison", tol=1e-12, ignore.sign=FALSE, verbose=TRUE) {
   if (nrow(x) == nrow(y) && ncol(x) == ncol(y)) {
-    max.diff <- max(abs(x - y))
+    if (ignore.sign) {
+      ## sign of columns is arbitrary in SVD projection
+      max.diff.col.1 <- apply(abs(x - y), 2, max) # max diff in each column (same sign)
+      max.diff.col.2 <- apply(abs(x + y), 2, max) # max diff in each column (opposite sign)
+      max.diff <- max(pmin(max.diff.col.1, max.diff.col.2)) # pick smaller diff for each col, then take maximum
+    } else {
+      max.diff <- max(abs(x - y))
+    }
     if (max.diff < tol) {
       invisible(TRUE)
     } else {
@@ -51,11 +58,11 @@ approx.ws <- proj.ws %*% t(attr(proj.ws, "basis"))
 
 dist.compare(proj.R, M1, label="Full-rank SVD projection (R)", tol=.001)
 dist.compare(approx.R, M1, label="Full-rank SVD approximation (R)", tol=.001)
-matrix.equal(approx.R, M1, tol=1e-6)
+stopifnot(matrix.equal(approx.R, M1, tol=1e-6))
 
 dist.compare(proj.ws, M1, label="Full-rank SVD projection (R)", tol=.001)
 dist.compare(approx.ws, M1, label="Full-rank SVD approximation (R)", tol=.001)
-matrix.equal(approx.ws, M2, tol=1e-6)
+stopifnot(matrix.equal(approx.ws, M2, tol=1e-6))
 
 
 ## SVD projection
@@ -69,6 +76,22 @@ dist.compare(proj.R, M1, label="Truncated SVD projection (R)", tol=.2) # relativ
 dist.compare(proj.ws, M1, label="Truncated dense SVD projection (wordspace)", tol=.2)
 dist.compare(proj.ws.sparse, M2, label="Truncated sparse SVD projection (wordspace)", tol=.2)
 dist.compare(proj.ws, proj.ws.sparse, label="Truncated SVD projection (wordspace dense vs. sparse)", tol=.001)
+
+stopifnot(matrix.equal(proj.R, proj.ws, tol=1e-6, ignore.sign=TRUE)) # must ignore arbitrary sign of SVD dims
+stopifnot(matrix.equal(proj.R, proj.ws.sparse, tol=1e-6, ignore.sign=TRUE))
+
+
+## verify power scaling for dense and sparse SVD
+proj.ws.p2 <- dsm.projection(M1, method="svd", n=3, power=2)        # dense
+stopifnot(matrix.equal(proj.ws.p2, svd.R$u %*% diag(svd.R$d[1:3]^2), tol=1e-6, ignore.sign=TRUE))
+proj.ws.sparse.p2 <- dsm.projection(M2, method="svd", n=3, power=2) # sparse
+stopifnot(matrix.equal(proj.ws.sparse.p2, proj.ws.p2, tol=1e-6, ignore.sign=TRUE))
+
+stopifnot(matrix.equal(proj.ws.p2, scaleMargins(proj.ws, cols=attr(proj.ws, "sigma")), tol=1e-6)) # post-hoc power scaling
+stopifnot(matrix.equal(proj.ws.sparse.p2, scaleMargins(proj.ws.sparse, cols=attr(proj.ws, "sigma")), tol=1e-6))
+
+proj.ws.p0 <- dsm.projection(M1, method="svd", n=3, power=0)       # whitening
+stopifnot(matrix.equal(proj.ws.p0, svd.R$u, tol=1e-6, ignore.sign=TRUE))
 
 
 ## full-rank randomized SVD

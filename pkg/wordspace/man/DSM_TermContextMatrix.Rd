@@ -7,7 +7,7 @@
 \description{
 
   This matrix is a typical example of a term-context DSM co-occurrence matrix,
-  obtained from the English Wikipedia.
+  derived from the English Wikipedia.
 
 }
 \usage{
@@ -18,24 +18,25 @@ DSM_TermContextMatrix
 \format{
 
   A numeric matrix with 7 rows and 7 columns.
-  
-}
-\details{
 
-  TODO
-  
-}
-\source{
+  Rows represent the target nouns \emph{cat}, \emph{dog}, \emph{animal}, \emph{time}, \emph{reason}, \emph{cause}, \emph{effect}.
 
-  TODO: WaCkypedia corpus
+  Columns specify the occurrence frequencies of these nouns in Wikipedia articles on \emph{Felidae}, \emph{Pet}, \emph{Feral}, \emph{Boat}, \emph{Philosohpy}, \emph{Kant} and \emph{Back Pain}.
   
 }
+%% \details{
+%% }
+%% \source{
+%% }
 \seealso{
 
-  This matrix covers the same target terms as the term-term matrix \code{\link{DSM_TermTermMatrix}}.
+  This matrix describes the same target nouns as the term-term matrix \code{\link{DSM_TermTermMatrix}}.
 
 }
 \examples{
-## TODO
+
+# M M' = symmetric matrix of co-occurrence frequencies of nouns within articles
+tcrossprod(DSM_TermContextMatrix) 
+
 }
 \keyword{datasets}

@@ -40,7 +40,7 @@ DSM_GoodsMatrix
 }
 \examples{
 
-## TODO: 2D plot of data set (optionally, illustrate PCA dimensionality reduction) 
+DSM_GoodsMatrix[c("time", "goods", "service"), ]
 
 }
 \keyword{datasets}
