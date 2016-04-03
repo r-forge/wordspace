@@ -19,26 +19,21 @@ DSM_HieroglyphsMatrix
 \format{
   
   A numeric matrix with 7 rows and 6 columns.
-  
-}
-\details{
 
-  TODO
+  Rows represent the target nouns \emph{knife}, \emph{cat}, \emph{dog}, \emph{boat}, \emph{cup}, \emph{pig} and \emph{banana}.
+  Columns represent the feature verbs \emph{get}, \emph{see}, \emph{use}, \emph{hear}, \emph{eat} and \emph{kill}.
   
 }
-\source{
-
-  TODO
-  
-}
-\references{
-
-  TODO
-  
-}
+%% \details{
+%% }
+%% \source{
+%% }
 \examples{
 
-## TODO: illustrate basic DSM operations with this matrix
+print(DSM_HieroglyphsMatrix)
+
+## cosine similarities between rows of the matrix
+round(dist.matrix(DSM_HieroglyphsMatrix, convert=FALSE), 3)
 
 }
 \keyword{datasets}

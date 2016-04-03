@@ -1,6 +1,12 @@
-Version 0.3-0:
+Version 0.2-0:
 
-  - this will be the first public release with a hopefully stable basic API
+  - this will be the first public release of the wordspace package
+
+Version 0.1-19:
+
+  - complete basic documentation for all functions and data sets
+  - data set DSM_VerbNounTriples_DESC removed to reduce package size
+  - dsm.projection() now supports power-scaling for SVD-based projection methods
 
 Version 0.1-18:
 
@@ -9,7 +15,7 @@ Version 0.1-18:
 
 Version 0.1-17:
 
-  - Minkowski norm and metric generalized to .01 <= p < 1 (but doesn't satisfy triangle inequality in this case)
+  - Minkowski distance and length measures generalized to 0 <= p < 1 (but not homogeneous for p < 1, hence not a proper mathematical norm)
 
 Version 0.1-16:
 

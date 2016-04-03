@@ -48,7 +48,9 @@ WordSim353
 }
 \source{
 
-  TODO
+  Similarity ratings (Finkelstein \emph{et al.} 2002): \url{http://www.cs.technion.ac.il/~gabr/resources/data/wordsim353/}
+
+  Semantic relations (Agirre \emph{et al.} 2009): \url{http://alfonseca.org/eng/research/wordsim353.html}
   
 }
 \references{
@@ -63,7 +65,13 @@ Placing search in context: The concept revisited.
 
 }
 \examples{
+
 head(WordSim353, 20)
-## TODO
+
+table(WordSim353$relation) # semantic relations
+
+# split into "similarity" and "relatedness" subsets
+xtabs(~ similarity + relatedness, data=WordSim353) 
+
 }
 \keyword{datasets}

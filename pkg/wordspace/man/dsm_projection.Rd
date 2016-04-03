@@ -13,7 +13,8 @@
 \usage{
 
 dsm.projection(model, n, method = c("svd", "rsvd", "asvd", "ri", "ri+svd"),
-               oversampling = NA, q = 2, rate = .01, with.basis = FALSE, verbose = FALSE)
+               oversampling = NA, q = 2, rate = .01, power=1,
+               with.basis = FALSE, verbose = FALSE)
 
 }
 \arguments{
@@ -41,7 +42,11 @@ dsm.projection(model, n, method = c("svd", "rsvd", "asvd", "ri", "ri+svd"),
   \item{rate}{
     fill rate of random projection vectors.  Each random dimension has on average \code{rate * ncol(model)} nonzero components in the original space
   }
-    
+
+  \item{power}{apply power scaling after SVD-based projection, i.e. multiply each latent dimension with a suitable power of the corresponding singular value.
+    The default \code{power=1} corresponds to a regular orthogonal projection.  For power \eqn{> 1}, the first SVD dimensions -- i.e. those capturing the main patterns of \eqn{M} -- are given more weight; for power \eqn{< 1}, they are given less weight.  The setting \code{power=0} results in a full equalization of the dimensions and is also known as \dQuote{whitening} in the PCA case.
+  }
+  
   \item{with.basis}{
     if \code{TRUE}, also returns orthogonal basis of the subspace as attribute of the reduced matrix (not available for random indexing methods)
   }
@@ -75,6 +80,8 @@ dsm.projection(model, n, method = c("svd", "rsvd", "asvd", "ri", "ri+svd"),
   If \code{with.basis=TRUE} and an orthogonal projection is used, the corresponding orthogonal basis \eqn{B} of the latent subspace is returned as an attribute \code{"basis"}.  \eqn{B} is column-orthogonal, hence \eqn{B^T} projects into latent coordinates and \eqn{B B^T} is an orthogonal subspace projection in the original coordinate system.
 
   For orthogonal projections, the attribute \code{"R2"} contains a numeric vector specifying the proportion of the squared Frobenius norm of the original matrix captured by each of the latent dimensions.  If the original matrix has been centered (so that a SVD projection is equivalent to PCA), this corresponds to the proportion of variance \dQuote{explained} by each dimension.
+
+  For SVD-based projections, the attribute \code{"sigma"} contains the singular values corresponding to latent dimensions.  It can be used to adjust the power scaling exponent at a later time.
 }
 
 \references{

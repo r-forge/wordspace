@@ -40,6 +40,20 @@ colNorms(M, method = c("euclidean", "maximum", "manhattan", "minkowski"), p = 2)
   \bold{TODO}
 
   \bold{TODO: generalization of Minkowski p-norm}, which violates both homogeneity and triangle inequality
+
+  Minkowski p-norm of a vector \eqn{x}, also known as \eqn{L_p}-norm, is defined by
+  \deqn{
+    \| x \|_p = ( \sum_i |x|^p )^{1/p}
+  }
+  for \eqn{p > 1}.
+  
+  It can be generalized to a length measure
+  \deqn{
+    \| x \|_p = \sum_i |x|^p
+  }
+  for \eqn{0 \le p < 1}.  This length measure is not a mathematical norm because it is not homogeneous.  It is a sensible length measure, however, because it satisfies the triangle inequality.
+
+  In the special case \eqn{p = 0}, the length \eqn{\|x\|_0} corresponds to the number of nonzero elements of the vector \eqn{x}.
   
 }
 \value{

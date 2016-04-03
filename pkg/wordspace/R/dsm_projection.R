@@ -1,4 +1,4 @@
-dsm.projection <- function (model, n, method=c("svd", "rsvd", "asvd", "ri", "ri+svd"), oversampling=NA, q=2, rate=.01, with.basis=FALSE, verbose=FALSE) {
+dsm.projection <- function (model, n, method=c("svd", "rsvd", "asvd", "ri", "ri+svd"), oversampling=NA, q=2, rate=.01, power=1, with.basis=FALSE, verbose=FALSE) {
   method <- match.arg(method)
   M <- find.canonical.matrix(model)
   info <- dsm.is.canonical(M) # to find out whether M is sparse or dense
@@ -20,6 +20,7 @@ dsm.projection <- function (model, n, method=c("svd", "rsvd", "asvd", "ri", "ri+
 
   B <- NULL
   R2 <- NULL
+  sigma <- NULL
   if (method == "svd") {
     ## --- standard SVD algorithm (on dense matrix) ---
 
@@ -35,9 +36,14 @@ dsm.projection <- function (model, n, method=c("svd", "rsvd", "asvd", "ri", "ri+
       SVD <- svd(M, nu=n, nv=(if (with.basis) n else 0)) # we don't need right singular vectors for the dimensionality reduction
     }
     if (verbose) cat(" - composing final matrix\n")
-    S <- scaleMargins(SVD$u, cols=SVD$d[1:n]) # dimensionality-reduced matrix
+    sigma <- SVD$d[1:n]
+    if (power == 1) {
+      S <- scaleMargins(SVD$u, cols=sigma) # dimensionality-reduced matrix
+    } else {
+      S <- scaleMargins(SVD$u, cols=sigma^power)
+    }
     if (with.basis) B <- SVD$v
-    R2 <- SVD$d[1:n]^2 / norm(M, "F")^2 # proportion of "variance" captured by SVD dimensions
+    R2 <- sigma^2 / norm(M, "F")^2 # proportion of "variance" captured by SVD dimensions
     rm(SVD)
 
   } else if (method == "asvd") {
@@ -55,18 +61,23 @@ dsm.projection <- function (model, n, method=c("svd", "rsvd", "asvd", "ri", "ri+
     rm(SVD)
     S <- as.matrix(S) # make sure result is an ordinary dense matrix (for efficient further processing)
     R2 <- colNorms(M, "euclidean")^2 / norm(M, "F")^2 # this should be the proportion of explained "variance"
-
+    sigma <- SVD$d[1:n]
+    if (power != 1) S <- scaleMargins(S, cols=sigma^(power - 1))
+    
   } else if (method == "rsvd") {
     ## --- randomized SVD according to Halko, Martinsson & Tropp (2009, p. 9) ---
 
     ## preliminary testing suggests there is no substantial difference between the original and transposed rSVD algorith, so we currently always use the original version
     SVD <- rsvd(M, n=n, q=q, oversampling=oversampling, transpose=FALSE, verbose=verbose)
 
-    S <- scaleMargins(SVD$u, cols=SVD$d)
-    ## TODO: -- is this still necessary? --
-    ## S <- as.matrix(S) # make sure result is an ordinary dense matrix
+    sigma <- SVD$d
+    if (power == 1) {
+      S <- scaleMargins(SVD$u, cols=sigma)
+    } else {
+      S <- scaleMargins(SVD$u, cols=sigma^power)
+    }
     if (with.basis) B <- SVD$v
-    R2 <- SVD$d^2 / norm(M, "F")^2
+    R2 <- sigma^2 / norm(M, "F")^2
     rm(SVD)
 
   } else if (method %in% c("ri", "ri+svd")) {
@@ -122,5 +133,6 @@ dsm.projection <- function (model, n, method=c("svd", "rsvd", "asvd", "ri", "ri+
     attr(S, "basis") <- B
   }
   if (!is.null(R2)) attr(S, "R2") <- R2
+  if (!is.null(sigma)) attr(S, "sigma") <- sigma
   return(S)
 }

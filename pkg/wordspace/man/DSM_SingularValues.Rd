@@ -26,7 +26,9 @@ DSM_SingularValues
 }
 \examples{
 
+\dontrun{
 plot(DSM_SingularValues, type="h", xaxs="i", yaxs="i")
+}
 
 }
 \keyword{datasets}

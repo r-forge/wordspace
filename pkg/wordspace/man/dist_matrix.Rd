@@ -96,14 +96,17 @@ dist.matrix(M, M2 = NULL,
   \deqn{
     d_p(x, y) = ( \sum_i |x_i - y_i|^p )^{1/p}
   }
-  and is a translation-invariant and homogeneous metric induced by the corresponding Minkowski p-norm for \eqn{p \geq 1}.
+  and is a translation-invariant and homogeneous metric induced by the corresponding Minkowski p-norm for \eqn{p \geq 1}.  It is also known as the \eqn{L_p}-metric.
 
-  The \bold{wordspace} package supports a generalization of Minkowski distances to \eqn{0\le p < 1}, which does not satisfy the triangle inequality (and is thus not a proper metric).  It uses a modified definition of the distance in this case:
+  For \eqn{0\le p < 1}, an \eqn{L_p}-metric can be defined by
   \deqn{
     d_p(x, y) = \sum_i | x_i - y_i |^p
   }
-  While not homogeneous, this definition has the advantage that it does not diverge for \eqn{p \to 0}.  In fact, \eqn{d_0(x, y)} is the Hamming distance between \eqn{x} and \eqn{y}.
-  
+  Note that this metric cannot be derived from a norm because it is not homogeneous (see \code{\link{rowNorms}} for more information).  For \eqn{p = 0}, we obtain the Hamming distance between \eqn{x} and \eqn{y}:
+  \deqn{
+    d_0(x, y) = \#\{ i | x_i \ne y_i \}
+  }
+
   
   Canberra distance is implemented for compatibility with R's builtin \code{\link{dist}} function, but is probably not very useful for DSMs.
 

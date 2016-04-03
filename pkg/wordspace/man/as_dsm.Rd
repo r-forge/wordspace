@@ -30,8 +30,7 @@ as.dsm(obj, \dots)
   Currently available implementations: \code{\link{as.dsm.TermDocumentMatrix}}, \code{\link{as.dsm.DocumentTermMatrix}}
   
 }
-\examples{
-## TODO
-}
+%% \examples{
+%% }
 \author{Stefan Evert (\url{http://purl.org/stefan.evert})}
 \keyword{ methods }
