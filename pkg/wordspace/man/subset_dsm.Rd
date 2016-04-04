@@ -28,8 +28,8 @@
     Boolean expression or index vector selecting a subset of the columns; expression can use variables \code{term} and \code{f} to access feature terms and their marginal frequencies, \code{nnzero} for the number of nonzero elements in each column, further optional variables from the column information table, as well as global variables such as the sample size \code{N}
   }
 
-  \item{recursive}{
-    if \code{TRUE} and both \code{subset} and \code{select} conditions are specified, the \code{subset} is applied repeatedly until the DSM no longer changes
+  \item{recursive}{if \code{TRUE} and both \code{subset} and \code{select} conditions are specified, the \code{subset} is applied repeatedly until the DSM no longer changes.
+    This is typically needed if conditions on nonzero counts or row/column norms or specified, which may be affected by the subsetting procedure.
   }
   
   \item{drop.zeroes}{
@@ -49,9 +49,8 @@
     any further arguments are silently ignored
   }
 }
-\details{
-%%  ~~ If necessary, more details than the description above ~~
-}
+%% \details{
+%% }
 \value{
 
   An object of class \code{dsm} containing the specified subset of the model \code{x}.
@@ -59,14 +58,23 @@
   If necessary, counts of nonzero elements for each row and/or column are updated automatically.
 
 }
-\references{
-%% ~put references to the literature/web site here ~
-}
 \seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
+
+  \code{\link{dsm}}
+
 }
 \examples{
-## TODO
+
+print(DSM_TermContextMatrix)
+model <- dsm(DSM_TermContextMatrix)
+
+subset(model, nchar(term) <= 4)$S     # short target terms
+subset(model, select=(nnzero <= 3))$S # columns with <= 3 nonzero cells
+
+subset(model, nchar(term) <= 4, nnzero <= 3)$S # combine both conditions
+
+subset(model, nchar(term) <= 4, nnzero >= 2)$S # still three columns with nnzero < 2
+subset(model, nchar(term) <= 4, nnzero >= 2, recursive=TRUE)$S
+
 }
 \author{Stefan Evert (\url{http://purl.org/stefan.evert})}
-\keyword{TODO}

@@ -50,8 +50,10 @@
 }
 \examples{
 
-## TODO (but needs to compile DSM object first)
+model <- dsm(DSM_TermTermMatrix, raw.freq=TRUE)
+head(model, Inf, Inf) # show full co-occurrence matrix
+
+head(model, 3, 4)
 
 }
 \author{Stefan Evert (\url{http://purl.org/stefan.evert})}
-\keyword{TODO}

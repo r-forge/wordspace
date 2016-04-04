@@ -38,8 +38,8 @@
 }
 \examples{
 
-## TODO (but needs to compile DSM object first)
+print(dsm(DSM_HieroglyphsMatrix))
 
 }
 \author{Stefan Evert (\url{http://purl.org/stefan.evert})}
-\keyword{TODO}
+

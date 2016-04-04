@@ -82,10 +82,17 @@ nearest.neighbours(M, term, n = 10, M2 = NULL, byrow = TRUE,
 
 }
 \seealso{
-  \bold{TODO}
+
+  \code{\link{dist.matrix}} for more information on available distance metrics and similarity measures
+  
 }
 \examples{
-## TODO
+
+nearest.neighbours(DSM_Vectors, c("apple_N", "walk_V"), n=10)
+
+nearest.neighbours(DSM_Vectors, "apple_N", n=10, method="maximum")
+
+as.dist(nearest.neighbours(DSM_Vectors, "apple_N", n=10, dist.matrix=TRUE))
+
 }
 \author{Stefan Evert (\url{http://purl.org/stefan.evert})}
-\keyword{TODO}

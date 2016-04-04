@@ -27,11 +27,9 @@ read.dsm.ucs(filename, encoding = getOption("encoding"), verbose = FALSE)
     if \code{TRUE}, a few progress and information messages are shown
   }
 }
-\details{
-
-  \bold{TODO}
-
-}
+%% \details{
+%%   \bold{TODO}
+%% }
 \value{
 
   An object of class \code{\link{dsm}} containing a dense or sparse DSM.
@@ -41,40 +39,42 @@ read.dsm.ucs(filename, encoding = getOption("encoding"), verbose = FALSE)
 }
 \section{File Format}{
 
-TODO
+  The UCS export format is a directory containing the following files with the specified names:
 
-a directory or ZIP archive containing the following files with the specified names
+  \itemize{
+    \item \file{M} \strong{or} \file{M.mtx}
 
-files:
-\itemize{
-  \item \file{M} \strong{or} \file{M.mtx}
-
-  cooccurrence matrix (dense, plain text) or sparse matrix (MatrixMarket format)
+    cooccurrence matrix (dense, plain text) or sparse matrix (MatrixMarket format)
   
-  \item \file{rows.tbl}
+    \item \file{rows.tbl}
   
-  row information (labels \code{term}, marginal frequencies \code{f})
+    row information (labels \code{term}, marginal frequencies \code{f})
   
-  \item \file{cols.tbl}
+    \item \file{cols.tbl}
   
-  column information (labels \code{term}, marginal frequencies \code{f})
+    column information (labels \code{term}, marginal frequencies \code{f})
 
-  \item \file{globals.tbl}
+    \item \file{globals.tbl}
 
-  table with single row containing global variables; must include variable \code{N} specifying sample size
-}
+    table with single row containing global variables; must include variable \code{N} specifying sample size
+  }
 
-each individual file may be compressed and may carry an additional filename extension \code{.gz}, \code{.bz2} or \code{.xz}; \code{read.dsm.ucs} will automatically decompress the files when loading them
+  Each individual file may be compressed with an additional filename extension \code{.gz}, \code{.bz2} or \code{.xz}; \code{read.dsm.ucs} automatically decompresses such files when loading them.
 
-}
-\note{
-%%  ~~further notes~~
 }
 \seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
+
+  \code{\link{dsm}}, \code{\link{read.dsm.triplet}}
+  
 }
-\examples{
-## TODO
+\references{
+
+  The UCS toolkit is a software package for collecting and manipulating co-occurrence data available from \url{http://www.collocations.de/software.html}.
+
+  UCS relies on compressed text files as its main storage format.  They can be exported as a DSM with \code{ucs-tool export-dsm-matrix}.
+  
 }
+%% \examples{
+%% }
 \author{Stefan Evert (\url{http://purl.org/stefan.evert})}
 \keyword{file}

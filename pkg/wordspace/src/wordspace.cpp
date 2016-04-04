@@ -119,7 +119,8 @@ am_func am_table[] = {
 
 /* make symmetric matrix from right upper triangle */
 void mk_symmetric_matrix(NumericMatrix x) {
-  int nr = x.nrow(), nc = x.ncol();
+  //  int nr = x.nrow();
+  int nc = x.ncol();
   for (int c = 0; c < nc; c++)
     for (int r = 0; r < c; r++)
       x(c, r) = x(r, c);
@@ -421,7 +422,12 @@ NumericVector CPP_row_norms_dense(NumericMatrix x, int norm_code, double p_norm 
       if      (norm_code == 0) _norms[row] += _x[i] * _x[i];
       else if (norm_code == 1) { if (fabs(_x[i]) > _norms[row]) _norms[row] = fabs(_x[i]); }
       else if (norm_code == 2) _norms[row] += fabs(_x[i]);
-      else if (norm_code == 3) _norms[row] += pow(fabs(_x[i]), p_norm);
+      else if (norm_code == 3) {
+        if (p_norm > 0)
+          _norms[row] += pow(fabs(_x[i]), p_norm);
+        else
+          _norms[row] += (_x[i] != 0);
+      }
       i++;
     }
   }
@@ -450,7 +456,12 @@ NumericVector CPP_row_norms_sparse(int nr, int nc, IntegerVector p, IntegerVecto
       if      (norm_code == 0) _norms[row] += _x[i] * _x[i];
       else if (norm_code == 1) { if (fabs(_x[i]) > _norms[row]) _norms[row] = fabs(_x[i]); }
       else if (norm_code == 2) _norms[row] += fabs(_x[i]);
-      else if (norm_code == 3) _norms[row] += pow(fabs(_x[i]), p_norm);
+      else if (norm_code == 3) {
+        if (p_norm > 0)
+          _norms[row] += pow(fabs(_x[i]), p_norm);
+        else
+          _norms[row] += (_x[i] != 0);
+      }
     }
   }
 
@@ -465,18 +476,23 @@ NumericVector CPP_row_norms_sparse(int nr, int nc, IntegerVector p, IntegerVecto
 NumericVector CPP_col_norms_dense(NumericMatrix x, int norm_code, double p_norm = 2.0) {
   check_norm(norm_code, p_norm);
 
-  int nr = x.nrow(), nc = x.ncol();
+  // int nr = x.nrow();
+  int nc = x.ncol();
   NumericVector norms(nc, 0.0);
 
-  NumericVector::iterator _norms = norms.begin();
+  // NumericVector::iterator _norms = norms.begin();
 
-  int i = 0;
   for (int col = 0; col < nc; col++) {
     NumericMatrix::Column v = x(_, col);
     if      (norm_code == 0) norms[col] = sum(v * v);
     else if (norm_code == 1) norms[col] = max(abs(v));
     else if (norm_code == 2) norms[col] = sum(abs(v));
-    else if (norm_code == 3) norms[col] = sum(pow(abs(v), p_norm));
+    else if (norm_code == 3) {
+      if (p_norm > 0) 
+        norms[col] = sum(pow(abs(v), p_norm));
+      else
+        norms[col] = sum(v != 0);
+    }
   }
 
   if      (norm_code == 0)                 norms = sqrt(norms);
@@ -494,7 +510,7 @@ NumericVector CPP_col_norms_sparse(int nr, int nc, IntegerVector p, IntegerVecto
 
   NumericVector::iterator _x = x.begin();
   IntegerVector::iterator _p = p.begin();
-  IntegerVector::iterator _row_of = row_of.begin();
+  // IntegerVector::iterator _row_of = row_of.begin();
   NumericVector::iterator _norms = norms.begin();
 
   for (int col = 0; col < nc; col++) {
@@ -503,7 +519,12 @@ NumericVector CPP_col_norms_sparse(int nr, int nc, IntegerVector p, IntegerVecto
       if      (norm_code == 0) accum += _x[i] * _x[i];
       else if (norm_code == 1) { if (fabs(_x[i]) > accum) accum = fabs(_x[i]); }
       else if (norm_code == 2) accum += fabs(_x[i]);
-      else if (norm_code == 3) accum += pow(fabs(_x[i]), p_norm);
+      else if (norm_code == 3) {
+        if (p_norm > 0)
+          accum += pow(fabs(_x[i]), p_norm);
+        else
+          accum += (_x[i] != 0);
+      }
     }
     if      (norm_code == 0)                 _norms[col] = sqrt(accum);
     else if (norm_code == 3 && p_norm > 1.0) _norms[col] = pow(accum, 1.0 / p_norm);

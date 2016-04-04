@@ -12,7 +12,8 @@
 
 /* make symmetric matrix from right upper triangle */
 void mk_symmetric_matrix(NumericMatrix x) {
-  int nr = x.nrow(), nc = x.ncol();
+  //  int nr = x.nrow();
+  int nc = x.ncol();
   for (int c = 0; c < nc; c++)
     for (int r = 0; r < c; r++)
       x(c, r) = x(r, c);

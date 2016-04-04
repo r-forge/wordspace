@@ -54,6 +54,11 @@ SemCorWSD
   \bold{TODO} (SemCor reference, NLTK extraction)
 
 }
+\seealso{
+
+  \code{\link{context.vectors}}
+  
+}
 \references{
 
   Schütze, Hinrich (1998). Automatic word sense discrimination. \emph{Computational Linguistics}, \bold{24}(1), 97--123.

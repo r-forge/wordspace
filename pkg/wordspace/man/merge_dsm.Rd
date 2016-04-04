@@ -5,7 +5,7 @@
 }
 \description{
 
-  %%  ~~ A concise (1-5 lines) description of what the function does. ~~
+  \bold{TODO: revise function}
 
 }
 \usage{
@@ -32,26 +32,13 @@
   }
 
 }
-\details{
-%%  ~~ If necessary, more details than the description above ~~
-}
+%% \details{
+%% }
 \value{
   if \code{term.suffix} is specified, row information of returned DSM object will be extended with variables \code{orig.term} specifying the original terms and \code{orig.part} specifying the original component model (identified by the corresponding entry from \code{term.suffix}) 
-
-%%  ~Describe the value returned
-%%  If it is a LIST, use
-%%  \item{comp1 }{Description of 'comp1'}
-%%  \item{comp2 }{Description of 'comp2'}
-%% ...
 }
-\references{
-%% ~put references to the literature/web site here ~
-}
-\seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
-}
-\examples{
-## TODO
-}
+%% \seealso{
+%% }
+%% \examples{
+%% }
 \author{Stefan Evert (\url{http://purl.org/stefan.evert})}
-\keyword{TODO}

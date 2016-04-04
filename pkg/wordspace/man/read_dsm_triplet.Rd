@@ -67,19 +67,34 @@ read.dsm.triplet(filename, freq = FALSE, value.first = FALSE, tokens = FALSE, se
 }
 \section{File Format}{
 
-  \bold{TODO}
+  The input must be a plain-text table with two or three TAB-delimited columns and no header.
 
-}
-\note{
-%%  ~~further notes~~
+  For \code{tokens=TRUE}, each line represents a single pair token with columns
+  \enumerate{
+    \item target term
+    \item feature term / document
+  }
+
+  For \code{tokens=FALSE}, each line represents a pair type (i.e. a unique cell of the co-occurrence matrix) with columns:
+  \enumerate{
+    \item target term
+    \item feature term / document
+    \item score \emph{or} co-occurrence frequency
+  }
+  If \code{value.first=TRUE}, the score entry is expected in the first column:
+  \enumerate{
+    \item score \emph{or} co-occurrence frequency
+    \item target term
+    \item feature term / document
+  }
+  Note that the input may contain multiple entries for the same cell, whose values will automatically be added up.
 }
 \seealso{
 
   \code{\link{dsm}}, \code{\link{read.dsm.ucs}}
   
 }
-\examples{
-## TODO
-}
+%% \examples{
+%% }
 \author{Stefan Evert (\url{http://purl.org/stefan.evert})}
 \keyword{file}

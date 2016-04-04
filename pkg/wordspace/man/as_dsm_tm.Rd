@@ -2,11 +2,11 @@
 \alias{as.dsm.TermDocumentMatrix}
 \alias{as.dsm.DocumentTermMatrix}
 \title{
-  Create DSM Object From \code{\link{tm}} Package (wordspace)
+  Create DSM Object From \code{tm} Package (wordspace)
 }
 \description{
 
-  Convert a \code{\link{tm}} term-document or document-term matrix into a \code{wordspace} DSM object.
+  Convert a \bold{tm} term-document or document-term matrix into a \code{wordspace} DSM object.
 
 }
 \usage{
@@ -18,8 +18,8 @@
 \arguments{
 
   \item{obj}{
-    an term-document or document-term matrix from the \code{\link{tm}} package, i.e.
-    an object of a class \code{\link{TermDocumentMatrix}} or \code{\link{DocumentTermMatrix}}.
+    an term-document or document-term matrix from the \bold{tm} package, i.e.
+    an object of a class \code{\link[pkg:tm]{TermDocumentMatrix}} or \code{\link[pkg:tm]{DocumentTermMatrix}}.
   }
   
   \item{...}{
@@ -67,4 +67,3 @@ print(wordspace_tdm)
 
 }
 \author{Stefan Evert (\url{http://purl.org/stefan.evert})}
-\keyword{TODO}

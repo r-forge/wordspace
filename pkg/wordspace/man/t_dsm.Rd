@@ -17,21 +17,28 @@
 }
 \arguments{
 
-  \item{x}{
-    an object of class \code{dsm}
-  }
+  \item{x}{an object of class \code{dsm}}
 
 }
 %% \details{
 %% }
 \value{
-  An \code{DSM} object with rows and columns swapped.
+
+  A \code{dsm} object with rows and columns swapped.
+
 }
 \seealso{
-  TODO
+
+  \code{\link{dsm}}
+  
 }
 \examples{
-## TODO
+
+tdm <- dsm(DSM_TermContextMatrix) # term-document model
+tdm$S
+
+dtm <- t(tdm) # document-term model
+dtm$S
+
 }
 \author{Stefan Evert (\url{http://purl.org/stefan.evert})}
-\keyword{TODO}

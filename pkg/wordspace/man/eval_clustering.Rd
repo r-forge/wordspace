@@ -91,7 +91,8 @@ eval.clustering(task, M, dist.fnc = pair.distances, \dots,
   Support functions: \code{\link{pair.distances}}, \code{\link{convert.lemma}}
 }
 \examples{
-## TODO
+
+eval.clustering(ESSLLI08_Nouns, DSM_Vectors, class.name="class2")
+
 }
 \author{Stefan Evert (\url{http://purl.org/stefan.evert})}
-\keyword{TODO}

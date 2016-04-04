@@ -49,8 +49,6 @@ wordspace.openmp(threads=NULL)
 \seealso{
   \code{\link{dist.matrix}}
 }
-\examples{
-## TODO
-}
+%% \examples{
+%% }
 \author{Stefan Evert (\url{http://purl.org/stefan.evert})}
-\keyword{TODO}

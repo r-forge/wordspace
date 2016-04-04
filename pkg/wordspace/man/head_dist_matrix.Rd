@@ -56,4 +56,3 @@ print(head(dm, 8, 5), digits=3)
 
 }
 \author{Stefan Evert (\url{http://purl.org/stefan.evert})}
-\keyword{TODO}

@@ -28,9 +28,8 @@ check.dsm(model, validate = FALSE, nonneg.check = FALSE)
   }
   
 }
-\details{
-%%  ~~ If necessary, more details than the description above ~~
-}
+%% \details{
+%% }
 \value{
 
   Aborts with error message if any inconsistency is detected.
@@ -73,14 +72,12 @@ check.dsm(model, validate = FALSE, nonneg.check = FALSE)
     \code{TRUE} if matrix combines data with inconsistent row or column marginals (in this case, association scores cannot be computed any more)
   }
 }
-\references{
-%% ~put references to the literature/web site here ~
-}
 \seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
+  \code{\link{dsm}}, \code{\link{print.dsm}}
 }
 \examples{
-## TODO
+
+check.dsm(dsm(DSM_TermTermMatrix, raw.freq=TRUE))
+
 }
 \author{Stefan Evert (\url{http://purl.org/stefan.evert})}
-\keyword{TODO}

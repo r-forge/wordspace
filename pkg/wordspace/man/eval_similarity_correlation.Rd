@@ -114,7 +114,11 @@ Contextual correlates of synonymy.
   Plotting and printing evaluation results: \code{\link{plot.eval.similarity.correlation}}, \code{\link{print.eval.similarity.correlation}}
 }
 \examples{
-## TODO
+
+eval.similarity.correlation(RG65, DSM_Vectors)
+
+\dontrun{
+plot(eval.similarity.correlation(RG65, DSM_Vectors, details=TRUE))
+}
 }
 \author{Stefan Evert (\url{http://purl.org/stefan.evert})}
-\keyword{TODO}

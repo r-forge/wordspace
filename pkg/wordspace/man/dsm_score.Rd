@@ -5,8 +5,10 @@
 }
 \description{
 
-  %%  ~~ A concise (1-5 lines) description of what the function does. ~~
+  Compute feature scores for a term-document or term-term co-occurrence matrix, using one of several standard association measures.  Scores can optionally be rescaled with an isotonic transformation function, or centered and standardized.  In addition, row vectors can be normalized to unit length wrt. a given norm. 
 
+  This function has been optimized for efficiency and low memory overhead.
+  
 }
 \usage{
 
@@ -21,45 +23,32 @@ dsm.score(model,
 }
 \arguments{
   
-  \item{model}{
-    a DSM model, i.e. an object of class \code{dsm}
+  \item{model}{a DSM model, i.e. an object of class \code{dsm}}
+
+  \item{score}{the association measure to be used for feature weighting (see \dQuote{Details} below)}
+
+  \item{sparse}{if \code{TRUE} (the default), compute sparse non-negative association scores (see \dQuote{Details} below).
+    Non-sparse association scores are only allowed if \code{negative.ok=TRUE}.
   }
 
-  \item{score}{
-    the association measure to be used for feature weighting (see \dQuote{Details} below)
-  }
-
-  \item{sparse}{
-    if \code{TRUE} (the default), compute sparse non-negative association scores (see \dQuote{Details} below).  Non-sparse association scores are only allowed if \code{negative.ok=TRUE}.
-  }
-
-  \item{negative.ok}{
-    whether operations that introduce negative values into the score matrix (non-sparse association scores, standardization of columns, etc.) are allowed.  The default (\code{negative.ok}) is \code{TRUE} if the co-occurrence matrix \eqn{M} is dense, and \code{FALSE} if it is sparse.
+  \item{negative.ok}{whether operations that introduce negative values into the score matrix (non-sparse association scores, standardization of columns, etc.) are allowed.
+    The default (\code{negative.ok=NA}) is \code{TRUE} if the co-occurrence matrix \eqn{M} is dense, and \code{FALSE} if it is sparse.
   }
     
-  \item{transform}{
-    scale transformation to be applied to association scores (see \dQuote{Details} below)
-  }
+  \item{transform}{scale transformation to be applied to association scores (see \dQuote{Details} below)}
 
-  \item{scale}{
-    if not \code{"none"}, standardize columns of scored matrix by z-transformation (\code{"standardize"}), center without rescaling (\code{"center"}, or scale to unit RMS without centering (\code{"scale"})
-  }
+  \item{scale}{if not \code{"none"}, standardize columns of scored matrix by z-transformation (\code{"standardize"}), center them without rescaling (\code{"center"}), or scale to unit RMS without centering (\code{"scale"})}
 
-  \item{normalize}{
-    if \code{TRUE} normalize row vectors of scored matrix to unit length, according to the norm indicated by \code{method} and \code{p}
-  }
+  \item{normalize}{if \code{TRUE} normalize row vectors of scored matrix to unit length, according to the norm indicated by \code{method} and \code{p}}
 
-  \item{method, p}{
-    norm to be used with \code{normalize=TRUE}.  See \code{\link{rowNorms}} for admissible values and details on the corresponding norms
+  \item{method, p}{norm to be used with \code{normalize=TRUE}.
+    See \code{\link{rowNorms}} for admissible values and details on the corresponding norms
   }
   
-  \item{matrix.only}{
-    whether to return updated DSM model (default) or only the matrix of scores (\code{matrix.only=TRUE})
-  }
+  \item{matrix.only}{whether to return updated DSM model (default) or only the matrix of scores (\code{matrix.only=TRUE})}
   
-  \item{update.nnzero}{
-    if \code{TRUE} and a full DSM model is returned, update the counts of nonzero entries in rows and columns according to the matrix of scores (there may be fewer nonzero entries with sparse association scores, or more from dense association scores and/or column scaling)
-  }
+  \item{update.nnzero}{if \code{TRUE} and a full DSM model is returned, update the counts of nonzero entries in rows and columns according to the matrix of scores (there may be fewer nonzero entries with sparse association scores, or more from dense association scores and/or column scaling)}
+
 }
 \details{
   \subsection{Association measures}{
@@ -80,16 +69,21 @@ dsm.score(model,
 \value{
   Either an updated DSM model of class \code{dsm} (default) or the matrix of (scaled and normalised) association scores (\code{matrix.only=TRUE}).
   
-  Note that updating DSM models may require a substantial amount of temporary memory (because of the way memory management is implemented in \R).  This can be problematic when running a 32-bit build of \R and when dealing with very large DSM models, so it may be better to return only the scored matrix in such cases.
+  Note that updating DSM models may require a substantial amount of temporary memory (because of the way memory management is implemented in \R).  This can be problematic when running a 32-bit build of \R or when dealing with very large DSM models, so it may be better to return only the scored matrix in such cases.
 }
 \references{
-%% ~put references to the literature/web site here ~
+
+  More information about assocation measures and the notation for contingency tables can be found at \url{http://www.collocations.de/} and in
+
+  Evert, Stefan (2008). Corpora and collocations. In A. Lüdeling and M. Kytö (eds.), \emph{Corpus Linguistics. An International Handbook}, chapter 58, pages 1212--1248. Mouton de Gruyter, Berlin, New York.
+
 }
 \seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
+
+  \code{\link{dsm}}
+  
 }
 \examples{
   ## TODO
 }
 \author{Stefan Evert (\url{http://purl.org/stefan.evert})}
-\keyword{TODO}

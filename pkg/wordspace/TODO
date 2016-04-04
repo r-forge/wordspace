@@ -9,29 +9,25 @@
 
 * Urgent updates
     
-  - write basic documentation for all functions
+  - additional documentation
+    - write a package vignette based on the COLING demo, but using only data sets included in the package
     - note that (dense) matrix should be saved to text format with =write.table()= rather than =write()= (inserts spurious line break every INT_MAX chars), either in examples or in a (new) vignette
   - upload package to CRAN
     - pre-release version could be made available on the homepage (using WinBuilder)
-  - =normalize=TRUE= in =dsm.score()= might automatically filter out invalid rows (with $\|x\| = 0$) or keep them at 0 (rather than =NA=)
-    - perhaps as an option to =normalize.rows()=, but =dsm.score()= would need to handle this specially and drop deleted rows from entire model
   - improve Web page
 
-* Next steps
-
-  - special case optimization in =subset.dsm()=: return input unchanged if no rows or columns are dropped (to avoid unnecessary duplication with recursive=TRUE)
-  - include pre-compiled large-corpus DSM for core vocabulary (e.g. from LargeDSM), e.g. basic English + words in included test sets
-    - drop verb-noun triples from DESC to make some room
-    - should arrange for easy updates that automatically compile vocabulary from included data sets
-  - add usage examples to all functions
-    - distance and evaluation functions can be demonstrated with pre-compiled DSM
-  - add further tests
 
 * Bug fixes and improvements
 
+ - include pre-compiled large-corpus DSM for core vocabulary (e.g. from LargeDSM), e.g. basic English + words in included test sets
+   - should arrange for easy updates that automatically compile vocabulary from included data sets
+   - add further tests
+ - special case optimization in =subset.dsm()=: return input unchanged if no rows or columns are dropped (to avoid unnecessary duplication with recursive=TRUE)
  - handle zero rows more gracefully in =normalize.rows()=
    - perhaps leave untouched if row norm is below some =tol= parameter
    - is normalization meaningful for Minkowski norm with $p < 1$, which doesn't scale linearly in our generalization?
+ - =normalize=TRUE= in =dsm.score()= might automatically filter out invalid rows (with $\|x\| = 0$) or keep them at 0 (rather than =NA=)
+   - perhaps as an option to =normalize.rows()=, but =dsm.score()= would need to handle this specially and drop deleted rows from entire model
  - more efficient reading of triplet files
    - =readr= package doesn't seem to help (faster, but even more memory overhead than scan)
    - temporary triplet table requires at least 24 bytes / row, which cannot be avoided
@@ -52,12 +48,14 @@
   - implement column merge (=rows=FALSE=) for =merge.dsm()=
   - efficient reimplementation of =rbind.dsm()= for sparse matrices (require all arguments to be sparse in normal form; use C code, work with triplet representation, or very clever code on =dgCMatrix= objects)
 
+
 * Non-negative matrices and projections
 
   - Matrizen werden mit Attribut =non.negative= versehen; Frequenzmatrix M muss nonneg sein (wird von Konstruktor überprüft); S wird von =dsm.score()= markiert, falls sichergestellt ist, dass die Matrix keine negativen Elemente enthalten kann (=negative.ok=FALSE=)
   - diverse Funktionen wie =dsm.score()=, =dsm.projection()=, =dist.matrix()=, ...  erlauben bestimmte Optionen / Algorithmen nur für nonneg-Matrizen; diese werden am Attribut =non.negative= erkannt; wenn Attribut fehlt, wird die Eingabematrix geprüft; evtl. expliziter Override mit =non.negative=TRUE= (aber sinnvoll?)
   - dafür C-Funktion, um Vektor/Matrix speichereffizient auf nonneg zu testen; in Methode =is.nonnegative()= einbinden, mit Methoden für numeric, matrix, und Matrix (csr oder triplet)
   - Ausgabe von dsm.projection mit NMF oder anderem nonnoeg-Algorithmus wird ebenfalls mit Attribut =non.negative=TRUE= markiert
+
 
 * Support for evaluation experiments
 
@@ -71,6 +69,7 @@
     - can be used to safely read out association scores from "fake" distance matrix (marked with =as.dist.matrix=)
   - also see hand-written notes
 
+
 * Additional metrics
 
   - Dice and/or Jaccard coefficient (Lin 1998)
@@ -81,10 +80,9 @@
     - JS metric --> general Jensen-Shannon divergence with mix parameter \(\lambda\in (0,1)\)?
   - generalizations of vector norms/metrics that share aspects of Dice / KL?
 
+
 * New projection methods
 
-  - power scaling for =dsm.projection= (Caron 2001); needs built-in renormalization, I think, or keep total $R^2$ same
-  - what is a sensible relative $R^2$ for different =dsm.projection= methods? especially SVD without centering and non-orthogonal projections
   - implement non-negative version of RI (increases correlations between dimensions adn resulting distortion)
     - what is the effect of distortion from non-orthogonality of dimensions?
     - perhaps this might even be beneficial: is distortion likely to improve similarity of correlated targets?
@@ -122,15 +120,11 @@
   - /word2vec/-like model trained on co-occurrence matrix?
     - what would be an appropriate goal criterion?
 
+
 * Analysis support
   - implement Chinese Whispers clustering algorithm
     - try different versions: batch update with R code, single updates implemented in C/C++
 
-* Cleanup and documentation
-
-  - write complete (rough) documentation for basic functions
-  - include more small data sets for usage examples
-  - add usage examples to all functions
 
 * Optimization
 
@@ -138,10 +132,7 @@
     - cosine distance for dense (and possibly also sparse) matrix; very substantial overhead in "SVD-100 cosine distances" benchmark
     - dense dist.matrix() compared to dist()
   - =dsm.projection()= could have option =renormalized= that performs row normalization in-place (with additional arguments passed on to rowNorms())
-  - implement optimized file I/O functions in Rcpp
-    - https://github.com/romainfrancois/fastread shows how to use connections from Rcpp
-    - e.g. two-pass =read.dsm.triplet()=, memory-friendly =write.matrix()=, etc.
-    - perhaps I/O code for (co-occurrence) frequency tables and other forms of corpus data should be part of a separate package
+
 
 * Miscellaneous
 

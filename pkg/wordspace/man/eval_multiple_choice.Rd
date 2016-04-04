@@ -97,4 +97,3 @@ eval.multiple.choice(task, M, dist.fnc = pair.distances, \dots,
 ## TODO
 }
 \author{Stefan Evert (\url{http://purl.org/stefan.evert})}
-\keyword{TODO}
