@@ -63,10 +63,11 @@ pair.distances(w1, w2, M, \dots, rank = c("none", "fwd", "bwd", "avg"), transfor
 
 }
 \seealso{
-  \code{\link{dist.matrix}}
+  \code{\link{dist.matrix}}, \code{\link{eval.similarity.correlation}}, \code{\link{eval.multiple.choice}}
 }
 \examples{
-## TODO
+
+transform(RG65, angle=pair.distances(word1, word2, DSM_Vectors))
+
 }
 \author{Stefan Evert (\url{http://purl.org/stefan.evert})}
-\keyword{TODO}

@@ -67,7 +67,7 @@
 }
 \details{
 
-  For multidimensional scaling (MDS), the functions \code{\link{isoMDS}} and \code{\link{sammon}} from the \code{\link{MASS}} package are used.
+  For multidimensional scaling (MDS), the functions \code{\link[pkg:MASS]{isoMDS}} and \code{\link[pkg:MASS]{sammon}} from the \bold{MASS} package are used.
   
 }
 \seealso{
@@ -76,9 +76,8 @@
 
 }
 \examples{
-
-## TODO
-
+\dontrun{
+plot(nearest.neighbours(DSM_Vectors, "walk_V", n=20, dist.matrix=TRUE))
+}
 }
 \author{Stefan Evert (\url{http://purl.org/stefan.evert})}
-\keyword{TODO}

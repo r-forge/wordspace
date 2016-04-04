@@ -32,7 +32,7 @@ rsvd(M, n, q = 2, oversampling = 2, transpose = FALSE, verbose = FALSE)
   }
 
   \item{transpose}{
-    if \code{TRUE}, apply the rSVD algorithm to the transpose \code{t(M)}, which may be more efficient depending on the dimensions of M
+    if \code{TRUE}, apply the rSVD algorithm to the transpose \code{t(M)}, which may be more efficient depending on the dimensions of \code{M}
   }
 
   \item{verbose}{
@@ -42,10 +42,8 @@ rsvd(M, n, q = 2, oversampling = 2, transpose = FALSE, verbose = FALSE)
 
 \details{
 
-  This implementation of randomized truncated SVD is based on the randomized PCA algorithm (Halko \emph{et al.} 2009, p. 9).
-  The discussion in Sec. 4 and 5 of the paper shows that the same algorithm applies to the case where the columns of A are not centered
-  (Algorithm 4.3 + Algorithm 5.1).
-  
+  This implementation of randomized truncated SVD is based on the randomized PCA algorithm (Halko \emph{et al.} 2009, p. 9).  The discussion in Sec. 4 and 5 of the paper shows that the same algorithm applies to the case where the columns of A are not centered (Algorithm 4.3 + Algorithm 5.1).
+
 }
 
 \value{
@@ -61,14 +59,16 @@ rsvd(M, n, q = 2, oversampling = 2, transpose = FALSE, verbose = FALSE)
 }
 
 \references{
+
   Halko, N., Martinsson, P. G., and Tropp, J. A. (2009).
   Finding structure with randomness: Stochastic algorithms for constructing approximate matrix decompositions. Technical Report 2009-05, ACM, California Institute of Technology.
+
 }
 \seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
+
+  \code{\link{svd}}, \code{\link{dsm.projection}}, \code{\link{sparsesvd}}
+  
 }
-\examples{
-## TODO
-}
+%% \examples{
+%% }
 \author{Stefan Evert (\url{http://purl.org/stefan.evert})}
-\keyword{TODO}

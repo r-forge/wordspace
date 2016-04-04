@@ -5,7 +5,7 @@
 }
 \description{
 
-  %%  ~~ A concise (1-5 lines) description of what the function does. ~~
+  Compute bag-of-words context vectors as proposed by Schütze (1998) for automatic word sense disambiguation and induction.  Each context vector is the centroid of the DSM vectors of all terms occurring in the context.
 
 }
 \usage{
@@ -13,7 +13,6 @@
 context.vectors(M, contexts, split = "\\\\s+", drop.missing = TRUE, row.names=NULL)
 
 }
-%- maybe also 'usage' for other objects documented here.
 \arguments{
 
   \item{M}{
@@ -47,13 +46,29 @@ context.vectors(M, contexts, split = "\\\\s+", drop.missing = TRUE, row.names=NU
   
 }
 \references{
-%% ~put references to the literature/web site here ~
+
+  Schütze, Hinrich (1998). Automatic word sense discrimination. \emph{Computational Linguistics}, \bold{24}(1), 97--123.  
+
 }
 \seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
+
+  \code{\link{SemCorWSD}}
+  
 }
 \examples{
-## TODO
+
+# illustration of WSD algorithm: 6 sentences each for two senses of "vessel"
+VesselWSD <- subset(SemCorWSD, target == "vessel")
+with(VesselWSD, cat(paste0(sense, ": ", sentence, "\n")))
+
+# need to provide senses because not all contexts are found in our small DSM
+Centroids <- context.vectors(DSM_Vectors, VesselWSD$lemma, row.names=VesselWSD$sense)
+Centroids[, 1:5]
+
+kmeans(Centroids, 2)$cluster # flat clustering with k-means
+
+\dontrun{
+plot(hclust(dist.matrix(Centroids, as.dist=TRUE)))
+}
 }
 \author{Stefan Evert (\url{http://purl.org/stefan.evert})}
-\keyword{TODO}

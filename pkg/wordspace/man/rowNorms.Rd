@@ -16,59 +16,59 @@ rowNorms(M, method = c("euclidean", "maximum", "manhattan", "minkowski"), p = 2)
 colNorms(M, method = c("euclidean", "maximum", "manhattan", "minkowski"), p = 2)
 
 }
-%- maybe also 'usage' for other objects documented here.
 \arguments{
 
-  \item{M}{
-    a dense or sparse numeric matrix
+  \item{M}{a dense or sparse numeric matrix}
+
+  \item{method}{norm to be computed (see \dQuote{Norms} below for details)}
+
+  \item{p}{exponent of the \code{minkowski} p-norm, a numeric value in the range \eqn{1 \le p \le \infty}.
+
+    Values \eqn{0 \le p < 1} are also permitted as an extension but do not correspond to a proper mathematical norm (see details below).
   }
 
-  \item{method}{
-    norm to be computed (see \dQuote{Norms} below for details)
-  }
-
-  \item{p}{
-    exponent of the \code{minkowski} p-norm, a numeric value in the range \eqn{1 \le p \le \infty}. Values \eqn{0 \le p < 1} are also permitted but do not correspond to a proper mathematical norm (see details below).
-  }
-
-}
-\details{
-%%  ~~ If necessary, more details than the description above ~~
 }
 \section{Norms}{
 
-  \bold{TODO}
+  Given a row or column vector \eqn{x}, the following length measures can be computed:
 
-  \bold{TODO: generalization of Minkowski p-norm}, which violates both homogeneity and triangle inequality
+  \describe{
+    \item{\code{euclidean}}{The Euclidean norm given by \deqn{
+        \|x\|_2 = \sqrt{ \sum_i x_i^2 }}{ |x|_2 = sqrt( SUM(i) (x_i)^2 ) }
+    }
+    \item{\code{maximum}}{The maximum norm given by \deqn{
+        \|x\|_{\infty} = \max_i |x_i| }{ |x|_Inf = MAX(i) |x_i| }
+    }
+    \item{\code{manhattan}}{The Manhattan norm given by \deqn{
+        \|x\|_1 = \sum_i |x_i| }{ |x|_1 = SUM(i) |x_i| }
+    }
+    \item{\code{minkowski}}{The Minkowski (or \eqn{L_p}) norm given by \deqn{
+        \|x\|_p = \left( \sum_i |x_i|^p \right)^{1/p} }{ |x|_p = [ SUM(i) |x_i|^p ]^(1/p) }
+      for \eqn{p \ge 1}.  The Euclidean (\eqn{p = 2}) and Manhattan (\eqn{p = 1}) norms are special cases, and the maximum norm corresponds to the limit for \eqn{p \to \infty}{p -> Inf}.
 
-  Minkowski p-norm of a vector \eqn{x}, also known as \eqn{L_p}-norm, is defined by
-  \deqn{
-    \| x \|_p = ( \sum_i |x|^p )^{1/p}
+      As an extension, values \eqn{0\le p < 1} compute the length measure \deqn{
+        \|x\|_p = \sum_i |x_i|^p }{ |x|_p = SUM(i) |x_i|^p }
+      This formulat does not define a proper mathematical norm because it is not homogeneous (\eqn{\|r\cdot x\| \ne |r|\cdot \|x\|}{|r * x| != |r| * |x|} for a scalar factor \eqn{r}).  However, it does satisfy the triangle inequality and is thus still a sensible measure of vector length.  In the special case \eqn{p = 0}, the length \eqn{\|x\|_0}{|x|_0} corresponds to the number of nonzero elements in the vector \eqn{x}.
+    }
   }
-  for \eqn{p > 1}.
-  
-  It can be generalized to a length measure
-  \deqn{
-    \| x \|_p = \sum_i |x|^p
-  }
-  for \eqn{0 \le p < 1}.  This length measure is not a mathematical norm because it is not homogeneous.  It is a sensible length measure, however, because it satisfies the triangle inequality.
-
-  In the special case \eqn{p = 0}, the length \eqn{\|x\|_0} corresponds to the number of nonzero elements of the vector \eqn{x}.
-  
 }
 \value{
 
   A numeric vector containing one norm value for each row or column of \code{M}.
 
 }
-\references{
-%% ~put references to the literature/web site here ~
-}
+%% \references{
+%% }
 \seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
+  
+  \code{\link{dist.matrix}}, \code{\link{normalize.rows}}
+  
 }
 \examples{
-## TODO
+
+rowNorms(DSM_TermContextMatrix, "manhattan")
+
+colNorms(DSM_TermContextMatrix, "minkowski", p=0) # number of nonzero cells
+
 }
 \author{Stefan Evert (\url{http://purl.org/stefan.evert})}
-\keyword{TODO}

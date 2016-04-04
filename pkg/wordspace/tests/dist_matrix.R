@@ -86,12 +86,12 @@ for (p in c(.1, .25, .5, 1, 1.5, 2, 2.5, 3, 5, 10)) {
   stopifnot(all(diag(M2.lp.ws) == 0))
 
   if (p == 1) {
-    stopifnot(matrix.equal(M1.lp.ws, as.matrix(M1.l1.ws)))
-    stopifnot(matrix.equal(M2.lp.ws, as.matrix(M2.l1.ws)))
+    stopifnot(matrix.equal(M1.lp.ws, as.matrix(M1.l1.ws), tol=1e-6))
+    stopifnot(matrix.equal(M2.lp.ws, as.matrix(M2.l1.ws), tol=1e-6))
   }
   if (p == 2) {
-    stopifnot(matrix.equal(M1.lp.ws, as.matrix(M1.l2.ws)))
-    stopifnot(matrix.equal(M2.lp.ws, as.matrix(M2.l2.ws)))
+    stopifnot(matrix.equal(M1.lp.ws, as.matrix(M1.l2.ws), tol=1e-6))
+    stopifnot(matrix.equal(M2.lp.ws, as.matrix(M2.l2.ws), tol=1e-6))
   }
 }
 

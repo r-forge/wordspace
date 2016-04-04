@@ -9,29 +9,42 @@
 
   A toy laboratory for research and experimentation in distributional semantics.
 
-  \strong{Important note:} This package is currently in beta stage.  Code and interfaces should still be considered experimental and may change before the official release.
-
 }
 \details{
 
   \tabular{ll}{
     Package: \tab wordspace\cr
     Type: \tab Package\cr
-    Version: \tab 0.1-13\cr
-    Date: \tab 2014-06-02\cr
+    Version: \tab 0.1-19\cr
+    Date: \tab 2016-04-01\cr
     License: \tab GPL-3\cr
     LazyLoad: \tab yes\cr
   }
 
 }
 \author{
+
   Stefan Evert (\url{http://purl.org/stefan.evert})
+
 }
 \references{
+
+  Please cite this package as
+
+  Evert, Stefan (2014). Distributional semantics in R with the wordspace package. In \emph{Proceedings of COLING 2014, the 25th International Conference on Computational Linguistics: System Demonstrations}, pages 110--114, Dublin, Ireland.
+
+  and link to the package homepage at \url{http://wordspace.r-forge.r-project.org/}.
+
+  Tutorial materials using the package for examples and exercises are available from \url{http://wordspace.collocations.de} under and open-source license.  You will also find some pre-compiled distributional semantic models (DSM) there.
+
 }
 \seealso{
-  \url{http://wordspace.collocations.de}
+
+  If you are new to the \bold{wordspace} package, you should start by reading the package vignette and trying the code examples.
+
+  Good starting points into the package documentation are \code{\link{dsm}}, \code{\link{read.dsm.triplet}}, \code{\link{dist.matrix}} and \code{\link{nearest.neighbours}}.
+  
 }
-\examples{
-}
+%% \examples{
+%% }
 \keyword{package}

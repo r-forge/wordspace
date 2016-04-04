@@ -63,14 +63,8 @@ dsm.canonical.matrix(x, triplet = FALSE, annotate = FALSE, nonneg.check = FALSE)
 
   If \code{annotate=TRUE}, the returned matrix has attributes \code{sparse} and \code{nonneg} (possibly \code{NA}).
 }
-\references{
-%% ~put references to the literature/web site here ~
-}
-\seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
-}
-\examples{
-## TODO
-}
+%% \seealso{
+%% }
+%% \examples{
+%% }
 \author{Stefan Evert (\url{http://purl.org/stefan.evert})}
-\keyword{TODO}

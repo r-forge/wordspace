@@ -27,22 +27,15 @@
 
 }
 \value{
-%% TODO
 
-%%  ~Describe the value returned
-%%  If it is a LIST, use
-%%  \item{comp1 }{Description of 'comp1'}
-%%  \item{comp2 }{Description of 'comp2'}
-%% ...
-}
-\references{
-%% ~put references to the literature/web site here ~
+  An integer vector of length 2, specifying the number of rows and the number of columns of the DSM matrix.
+  
 }
 \seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
+
+  \code{\link{dsm}}, \code{\link{check.dsm}}, \code{\link{print.dsm}}
+  
 }
-\examples{
-## TODO
-}
+%% \examples{
+%% }
 \author{Stefan Evert (\url{http://purl.org/stefan.evert})}
-\keyword{TODO}
