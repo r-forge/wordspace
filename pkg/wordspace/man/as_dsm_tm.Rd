@@ -19,7 +19,7 @@
 
   \item{obj}{
     an term-document or document-term matrix from the \bold{tm} package, i.e.
-    an object of a class \code{\link[pkg:tm]{TermDocumentMatrix}} or \code{\link[pkg:tm]{DocumentTermMatrix}}.
+    an object of a class \code{\link[tm]{TermDocumentMatrix}} or \code{\link[tm]{DocumentTermMatrix}}.
   }
   
   \item{...}{

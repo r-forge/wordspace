@@ -43,9 +43,8 @@ wordspace.openmp(threads=NULL)
   \item{max}{maximum number of threads that can be used (0 if not available)}
   \item{threads}{currently selected number of threads (defaults to 1 if not available)}
 }
-\references{
-%% ~put references to the literature/web site here ~
-}
+%% \references{
+%% }
 \seealso{
   \code{\link{dist.matrix}}
 }
