@@ -42,13 +42,13 @@ SEXP svdLAS2_(SEXP dim, SEXP i, SEXP p, SEXP x, SEXP dimensions, SEXP exclude, S
   /* check matrix dimensions */
   n_row = svd->Ut->cols; /* Ut is the transposed matrix, hence swap row/col counts */
   n_col = svd->Ut->rows;
-  if ((n_col > rank) || (n_row != nR)) {
+  if ((n_col < rank) || (n_row != nR)) {
     svdFreeSVDRec(svd);
     error("internal error (U is %d x %d matrix, expected %d x %d)", n_row, n_col, nR, rank);
   }
   n_row = svd->Vt->cols; /* same for Vt */
   n_col = svd->Vt->rows;
-  if ((n_col > rank) || (n_row != nC)) {
+  if ((n_col < rank) || n_row != nC) {
     svdFreeSVDRec(svd);
     error("internal error (V is %d x %d matrix, expected %d x %d)", n_row, n_col, nC, rank);
   }
