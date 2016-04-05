@@ -1,5 +1,6 @@
 \name{context.vectors}
 \alias{context.vectors}
+\encoding{utf8}
 \title{
   Compute Bag-of-Words Context Vectors (wordspace)
 }

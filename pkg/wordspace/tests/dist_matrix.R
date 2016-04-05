@@ -80,18 +80,18 @@ for (p in c(.1, .25, .5, 1, 1.5, 2, 2.5, 3, 5, 10)) {
   M1.lp.R <- dist(M1, method="minkowski", p=p) 
   M2.lp.R <- dist(M2, method="minkowski", p=p) # converts to dense matrix
 
-  stopifnot(matrix.equal(M1.lp.ws, as.matrix(M1.lp.R)))
-  stopifnot(matrix.equal(M2.lp.ws, as.matrix(M2.lp.R)))
+  stopifnot(matrix.equal(M1.lp.ws, as.matrix(M1.lp.R), tol=1e-6)) # dist() seems to use different alogrithm
+  stopifnot(matrix.equal(M2.lp.ws, as.matrix(M2.lp.R), tol=1e-6)) # resulting in larger errors on 32-bit i386 
   stopifnot(all(diag(M1.lp.ws) == 0)) # must be exact zeroes
   stopifnot(all(diag(M2.lp.ws) == 0))
 
   if (p == 1) {
-    stopifnot(matrix.equal(M1.lp.ws, as.matrix(M1.l1.ws), tol=1e-6))
-    stopifnot(matrix.equal(M2.lp.ws, as.matrix(M2.l1.ws), tol=1e-6))
+    stopifnot(matrix.equal(M1.lp.ws, as.matrix(M1.l1.ws)))
+    stopifnot(matrix.equal(M2.lp.ws, as.matrix(M2.l1.ws)))
   }
   if (p == 2) {
-    stopifnot(matrix.equal(M1.lp.ws, as.matrix(M1.l2.ws), tol=1e-6))
-    stopifnot(matrix.equal(M2.lp.ws, as.matrix(M2.l2.ws), tol=1e-6))
+    stopifnot(matrix.equal(M1.lp.ws, as.matrix(M1.l2.ws)))
+    stopifnot(matrix.equal(M2.lp.ws, as.matrix(M2.l2.ws)))
   }
 }
 

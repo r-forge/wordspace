@@ -67,7 +67,7 @@
 }
 \details{
 
-  For multidimensional scaling (MDS), the functions \code{\link[pkg:MASS]{isoMDS}} and \code{\link[pkg:MASS]{sammon}} from the \bold{MASS} package are used.
+  For multidimensional scaling (MDS), the functions \code{\link[MASS]{isoMDS}} and \code{\link[MASS]{sammon}} from the \bold{MASS} package are used.
   
 }
 \seealso{

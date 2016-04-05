@@ -1,5 +1,6 @@
 \name{dsm.score}
 \alias{dsm.score}
+\encoding{utf8}
 \title{
   Weighting, Scaling and Normalisation of Co-occurrence Matrix (wordspace)
 }
