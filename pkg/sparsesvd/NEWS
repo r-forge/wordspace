@@ -1,5 +1,7 @@
+Version 0.1-1:
+  - fix ISO C incompatibilities that prevented compilation on some platforms
+
 Version 0.1:
   - initial release
   - based on SVDLIBC version 1.4
   - modified to avoid I/O on STDOUT and STDERR
-

@@ -1,6 +1,6 @@
 Package: sparsesvd
 Title: Sparse Truncated Singular Value Decomposition (from 'SVDLIBC')
-Version: 0.1
+Version: 0.1-1
 Authors@R: c(person("Doug", "Rohde", email="dr+svd@tedlab.mit.edu", role="aut"),
              person("Michael Berry", role="aut"),
              person("Theresa Do", role="aut"),
