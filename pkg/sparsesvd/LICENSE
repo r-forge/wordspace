@@ -1,9 +1,7 @@
-for files src/las2.c, src/svdlib.[ch], src/svdutil.[ch]
 YEAR: 2002
 COPYRIGHT HOLDER: University of Tennessee Research Foundation 
 ORGANIZATION: University of Tennessee
 
-for all other files
 YEAR: 2016
 COPYRIGHT HOLDER: Stefan Evert
-ORGANIZATION: n/a
+ORGANIZATION: Friedrich-Alexander-Universitaet Erlangen-Nuernberg
