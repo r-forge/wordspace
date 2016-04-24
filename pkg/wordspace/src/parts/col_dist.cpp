@@ -80,14 +80,17 @@ NumericMatrix CPP_col_dist_dense(NumericMatrix x, NumericMatrix y, int metric_co
 // [[Rcpp::export]]
 NumericMatrix CPP_col_dist_sparse(int nc1, IntegerVector xp, IntegerVector xrow, NumericVector x, int nc2, IntegerVector yp, IntegerVector yrow, NumericVector y, int metric_code, double param1, bool symmetric) {
   check_metric(metric_code, param1);
-  /* average number of entries scanned when comparing two columns */
-  double avg_nr = (xp[nc1] - xp[0] + 0.0) / nc1 + (yp[nc2] - yp[0] + 0.0) / nc2; 
   NumericVector::iterator _x = x.begin();
   NumericVector::iterator _y = y.begin();
   IntegerVector::iterator _xrow = xrow.begin();
   IntegerVector::iterator _yrow = yrow.begin();
 
   NumericMatrix dist(nc1, nc2);
+
+#ifdef _OPENMP
+  /* average number of entries scanned when comparing two columns, used to decide whether to try parallelization */
+  double avg_nr = (xp[nc1] - xp[0] + 0.0) / nc1 + (yp[nc2] - yp[0] + 0.0) / nc2; 
+#endif
 
 #pragma omp parallel for \
         if (openmp_threads > 1 && (nc1 + 0.0) * (nc2 + 0.0) * avg_nr > 40e6) \
