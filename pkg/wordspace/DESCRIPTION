@@ -1,12 +1,13 @@
 Package: wordspace
 Type: Package
-Title: Distributional semantic models (DSM) in R
-Version: 0.1-19
-Date: 2016-04-01
+Title: Distributional Semantic Models in R
+Version: 0.1-20
+Date: 2016-04-24
 Author: Stefan Evert [http://www.stefan-evert.de/]
 Maintainer: Stefan Evert <stefan.evert@fau.de>
 Depends: R (>= 3.0.0), Matrix
-Imports: Rcpp (>= 0.11.0), sparsesvd, readr, cluster, MASS
+Imports: Rcpp (>= 0.11.0), sparsesvd, readr, 
+         methods, stats, utils, graphics, grDevices, cluster, MASS
 LinkingTo: Rcpp
 Description: An interactive laboratory for research on distributional semantic models (DSM).
 License: GPL-3

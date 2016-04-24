@@ -15,6 +15,9 @@
   - upload package to CRAN
     - pre-release version could be made available on the homepage (using WinBuilder)
   - improve Web page
+  - change =DSM_TermTermMatrix= etc. to =dsm= objects =DSM_TermTerm[Model]= etc.
+    - can always obtain the original matrix with =$M= or =as.matrix()=
+    - but shouldn't be used in any major way yet anyway
 
 
 * Bug fixes and improvements
@@ -34,7 +37,12 @@
    - main issue is whether a copy of the table has to be made (e.g. because of reallocation while reading input file of unknown size)
    - approach A: if input is file (rather than pipe), count lines first, then scan with =nmax= option; but doesn't seem to help much/systematically in some tests
    - approach B: read input in chunks, then change dsm() constructor so it can work on the chunks and combine them as late as possible into the sparse matrix; it may be difficult to achieve substantial savings with this strategy
-
+ - convenience methods for =rownames= and =colnames= of DSM object
+   - achieved by providing =dimnames.dsm= method
+   - preferably also =dimnames<-= method, which sets rows$term and cols$term as well as dimnames of =$M= and =$S=
+ - =as.matrix.dsm()= method should extract the raw (=$M=) or scored (=$S=) cooccurrence matrix, as appropriate
+   - might also update dimnames of the matrix in case someone has messed with =$rows$term= or =$cols$term= directly
+ - =[= accessor method for subsetting with row/column numbers or target/feature terms
 
 * Combining DSM objects after internal redesign
 
