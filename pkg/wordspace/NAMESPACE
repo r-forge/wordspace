@@ -1,9 +1,15 @@
+importFrom(methods, as, is, new)
+importFrom(stats, cor.test, lowess, na.omit, quantile, rbinom, rnorm)
+importFrom(utils, combn, read.delim)
+importFrom(graphics, legend, lines, par, plot, points, segments, text)
+importFrom(grDevices, extendrange)
+importFrom(MASS, sammon, isoMDS)
+importFrom(cluster, pam)
+
 import(Matrix)
 importFrom(sparsesvd, sparsesvd)
 importFrom(readr, read_delim, locale)
 importFrom(Rcpp, evalCpp)
-importFrom(MASS, sammon, isoMDS)
-importFrom(cluster, pam)
 
 useDynLib(wordspace, .registration=TRUE)
 

@@ -2,6 +2,10 @@ Version 0.2-0:
 
   - this will be the first public release of the wordspace package
 
+Version 0.1-20:
+
+  - new sample data: DSM objects for small illustrative term-term and term-context matrix
+
 Version 0.1-19:
 
   - complete basic documentation for all functions and data sets
