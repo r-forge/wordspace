@@ -27,10 +27,10 @@
     a vector containing the first \eqn{r} singular values of \code{M}
   }
   \item{u}{
-    a column matrix of the first \eqn{r} left singular values of \code{M}
+    a column matrix of the first \eqn{r} left singular vectors of \code{M}
   }
   \item{v}{
-    a column matrix of the first \eqn{r} right singular values of \code{M}
+    a column matrix of the first \eqn{r} right singular vectors of \code{M}
   }
 }
 \description{

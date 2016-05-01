@@ -1,3 +1,7 @@
+Version 0.1-2:
+  - stress tests with large number of random sparse nonnegative matrices
+  - fix some typos in documentation
+
 Version 0.1-1:
   - fix ISO C incompatibilities that prevented compilation on some platforms
   - more detailed copyright information in DESCRIPTION and LICENSE
