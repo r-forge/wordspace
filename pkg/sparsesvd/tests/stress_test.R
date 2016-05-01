@@ -66,25 +66,3 @@ for (i in 1:n.run) {
   assert.mat.equal(Rr, Mr, tol=tol, msg=sprintf("(%d-rank truncated transposed SVD at iteration #%d)", r, i))
 }
 close(pb)
-
-
-#
-# M <- as(DSM_TermContextMatrix, "dgCMatrix")
-# M <- rbind(c(1,2,1,0,1), c(0,0,0,0,0), c(0,0,0,0,0), c(0,0,0,0,0), c(1,0,0,1,0), c(0,0,0,0,0), c(0,0,0,0,0))
-# M <- as(M, "dgCMatrix")
-# print(M)
-#
-# cat("Dense SVD:\n")
-# system.time(res1 <- svd(as.matrix(M), nu=4, nv=4))
-# print(res1)
-#
-# cat("Sparse SVD:\n")
-# system.time(res2 <- sparsesvd(M, 5))
-# print(res2)
-#
-# ## check that solutions are identical (up to sign)
-# print(round(res2$d - res1$d[1:4], 7))
-# print(round(crossprod(res2$u, res1$u), 5))
-# print(round(crossprod(res2$v, res1$v), 5))
-#
-#
