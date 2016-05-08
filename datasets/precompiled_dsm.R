@@ -32,9 +32,9 @@ words <- c("white_J",                   # includes many colours
 vocab <- union(vocab, words)
 for (w in words) vocab <- union(vocab, names(nearest.neighbours(web_150k_30k_l4r4_svd1000, w, 40)))
 
-
+length(vocab) # 1368 words
 vocab <- vocab[vocab %in% rownames(web_150k_30k_l4r4_svd1000)]
-length(vocab) # 1323 target words remaining
+length(vocab) # 1331 target words remaining
 
 DSM_Vectors <- web_150k_30k_l4r4_svd1000[vocab, 1:100]
 DSM_Vectors <- normalize.rows(DSM_Vectors) # renormalize row vectors
