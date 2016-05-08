@@ -362,7 +362,7 @@ SVD trunc IRLBA S       0.869  42525.00   1.641
 
 ------------------------------------------------------------------------
 Fujitsu Celcius R920, 2 x Intel Xeon E5-2530 (Sandy Bridge) 2.3 GHz (6-core + hyperthreading), 15 MB L2 Cache
-Ubuntu Linux 12.04 LTS (Kernel 3.0.8), 64-bit, optimised OpenBLAS, wordspace v0.0-21 with experimental OpenMP support
+Ubuntu Linux 12.04 LTS (Kernel 3.0.8), 64-bit, Ubuntu OpenBLAS, wordspace v0.0-21 with experimental OpenMP support
                          Time      MOPS CPUTime
 transpose D             0.123     63.94   0.100
 normalise D             0.307     25.62   0.272
@@ -397,3 +397,146 @@ euclid() S              1.188  11117.67   1.076
 euclid() small S        0.218   7581.02   0.216
 rSVD projection S       0.372  62268.04   1.868
 SVD trunc IRLBA S       1.215  30415.00   3.196
+
+
+------------------------------------------------------------------------
+Fujitsu Celcius R920, 2 x Intel Xeon E5-2530 (Sandy Bridge) 2.3 GHz (6-core + hyperthreading), 15 MB L2 Cache
+Ubuntu Linux 14.04 LTS (Kernel 3.13.0), 64-bit, optimised OpenBLAS, wordspace v0.1-12 with OpenMP
+                        Time      MOPS CPUTime
+transpose D            0.048    163.85   0.035
+normalise D            0.312     25.21   0.284
+normalize.rows() D     0.050    157.30   0.036
+dist() D               9.815    168.11   9.777
+dist.matrix() D        0.984   1676.82   0.969
+dist.matrix() D (2x)   0.771   2140.07   1.009
+dist.matrix() D (4x)   0.488   3381.13   1.058
+dist.matrix() D (8x)   0.308   5357.11   1.248
+dist.matrix() D (16x)  0.215   7674.38   1.568
+inner M %*% t(M) D     0.304  43411.55   3.969
+inner tcrossprod D     0.103 128127.29   1.859
+inner crossprod t(M) D 0.101 130664.46   1.855
+cosine normalised D    0.208  63523.27   1.990
+cosine general D       0.216  61147.18   2.346
+euclid() D             1.138  11606.14   3.909
+euclid() small D       0.284   5819.23   1.574
+SVD full D             1.400  26395.88  16.994
+SVD truncated D        1.344  27495.70  16.507
+SVD projection D       1.328  17442.55  16.373
+rSVD projection D      0.383  60479.66   4.759
+SVD trunc IRLBA D      3.730   9907.30  33.837
+construct S            0.079     99.55   0.053
+construct small S      0.012    163.88   0.012
+transpose S            0.011    714.98   0.011
+normalise S            0.093     84.57   0.093
+normalize.rows() S     0.003   2621.60   0.003
+dist() S               9.887    166.88   9.852
+dist.matrix() S        0.400   4124.98   0.399
+dist.matrix() S (2x)   0.368   4483.67   0.499
+dist.matrix() S (4x)   0.220   7499.96   0.510
+dist.matrix() S (8x)   0.138  11956.46   0.567
+dist.matrix() S (16x)  0.083  19879.41   0.672
+inner M %*% t(M) S     0.527  25041.96   0.510
+inner tcrossprod S     0.468  28198.95   0.466
+inner crossprod t(M) S 0.473  27900.87   0.471
+cosine normalised S    0.553  23893.02   0.546
+cosine general S       1.384   9543.20   2.535
+euclid() S             1.515   8718.01   1.505
+euclid() small S       0.317   5213.44   0.315
+rSVD projection S      0.361  64165.40   3.419
+SVD trunc IRLBA S      1.155  31995.00  11.190
+
+------------------------------------------------------------------------
+"Obelix"
+Ubuntu Linux 12.04 LTS (Kernel 3.13.0), 64-bit, optimised OpenBLAS, wordspace v0.1-13 with OpenMP
+                        Time      MOPS CPUTime
+transpose D            0.049    160.51   0.033
+normalise D            0.278     28.29   0.269
+normalize.rows() D     0.044    178.75   0.016
+dist() D               8.803    187.44   8.784
+dist.matrix() D        0.866   1905.30   0.860
+dist.matrix() D (2x)   0.703   2347.07   0.952
+dist.matrix() D (4x)   0.451   3658.52   1.030
+dist.matrix() D (8x)   0.278   5935.22   1.161
+dist.matrix() D (16x)  0.200   8249.95   1.643
+dist.matrix() D (32x)  0.161  10248.39   2.137
+inner M %*% t(M) D     0.211  62545.55   3.709
+inner tcrossprod D     0.094 140394.80   1.543
+inner crossprod t(M) D 0.086 153454.78   1.866
+cosine normalised D    0.183  72201.31   1.687
+cosine general D       0.173  76345.61   2.056
+euclid() D             1.054  12531.11   2.651
+euclid() small D       0.271   6098.38   0.794
+SVD full D             1.237  29874.07   9.075
+SVD truncated D        1.171  31557.84   8.056
+SVD projection D       1.177  19680.30   7.808
+rSVD projection D      0.341  67928.77   2.736
+SVD trunc IRLBA D      3.504  10546.30  10.377
+construct S            0.083     94.76   0.075
+construct small S      0.016    122.91   0.016
+transpose S            0.015    524.32   0.015
+normalise S            0.106     74.20   0.096
+normalize.rows() S     0.005   1572.96   0.004
+dist() S               8.021    205.71   7.989
+dist.matrix() S        0.369   4471.52   0.370
+dist.matrix() S (2x)   0.278   5935.22   0.369
+dist.matrix() S (4x)   0.219   7534.20   0.498
+dist.matrix() S (8x)   0.123  13414.56   0.530
+dist.matrix() S (16x)  0.070  23571.30   0.579
+dist.matrix() S (32x)  0.065  25384.47   0.811
+inner M %*% t(M) S     0.455  29004.64   0.446
+inner tcrossprod S     0.421  31347.06   0.418
+inner crossprod t(M) S 0.442  29857.72   0.435
+cosine normalised S    0.515  25656.00   0.510
+cosine general S       1.229  10746.78   1.128
+euclid() S             1.417   9320.95   1.403
+euclid() small S       0.304   5436.39   0.295
+rSVD projection S      0.346  66947.14   2.054
+SVD trunc IRLBA S      1.425  25932.79   4.518
+
+------------------------------------------------------------------------
+"Obelix"
+Ubuntu Linux 12.04 LTS (Kernel 3.13.0), 64-bit, Ubuntu OpenBLAS, wordspace v0.1-13 with OpenMP
+                        Time     MOPS CPUTime
+transpose D            0.058   135.60   0.043
+normalise D            0.329    23.91   0.300
+normalize.rows() D     0.058   135.60   0.054
+dist() D               8.849   186.46   8.851
+dist.matrix() D        0.877  1881.40   0.865
+dist.matrix() D (2x)   0.874  1887.86   0.870
+dist.matrix() D (4x)   0.879  1877.12   0.875
+dist.matrix() D (8x)   0.911  1811.19   0.894
+dist.matrix() D (16x)  0.908  1817.17   0.895
+dist.matrix() D (32x)  0.952  1733.18   0.949
+inner M %*% t(M) D     1.507  8757.21   2.866
+inner tcrossprod D     0.735 17955.25   1.433
+inner crossprod t(M) D 0.724 18228.05   1.414
+cosine normalised D    0.827 15976.83   1.494
+cosine general D       0.814 16225.79   1.481
+euclid() D             1.689  7819.89   2.357
+euclid() small D       0.352  4695.06   0.462
+SVD full D             1.730 21360.82   2.897
+SVD truncated D        1.622 22783.12   2.826
+SVD projection D       1.620 14298.59   2.809
+rSVD projection D      0.537 43135.40   0.911
+SVD trunc IRLBA D      1.899 19459.83   2.135
+construct S            0.104    75.62   0.071
+construct small S      0.013   151.28   0.012
+transpose S            0.012   655.40   0.013
+normalise S            0.092    85.49   0.092
+normalize.rows() S     0.004  1966.20   0.004
+dist() S               8.103   203.63   8.105
+dist.matrix() S        0.362  4557.99   0.363
+dist.matrix() S (2x)   0.366  4508.17   0.365
+dist.matrix() S (4x)   0.371  4447.41   0.372
+dist.matrix() S (8x)   0.382  4319.35   0.382
+dist.matrix() S (16x)  0.401  4114.69   0.402
+dist.matrix() S (32x)  0.444  3716.20   0.444
+inner M %*% t(M) S     0.457 28877.70   0.449
+inner tcrossprod S     0.438 30130.39   0.437
+inner crossprod t(M) S 0.450 29326.91   0.443
+cosine normalised S    0.528 25024.32   0.517
+cosine general S       1.283 10294.46   1.137
+euclid() S             1.478  8936.26   1.470
+euclid() small S       0.305  5418.56   0.305
+rSVD projection S      0.382 60637.98   0.530
+SVD trunc IRLBA S      0.996 37102.64   1.186
