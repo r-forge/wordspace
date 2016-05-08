@@ -21,7 +21,7 @@ DSM_TermContext
 }
 \format{
 
-  \code{DSM_TermContextMatrix} is a sparse numeric matrix of class \code{\link{dgCMatrix}} with 7 rows and 7 columns.
+  \code{DSM_TermContextMatrix} is a sparse numeric matrix of class \code{\link[=dgCMatrix-class]{dgCMatrix}} with 7 rows and 7 columns.
 
   Rows represent the target nouns \emph{cat}, \emph{dog}, \emph{animal}, \emph{time}, \emph{reason}, \emph{cause}, \emph{effect}.
 
