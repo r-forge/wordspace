@@ -81,6 +81,30 @@ save(DSM_TermContext, file="../pkg/wordspace/data/DSM_TermContext.rda", compress
 
 
 ##
+## Export term-context matrix as triplet file and in UCS format
+##
+MT <- as(DSM_TermContextMatrix, "dgTMatrix")
+triplets <- data.frame(
+  target = rownames(MT)[MT@i + 1],
+  feature = colnames(MT)[MT@j + 1],
+  f = MT@x)
+write.table(triplets, file=gzfile("../pkg/wordspace/inst/extdata/term_context_triplets.gz"), sep="\t", quote=FALSE, row.names=FALSE, col.names=FALSE)
+
+ucs.ds <- with(
+  DSM_TermContext,
+  data.frame(
+    l1 = rows$term[MT@i + 1],
+    l2 = cols$term[MT@j + 1],
+    f = MT@x,
+    f1 = rows$f[MT@i + 1],
+    f2 = cols$f[MT@j + 1],
+    N = globals$N))
+write.table(ucs.ds, file=gzfile("data/term_context.ds.gz"), sep="\t", quote=FALSE, row.names=FALSE, col.names=TRUE)
+
+## Now export to read.ucs() format with UCS command-line tools:
+##   ucs-tool export-dsm-matrix -S -gz -ts alpha -fs alpha -f data/term_context.ds.gz ../pkg/wordspace/inst/extdata/term_context_ucs
+
+##
 ## Wikipedia term-term matrix
 ##
 tt.txt <- "breed    tail   feed   kill   important   explain   likely
