@@ -35,3 +35,19 @@ if (!isTRUE(res)) {
   cat(paste0("\t", res, "\n"))
   stop("test failed")
 }
+
+## Check that non-ASCII characters in different encodings are read correctly
+Encode.ref <- c("Test", "\u{0164}\u{00E9}\u{015F}t") # expected rownames of DSM
+
+test.encoding <- function (filename, encoding, ref=Encode.ref, force=FALSE) {
+  if (!force && !(encoding %in% iconvlist())) {
+    warning(sprintf("the %s character encoding is not supported on this platform", encoding))
+  } else {
+    model <- read.dsm.triplet(system.file("extdata", filename, package="wordspace", mustWork=TRUE), encoding=encoding, tokens=TRUE, sort=FALSE)
+    if (!all(ref == model$rows$term)) stop(sprintf("failed to load %s triplet file", encoding))
+  }
+}
+
+test.encoding("tokens_utf8.txt", "UTF-8", force=TRUE) # should work on all platforms
+test.encoding("tokens_latin2.txt", "ISO-8859-2")
+test.encoding("tokens_utf16.txt", "UTF-16")

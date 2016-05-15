@@ -2,7 +2,7 @@ Package: wordspace
 Type: Package
 Title: Distributional Semantic Models in R
 Version: 0.1-21
-Date: 2016-05-08
+Date: 2016-05-15
 Author: Stefan Evert [http://www.stefan-evert.de/]
 Maintainer: Stefan Evert <stefan.evert@fau.de>
 Depends: R (>= 3.0.0), Matrix
