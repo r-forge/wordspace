@@ -5,7 +5,8 @@ Version 0.2-0:
 Version 0.1-21:
 
   - replace readr::read_delim() with iotools::read.delim.raw(), which is slightly faster and leaner; also avoids expensive dependencies of readr such as BH (Boost libraries)
-  - package test for file input (triplet and UCS format) with suitable sample files in extdata/
+  - implemented work-arounds to support compressed files and different character encodings with iotools
+  - package test for file input (triplet and UCS format, different encodings) with suitable sample files in extdata/
 
 Version 0.1-20:
 

@@ -8,7 +8,7 @@ importFrom(cluster, pam)
 
 import(Matrix)
 importFrom(sparsesvd, sparsesvd)
-importFrom(iotools, read.delim.raw)
+importFrom(iotools, readAsRaw, dstrsplit)
 importFrom(Rcpp, evalCpp)
 
 useDynLib(wordspace, .registration=TRUE)
