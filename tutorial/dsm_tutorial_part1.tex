@@ -85,7 +85,7 @@
 
   \gap
   \begin{small}
-    \visible<8->{\light{The examples above are handpicked, of course.  But in a corpus like the BNC, you will find at least as many informative sentences.}}
+    \visible<8->{\light{The examples above are handpicked and edited, of course.  But in a corpus like the BNC, you will find at least as much relevant information.}}
   \end{small}
 \end{frame}
 
@@ -93,8 +93,8 @@
   \frametitle{What is the meaning of ``\textbf{bardiwac}''?}
 
   \centering
-  \only<beamer:1| handout:0>{\includegraphics[width=10cm]{img/SE_bardiwac_conc}}%
-  \only<beamer:2| handout:1>{\includegraphics[width=10cm]{img/SE_bardiwac_sketch}}%
+  \only<beamer:0| handout:0>{\includegraphics[width=10cm]{img/SE_bardiwac_conc}}%
+  \only<beamer:1| handout:1>{\includegraphics[width=10cm]{img/SE_bardiwac_sketch}}%
 \end{frame}
 
 {\newcommand{\hg}[1]{\scriptsize\textpmhg{#1}}
@@ -299,7 +299,7 @@
     \begin{column}{55mm}
       \begin{itemize}
       \item main result of distributional analysis are ``semantic'' distances between words
-      \item typical applications
+      \item immediate applications
         \begin{itemize}
         \item nearest neighbours
         \item clustering of related words
@@ -310,7 +310,7 @@
         \item semantic relations
         \item relational analogies
         \item word sense disambiguation
-        \item detection of multiword expressions
+        \item identification of multiword expressions
         \end{itemize}
       \end{itemize}
     \end{column}
@@ -322,6 +322,32 @@
       \includegraphics[width=50mm]{img/hieroglyph_semantic_map}
     \end{column}
   \end{columns}
+\end{frame}
+
+\begin{frame}
+  \frametitle{An important distinction}
+
+  \begin{itemize}
+  \item<1-> \h{Distributional} \textbf{model}
+    \begin{itemize}
+    \item captures linguistic distribution of each word in the form of a high-dimensional numeric vector
+    \item typically (but not necessarily) based on co-occurrence counts
+    \item distributional hypothesis:\\
+      distributional similarity/distance $\sim$ semantic similarity/distance
+    \item[]
+    \end{itemize}
+  \item<2-> \h{Distributed} \textbf{representation}
+    \begin{itemize}
+    \item sub-symbolic representation of words as high-dimensional numeric vectors
+    \item similarity of vectors usually (but not necessarily) corresponds to semantic similarity of the words
+    \item hot topic: unsupervised neural \hh{word embeddings}
+    \item[]
+    \end{itemize}
+  \end{itemize}
+  
+  \onslide<3->
+  \hand\ Distributional model can be used as distributed representation
+
 \end{frame}
 
 \begin{frame}
@@ -522,23 +548,25 @@
   \frametitle{Overview of DSM parameters}
   % \framesubtitle{}
 
-  \ungap[1]
+  \ungap[2]
   \begin{center}
-    Term-context \vs\ term-term matrix\\
+    pre-processed corpus with linguistic annotation\\
     \pause $\Downarrow$\\
-    Definition of terms \& linguistic pre-processing\\
+    term-context \vs\ term-term matrix\\
+    \pause $\swarrow$ \hspace{3cm} $\searrow$\\
+    define targets \& contexts \hspace{2cm} define targets \& features\\
+    \pause $\Downarrow$ \hspace{6cm} $\Downarrow$ \\
+    type of context \hspace{2cm} type \& size of co-occurrence window\\
+    \pause $\searrow$ \hspace{3cm} $\swarrow$\\
+    geometric \vs\ probabilistic interpretation\\
     \pause $\Downarrow$\\
-    Size \& type of context\\
+    feature scaling\\
     \pause $\Downarrow$\\
-    Geometric \vs\ probabilistic interpretation\\
+    normalisation of rows and/or columns\\
     \pause $\Downarrow$\\
-    Feature scaling\\
+    similarity / distance measure\\
     \pause $\Downarrow$\\
-    Normalisation of rows and/or columns\\
-    \pause $\Downarrow$\\
-    Similarity / distance measure\\
-    \pause $\Downarrow$\\
-    Dimensionality reduction
+    dimensionality reduction
   \end{center}
 \end{frame}
 
@@ -681,7 +709,8 @@
     \begin{itemize}
     \item \hh{surface context} (word or character window)
     \item \hh{textual context} (non-overlapping segments)
-    \item \hh{syntactic contxt} (specific syntagmatic relation)
+    \item \hh{syntactic context} (specific syntagmatic relation)
+    \item additional data: ``marginal'' frequencies of targets and features
     \end{itemize}
   \item Can be seen as smoothing of term-context matrix
     \begin{itemize}
