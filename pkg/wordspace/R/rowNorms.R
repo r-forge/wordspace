@@ -12,8 +12,8 @@
   list(code=as.integer(code), p=as.double(p))
 }
 
-rowNorms <- function (M, method = c("euclidean", "maximum", "manhattan", "minkowski"), p = 2) {
-  method <- match.arg(method)
+rowNorms <- function (M, method = "euclidean", p = 2) {
+  method <- match.arg(method, c("euclidean", "maximum", "manhattan", "minkowski"))
   norm <- .check.norm(method, p)
 
   info <- dsm.is.canonical(M)
@@ -29,8 +29,8 @@ rowNorms <- function (M, method = c("euclidean", "maximum", "manhattan", "minkow
   result
 }
 
-colNorms <- function (M, method = c("euclidean", "maximum", "manhattan", "minkowski"), p = 2) {
-  method <- match.arg(method)
+colNorms <- function (M, method = "euclidean", p = 2) {
+  method <- match.arg(method, c("euclidean", "maximum", "manhattan", "minkowski"))
   norm <- .check.norm(method, p)
   
   info <- dsm.is.canonical(M)

@@ -93,7 +93,7 @@ merge.dsm <- function (x, y, ..., rows=TRUE, all=FALSE, term.suffix=NULL) {
   
   if (any.sparse) {
     ## for sparse matrices, extract/reorder columns, then call rbind() to merge the models
-    ## TODO: thiss waste huge amounts of memory; needs to be reimplemented in a more sophisticated way!
+    ## TODO: this wastes huge amounts of memory; needs to be reimplemented in a more sophisticated way!
     adjusted.models <- lapply(models, function (.m) subset(.m, select=na.omit( match(cols.merged$term, .m$cols$term) )))
     return( do.call(rbind, c(adjusted.models, list(term.suffix=term.suffix))) )
   }

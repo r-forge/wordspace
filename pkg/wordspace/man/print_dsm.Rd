@@ -5,7 +5,7 @@
 }
 \description{
 
-  Prints a short summary describing the \code{dsm} object, including the number of rows and columns.
+  Prints a short summary describing a \code{dsm} object, including the number of rows and columns.
 
 }
 \usage{

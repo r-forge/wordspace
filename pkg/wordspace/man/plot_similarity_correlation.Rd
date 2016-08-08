@@ -14,9 +14,12 @@
 }
 \usage{
   \method{print}{eval.similarity.correlation}(x, \dots)
-  \method{plot}{eval.similarity.correlation}(x, y, line=TRUE, categories=NULL, cat.col=NA, cat.legend="bottomleft",
-     pch=20, cex=1, xlim=NULL, ylim=NULL,
-     xlab="human rating", ylab="distributional model", main=attr(x, "taskname"), \dots)
+  
+  \method{plot}{eval.similarity.correlation}(x, y, line = TRUE,
+     categories = NULL, cat.col = NA, cat.legend = "bottomleft",
+     pch = 20, cex = 1, xlim = NULL, ylim = NULL,
+     xlab = "human rating", ylab = "distributional model",
+     main = attr(x, "taskname"), \dots)
 }
 \arguments{
 

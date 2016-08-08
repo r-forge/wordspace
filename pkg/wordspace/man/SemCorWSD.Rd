@@ -34,7 +34,7 @@ SemCorWSD
 }
 \details{
 
-  Target words and senses must meet the following criteria in order to be included in the data set:
+  Target words and senses had to meet the following criteria in order to be included in the data set:
   \itemize{
     \item{sense occurs \eqn{f \ge 5} times in SemCor 3.0}
     \item{sense accounts for at least 10\% of all occurrences of the target}

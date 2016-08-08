@@ -5,7 +5,7 @@
 }
 \description{
 
-  Visualization of DSM distance matrix as neighbourhood graph based on multidimensional scaling (MDS).
+  Visualization of a DSM distance matrix as a neighbourhood graph based on multidimensional scaling (MDS).
 
 }
 \usage{
@@ -72,7 +72,7 @@
 }
 \seealso{
 
-  \code{\link{nearest.neighbours}}, which produces distance matrices suitable for plotting with \code{dist.matrix=TRUE}
+  \code{\link{nearest.neighbours}}, which produces distance matrices suitable for plotting if the option \code{dist.matrix=TRUE} is specified
 
 }
 \examples{
