@@ -5,7 +5,7 @@
 }
 \description{
 
-  \bold{TODO}
+  Given a set of values and a grouped vector \code{x}, find parallel matches of each value in the different groups and return their positions in the original vector \code{x}.  If there are multiple matches of the same value in a group, only the position of the first match is returned.
 
 }
 \usage{

@@ -9,7 +9,7 @@ match.split <- function (x, f, values=NULL, groups=NULL, nomatch=NA_integer_) {
   n <- length(x)
   
   idx.split <- split(1:n, f)
-  if (missing(values)) {
+  if (is.null(values)) {
     x.split <- lapply(idx.split, function (.idx) unique(x[.idx]))
     values <- Reduce(intersect, x.split)
     if (length(values) < 1) stop("no values are shared between all groups")
