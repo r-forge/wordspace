@@ -34,6 +34,11 @@ subset.dsm <- function (x, subset=NULL, select=NULL, recursive=FALSE, drop.zeroe
   if (is.logical(row.idx)) row.idx <- which(row.idx) # make sure we have numeric indices for additional subsetting
   if (is.logical(col.idx)) col.idx <- which(col.idx)
 
+  if (!matrix.only && identical(row.idx, seq_len(info$nrow)) && identical(col.idx, seq_len(info$ncol))) {
+    ## no change -> return unmodified DSM object (saves unnecessary copy in last iteration of recursive=TRUE)
+    return(x)
+  }
+    
   if (drop.zeroes) {
     M <- if (info$S$ok) x$S else x$M  # primary data matrix (use scores if available, which may be sparser than frequencies)
     is.nzero <- M[row.idx, col.idx, drop=FALSE] != 0

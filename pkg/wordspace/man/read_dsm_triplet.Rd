@@ -10,8 +10,9 @@
 }
 \usage{
 
-read.dsm.triplet(filename, freq = FALSE, value.first = FALSE, tokens = FALSE, sep = "\t", quote = "",
-                 nmax = -1, sort = FALSE, encoding = getOption("encoding"), verbose = FALSE) 
+read.dsm.triplet(filename, freq = FALSE, value.first = FALSE, tokens = FALSE,
+                 sep = "\t", quote = "", nmax = -1, sort = FALSE, 
+                 encoding = getOption("encoding"), verbose = FALSE) 
 
 }
 \arguments{

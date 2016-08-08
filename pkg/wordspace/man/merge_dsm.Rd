@@ -5,7 +5,7 @@
 }
 \description{
 
-  \bold{TODO: revise function}
+  \bold{Warning: this function will be revised in the next release of the \code{wordspace} package}
 
 }
 \usage{

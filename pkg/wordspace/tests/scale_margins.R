@@ -158,3 +158,13 @@ stopifnot(matrix.equal(M1, M1.both.R)) # now M1 and M2 have been modified in-pla
 stopifnot(matrix.equal(M2, M2.both.R))
 ## in fact, DSM_HieroglpyhsMatrix will also be affected (since M1 is a reference to the same object)
 
+
+## a sightly inefficient way to compute outer products
+x <- 1:5
+y <- c(0.25, 1, 2)
+O1 <- outer(y, x)
+
+O2 <- matrix(1, nrow=length(y), ncol=length(x))
+O2 <- scaleMargins(O2, cols=x, rows=y, duplicate=FALSE) # avoid extra copy
+
+stopifnot(matrix.equal(O1, O2))

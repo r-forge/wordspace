@@ -10,14 +10,14 @@
   Additional information in the DSM objects (such as marginal frequencies)
   is checked for consistency and updated automatically.
 
-  \bold{TODO: revise functions}
+  \bold{Warning: these functions will be revised in the next release of \code{wordspace}}
   
 }
 \usage{
-
   \method{rbind}{dsm}(\dots, term.suffix=NULL, deparse.level = 1)
+  
   \method{cbind}{dsm}(\dots, term.suffix=NULL, deparse.level = 1)
-
+  
 }
 \arguments{
 

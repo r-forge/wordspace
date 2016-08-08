@@ -10,7 +10,8 @@
 }
 \usage{
 
-\method{subset}{dsm}(x, subset, select, recursive = FALSE, drop.zeroes = FALSE, matrix.only = FALSE, envir=parent.frame(), \dots)
+\method{subset}{dsm}(x, subset, select, recursive = FALSE, drop.zeroes = FALSE,
+       matrix.only = FALSE, envir = parent.frame(), \dots)
 
 }
 %- maybe also 'usage' for other objects documented here.
@@ -21,20 +22,20 @@
   }
 
   \item{subset}{
-    Boolean expression or index vector selecting a subset of the rows; expression can use variables \code{term} and \code{f} to access target terms and their marginal frequencies, \code{nnzero} for the number of nonzero elements in each row, further optional variables from the row information table, as well as global variables such as the sample size \code{N}
+    Boolean expression or index vector selecting a subset of the rows; the expression can use variables \code{term} and \code{f} to access target terms and their marginal frequencies, \code{nnzero} for the number of nonzero elements in each row, further optional variables from the row information table, as well as global variables such as the sample size \code{N}
   }
 
   \item{select}{
-    Boolean expression or index vector selecting a subset of the columns; expression can use variables \code{term} and \code{f} to access feature terms and their marginal frequencies, \code{nnzero} for the number of nonzero elements in each column, further optional variables from the column information table, as well as global variables such as the sample size \code{N}
+    Boolean expression or index vector selecting a subset of the columns; the expression can use variables \code{term} and \code{f} to access feature terms and their marginal frequencies, \code{nnzero} for the number of nonzero elements in each column, further optional variables from the column information table, as well as global variables such as the sample size \code{N}
   }
 
   \item{recursive}{if \code{TRUE} and both \code{subset} and \code{select} conditions are specified, the \code{subset} is applied repeatedly until the DSM no longer changes.
-    This is typically needed if conditions on nonzero counts or row/column norms or specified, which may be affected by the subsetting procedure.
+    This is typically needed if conditions on nonzero counts or row/column norms are specified, which may be affected by the subsetting procedure.
   }
   
   \item{drop.zeroes}{
-    if \code{TRUE}, all rows and columns without nonzero entries after subsetting are removed from the model
-    (nonzero counts are based on score matrix \eqn{S} if available, raw cooccurrence frequencies \eqn{M} otherwise)
+    if \code{TRUE}, all rows and columns without any nonzero entries after subsetting are removed from the model
+    (nonzero counts are based on the score matrix \eqn{S} if available, raw cooccurrence frequencies \eqn{M} otherwise)
   }
 
   \item{matrix.only}{
@@ -65,16 +66,16 @@
 }
 \examples{
 
-print(DSM_TermContextMatrix)
-model <- dsm(DSM_TermContextMatrix)
+print(DSM_TermContext$M)
+model <- DSM_TermContext
 
-subset(model, nchar(term) <= 4)$S     # short target terms
-subset(model, select=(nnzero <= 3))$S # columns with <= 3 nonzero cells
+subset(model, nchar(term) <= 4)$M     # short target terms
+subset(model, select=(nnzero <= 3))$M # columns with <= 3 nonzero cells
 
-subset(model, nchar(term) <= 4, nnzero <= 3)$S # combine both conditions
+subset(model, nchar(term) <= 4, nnzero <= 3)$M # combine both conditions
 
-subset(model, nchar(term) <= 4, nnzero >= 2)$S # still three columns with nnzero < 2
-subset(model, nchar(term) <= 4, nnzero >= 2, recursive=TRUE)$S
+subset(model, nchar(term) <= 4, nnzero >= 2)$M # still three columns with nnzero < 2
+subset(model, nchar(term) <= 4, nnzero >= 2, recursive=TRUE)$M
 
 }
 \author{Stefan Evert (\url{http://purl.org/stefan.evert})}

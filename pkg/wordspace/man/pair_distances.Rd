@@ -47,9 +47,13 @@ pair.distances(w1, w2, M, \dots, rank = c("none", "fwd", "bwd", "avg"), transfor
   by forward neighbour rank (\code{fwd}), by backward neighbour rank (\code{bwd}), or by the average of forward and backward rank (\code{avg}).
   Forward neighbour rank is the rank of \code{w2} among the nearest neighbours of \code{w1}.
   Backward neighbour rank is the rank of \code{w1} among the nearest neighbours of \code{w2}.
-  The average can be computed as an arithmetic, geometric or harmonic mean, depending on \code{avg.method}; 
-  for logarithmic ranks, \code{avg.method="geometric"} is a suitable choice.
- 
+  The average can be computed as an arithmetic, geometric or harmonic mean, depending on \code{avg.method}.
+  
+  Note that a transformation function is applied \emph{after} averaging.
+  In order to compute the arithmetic mean of log ranks, set \code{transform=log10}, \code{rank="avg"} and \code{avg.method="geometric"}.
+
+  \code{pair.distances} is used as a default callback in several evaluation functions.
+
 }
 \value{
   
