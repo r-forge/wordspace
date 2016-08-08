@@ -32,12 +32,19 @@ words <- c("white_J",                   # includes many colours
 vocab <- union(vocab, words)
 for (w in words) vocab <- union(vocab, names(nearest.neighbours(web_150k_30k_l4r4_svd1000, w, 40)))
 
-length(vocab) # 1368 words
-vocab <- vocab[vocab %in% rownames(web_150k_30k_l4r4_svd1000)]
-length(vocab) # 1331 target words remaining
+## context words from SemCorWSD data set (targets "bank" and "vessel")
+SemCorSub <- subset(SemCorWSD, target %in% c("bank", "vessel"))
+words <- unique(unlist(strsplit(SemCorSub$lemma, split="\\s+", perl=TRUE)))
+words <- grep("_[NVJR]$", words, value=TRUE) # leaves 459 content words
+vocab <- union(vocab, words)
 
-DSM_Vectors <- web_150k_30k_l4r4_svd1000[vocab, 1:100]
-DSM_Vectors <- normalize.rows(DSM_Vectors) # renormalize row vectors
+length(vocab) # 1761 words
+vocab <- vocab[vocab %in% rownames(web_150k_30k_l4r4_svd1000)]
+length(vocab) # 1677 target words remaining
+
+DSM_Vectors <- web_150k_30k_l4r4_svd1000[vocab, ]
+DSM_Vectors <- dsm.projection(DSM_Vectors, n=50) # projection into as few latent dims as possible
+## DSM_Vectors <- normalize.rows(DSM_Vectors) # renormalize row vectors -- skip this step for now
 dim(DSM_Vectors)
 cat(sprintf("Approx. size: %.2f MiB\n", object.size(DSM_Vectors) / 2^20))
 
