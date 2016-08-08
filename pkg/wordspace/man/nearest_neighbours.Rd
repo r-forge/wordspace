@@ -6,7 +6,7 @@
 }
 \description{
 
-  Find the nearest neighbours of a term vector in a DSM, given either as a scored cooccurrence matrix or a pre-computed distance matrix.  The target term can either be specified as a vector or selected by name (in which case the cooccurrence or distance matrix must be labelled appropriately).
+  Find the nearest neighbours of a term vector in a DSM, given either as a scored cooccurrence matrix or a pre-computed distance matrix.  The target term can be selected by name (in which case the cooccurrence or distance matrix must be labelled appropriately) or specified as a vector (if the DSM is given as a matrix).
 
 }
 \usage{
@@ -19,7 +19,7 @@ nearest.neighbours(M, term, n = 10, M2 = NULL, byrow = TRUE,
 \arguments{
 
   \item{M}{
-    either a dense or sparse matrix representing a scored DSM (or an object of class \code{dsm}), or a pre-computed distance matrix returned by \code{dist.matrix} (as an object of class \code{dist.matrix}).  Note that the compact representation returned by the \code{dist} function (class \code{dist}) is not accepted.
+    either a dense or sparse matrix representing a scored DSM (or an object of class \code{dsm}), or a pre-computed distance matrix returned by \code{dist.matrix} (as an object of class \code{dist.matrix}).  Note that the compact representation produced by the \code{dist} function (class \code{dist}) is not accepted.
   }
 
   \item{term}{

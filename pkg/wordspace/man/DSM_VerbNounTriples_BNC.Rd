@@ -17,7 +17,7 @@ DSM_VerbNounTriples_BNC
 
 }
 \format{
-  A data frame with 775283 rows and the following columns:
+  A data frame with 250117 rows and the following columns:
   \describe{
     \item{\code{noun}:}{noun lemma}
     \item{\code{rel}:}{syntactic relation (\code{subj} or \code{obj})}
@@ -28,8 +28,8 @@ DSM_VerbNounTriples_BNC
   
 }
 \details{
-  In order to save disk space, triples that occur just once in the respective subcorpus (\emph{hapax legomena}) have been omitted from the table.
-  This should not lead to a substantial distortion of the frequency counts for mid- to high-frequency nouns and verbs.
+  In order to save disk space, triples that occur less than 5 times in the respective subcorpus have been omitted from the table.
+  The data set should therefore not be used for practical applications.
 }
 \source{
   Syntactic dependencies were extracted from the British National Corpus (Aston & Burnard 1998) using the C&C robust syntactic parser (Curran \emph{et al.} 2007).  Lemmatization and POS tagging are also based on the C&C output.

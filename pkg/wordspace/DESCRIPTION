@@ -15,4 +15,4 @@ URL: http://wordspace.r-forge.r-project.org/
 LazyData: yes
 LazyDataCompression: xz
 Suggests: knitr, rmarkdown, tm
-VignetteBuilder: knitr
+# VignetteBuilder: knitr

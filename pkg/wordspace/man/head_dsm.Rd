@@ -50,10 +50,9 @@
 }
 \examples{
 
-model <- dsm(DSM_TermTermMatrix, raw.freq=TRUE)
-head(model, Inf, Inf) # show full co-occurrence matrix
+head(DSM_TermTerm, Inf, Inf) # show full co-occurrence matrix
 
-head(model, 3, 4)
+head(DSM_TermTerm, 3, 4)
 
 }
 \author{Stefan Evert (\url{http://purl.org/stefan.evert})}
