@@ -13,10 +13,13 @@ save(DSM_VerbNounTriples_DESC, file="data/DSM_VerbNounTriples_DESC.rda", compres
 
 
 bnc.vn <- read.delim("orig/bnc_cc_vn_triples.txt.gz", header=FALSE, quote="", col.names=c("f", "noun", "rel", "verb", "mode"), colClasses=c("numeric", "character", "character", "character", "factor"), fileEncoding="utf8")
-DSM_VerbNounTriples_BNC <- subset(bnc.vn, f >= 2, c("noun", "rel", "verb", "f", "mode"))
+DSM_VerbNounTriples_BNC <- subset(bnc.vn, f >= 5, c("noun", "rel", "verb", "f", "mode")) # use f >= 5 for reduced data size
 
 str(DSM_VerbNounTriples_BNC)
 save(DSM_VerbNounTriples_BNC, file="data/DSM_VerbNounTriples_BNC.rda", compress="xz", compression_level=6)
+
+dim(DSM_VerbNounTriples_BNC); object.size(DSM_VerbNounTriples_BNC) / 1e6
+TRUE
 
 if (TRUE) {
   ## validate new data extraction (without duplicate entries) against old data sets
