@@ -43,7 +43,7 @@ DSM_VerbNounTriples_BNC
 
 # compile some typical DSMs for spoken part of BNC
 bncS <- subset(DSM_VerbNounTriples_BNC, mode == "spoken")
-dim(bncS) # ca. 50k verb-rel-noun triples
+dim(bncS) # ca. 14k verb-rel-noun triples
 
 # dependency-filtered DSM for nouns, using verbs as features
 # (note that multiple entries for same relation are collapsed automatically)

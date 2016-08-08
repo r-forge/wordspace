@@ -1,5 +1,5 @@
-dist.matrix <- function (M, M2=NULL, method=c("cosine", "euclidean", "maximum", "manhattan", "minkowski", "canberra"), p=2, normalized=FALSE, byrow=TRUE, convert=TRUE, as.dist=FALSE, terms=NULL, terms2=terms, skip.missing=FALSE) {
-  method <- match.arg(method)
+dist.matrix <- function (M, M2=NULL, method="cosine", p=2, normalized=FALSE, byrow=TRUE, convert=TRUE, as.dist=FALSE, terms=NULL, terms2=terms, skip.missing=FALSE) {
+  method <- match.arg(method, c("cosine", "euclidean", "maximum", "manhattan", "minkowski", "canberra"))
   similarity <- (method %in% c("cosine")) && !convert
   symmetric <- !(method %in% c()) # FALSE if distance/similarity measure is asymmetric
   cross.distance <- !is.null(M2)  # TRUE if calculating (rectangular) cross-distance matrix
@@ -7,7 +7,8 @@ dist.matrix <- function (M, M2=NULL, method=c("cosine", "euclidean", "maximum", 
   if (method == "minkowski" && (p < 0 || !is.finite(p))) stop("Minkowski p-distance can only be computed for 0 <= p < Inf")
   if (as.dist && similarity) stop("cannot create 'dist' object from similarity matrix")
   if (as.dist && cross.distance) stop("cannot create 'dist' object from cross-distance matrix")
-
+  if (as.dist && !symmetric) stop("cannot create 'dist' object for asymmetric distance measure")
+  
   M <- find.canonical.matrix(M) # extract co-occurence matrix from DSM object, ensure canonical format
   sparse.M <- dsm.is.canonical(M)$sparse
   if (cross.distance) {
@@ -51,7 +52,6 @@ dist.matrix <- function (M, M2=NULL, method=c("cosine", "euclidean", "maximum", 
       terms <- terms[found]
       M <- if (byrow) M[terms, , drop=FALSE] else M[ , terms, drop=FALSE]
     }
-  
   }
   
   if (method == "cosine") {
@@ -78,13 +78,6 @@ dist.matrix <- function (M, M2=NULL, method=c("cosine", "euclidean", "maximum", 
       transform_code <- 0L # cosine -> angle transformation
       tol <- 1e-12
       result <- CPP_similarity_to_distance(result, transform_code, tol, duplicate=FALSE) # can operate inplace on <result>
-      
-      # tol <- 1e-12 # rounding errors tolerated for very small angles (cosine approx. 1 or -1)
-      # if(!all(result >= -(1+tol) & result <= 1+tol)) warning("angular distance may be inaccurate (some cosine values out of range)")
-      # ## TODO: rewrite angle computation as inplace operation in C to avoid memory overhead
-      # result[result < -(1-tol)] <- -1     # clamp to range [-1, 1] and snap to endpoints -1 / 1
-      # result[result > 1-tol] <- 1         # (pmin/pmax eat many GiB of memory for Matrix class??)
-      # result <- acos(result) * (180 / pi) # angles are returned in degrees
     }    
     rownames(result) <- if (byrow) rownames(M) else colnames(M)
     colnames(result) <- if (is.null(M2)) rownames(result) else if (byrow) rownames(M2) else colnames(M2)
@@ -109,9 +102,6 @@ dist.matrix <- function (M, M2=NULL, method=c("cosine", "euclidean", "maximum", 
       result <- CPP_col_dist_dense(.M, .M2, method.code, param1, symmetric && !cross.distance)
     }
     dimnames(result) <- list(colnames(.M), colnames(.M2))
-    ## rownames(result) <- colnames(.M)
-    ## colnames(result) <- colnames(.M2)
-
   }
 
   if (as.dist) {

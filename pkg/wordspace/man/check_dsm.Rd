@@ -5,7 +5,7 @@
 }
 \description{
 
-  Validate the internal structure of a DSM object and return a list structure with information about the object.
+  Validate the internal structure of a DSM object and return a list with information about the object.
 
 }
 \usage{
@@ -77,7 +77,7 @@ check.dsm(model, validate = FALSE, nonneg.check = FALSE)
 }
 \examples{
 
-check.dsm(dsm(DSM_TermTermMatrix, raw.freq=TRUE))
+check.dsm(DSM_TermTerm)
 
 }
 \author{Stefan Evert (\url{http://purl.org/stefan.evert})}

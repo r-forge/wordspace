@@ -12,8 +12,7 @@
 }
 \usage{
 
-dist.matrix(M, M2 = NULL,
-            method = c("cosine", "euclidean", "maximum", "manhattan", "minkowski", "canberra"), p = 2, 
+dist.matrix(M, M2 = NULL, method = "cosine", p = 2, 
             normalized = FALSE, byrow = TRUE, convert = TRUE, as.dist = FALSE, 
             terms = NULL, terms2 = terms, skip.missing = FALSE)
 
@@ -29,7 +28,7 @@ dist.matrix(M, M2 = NULL,
   \item{method}{distance or similarity measure to be used (see \dQuote{Distance Measures} below for details)}
   
   \item{p}{exponent of the \code{minkowski} \eqn{L_p}-metric, a numeric value in the range \eqn{0 \le p < \infty}.
-    The range \eqn{0 \le p < 1} represents a generalization of the Minkowski distance, which cannot be derived from a proper mathematical norm (see details below).
+    The range \eqn{0 \le p < 1} represents a generalization of the standard Minkowski distance, which cannot be derived from a proper mathematical norm (see details below).
   }
   
   \item{normalized}{if \code{TRUE}, assume that the row (or column) vectors of \code{M} and \code{M2} have been appropriately normalised (depending on the selected distance measure) in order to speed up calculations.
@@ -59,7 +58,7 @@ dist.matrix(M, M2 = NULL,
 %% }
 \value{
 
-  By default, a matrix of class \code{dist.matrix}, specifying distances or similarities between term vectors.
+  By default, a numeric matrix of class \code{dist.matrix}, specifying distances or similarities between term vectors.
   A similarity matrix is marked by an additional attribute \code{similarity} with value \code{TRUE}.
   If the distance or similarity matrix is symmetric (i.e. neither a cross-distance matrix nor based on an asymmetric distance measure), it is marked by an attribute \code{symmetric} with value \code{TRUE}.
   
@@ -86,27 +85,28 @@ dist.matrix(M, M2 = NULL,
       for \eqn{0 \le p < 1}.  In the latter case, it is not homogeneous and cannot be derived from a corresponding mathematical norm (cf. \code{\link{rowNorms}}).
 
       Special cases include the Euclidean metric \eqn{d_2(x, y)} for \eqn{p = 2} and the Manhattan metric \eqn{d_1(x, y)} for \eqn{p = 1}, but the dedicated methods above provide more efficient implementations.  For \eqn{p \to \infty}{p -> Inf}, \eqn{d_p(x, y)} converges to the maximum distance \eqn{d_{\infty}(x, y)}, but \code{p=Inf} is not allowed.  For \eqn{p = 0}, \eqn{d_p(x, y)} corresponds to the Hamming distance, i.e. the number of differences \deqn{
-        d_0(x, y) = \#\{ i | x_i \ne y_i \}}{ #{i | x_i != y_i} }
+      d_0(x, y) = \#\{ i | x_i \ne y_i \}}{ #{i | x_i != y_i} }
     }
-    \item{\code{cosine}}{The angular distance between two vectors can be computed by specifying \code{method="cosine"} in combination with \code{convert=FALSE}.  Angles are given in degrees, ranging from 0 to 180.}
     \item{\code{canberra}}{The Canberra metric has been implemented for compatibility with the \code{\link{dist}} function, even though it is probably not very useful for DSM vectors.  It is given by \deqn{
         \sum_i \frac{|x_i - y_i|}{|x_i| + |y_i|}}{ SUM(i) |x_i - y_i| / |x_i| + |y_i| }
       (see \url{https://en.wikipedia.org/wiki/Canberra_distance}).  Terms with \eqn{x_i = y_i = 0} are silently dropped from the summation.
 
-      Note that \code{\link{dist}} uses a different formula https://en.wikipedia.org/wiki/Canberra_distance \deqn{
+      Note that \code{\link{dist}} uses a different formula \deqn{
         \sum_i \frac{|x_i - y_i|}{|x_i + y_i|}}{ SUM(i) |x_i - y_i| / |x_i + y_i| }
       which is highly problematic unless \eqn{x} and \eqn{y} are guaranteed to be non-negative.  Terms with \eqn{x_i = y_i = 0} are imputed, i.e. set to the average value of all nonzero terms.
     }
   }
 
-  In addition, the following similarity measures can be computed by setting \code{convert=FALSE}:
+  In addition, the following similarity measures can be computed and optionally converted to a distance metric:
   \describe{
-    \item{\code{cosine}}{The cosine similarity given by the normalized inner product of the vectors \eqn{x} and \eqn{y}.  Cosine similarity is related to the angle \eqn{\alpha} between the vectors by \deqn{
-        \cos \alpha = \frac{x^T y}{\|x\|\cdot \|y\|}}{ cos(alpha) = x' y / |x| |y|}
+    \item{\code{cosine} (default)}{The cosine similarity given by \deqn{
+        \cos \phi = \frac{x^T y}{||x||_2 \cdot ||y||_2} 
+      }{ cos(phi) = x' y / |x| |y| }
+      If \code{normalized=TRUE}, the denominator is omitted. If \code{convert=TRUE} (the default), the cosine similarity is converted to angular distance \eqn{\phi}, given in degrees ranging from 0 to 180.
     }
-  }
-  Keep in mind that a similarity matrix cannot be converted into a distance structure with \code{as.dist=TRUE}.
-  
+
+  }  
+
 }
 %% \references{
 %% }
