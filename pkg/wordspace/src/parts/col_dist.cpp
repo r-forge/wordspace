@@ -123,7 +123,7 @@ NumericMatrix CPP_col_dist_sparse(int nc1, IntegerVector xp, IntegerVector xrow,
           xrow_curr = (xi < xi_max) ? _xrow[xi] : INT_MAX;
           yrow_curr = (yi < yi_max) ? _yrow[yi] : INT_MAX;
         }
-        else {
+        else /* xrow_curr > yrow_curr */ {
           x_curr = 0; y_curr = _y[yi];
           yi++;
           yrow_curr = (yi < yi_max) ? _yrow[yi] : INT_MAX;          

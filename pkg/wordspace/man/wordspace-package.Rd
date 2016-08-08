@@ -7,7 +7,8 @@
 }
 \description{
 
-  A toy laboratory for research and experimentation in distributional semantics.
+  This package aims to provide a toy laboratory for research and experimentation in distributional semantics
+  as well as a user-friendly environment for building and applying distributional semantic models (DSM) in R 
 
 }
 \details{
@@ -15,8 +16,8 @@
   \tabular{ll}{
     Package: \tab wordspace\cr
     Type: \tab Package\cr
-    Version: \tab 0.1-19\cr
-    Date: \tab 2016-04-01\cr
+    Version: \tab 0.2-0\cr
+    Date: \tab 2016-08-08\cr
     License: \tab GPL-3\cr
     LazyLoad: \tab yes\cr
   }
@@ -35,15 +36,15 @@
 
   and link to the package homepage at \url{http://wordspace.r-forge.r-project.org/}.
 
-  Tutorial materials using the package for examples and exercises are available from \url{http://wordspace.collocations.de} under and open-source license.  You will also find some pre-compiled distributional semantic models (DSM) there.
+  Tutorial materials using the package for examples and exercises are available from \url{http://wordspace.collocations.de/} under an open-source license.  You will also find some pre-compiled distributional semantic models (DSM) there.
 
 }
 \seealso{
 
-  If you are new to the \bold{wordspace} package, you should start by reading the package vignette and trying the code examples.
+  If you are new to the \bold{wordspace} package, you should start by reading the package vignette and trying out the code examples show there.
 
   Good starting points into the package documentation are \code{\link{dsm}}, \code{\link{read.dsm.triplet}}, \code{\link{dist.matrix}} and \code{\link{nearest.neighbours}}.
-  
+
 }
 %% \examples{
 %% }

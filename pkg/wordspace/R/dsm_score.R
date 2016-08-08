@@ -1,11 +1,10 @@
-dsm.score <- function (model,
-                       score=c("frequency", "simple-ll", "t-score", "z-score", "Dice", "MI", "tf.idf", "reweight"),
+dsm.score <- function (model, score="frequency",
                        sparse=TRUE, negative.ok=NA,
                        transform=c("none", "log", "root", "sigmoid"),
                        scale=c("none", "standardize", "center", "scale"),
                        normalize=FALSE, method="euclidean", p=2,
                        matrix.only=FALSE, update.nnzero=FALSE) {
-  score <- match.arg(score)
+  score <- match.arg(score, c("frequency", "simple-ll", "t-score", "z-score", "Dice", "MI", "tf.idf", "reweight"))
   transform <- match.arg(transform)
   scale <- match.arg(scale)
   model.info <- check.dsm(model, validate=TRUE)

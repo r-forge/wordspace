@@ -2,6 +2,11 @@ Version 0.2-0:
 
   - this will be the first public release of the wordspace package
 
+Version 0.1-22:
+
+  - clean up & complete documentation in preparation for first public release
+  - reduce size of example data (verb-noun triples, pre-compiled DSM vectors)
+
 Version 0.1-21:
 
   - replace readr::read_delim() with iotools::read.delim.raw(), which is slightly faster and leaner; also avoids expensive dependencies of readr such as BH (Boost libraries)

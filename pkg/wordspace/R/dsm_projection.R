@@ -22,7 +22,7 @@ dsm.projection <- function (model, n, method=c("svd", "rsvd", "asvd", "ri", "ri+
   R2 <- NULL
   sigma <- NULL
   if (method == "svd") {
-    ## --- standard SVD algorithm (on dense matrix) ---
+    ## --- standard SVD algorithm (dense or sparse) ---
 
     if (verbose) cat(sprintf("SVD reduction to %d dimensions:\n", n))
     if (verbose) cat(" - SVD decomposition\n")
@@ -117,19 +117,14 @@ dsm.projection <- function (model, n, method=c("svd", "rsvd", "asvd", "ri", "ri+
     if (method == "ri+svd") {
       S <- dsm.projection(S, "svd", n, verbose=verbose, with.basis=FALSE) # use plain SVD since matrix is already dense
     }
-    R2 <- NULL # partial R2 not accurate for non-orthogonal projection
-   
+    attr(S, "R2") <- R2 <- NULL # partial R2 not accurate for non-orthogonal projection
   } else {
     stop("dimensionality reduction method '", method, "' has not been implemented yet")
   }
 
   dimnames(S) <- list(rownames(M), paste(method, 1:n, sep=""))
-  ## rownames(S) <- rownames(M)
-  ## colnames(S) <- paste(method, 1:n, sep="")
   if (with.basis) {
     dimnames(B) <- list(colnames(M), colnames(S))
-    ## rownames(B) <- colnames(M)
-    ## colnames(B) <- colnames(S)
     attr(S, "basis") <- B
   }
   if (!is.null(R2)) attr(S, "R2") <- R2

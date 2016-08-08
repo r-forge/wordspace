@@ -11,21 +11,22 @@
 }
 \usage{
 
-context.vectors(M, contexts, split = "\\\\s+", drop.missing = TRUE, row.names=NULL)
+context.vectors(M, contexts, split = "\\\\s+",
+                drop.missing = TRUE, row.names=NULL)
 
 }
 \arguments{
 
   \item{M}{
-    numeric matrix of term vectors for the terms specified by \code{rownames(M)}
+    numeric matrix of row vectors for the terms specified by \code{rownames(M)}, or an object of class \code{dsm}
   }
 
   \item{contexts}{
-    character vector containing the contexts for which bag-of-words representations are to be computed.  Each context is split into a bag of terms, whose representations are then looked up in \code{M} and averaged.
+    the contexts for which bag-of-words representations are to be computed.  Either a character vector, for which each item is split into a bag of terms, or a list of vectors that can be used as row indices into \code{M}.  Vector representations for all terms in a bag are then looked up in \code{M} and averaged.
   }
 
   \item{split}{
-    Perl regular expression determining how contexts are split into terms.  The default behaviour is to split on whitespace.
+    Perl regular expression determining how contexts given as a character vector are split into terms.  The default behaviour is to split on whitespace.
   }
 
   \item{drop.missing}{
@@ -62,11 +63,12 @@ context.vectors(M, contexts, split = "\\\\s+", drop.missing = TRUE, row.names=NU
 VesselWSD <- subset(SemCorWSD, target == "vessel")
 with(VesselWSD, cat(paste0(sense, ": ", sentence, "\n")))
 
-# need to provide senses because not all contexts are found in our small DSM
-Centroids <- context.vectors(DSM_Vectors, VesselWSD$lemma, row.names=VesselWSD$sense)
+# provide sense labels in case some contexts are dropped b/c of too many missing words
+Centroids <- with(VesselWSD, context.vectors(DSM_Vectors, lemma, row.names=sense))
 Centroids[, 1:5]
 
-kmeans(Centroids, 2)$cluster # flat clustering with k-means
+(res <- kmeans(Centroids, 2)$cluster) # flat clustering with k-means
+table(rownames(Centroids), res)       # ... works perfectly
 
 \dontrun{
 plot(hclust(dist.matrix(Centroids, as.dist=TRUE)))
