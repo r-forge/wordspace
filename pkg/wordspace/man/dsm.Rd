@@ -13,7 +13,8 @@
 }
 \usage{
 
-dsm(M = NULL, target = NULL, feature = NULL, score = NULL, rowinfo = NULL, colinfo = NULL, N = NA,
+dsm(M = NULL, target = NULL, feature = NULL, score = NULL,
+    rowinfo = NULL, colinfo = NULL, N = NA,
     globals = list(), raw.freq = FALSE, sort = FALSE, verbose = FALSE)
 
 }

@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
 <title>TODO sheet for wordspace package development</title>
-<!-- 2016-04-04 Mon 08:36 -->
+<!-- 2016-08-10 Wed 10:59 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="generator" content="Org-mode" />
 <meta  name="author" content="Stefan Evert" />
@@ -186,19 +186,7 @@ for the JavaScript code in this tag.
 <h2 id="sec-1"><span class="section-number-2">1</span> Urgent updates</h2>
 <div class="outline-text-2" id="text-1">
 <ul class="org-ul">
-<li>additional documentation
-<ul class="org-ul">
-<li>write a package vignette based on the COLING demo, but using only data sets included in the package
-</li>
 <li>note that (dense) matrix should be saved to text format with <code>write.table()</code> rather than <code>write()</code> (inserts spurious line break every INT<sub>MAX</sub> chars), either in examples or in a (new) vignette
-</li>
-</ul>
-</li>
-<li>upload package to CRAN
-<ul class="org-ul">
-<li>pre-release version could be made available on the homepage (using WinBuilder)
-</li>
-</ul>
 </li>
 <li>improve Web page
 </li>
@@ -211,16 +199,6 @@ for the JavaScript code in this tag.
 <h2 id="sec-2"><span class="section-number-2">2</span> Bug fixes and improvements</h2>
 <div class="outline-text-2" id="text-2">
 <ul class="org-ul">
-<li>include pre-compiled large-corpus DSM for core vocabulary (e.g. from LargeDSM), e.g. basic English + words in included test sets
-<ul class="org-ul">
-<li>should arrange for easy updates that automatically compile vocabulary from included data sets
-</li>
-<li>add further tests
-</li>
-</ul>
-</li>
-<li>special case optimization in <code>subset.dsm()</code>: return input unchanged if no rows or columns are dropped (to avoid unnecessary duplication with recursive=TRUE)
-</li>
 <li>handle zero rows more gracefully in <code>normalize.rows()</code>
 <ul class="org-ul">
 <li>perhaps leave untouched if row norm is below some <code>tol</code> parameter
@@ -248,6 +226,22 @@ for the JavaScript code in this tag.
 <li>approach B: read input in chunks, then change dsm() constructor so it can work on the chunks and combine them as late as possible into the sparse matrix; it may be difficult to achieve substantial savings with this strategy
 </li>
 </ul>
+</li>
+<li>convenience methods for <code>rownames</code> and <code>colnames</code> of DSM object
+<ul class="org-ul">
+<li>achieved by providing <code>dimnames.dsm</code> method
+</li>
+<li>preferably also <code>dimnames&lt;-</code> method, which sets rows$term and cols$term as well as dimnames of <code>$M</code> and <code>$S</code>
+</li>
+</ul>
+</li>
+<li><code>as.matrix.dsm()</code> method should extract the raw (<code>$M</code>) or scored (<code>$S</code>) cooccurrence matrix, as appropriate
+<ul class="org-ul">
+<li>might also update dimnames of the matrix in case someone has messed with <code>$rows$term</code> or <code>$cols$term</code> directly
+</li>
+</ul>
+</li>
+<li><code>[</code> accessor method for subsetting with row/column numbers or target/feature terms
 </li>
 </ul>
 </div>
@@ -529,7 +523,7 @@ for the JavaScript code in this tag.
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Stefan Evert</p>
-<p class="date">Created: 2016-04-04 Mon 08:36</p>
+<p class="date">Created: 2016-08-10 Wed 10:59</p>
 <p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.5.1 (<a href="http://orgmode.org">Org</a> mode 8.2.10)</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>

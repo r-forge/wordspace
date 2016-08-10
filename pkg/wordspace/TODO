@@ -9,23 +9,12 @@
 
 * Urgent updates
     
-  - additional documentation
-    - write a package vignette based on the COLING demo, but using only data sets included in the package
-    - note that (dense) matrix should be saved to text format with =write.table()= rather than =write()= (inserts spurious line break every INT_MAX chars), either in examples or in a (new) vignette
-  - upload package to CRAN
-    - pre-release version could be made available on the homepage (using WinBuilder)
+  - note that (dense) matrix should be saved to text format with =write.table()= rather than =write()= (inserts spurious line break every INT_MAX chars), either in examples or in a (new) vignette
   - improve Web page
-  - change =DSM_TermTermMatrix= etc. to =dsm= objects =DSM_TermTerm[Model]= etc.
-    - can always obtain the original matrix with =$M= or =as.matrix()=
-    - but shouldn't be used in any major way yet anyway
 
 
 * Bug fixes and improvements
 
- - include pre-compiled large-corpus DSM for core vocabulary (e.g. from LargeDSM), e.g. basic English + words in included test sets
-   - should arrange for easy updates that automatically compile vocabulary from included data sets
-   - add further tests
- - special case optimization in =subset.dsm()=: return input unchanged if no rows or columns are dropped (to avoid unnecessary duplication with recursive=TRUE)
  - handle zero rows more gracefully in =normalize.rows()=
    - perhaps leave untouched if row norm is below some =tol= parameter
    - is normalization meaningful for Minkowski norm with $p < 1$, which doesn't scale linearly in our generalization?
@@ -43,6 +32,7 @@
  - =as.matrix.dsm()= method should extract the raw (=$M=) or scored (=$S=) cooccurrence matrix, as appropriate
    - might also update dimnames of the matrix in case someone has messed with =$rows$term= or =$cols$term= directly
  - =[= accessor method for subsetting with row/column numbers or target/feature terms
+
 
 * Combining DSM objects after internal redesign
 
