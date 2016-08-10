@@ -11,7 +11,7 @@
 }
 \usage{
 
-wordspace.openmp(threads=NULL)
+wordspace.openmp(threads = NULL)
 
 }
 \arguments{
@@ -48,6 +48,7 @@ wordspace.openmp(threads=NULL)
 \seealso{
   \code{\link{dist.matrix}}
 }
-%% \examples{
-%% }
+\examples{
+wordspace.openmp()
+}
 \author{Stefan Evert (\url{http://purl.org/stefan.evert})}

@@ -34,11 +34,11 @@
 }
 \examples{
 
-tdm <- dsm(DSM_TermContextMatrix) # term-document model
-tdm$S
+tdm <- DSM_TermContext # term-document model
+tdm$M
 
 dtm <- t(tdm) # document-term model
-dtm$S
+dtm$M
 
 }
 \author{Stefan Evert (\url{http://purl.org/stefan.evert})}

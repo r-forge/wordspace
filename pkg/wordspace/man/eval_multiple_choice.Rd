@@ -15,7 +15,8 @@
 
 eval.multiple.choice(task, M, dist.fnc = pair.distances, \dots,
                      details = FALSE, format = NA, taskname = NA,
-                     target.name = "target", correct.name = "correct", distractor.name = "^distract") 
+                     target.name = "target", correct.name = "correct",
+                     distractor.name = "^distract") 
 
 }
 \arguments{
