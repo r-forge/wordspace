@@ -1,28 +1,6 @@
-## replacement for iotools::read.delim.raw, which re-encodes input file after reading
-## - most options are fixed and column names and classes have to be specified by the user
-## - fh must be a connection that can be properly opened in binary mode (with automatic decompression if necessary)
-## - colClasses should be a named vector to set column names of the table
-## - unless encoding is "" or "native.enc", input will be converted to UTF-8 and marked as such
-.read.delim.raw <- function (fh, colClasses, nrows=-1, encoding=getOption("encoding")) {
-  is.native <- encoding == "" || encoding == "native.enc"
-  is.utf8 <- any(grepl("^utf-?8$", encoding, ignore.case=TRUE))
-  bindata <- readAsRaw(fh) # read entire file as raw vector (may want to make block size n= larger than default of 64k bytes)
-  if (!is.native && !is.utf8) {
-    ## use iconv to recode the raw vector into UTF-8
-    bindata <- iconv(list(bindata), from=encoding, to="UTF-8", toRaw=TRUE)[[1]]
-  }
-  ## now parse table in raw vector into a data frame
-  res <- dstrsplit(bindata, colClasses, sep="\t", quote="", strict=TRUE, nrows=nrows)
-  if (!is.native) {
-    ## mark all character variables as UTF-8 (unless read with native encoding)
-    for (i in seq_along(colClasses)) {
-      if (colClasses[i] == "character") Encoding(res[[i]]) <- "UTF-8"
-    }
-  }
-  res
-}
-
-read.dsm.triplet <- function (filename, freq=FALSE, value.first=FALSE, tokens=FALSE, sep="\t", quote="", nmax=-1, sort=FALSE, encoding=getOption("encoding"), verbose=FALSE) {
+read.dsm.triplet <- function (filename, freq=FALSE, value.first=FALSE, tokens=FALSE,
+                              rowinfo=NULL, rowinfo.header=NULL, colinfo=NULL, colinfo.header=NULL, N=NA, span.size=1,
+                              sep="\t", quote="", nmax=-1, sort=FALSE, encoding=getOption("encoding"), verbose=FALSE) {
   if (verbose) cat(sprintf("Loading DSM triplets from '%s' ... ", filename))
   is.pipe <- grepl("\\|\\s*$", filename, perl=TRUE)
   if (is.pipe) {
@@ -34,27 +12,56 @@ read.dsm.triplet <- function (filename, freq=FALSE, value.first=FALSE, tokens=FA
   
   if (tokens) {
     if (freq || value.first) warning("freq= and value.first= options are ignored with tokens=TRUE")
-    triplets <- .read.delim.raw(fh, colClasses=c(l1="character", l2="character"), nrows=nmax, encoding=encoding)
+    triplets <- .read.delim.raw(fh, header=FALSE, colClasses=c(l1="character", l2="character"), sep=sep, quote=quote, nrows=nmax, encoding=encoding)
     ## I prefer iotools::read.delim.raw over readr::read_delim because:
     ##  - readr has many "expensive" dependencies (esp. Boost in package 'BH')
     ##  - readr doesn't support the default "native.enc" encoding and cannot read from all types of connections
     ##  - iotools is slightly faster and leaner (less memory overhead) than readr
-    ##  - unfortunately, read.delim.raw doesn't convert character encodings at all, but we work around this with .read.delim.raw above
+    ##  - unfortunately, read.delim.raw doesn't convert character encodings at all, but we work around this with our own .read.delim.raw
     ## Alternative version using readr::read_delim:
-    ##   triplets <- read_delim(fh, "\t", col_names=c("l1", "l2"), col_types="cc", locale=locale(encoding=encoding), n_max=nmax, quote="", comment="", na=character(), escape_double=FALSE, escape_backslash=FALSE, progress=FALSE)
+    ##   triplets <- read_delim(fh, sep, col_names=c("l1", "l2"), col_types="cc", locale=locale(encoding=encoding), n_max=nmax, quote=quote, comment="", na=character(), escape_double=FALSE, escape_backslash=FALSE, progress=FALSE)
     triplets$val <- 1
     freq <- TRUE
   } else {
     col.types <- if (value.first) c(val="numeric", l1="character", l2="character") else c(l1="character", l2="character", val="numeric")
-    triplets <- .read.delim.raw(fh, colClasses=col.types, nrows=nmax, encoding=encoding)
+    triplets <- .read.delim.raw(fh, header=FALSE, colClasses=col.types, sep=sep, quote=quote, nrows=nmax, encoding=encoding)
     ## Alternative version using readr::read_delim:
     ##   col.types <- if (value.first) "dcc" else "ccd"
     ##   col.names <- if (value.first) c("val", "l1", "l2") else c("l1", "l2", "val")
-    ##   triplets <- read_delim(fh, "\t", col_names=col.names, col_types=col.types, locale=locale(encoding=encoding), n_max=nmax, quote="", comment="", na=character(), escape_double=FALSE, escape_backslash=FALSE, progress=FALSE)
+    ##   triplets <- read_delim(fh, sep, col_names=col.names, col_types=col.types, locale=locale(encoding=encoding), n_max=nmax, quote=quote, comment="", na=character(), escape_double=FALSE, escape_backslash=FALSE, progress=FALSE)
   }
-  ## close(fh) not needed because read.delim.raw automatically opens and closes the connection
-  
+  ## close(fh) not needed because .read.delim.raw automatically opens and closes the connection
   if (verbose) cat(sprintf("%.2fM %s\n", length(triplets$l1) / 1e6, if (tokens) "tokens" else "items"))
 
-  dsm(target=triplets$l1, feature=triplets$l2, score=triplets$val, raw.freq=freq, sort=sort, verbose=verbose)
+  ## read external marginal frequencies or other information on targets and features
+  have.rowinfo <- !is.null(rowinfo)
+  have.colinfo <- !is.null(colinfo)
+  have.N <- !is.na(N)
+  if ((have.rowinfo || have.colinfo) && freq) {
+    if (!(have.rowinfo && have.colinfo && have.N)) stop("need rowinfo=, colinfo= and N= for external marginal frequencies")
+  }
+  
+  if (have.rowinfo) {
+    if (verbose) cat(sprintf(" - loading target information from '%s'\n", rowinfo))
+    if (is.null(rowinfo.header)) rowinfo.header <- TRUE
+    rowinfo.tbl <- .read.delim.raw(file(rowinfo), header=rowinfo.header, sep=sep, quote=quote, encoding=encoding)
+    if (!("term" %in% colnames(rowinfo.tbl))) stop("rowinfo= must specify feature types in column 'term'")
+    have.f <- "f" %in% colnames(rowinfo.tbl)
+    if (freq && !have.f) stop("rowinfo= must include marginal frequencies (column 'f') if freq=TRUE or tokens=TRUE")
+    if (have.f && !missing(span.size)) rowinfo.tbl$f <- span.size * rowinfo.tbl$f # adjust row marginals for span size
+    ## dsm() constructor below will check that all target terms are included in the table and add nnzero counts if necessary
+  } 
+  else rowinfo.tbl <- NULL
+
+  if (have.colinfo) {
+    if (verbose) cat(sprintf(" - loading feature information from '%s'\n", colinfo))
+    if (is.null(colinfo.header)) colinfo.header <- TRUE
+    colinfo.tbl <- .read.delim.raw(file(colinfo), header=colinfo.header, sep=sep, quote=quote, encoding=encoding)
+    if (!("term" %in% colnames(colinfo.tbl))) stop("colinfo= must specify target types in column 'term'")
+    have.f <- "f" %in% colnames(colinfo.tbl)
+    if (freq && !have.f) stop("colinfo= must include marginal frequencies (column 'f') if freq=TRUE or tokens=TRUE")
+  }
+  else colinfo.tbl <- NULL
+  
+  dsm(target=triplets$l1, feature=triplets$l2, score=triplets$val, raw.freq=freq, rowinfo=rowinfo.tbl, colinfo=colinfo.tbl, N=N, sort=sort, verbose=verbose)
 }
