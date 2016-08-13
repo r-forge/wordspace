@@ -1,3 +1,13 @@
+.complain.about.words <- function (w, what="words") {
+  n <- length(w)
+  if (n >= 10) {
+    sprintf("%d missing %s: %s, ...", n, what, paste(w[1:6], collapse=", "))
+  }
+  else {
+    sprintf("missing %s: %s", what, paste(w, collapse=", "))
+  }
+}
+
 dsm <- function (M = NULL, target = NULL, feature = NULL, score = NULL, rowinfo = NULL, colinfo = NULL, N = NA, globals = list(), raw.freq = FALSE, sort = FALSE, verbose = FALSE) {
   if (!is.null(M)) {
 
@@ -70,7 +80,7 @@ dsm <- function (M = NULL, target = NULL, feature = NULL, score = NULL, rowinfo 
     if (!("term" %in% colnames(rowinfo))) stop("rowinfo= must specify target types in column 'term'")
     rowinfo$term <- as.character(rowinfo$term)
     idx <- match(rownames(M), rowinfo$term)
-    if (any(is.na(idx))) stop("missing target types in rowinfo=")
+    if (any(is.na(idx))) stop(.complain.about.words(rownames(M)[is.na(idx)], "target types in rowinfo"))
     rowinfo <- rowinfo[idx, , drop=FALSE]
   }
 
@@ -80,7 +90,7 @@ dsm <- function (M = NULL, target = NULL, feature = NULL, score = NULL, rowinfo 
     if (!("term" %in% colnames(colinfo))) stop("colinfo= must specify feature types in column 'term'")
     colinfo$term <- as.character(colinfo$term)
     idx <- match(colnames(M), colinfo$term)
-    if (any(is.na(idx))) stop("missing feature types in colinfo=")
+    if (any(is.na(idx))) stop(.complain.about.words(colnames(M)[is.na(idx)], "feature types in colinfo"))
     colinfo <- colinfo[idx, , drop=FALSE]
   }
 

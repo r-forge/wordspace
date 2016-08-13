@@ -1,6 +1,11 @@
 Version 0.2-0:
 
-  - the first public release of the wordspace package
+  - the first public release of the wordspace package \o/
+
+Version 0.1-24:
+
+  - read.dsm.triplet can now load marginal frequencies from separate files, so it is a full-fledged replacement for read.dsm.ucs (though less memory-efficient than the native UCS format for very large models)
+  - RC 2 for public release
 
 Version 0.1-23:
 
