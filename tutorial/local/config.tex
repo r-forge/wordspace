@@ -42,6 +42,12 @@
 %% > plot(x,y)      \REM{this produces a scatterplot}
 \newcommand{\REM}[2][\small]{\textsf{#1\color{primary}\# #2}}
 
+\newenvironment{Rcode}[1][]{%
+\setbeamercolor{block title}{fg=counterpoint,bg=counterpoint!15!white}%
+\setbeamercolor{block body}{bg=counterpoint!5!white}\small%
+\begin{block}{#1}\begin{alltt}\ungap[1]}{%
+\ungap[1]\end{alltt}\end{block}}
+
 %% nice colour for R output: \begin{Rout} .. \end{Rout}
 %% -- ugly hack: I'm sure theres a better way to do this
 \newenvironment{Rout}[1][\footnotesize]{%
