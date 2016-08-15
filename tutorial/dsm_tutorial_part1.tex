@@ -289,8 +289,8 @@
       \begin{itemize}
       \item vector can also be understood as arrow from origin
       \item direction more important than location
-      \item<1-> use angle $\alpha$ as distance measure
-      \item<2-> or normalise length $\norm{\vx_{\text{dog}}}$ of arrow
+      \item<beamer:1-| handout:1-> use angle $\alpha$ as distance measure
+      \item<beamer:2-| handout:2-> or normalise length $\norm{\vx_{\text{dog}}}$ of arrow
       \end{itemize}
     \end{column}
     \begin{column}{75mm}
@@ -347,25 +347,48 @@
 \begin{frame}
   \frametitle{Building a distributional model}
   % \framesubtitle{}
-
-  \ungap[2]
-  \begin{center}
-    pre-processed corpus with linguistic annotation\\
-    \pause $\Downarrow$\\
-    term-context \vs\ term-term matrix\\
-    \pause $\swarrow$ \hspace{3cm} $\searrow$\\
-    define targets \& contexts \hspace{2cm} define targets \& features\\
-    \pause $\Downarrow$ \hspace{6cm} $\Downarrow$ \\
-    \hspace{.5cm} type of context \hspace{1.5cm} type \& size of co-occurrence window\\
-    \pause $\searrow$ \hspace{3cm} $\swarrow$\\
-    geometric \vs\ probabilistic interpretation\\
-    \pause $\Downarrow$\\
-    feature scaling\\
-    \pause $\Downarrow$\\
-    similarity/distance measure + normalisation\\
-    \pause $\Downarrow$\\
-    dimensionality reduction
-  \end{center}
+  
+  \footnotesize\centering
+  \begin{tikzpicture}
+    \node[diagram box=black] (corpus) at (0, 6.5) {pre-processed corpus with linguistic annotation} ;
+    \visible<2->{
+      \node[diagram box] (tt_terms) at (+3, 5) {define target \& feature terms} ;
+      \draw[diagram arrow=counterpoint] (corpus) -- node[right=1.5em] {term-term matrix} (tt_terms) ;
+    }
+    \visible<3->{
+      \node[diagram box] (tt_span) at (+3, 4) {type \& size of co-occurrence} ;
+      \draw[diagram arrow] (tt_terms) -- (tt_span) ;
+    }
+    \visible<4->{
+      \node[diagram box] (tc_terms) at (-3, 5) {define target terms} ; 
+      \draw[diagram arrow=counterpoint] (corpus) -- node[left=1.5em] {term-context matrix} (tc_terms) ;
+    }
+    \visible<5->{
+      \node[diagram box] (tc_context) at (-3, 4) {context tokens or types} ;
+      \draw[diagram arrow] (tc_terms) -- (tc_context) ;
+    }
+    \visible<6->{
+      \node[diagram box] (geom_prob) at (0, 3) {} ;
+      \draw[diagram arrow] (tt_span) -- (geom_prob) ;
+      \draw[diagram arrow] (tc_context) -- (geom_prob) ;
+    }
+    \visible<7->{
+      \node[diagram ghost] (prob) at (2, 2) {} ;
+      \draw[diagram arrow=counterpoint] (geom_prob) -- node[right=1.5em] {probabilistic analysis} (prob) ;
+    }
+    \visible<8->{
+      \node[diagram box] (scoring) at (-2, 2) {feature scaling} ;
+      \draw[diagram arrow=counterpoint] (geom_prob) -- node[left=1.5em] {geometric analysis} (scoring) ;
+    }
+    \visible<9->{
+      \node[diagram box] (metric) at (-2, 1) {similarity/distance measure + normalization} ;
+      \draw[diagram arrow] (scoring) -- (metric) ;
+    }
+    \visible<10->{
+      \node[diagram box] (dimred) at (-2, 0) {dimensionality reduction} ;
+      \draw[diagram arrow] (metric) -- (dimred) ;
+    }
+  \end{tikzpicture}
 \end{frame}
 
 \begin{frame}

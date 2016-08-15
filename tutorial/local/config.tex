@@ -22,6 +22,27 @@
 \usepackage{rotating}
 \usepackage{multirow}
 
+\usetikzlibrary{arrows.meta}
+\usetikzlibrary{shadows}
+
+%% ----- predefined TikZ styles
+
+%% diagram:
+%%   box[=colour]   ... shaded text box with drop shadow
+%%   arrow[=colour] ... thick arrow between boxes
+%%   ghost          ... invisible box (white)
+\tikzstyle{diagram box}[secondary]=[
+rectangle, rounded corners=1ex, inner sep=5pt, minimum height=4ex, minimum width=4ex,
+thick, draw=#1, top color=#1!5!white, bottom color=#1!25!white, drop shadow]
+
+\tikzstyle{diagram ghost}=[
+rectangle, rounded corners=1ex, inner sep=5pt, minimum height=4ex, minimum width=4ex,
+thick, draw=white, color=white]
+
+\tikzstyle{diagram arrow}[secondary]=[
+->, >={Latex[width=4pt, length=4pt]}, ultra thick, color=#1]
+
+
 %% ----- general copyright message (authors may change between versions of the tutorial)
 \newcommand{\dsmcopyright}{%
   Copyright \textcopyright\ 2009--2016 Evert, Lenci, Baroni \& Lapesa | 
@@ -39,17 +60,17 @@
 
 %% ----- some useful macros for the SIGIL course
 
-%% > plot(x,y)      \REM{this produces a scatterplot}
-\newcommand{\REM}[2][\small]{\textsf{#1\color{primary}\# #2}}
-
+%% \begin{Rcode} .. \end{Rcode}
 \newenvironment{Rcode}[1][]{%
 \setbeamercolor{block title}{fg=counterpoint,bg=counterpoint!15!white}%
 \setbeamercolor{block body}{bg=counterpoint!5!white}\small%
 \begin{block}{#1}\begin{alltt}\ungap[1]}{%
 \ungap[1]\end{alltt}\end{block}}
 
+%% > plot(x,y)      \REM{this produces a scatterplot}
+\newcommand{\REM}[2][\small]{\textsf{#1\color{primary}\# #2}}
+
 %% nice colour for R output: \begin{Rout} .. \end{Rout}
-%% -- ugly hack: I'm sure theres a better way to do this
 \newenvironment{Rout}[1][\footnotesize]{%
   \begin{footnotesize}#1\color{secondary}\bfseries}{%
   \color{black}\mdseries\end{footnotesize}}
@@ -60,3 +81,4 @@
 
 %% rotated column labels for table (to fit long text into narrow columns
 \newcommand{\rotLabel}[2][60]{\begin{rotate}{#1}#2\end{rotate}}
+
