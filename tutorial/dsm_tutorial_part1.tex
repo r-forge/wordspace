@@ -59,12 +59,21 @@
   \begin{itemize}
   \item ``Die Bedeutung eines Wortes liegt in seinem Gebrauch.''\\
     \hfill --- Ludwig Wittgenstein
-  \item[]
+    \begin{itemize}
+    \item<2->[\hand] \primary{meaning = use = distribution in language}
+    \item[] 
+    \end{itemize}
   \item ``You shall know a word by the company it keeps!''\\
     \hfill --- J.~R.\ \citet{Firth:57}
-  \item[]
+    \begin{itemize}
+    \item<3->[\hand] \primary{distribution = collocations = habitual word combinations}
+    \item[]
+    \end{itemize}
   \item Distributional hypothesis: difference of meaning correlates with difference of distribution \citep[Zellig][]{Harris:54}
-  \item[]
+    \begin{itemize}
+    \item<4->[\hand] \primary{semantic distance}
+    \item[]
+    \end{itemize}
   \item ``What people know when they say that they know a word is not how to recite its dictionary definition -- they know how to use it [\ldots] in everyday discourse.'' \citep{Miller:86}
   \end{itemize}
 \end{frame}
@@ -109,23 +118,28 @@
     \begin{tabular}{@{\rule{0mm}{1.2em} }lr*{6}{|c}|}
       && \hg{get} & \hg{sij} & \hg{ius} & \hg{hir} & \hg{iit} & \hg{kil} \\
       \hline
-      \colB<beamer:2| handout:2>{(knife)} & \colB<beamer:2| handout:2>{\hg{naif}} & \colB<beamer:2| handout:2>{51} & \colB<beamer:2| handout:2>{20} & \colB<beamer:2| handout:2>{84} &  \colB<beamer:2| handout:2>{0} &  \colB<beamer:2| handout:2>{3} &  \colB<beamer:2| handout:2>{0} \\
+      \tikz[remember picture, inner sep=0pt]{\node(knife){\colB<beamer:2| handout:2>{(knife)}}} & \colB<beamer:2| handout:2>{\hg{naif}} & \colB<beamer:2| handout:2>{51} & \colB<beamer:2| handout:2>{20} & \colB<beamer:2| handout:2>{84} &  \colB<beamer:2| handout:2>{0} &  \colB<beamer:2| handout:2>{3} &  \colB<beamer:2| handout:2>{0} \\
       \hline
-      \colB<beamer:4| handout:4>{(cat)}   & \colB<beamer:4| handout:4>{\hg{ket}}  &  \colB<beamer:4| handout:4>{52} & \colB<beamer:4| handout:4>{58} &  \colB<beamer:4| handout:4>{4} &  \colB<beamer:4| handout:4>{4} &  \colB<beamer:4| handout:4>{6} & \colB<beamer:4| handout:4>{26} \\
+      \tikz[remember picture, inner sep=0pt]{\node(cat){\colB<beamer:4| handout:4>{(cat)}}}   & \colB<beamer:4| handout:4>{\hg{ket}}  &  \colB<beamer:4| handout:4>{52} & \colB<beamer:4| handout:4>{58} &  \colB<beamer:4| handout:4>{4} &  \colB<beamer:4| handout:4>{4} &  \colB<beamer:4| handout:4>{6} & \colB<beamer:4| handout:4>{26} \\
       \hline
-      \h{???} & \h{\hg{dog}} & \colA{115} & \colA{83} & \colA{10} & \colA{42} & \colA{33} & \colA{17} \\
+      \tikz[remember picture, inner sep=0pt]{\node(dog){\h{???}}} & \h{\hg{dog}} & \colA{115} & \colA{83} & \colA{10} & \colA{42} & \colA{33} & \colA{17} \\
       \hline
       (boat)  & \hg{beut} &  59 & 39 & 23 &  4 &  0 &  0 \\
       \hline
       (cup)   & \hg{kap}  &  98 & 14 &  6 &  2 &  1 &  0 \\
       \hline
-      \colB<beamer:3| handout:3>{(pig)}  & \colB<beamer:3| handout:3>{\hg{pigij}} &  \colB<beamer:3| handout:3>{12} & \colB<beamer:3| handout:3>{17} &  \colB<beamer:3| handout:3>{3} &  \colB<beamer:3| handout:3>{2} &  \colB<beamer:3| handout:3>{9} & \colB<beamer:3| handout:3>{27} \\
+      \tikz[remember picture, inner sep=0pt]{\node(pig){\colB<beamer:3| handout:3>{(pig)}}}  & \colB<beamer:3| handout:3>{\hg{pigij}} &  \colB<beamer:3| handout:3>{12} & \colB<beamer:3| handout:3>{17} &  \colB<beamer:3| handout:3>{3} &  \colB<beamer:3| handout:3>{2} &  \colB<beamer:3| handout:3>{9} & \colB<beamer:3| handout:3>{27} \\
       \hline
       (banana) & \hg{nana} & 11 &  2 &  2 &  0 & 18 &  0 \\
       \hline
     \end{tabular}
     
     \gap[2]\Large
+    \begin{tikzpicture}[remember picture, overlay]
+      \draw<beamer:2| handout:2>[<->,puregreen,very thick] (dog.west) to[out=160, in=200] (knife.west) ;
+      \draw<beamer:3| handout:3>[<->,puregreen,very thick] (dog.west) to[out=210, in=150] (pig.west) ;
+      \draw<beamer:4| handout:4>[<->,puregreen,very thick] (dog.west) to[out=150, in=210] (cat.west) ;
+    \end{tikzpicture}
     \only<beamer:2| handout:2>{%
       sim(\colA{\hg{dog}}, \colB{\hg{naif}}) = 0.770 }%
     \only<beamer:3| handout:3>{%
@@ -248,15 +262,14 @@
   \end{columns}
 \end{frame}
 
-\begin{frame}
+\begin{frame}<beamer:1| handout:0>
   \frametitle{Geometric interpretation}
   % \framesubtitle{}
 
   \begin{columns}[T]
     \begin{column}{40mm}
       \begin{itemize}
-      \item similarity = spatial proximity (Euclidean dist.)
-      \item location depends on frequency of noun ($f_{\text{dog}} \approx 2.7\cdot f_{\text{cat}}$)
+      \item vector can also be understood as arrow from origin
       \item direction more important than location
       \end{itemize}
     \end{column}
@@ -274,54 +287,94 @@
   \begin{columns}[T]
     \begin{column}{40mm}
       \begin{itemize}
-      \item similarity = spatial proximity (Euclidean dist.)
-      \item location depends on frequency of noun ($f_{\text{dog}} \approx 2.7\cdot f_{\text{cat}}$)
+      \item vector can also be understood as arrow from origin
       \item direction more important than location
-      \item<1-> normalise ``length'' $\norm{\vx_{\text{dog}}}$ of vector
-      \item<2-> or use angle $\alpha$ as distance measure
+      \item<1-> use angle $\alpha$ as distance measure
+      \item<2-> or normalise length $\norm{\vx_{\text{dog}}}$ of arrow
       \end{itemize}
     \end{column}
     \begin{column}{75mm}
       \ungap[1]
-      \only<beamer:1| handout:0>{%
+      \only<beamer:1| handout:1>{%
         \includegraphics[width=75mm]{img/hieroglyph_2d_4}}%
-      \only<beamer:2| handout:1>{%
+      \only<beamer:2| handout:2>{%
         \includegraphics[width=75mm]{img/hieroglyph_2d_5}}%
     \end{column}
   \end{columns}
 \end{frame}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Distributional semantic models}
+
 \begin{frame}
-  \frametitle{Semantic distances}
+  \frametitle{General definition of DSMs}
   % \framesubtitle{}
 
-  \begin{columns}[T]
-    \begin{column}{55mm}
-      \begin{itemize}
-      \item main result of distributional analysis are ``semantic'' distances between words
-      \item immediate applications
-        \begin{itemize}
-        \item nearest neighbours
-        \item clustering of related words
-        \item construct semantic map
-        \end{itemize}
-      \item other applications require clever use of the distance information
-        \begin{itemize}
-        \item semantic relations
-        \item relational analogies
-        \item word sense disambiguation
-        \item identification of multiword expressions
-        \end{itemize}
-      \end{itemize}
-    \end{column}
-    \begin{column}{55mm}
-      \ungap[1]
-      \includegraphics[width=50mm]{img/hieroglyph_clustering}
+  \ungap
+  \begin{block}{}
+    A \h{distributional semantic model} (DSM) is a scaled and/or
+    transformed co-occurrence matrix $\mathbf{M}$, such that each row $\vx$
+    represents the distribution of a target term across contexts.
+  \end{block}
 
-      \gap[1]
-      \includegraphics[width=50mm]{img/hieroglyph_semantic_map}
-    \end{column}
-  \end{columns}
+  \begin{center}
+    \begin{small}
+      \setlength{\arrayrulewidth}{1pt}
+      \begin{tabular}{r*{6}{|c}|}
+        & get & see & use & hear & eat & kill \\
+        \hline
+        knife &  0.027 & -0.024 &  0.206 & -0.022 & -0.044 & -0.042 \\
+        \hline
+        cat   &  0.031 &  0.143 & -0.243 & -0.015 & -0.009 &  0.131 \\
+        \hline
+        \primary{dog}   & \primary{-0.026} &  \primary{0.021} & \primary{-0.212} &  \primary{0.064} &  \primary{0.013} &  \primary{0.014} \\
+        \hline
+        boat  & -0.022 &  0.009 & -0.044 & -0.040 & -0.074 & -0.042 \\
+        \hline
+        cup   & -0.014 & -0.173 & -0.249 & -0.099 & -0.119 & -0.042 \\
+        \hline
+        pig   & -0.069 &  0.094 & -0.158 &  0.000 &  0.094 &  0.265 \\
+        \hline
+        banana&  0.047 & -0.139 & -0.104 & -0.022 &  0.267 & -0.042 \\
+        \hline
+      \end{tabular}
+    \end{small}
+  \end{center}
+
+  \hh{Term} = word, lemma, phrase, morpheme, word pair, \ldots
+\end{frame}
+
+\begin{frame}
+  \frametitle{General definition of DSMs}
+  % \framesubtitle{}
+
+  Mathematical notation:
+  \begin{itemize}
+  \item $k \times n$ co-occurrence matrix $\mathbf{M}$ (example: $7\times 6$ matrix)
+    \begin{itemize}
+    \item $k$ rows = target terms
+    \item $n$ columns = features or \hh{dimensions}
+    \end{itemize}
+    \begin{small}
+      \gap[.5]
+      \[
+      \mathbf{M} =
+      \begin{bmatrix}
+        m_{11} & m_{12} & \cdots & m_{1n} \\
+        m_{21} & m_{22} & \cdots & m_{2n} \\
+        \vdots & \vdots & & \vdots \\
+        m_{k1} & m_{k2} & \cdots & m_{kn}
+      \end{bmatrix}
+      \]
+    \end{small}
+  \item distribution vector $\Vector{m}_i$ = $i$-th row of $\mathbf{M}$, e.g.\ $\Vector{m}_3 = \Vector{m}_{\text{dog}}$
+  \item components $\Vector{m}_i = (m_{i1}, m_{i2}, \ldots, m_{in})$ = features of $i$-th term:
+    \begin{align*}
+      \Vector{m}_3 &= (-0.026, 0.021, -0.212, 0.064, 0.013, 0.014) \\
+      &= (m_{31}, m_{32}, m_{33}, m_{34}, m_{35}, m_{36})
+    \end{align*}
+  \end{itemize}
+
 \end{frame}
 
 \begin{frame}
@@ -729,34 +782,42 @@
   \framesubtitle{DSM based on verb-object relations from BNC, reduced to 100 dim.\ with SVD}
   % \framesubtitle{}
 
-  Neighbours of \h{dog} (cosine angle):
+  Neighbours of \h{trousers} (cosine angle):
   \begin{itemize}\item[\hand]
-    girl (45.5), boy (46.7), horse(47.0), wife (48.8), baby (51.9),
-    daughter (53.1), side (54.9), mother (55.6), boat (55.7),
-    rest (56.3), night (56.7), cat (56.8), son (57.0), man (58.2), 
-    place (58.4), husband (58.5), thing (58.8), friend (59.6), \ldots
+    shirt (18.5), blouse (21.9), scarf (23.4), jeans (24.7), skirt (25.9),
+    sock (26.2), shorts (26.3), jacket (27.8), glove (28.1), coat (28.8),
+    cloak (28.9), hat (29.1), tunic (29.3), overcoat (29.4), pants (29.8),
+    helmet (30.4), apron (30.5), robe (30.6), mask (30.8), tracksuit (31.0),
+    jersey (31.6), shawl (31.6), \ldots
   \end{itemize}
 
-  \gap
-  Neighbours of \h{school}:
+  \gap\pause
+  Neighbours of \h{rage} (cosine angle):
   \begin{itemize}\item[\hand]
-    country (49.3), church (52.1), hospital (53.1), house (54.4),
-    hotel (55.1), industry (57.0), company (57.0), home (57.7), family
-    (58.4), university (59.0), party (59.4), group (59.5), building
-    (59.8), market (60.3), bank (60.4), business (60.9), area (61.4),
-    department (61.6), club (62.7), town (63.3), library (63.3), 
-    room (63.6), service (64.4), police (64.7), \ldots
+    anger (28.5), fury (32.5), sadness (37.0), disgust (37.4), emotion (39.0),
+    jealousy (40.0), grief (40.4), irritation (40.7), revulsion (40.7), scorn
+    (40.7), panic (40.8), bitterness (41.6), resentment (41.8), indignation
+    (41.9), excitement (42.0), hatred (42.5), envy (42.8), disappointment
+    (42.9), \ldots 
   \end{itemize}
   \addnote{Neighbours and neighbourhood plots from BNC verb-object DSM, reduced to 100 dimensions by SVD.}%
 \end{frame}
 
 \begin{frame}[c]
-  \frametitle{Nearest neighbours}
+  \frametitle{Nearest neighbours with similarity graph}
   % \framesubtitle{}
 
   \ungap[1]
   \begin{center}
-    \includegraphics[width=8cm]{img/neighbourhood_dog}
+    \only<beamer:0| handout:1>{%
+      \begin{tabular}{@{}cc@{}}
+        \includegraphics[width=55mm]{img/neighbourhood_trousers} 
+        & \includegraphics[width=55mm]{img/neighbourhood_plant}
+      \end{tabular}}%
+    \only<beamer:1| handout:0>{%
+       \includegraphics[width=75mm]{img/neighbourhood_trousers}}%
+    \only<beamer:2| handout:0>{%
+      \includegraphics[width=90mm, trim=0 50 0 50, clip]{img/neighbourhood_plant}}%
   \end{center}
 \end{frame}
 
@@ -764,8 +825,9 @@
   \frametitle{Semantic maps}
   % \framesubtitle{}
 
+  \ungap[1]
   \begin{center}
-    \includegraphics[width=100mm]{img/hieroglyph_semantic_map}
+    \includegraphics[width=100mm]{img/vobj_semantic_map}
   \end{center}
 \end{frame}
 
@@ -773,8 +835,10 @@
   \frametitle{Clustering}
   % \framesubtitle{}
 
+  \ungap[1]
   \begin{center}
-    \includegraphics[width=100mm]{img/hieroglyph_clustering}
+    \only<beamer:1| handout:1>{\includegraphics[width=100mm]{img/vobj_clustering}}%
+    \only<beamer:2| handout:0>{\includegraphics[width=100mm]{img/vobj_clustering_6}}%
   \end{center}
 \end{frame}
 
@@ -782,42 +846,35 @@
   \frametitle{Latent dimensions}
   % \framesubtitle{}
 
+  \ungap[1]
   \begin{center}
     \includegraphics[width=8cm]{img/3_buy_sell_labels_latent}
   \end{center}
 \end{frame}
 
-\begin{frame}[c]
-  \frametitle{Semantic similarity graph (topological structure)}
-  % \framesubtitle{}
-
-  \begin{center}
-    \begin{tabular}{@{}cc@{}}
-    \includegraphics[width=55mm]{img/neighbourhood_coffee} &
-    \visible<2->{\includegraphics[width=55mm]{img/neighbourhood_hand}}
-  \end{tabular}
-  \end{center}
-\end{frame}
-
 \begin{frame}
-  \frametitle{Context vectors \citep{Schuetze:98}}
+  \frametitle{Word embeddings}
 
   \gap
   \begin{columns}[c]
     \begin{column}{50mm}
-      Distributional representation only at type level
+      DSM vector as sub-symbolic meaning representation
       \begin{itemize}
-      \item[\hand] What is the ``average'' meaning of \emph{mouse}? (computer \vs animal)
+      \item feature vector for machine learning algorithm
+      \item input for neural network
       \item[]
       \end{itemize}
-      \pause
-      \h{Context vector} approximates meaning of individual token
+
+      \onslide<2->
+      \h{Context vectors} for word tokens \citep{Schuetze:98} 
       \begin{itemize}
       \item \hh{bag-of-words} approach:
         centroid of all context words in the sentence
+      \item application to WSD
       \end{itemize}
     \end{column}
     \begin{column}{60mm}
+      \onslide<3->
       \includegraphics[width=60mm]{img/illustration_context_vectors_mouse}
     \end{column}
   \end{columns}
