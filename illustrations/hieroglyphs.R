@@ -38,18 +38,19 @@ text(Mx, labels=words2x, pos=3, cex=1.2)
 arrows(0, 0, .reduce * Mx[,1], .reduce * Mx[,2], col=1:4, lwd=3, length=.2)
 dev.copy2pdf(file="img/hieroglyph_2d_3.pdf", bg="white", onefile=FALSE) # -- overlay 3
 
-curve(sqrt(80^2 - x^2), from=0, to=80, add=TRUE)
-points(diag(80/len2x) %*% Mx, pch=1, cex=1.6, lwd=3, col=1:4)
-dev.copy2pdf(file="img/hieroglyph_2d_4.pdf", bg="white", onefile=FALSE) # -- overlay 4
-
 .start <- atan2(Mx["dog",2], Mx["dog",1]) # draw arc segment from "dog" to "knife"
 .end <- atan2(Mx["knife",2], Mx["knife",1])
 .phi <- seq(.start, .end, length.out=100)
 .x <- 90*cos(.phi)
 .y <- 90*sin(.phi)
-lines(.x, .y, lwd=2, lty="22")
-arrows(.x[99],.y[99], .x[100],.y[100], lwd=2, lty="22", length=.2)
+lines(.x, .y, lwd=3, lty="22")
+arrows(.x[99],.y[99], .x[100],.y[100], lwd=3, lty="22", length=.2)
 text(80,56, expression(alpha == 54.3 * degree), cex=1.4, pos=4)
-dev.copy2pdf(file="img/hieroglyph_2d_5.pdf", bg="white", onefile=FALSE) # -- overlay 5
+dev.copy2pdf(file="img/hieroglyph_2d_4.pdf", bg="white", onefile=FALSE) # -- overlay 5
+
+curve(sqrt(80^2 - x^2), from=0, to=80, add=TRUE)
+points(diag(80/len2x) %*% Mx, pch=1, cex=1.6, lwd=3, col=1:4)
+dev.copy2pdf(file="img/hieroglyph_2d_5.pdf", bg="white", onefile=FALSE) # -- overlay 4
+
 
 dev.off()
