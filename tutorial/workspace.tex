@@ -55,7 +55,7 @@
     \node[diagram box] (tt_terms) at (+3, 5) {define target \& feature terms} ;
     \node[diagram box] (tc_context) at (-3, 4) {context tokens or types} ;
     \node[diagram box] (tt_span) at (+3, 4) {type \& size of co-occurrence} ;
-    \node[diagram box] (geom_prob) at (0, 3) {} ;
+    \node[diagram box=black] (geom_prob) at (0, 3) {$\mathbf{M}$} ;
     \node[diagram box] (scoring) at (-2, 2) {feature scaling} ;
     \node[diagram box] (metric) at (-2, 1) {similarity/distance measure + normalization} ;
     \node[diagram box] (dimred) at (-2, 0) {dimensionality reduction} ;
@@ -90,16 +90,16 @@
       \draw[diagram arrow] (tt_terms) -- (tt_span) ;
     }
     \visible<beamer:4-| handout:4->{
+      \node[diagram box=black] (geom_prob) at (0, 3) {$\mathbf{M}$} ;
+      \draw[diagram arrow] (tt_span) -- (geom_prob) ;
+    }
+    \visible<beamer:5-| handout:5->{
       \node[diagram box] (tc_terms) at (-3, 5) {define target terms} ; 
       \draw[diagram arrow=counterpoint] (corpus) -- node[left=1.5em] {term-context matrix} (tc_terms) ;
     }
-    \visible<beamer:5-| handout:5->{
+    \visible<beamer:6-| handout:6->{
       \node[diagram box] (tc_context) at (-3, 4) {context tokens or types} ;
       \draw[diagram arrow] (tc_terms) -- (tc_context) ;
-    }
-    \visible<beamer:6-| handout:6->{
-      \node[diagram box] (geom_prob) at (0, 3) {} ;
-      \draw[diagram arrow] (tt_span) -- (geom_prob) ;
       \draw[diagram arrow] (tc_context) -- (geom_prob) ;
     }
     \visible<beamer:7-| handout:7->{
@@ -120,9 +120,9 @@
     }
   \end{tikzpicture}
 \end{frame}
-
 \againframe<beamer:3| handout:3>{DSM_pipeline}
-\againframe<beamer:5,8| handout:5>{DSM_pipeline}
+
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% References (if any)
