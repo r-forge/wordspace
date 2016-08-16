@@ -360,16 +360,16 @@
       \draw[diagram arrow] (tt_terms) -- (tt_span) ;
     }
     \visible<4->{
+      \node[diagram box=black] (geom_prob) at (0, 3) {$\mathbf{M}$} ;
+      \draw[diagram arrow] (tt_span) -- (geom_prob) ;
+    }
+    \visible<5->{
       \node[diagram box] (tc_terms) at (-3, 5) {define target terms} ; 
       \draw[diagram arrow=counterpoint] (corpus) -- node[left=1.5em] {term-context matrix} (tc_terms) ;
     }
-    \visible<5->{
+    \visible<6->{
       \node[diagram box] (tc_context) at (-3, 4) {context tokens or types} ;
       \draw[diagram arrow] (tc_terms) -- (tc_context) ;
-    }
-    \visible<6->{
-      \node[diagram box] (geom_prob) at (0, 3) {} ;
-      \draw[diagram arrow] (tt_span) -- (geom_prob) ;
       \draw[diagram arrow] (tc_context) -- (geom_prob) ;
     }
     \visible<7->{

@@ -49,40 +49,153 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{DSM parameters}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{A taxonomy of DSM parameters}
-
 \begin{frame}
-  \frametitle{Overview of DSM parameters}
+  \frametitle{General definition of DSMs}
   % \framesubtitle{}
 
-  \ungap[1]
+  \ungap
+  \begin{block}{}
+    A \h{distributional semantic model} (DSM) is a scaled and/or
+    transformed co-occurrence matrix $\mathbf{M}$, such that each row $\vx$
+    represents the distribution of a target term across contexts.
+  \end{block}
+
   \begin{center}
-    \h{Term-context \vs\ term-term matrix}\\
-    $\Downarrow$\\
-    Definition of terms \& linguistic pre-processing\\
-    $\Downarrow$\\
-    Size \& type of context\\
-    $\Downarrow$\\
-    Geometric \vs\ probabilistic interpretation\\
-    $\Downarrow$\\
-    Feature scaling\\
-    $\Downarrow$\\
-    Normalisation of rows and/or columns\\
-    $\Downarrow$\\
-    Similarity / distance measure\\
-    $\Downarrow$\\
-    Dimensionality reduction
+    \begin{small}
+      \setlength{\arrayrulewidth}{1pt}
+      \begin{tabular}{r*{6}{|c}|}
+        & get & see & use & hear & eat & kill \\
+        \hline
+        knife &  0.027 & -0.024 &  0.206 & -0.022 & -0.044 & -0.042 \\
+        \hline
+        cat   &  0.031 &  0.143 & -0.243 & -0.015 & -0.009 &  0.131 \\
+        \hline
+        \primary{dog}   & \primary{-0.026} &  \primary{0.021} & \primary{-0.212} &  \primary{0.064} &  \primary{0.013} &  \primary{0.014} \\
+        \hline
+        boat  & -0.022 &  0.009 & -0.044 & -0.040 & -0.074 & -0.042 \\
+        \hline
+        cup   & -0.014 & -0.173 & -0.249 & -0.099 & -0.119 & -0.042 \\
+        \hline
+        pig   & -0.069 &  0.094 & -0.158 &  0.000 &  0.094 &  0.265 \\
+        \hline
+        banana&  0.047 & -0.139 & -0.104 & -0.022 &  0.267 & -0.042 \\
+        \hline
+      \end{tabular}
+    \end{small}
   \end{center}
+
+  \hh{Term} = word, lemma, phrase, morpheme, word pair, \ldots
 \end{frame}
 
 \begin{frame}
+  \frametitle{General definition of DSMs}
+  % \framesubtitle{}
+
+  Mathematical notation:
+  \begin{itemize}
+  \item $k \times n$ co-occurrence matrix $\mathbf{M}$ (example: $7\times 6$ matrix)
+    \begin{itemize}
+    \item $k$ rows = \h{target} terms 
+    \item $n$ columns = \h{features} or \hh{dimensions}
+    \end{itemize}
+    \begin{small}
+      \gap[.5]
+      \[
+      \mathbf{M} =
+      \begin{bmatrix}
+        m_{11} & m_{12} & \cdots & m_{1n} \\
+        m_{21} & m_{22} & \cdots & m_{2n} \\
+        \vdots & \vdots & & \vdots \\
+        m_{k1} & m_{k2} & \cdots & m_{kn}
+      \end{bmatrix}
+      \]
+    \end{small}
+  \item distribution vector $\Vector{m}_i$ = $i$-th row of $\mathbf{M}$, e.g.\ $\Vector{m}_3 = \Vector{m}_{\text{dog}}$
+  \item components $\Vector{m}_i = (m_{i1}, m_{i2}, \ldots, m_{in})$ = features of $i$-th term:
+    \begin{align*}
+      \Vector{m}_3 &= (-0.026, 0.021, -0.212, 0.064, 0.013, 0.014) \\
+      &= (m_{31}, m_{32}, m_{33}, m_{34}, m_{35}, m_{36})
+    \end{align*}
+  \end{itemize}
+
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{A taxonomy of DSM parameters}
+
+\begin{frame}<beamer:1| handout:1>[label=DSM_parameters]
+  \frametitle{Overview of DSM parameters}
+  
+  \footnotesize\centering
+  \begin{tikzpicture}
+    \node[diagram box=black] (corpus) at (0, 6.5) {pre-processed corpus with linguistic annotation} ;
+    \visible<beamer:1,3-| handout:1,3->{
+      \node[diagram box] (tt_terms) at (+3, 5) {define target \& feature terms} ;
+      \node[diagram box] (tc_terms) at (-3, 5) {define target terms} ; 
+    }
+    \visible<beamer:2| handout:2>{
+      \node[diagram dark box=primary] (tt_terms) at (+3, 5) {define target \& feature terms} ;
+      \node[diagram dark box=primary] (tc_terms) at (-3, 5) {define target terms} ; 
+    }
+    \visible<beamer:1-2,4-| handout:1-2,4->{
+      \node[diagram box] (tt_span) at (+3, 4) {type \& size of co-occurrence} ;
+    }
+    \visible<beamer:3| handout:3>{
+      \node[diagram dark box=primary] (tt_span) at (+3, 4) {type \& size of co-occurrence} ;
+    }
+    \visible<beamer:1-3,5-| handout:1-3,5->{
+      \node[diagram box] (tc_context) at (-3, 4) {context tokens or types} ;
+    }
+    \visible<beamer:4| handout:4>{
+      \node[diagram dark box=primary] (tc_context) at (-3, 4) {context tokens or types} ;
+    }
+    \visible<beamer:1-4,6-| handout:1-4,6->{
+      \node[diagram box=black] (geom_prob) at (0, 3) {$\mathbf{M}$} ;
+    }
+    \visible<beamer:5| handout:5>{
+      \node[diagram dark box=primary] (geom_prob) at (0, 3) {$\mathbf{M}$} ;
+    }
+    \node[diagram ghost] (prob) at (2, 2) {} ;
+    \visible<beamer:1-5,7-| handout:1-5,7->{
+      \node[diagram box] (scoring) at (-2, 2) {feature scaling} ;
+    }
+    \visible<beamer:6| handout:6>{
+      \node[diagram dark box=primary] (scoring) at (-2, 2) {feature scaling} ;
+    }
+    \visible<beamer:1-6,8-| handout:1-6,8->{
+      \node[diagram box] (metric) at (-2, 1) {similarity/distance measure + normalization} ;
+    }
+    \visible<beamer:7| handout:7>{
+      \node[diagram dark box=primary] (metric) at (-2, 1) {similarity/distance measure + normalization} ;
+    }
+    \visible<beamer:1-7,9-| handout:1-7,9->{
+      \node[diagram box] (dimred) at (-2, 0) {dimensionality reduction} ;
+    }
+    \visible<beamer:8| handout:8>{
+      \node[diagram dark box=primary] (dimred) at (-2, 0) {dimensionality reduction} ;
+    }
+    \draw[diagram arrow=counterpoint] (corpus) -- node[right=1.5em] {term-term matrix} (tt_terms) ;
+    \draw[diagram arrow] (tt_terms) -- (tt_span) ;
+    \draw[diagram arrow] (tt_span) -- (geom_prob) ;
+    \draw[diagram arrow=counterpoint] (corpus) -- node[left=1.5em] {term-context matrix} (tc_terms) ;
+    \draw[diagram arrow] (tc_terms) -- (tc_context) ;
+    \draw[diagram arrow] (tc_context) -- (geom_prob) ;
+    \draw[diagram arrow=counterpoint] (geom_prob) -- node[right=1.5em] {probabilistic analysis} (prob) ;
+    \draw[diagram arrow=counterpoint] (geom_prob) -- node[left=1.5em] {geometric analysis} (scoring) ;
+    \draw[diagram arrow] (scoring) -- (metric) ;
+    \draw[diagram arrow] (metric) -- (dimred) ;
+  \end{tikzpicture}
+\end{frame}
+
+
+\begin{frame}[fragile]
   \frametitle{Term-context matrix}
   % \framesubtitle{}
 
   \h{Term-context matrix} records frequency of term in each individual context (e.g.\ sentence, document, Web page, encyclopaedia article)
   
-  \gap[3]
+  \gap[2]
   \begin{center}
   \(
   \mathbf{F} = 
@@ -125,6 +238,10 @@
   \end{small}
   \end{center}
 
+\begin{Rcode}
+> TC <- DSM_TermContext
+> head(TC, Inf) \REM{extract full co-oc matrix from DSM object}
+\end{Rcode}
 \end{frame}
 
 \begin{frame}
@@ -146,7 +263,7 @@
 
 \end{frame}
 
-\begin{frame}
+\begin{frame}[fragile]
   \frametitle{Term-term matrix}
   % \framesubtitle{}
 
@@ -195,9 +312,10 @@
   \end{small}
   \end{center}
 
-  \begin{itemize}
-  \item[\hand] we will usually assume a term-term matrix in this tutorial
-  \end{itemize}
+\begin{Rcode}
+> TT <- DSM_TermTerm
+> head(TT, Inf)
+\end{Rcode}
 \end{frame}
 
 \begin{frame}
@@ -221,70 +339,47 @@
     \begin{itemize}
     \item average over similar contexts (with same context terms)
     \item data sparseness reduced, except for small windows
-    \item we will take a closer look at the relation between term-context and term-term models later in this tutorial
+    \item we will take a closer look at the relation between term-context and term-term models in part 5 of this tutorial
     \end{itemize}
   \end{itemize}
 
 \end{frame}
 
-\begin{frame}
-  \frametitle{Overview of DSM parameters}
-  % \framesubtitle{}
-
-  \ungap[1]
-  \begin{center}
-    Term-context \vs\ term-term matrix\\
-    $\Downarrow$\\
-    \h{Definition of terms \& linguistic pre-processing}\\
-    $\Downarrow$\\
-    Size \& type of context\\
-    $\Downarrow$\\
-    Geometric \vs\ probabilistic interpretation\\
-    $\Downarrow$\\
-    Feature scaling\\
-    $\Downarrow$\\
-    Normalisation of rows and/or columns\\
-    $\Downarrow$\\
-    Similarity / distance measure\\
-    $\Downarrow$\\
-    Dimensionality reduction
-  \end{center}
-\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\againframe<beamer:2| handout:2>{DSM_parameters}
 
 \begin{frame}
-  \frametitle{Corpus pre-processing}
+  \frametitle{Definition of target and feature terms}
 
   \ungap
   \begin{itemize}
-  \item Minimally, corpus must be tokenised \so identify terms
-  \item Linguistic annotation
+  \item Choice of linguistic unit
     \begin{itemize}
-    \item part-of-speech tagging
-    \item lemmatisation / stemming
-    \item word sense disambiguation (rare)
-    \item shallow syntactic patterns
-    \item dependency parsing
+    \item words
+    \item bigrams, trigrams, \ldots
+    \item multiword units, phrases, \ldots
+    \item morphemes
+    \item word pairs (\hand\ analogy tasks)
     \end{itemize}
-    \pause
-  \item Generalisation of terms
+  \item<2-> Linguistic annotation
     \begin{itemize}
-    \item often lemmatised to reduce data sparseness:\\
+    \item word forms (minimally requires tokenisation)
+    \item often lemmatisation or stemming to reduce data sparseness:\\
       \emph{go, goes, went, gone, going} \so \emph{go}
     \item POS disambiguation (\emph{light}/N \vs\ \emph{light}/A \vs\ \emph{light}/V)
     \item word sense disambiguation (\emph{bank}\tsub{river} \vs\ \emph{bank}\tsub{finance})
+    \item abstraction: POS tags (or bigrams) as feature terms
     \end{itemize}
-  \pause
-  \item Trade-off between deeper linguistic analysis and
+  \item<3-> Trade-off between deeper linguistic analysis and
     \begin{itemize}
     \item need for language-specific resources
     \item possible errors introduced at each stage of the analysis
-%%    \item even more parameters to optimise / cognitive plausibility
     \end{itemize}
   \end{itemize}
 \end{frame}
 
 \begin{frame}
-  \frametitle{Effects of pre-processing}
+  \frametitle{Effects of linguistic annotation}
   \framesubtitle{}
 
   \centering
@@ -295,8 +390,8 @@
     \begin{block}{word forms}
       \begin{itemize}
       \item stroll
-      \item walking
-      \item walked
+      \item \counterpoint{walking}
+      \item \counterpoint{walked}
       \item go
       \item path
       \item drive
@@ -307,7 +402,7 @@
       \end{itemize}
     \end{block}
     \column{4cm}
-    \begin{block}{lemmatised corpus}
+    \begin{block}{lemmatised + POS}
       \begin{itemize}
       \item hurry
       \item stroll
@@ -315,8 +410,8 @@
       \item trudge
       \item amble
       \item wander
-      \item walk-nn
-      \item walking
+      \item \primary{walk} \secondary{(noun)}
+      \item \counterpoint{walking}
       \item retrace
       \item scuttle 
       \end{itemize}
@@ -325,7 +420,7 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{Effects of pre-processing}
+  \frametitle{Effects of linguistic annotation}
 
   \centering
   Nearest neighbours of \emph{arrivare} (Repubblica)
@@ -347,12 +442,12 @@
       \end{itemize}
     \end{block}
     \column{4cm}
-    \begin{block}{lemmatised corpus}
+    \begin{block}{lemmatised + POS}
       \begin{itemize}
       \item giungere
       \item aspettare
       \item attendere
-      \item arrivo-nn
+      \item arrivo \secondary{(noun)}
       \item ricevere
       \item accontentare
       \item approdare
@@ -366,28 +461,36 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{Overview of DSM parameters}
-  % \framesubtitle{}
-
-  \ungap[1]
-  \begin{center}
-    Term-context \vs\ term-term matrix\\
-    $\Downarrow$\\
-    Definition of terms \& linguistic pre-processing\\
-    $\Downarrow$\\
-    \h{Size \& type of context}\\
-    $\Downarrow$\\
-    Geometric \vs\ probabilistic interpretation\\
-    $\Downarrow$\\
-    Feature scaling\\
-    $\Downarrow$\\
-    Normalisation of rows and/or columns\\
-    $\Downarrow$\\
-    Similarity / distance measure\\
-    $\Downarrow$\\
-    Dimensionality reduction
-  \end{center}
+  \frametitle{Selection of target and feature terms}
+  
+  \begin{itemize}
+  \item Full-vocabulary models are often unmanageable
+    \begin{itemize}
+    \item 762,424 distinct word forms in BNC, 605,910 lemmata
+    \item large Web corpora have $>$ 10 million distinct word forms
+    \item low-frequency targets (and features) do not provide reliable distributional information (too much ``noise'')
+    \end{itemize}
+  \item<2-> Frequency-based selection
+    \begin{itemize}
+    \item minimum corpus frequency: $f \geq F_{\min}$
+    \item or accept $n_w$ most frequent terms
+    \item sometimes also upper threshold: $F_{\min}\leq f\leq F_{\max}$
+    \end{itemize}
+  \item<3-> Relevance-based selection
+    \begin{itemize}
+    \item criterion from IR: document frequency $df$
+    \item terms with high $df$ are very general \so uninformative
+    \item terms with very low $df$ may be too sparse to be useful
+    \end{itemize}
+  \item<4-> Other criteria
+    \begin{itemize}
+    \item POS-based filter: no function words, only verbs, \ldots
+    \end{itemize}
+  \end{itemize}
 \end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\againframe<beamer:3| handout:3>{DSM_parameters}
 
 \begin{frame}
   \frametitle{Surface context}
@@ -636,29 +739,8 @@
   \end{itemize}
 \end{frame}
 
-\begin{frame}
-  \frametitle{Overview of DSM parameters}
-  % \framesubtitle{}
-
-  \ungap[1]
-  \begin{center}
-    Term-context \vs\ term-term matrix\\
-    $\Downarrow$\\
-    Definition of terms \& linguistic pre-processing\\
-    $\Downarrow$\\
-    Size \& type of context\\
-    $\Downarrow$\\
-    \h{Geometric \vs\ probabilistic interpretation}\\
-    $\Downarrow$\\
-    Feature scaling\\
-    $\Downarrow$\\
-    Normalisation of rows and/or columns\\
-    $\Downarrow$\\
-    Similarity / distance measure\\
-    $\Downarrow$\\
-    Dimensionality reduction
-  \end{center}
-\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\againframe<beamer:5| handout:5>{DSM_parameters}
 
 \begin{frame}
   \frametitle{Geometric vs.\ probabilistic interpretation}
@@ -690,29 +772,8 @@
   \end{itemize}
 \end{frame}
 
-\begin{frame}
-  \frametitle{Overview of DSM parameters}
-  % \framesubtitle{}
-
-  \ungap[1]
-  \begin{center}
-    Term-context \vs\ term-term matrix\\
-    $\Downarrow$\\
-    Definition of terms \& linguistic pre-processing\\
-    $\Downarrow$\\
-    Size \& type of context\\
-    $\Downarrow$\\
-    Geometric \vs\ probabilistic interpretation\\
-    $\Downarrow$\\
-    \h{Feature scaling}\\
-    $\Downarrow$\\
-    Normalisation of rows and/or columns\\
-    $\Downarrow$\\
-    Similarity / distance measure\\
-    $\Downarrow$\\
-    Dimensionality reduction
-  \end{center}
-\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\againframe<beamer:6| handout:6>{DSM_parameters}
 
 \begin{frame}
   \frametitle{Feature scaling}
@@ -799,29 +860,9 @@
   Details \& many more measures: \secondary{\url{http://www.collocations.de/}}
 \end{frame}
 
-\begin{frame}
-  \frametitle{Overview of DSM parameters}
-  % \framesubtitle{}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\againframe<beamer:7| handout:7>{DSM_parameters}
 
-  \ungap[1]
-  \begin{center}
-    Term-context \vs\ term-term matrix\\
-    $\Downarrow$\\
-    Definition of terms \& linguistic pre-processing\\
-    $\Downarrow$\\
-    Size \& type of context\\
-    $\Downarrow$\\
-    Geometric \vs\ probabilistic interpretation\\
-    $\Downarrow$\\
-    Feature scaling\\
-    $\Downarrow$\\
-    \h{Normalisation of rows and/or columns}\\
-    $\Downarrow$\\
-    Similarity / distance measure\\
-    $\Downarrow$\\
-    Dimensionality reduction
-  \end{center}
-\end{frame}
 
 \begin{frame}[c]
   \frametitle{Normalisation of row vectors}
@@ -868,29 +909,6 @@
   \end{itemize}
 \end{frame}
 
-\begin{frame}
-  \frametitle{Overview of DSM parameters}
-  % \framesubtitle{}
-
-  \ungap[1]
-  \begin{center}
-    Term-context \vs\ term-term matrix\\
-    $\Downarrow$\\
-    Definition of terms \& linguistic pre-processing\\
-    $\Downarrow$\\
-    Size \& type of context\\
-    $\Downarrow$\\
-    Geometric \vs\ probabilistic interpretation\\
-    $\Downarrow$\\
-    Feature scaling\\
-    $\Downarrow$\\
-    Normalisation of rows and/or columns\\
-    $\Downarrow$\\
-    \h{Similarity / distance measure}\\
-    $\Downarrow$\\
-    Dimensionality reduction
-  \end{center}
-\end{frame}
 
 \begin{frame}
   \frametitle{Geometric distance}
@@ -1118,29 +1136,8 @@
   \end{align*}
 \end{frame}
 
-\begin{frame}
-  \frametitle{Overview of DSM parameters}
-  % \framesubtitle{}
-
-  \ungap[1]
-  \begin{center}
-    Term-context \vs\ term-term matrix\\
-    $\Downarrow$\\
-    Definition of terms \& linguistic pre-processing\\
-    $\Downarrow$\\
-    Size \& type of context\\
-    $\Downarrow$\\
-    Geometric \vs\ probabilistic interpretation\\
-    $\Downarrow$\\
-    Feature scaling\\
-    $\Downarrow$\\
-    Normalisation of rows and/or columns\\
-    $\Downarrow$\\
-    Similarity / distance measure\\
-    $\Downarrow$\\
-    \h{Dimensionality reduction}
-  \end{center}
-\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\againframe<beamer:8| handout:8>{DSM_parameters}
 
 \begin{frame}
   \frametitle{Dimensionality reduction = model compression}
@@ -1415,6 +1412,9 @@
   \end{itemize}
   \end{block}
  \end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Building a DSM}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Scaling up}
