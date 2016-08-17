@@ -63,7 +63,7 @@ vector space, then $a$ is more semantically similar to $b$ than to $c$
 \end{itemize}
 \end{itemize}
 
-\begin{center}
+\begin{center}\small
   \begin{tabular}{l|l|l}
       \primary{rhino} & \primary{fall} & \primary{rock}\\
       \hline
@@ -125,6 +125,42 @@ Nearest DSM neighbors have different types of \primary{semantic relations}.
 
 
 \begin{frame}
+  \frametitle{Manual analysis of semantic relations}
+  \framesubtitle{for 44 concrete English nouns \citep{Baroni:Lenci:08}}
+
+  \ungap[1]
+  \begin{columns}[c]
+    \begin{column}{6cm}
+      \includegraphics[width=5.5cm]{img/BaroniLenci2008_fig1}%
+    \end{column}
+    \begin{column}{4cm}
+      \footnotesize
+      Taxonomic category:
+      \begin{itemize}\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}\vspace{-\topsep}
+      \item[cc] (co-)hyponym
+      \item[ch] hypernym 
+      \end{itemize}
+      Properties of entity:
+      \begin{itemize}\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}\vspace{-\topsep}
+      \item[eb] typical behaviour
+      \item[ece] external component
+      \item[ese] surface property
+      \end{itemize}
+      Situationally associated:
+      \begin{itemize}\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}\vspace{-\topsep}
+      \item[sa] action
+      \item[se] other entity
+      \item[sf] function
+      \item[sl] location
+      \end{itemize}
+    \end{column}
+  \end{columns}
+
+  \footnotesize\gap[1]
+  Distribution of semantic relations among DSM neighbours (\primary{SVD}), pattern collocations (\primary{StruDEL}) and human-generated properties (\primary{NORMS}).
+\end{frame}
+
+\begin{frame}
 \frametitle{Semantic similarity and relatedness}
 
 \ungap[1]
@@ -154,7 +190,7 @@ Nearest DSM neighbors have different types of \primary{semantic relations}.
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Attributional similarity}
+\subsection{Attributional similarity \& quantitative evaluation}
 
 \begin{frame}
   \frametitle{DSMs and semantic similarity}
@@ -162,18 +198,19 @@ Nearest DSM neighbors have different types of \primary{semantic relations}.
    \item DSMs are thought to represent \primary{paradigmatic} similarity
    \begin{itemize}
     \item words that tend to occur in the same contexts
+    \item[]
     \end{itemize}
   \item Words that share many contexts will correspond to concepts
     that share many attributes (\primary{attributional similarity}),
     i.e. concepts that are \secondary{taxonomically/ontologically similar}
     \begin{itemize}
     \item synonyms (\emph{rhino/rhinoceros})
-    \item antonyms and values on a
-      scale (\emph{good/bad})
-      \item co-hyponyms (\emph{rock/jazz})
-      \item hyper- and hyponyms (\emph{rock/basalt})
+    \item antonyms and values on a scale (\emph{good/bad})
+    \item co-hyponyms (\emph{rock/jazz})
+    \item hyper- and hyponyms (\emph{rock/basalt})
+    \item[]
     \end{itemize}
-  \item Taxonomic similarity is seen as the \primary{fundamental semantic relation}, allowing categorization, generalization, inheritance
+  \item Taxonomic similarity is seen as the \primary{fundamental semantic relation} organising the vocabulary of a language, allowing categorization, generalization and inheritance
   \end{itemize}
 \end{frame}
 
@@ -204,6 +241,150 @@ Nearest DSM neighbors have different types of \primary{semantic relations}.
   \end{itemize}
 \end{frame}
 
+\begin{frame}[fragile]
+  \frametitle{Give it a try \ldots}
+  
+  \begin{itemize}
+  \item The \texttt{wordspace} package contains pre-compiled DSM vectors
+    \begin{itemize}
+    \item based on a large Web corpus (9 billion words)
+    \item L4/R4 surface span, log-transformed $G^2$, SVD dim.\ red.
+    \item targets = lemma + POS code (e.g.\ \texttt{white\_J})
+    \item compatible with evaluation tasks included in package
+    \end{itemize}
+  \end{itemize}
+
+\begin{Rcode}
+library(wordspace)
+
+M <- DSM_Vectors
+nearest.neighbours(M, "walk_V")\begin{Rout}
+    amble_V    stroll_V   traipse_V    potter_V     tramp_V 
+       19.4        21.8        21.8        22.6        22.9 
+  saunter_V    wander_V    trudge_V leisurely_R   saunter_N 
+       23.5        23.7        23.8        26.2        26.4\end{Rout}
+\REM{you can also try \emph{white}, \emph{apple} and \emph{kindness}}
+\end{Rcode}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{The TOEFL synonym task}
+
+  \begin{itemize}
+  \item The TOEFL dataset (80 items)
+    \begin{itemize}
+    \item Target: \emph{levied}\\
+      Candidates: \emph{believed, correlated, \alert<2->{imposed}, requested}
+    \item<3-> Target \emph{fashion}\\
+      Candidates: \emph{craze, fathom, \alert<4->{manner}, ration}
+    \end{itemize}
+  \item[]
+  \item<5-> DSMs and TOEFL
+    \begin{enumerate}
+    \item take vectors of the target ($\Vector{t}$) and of the candidates
+      ($\Vector{c}_1 \dots \Vector{c}_n$)
+    \item measure the distance between $\Vector{t}$ and $\Vector{c}_i$, with
+      $1 \leq i \leq n$ 
+    \item select $\Vector{c}_i$ with the shortest distance in space from $\Vector{t}$
+    \end{enumerate}
+  \end{itemize}
+
+\begin{Rcode}
+ \REM{ask your course instructor for non-public data package}
+> library(wordspaceEval)
+> head(TOEFL80)    
+\end{Rcode}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Humans \vs machines on the TOEFL task}
+
+  \ungap[1]
+  \begin{itemize}
+  \item Average foreign test taker: 64.5\%
+  \item<2-> Macquarie University staff (Rapp 2004):
+    \begin{itemize}
+    \item Average of 5 non-natives: 86.75\%
+    \item Average of 5 natives: \primary{97.75\%}
+    \end{itemize}
+  \item<3-> Distributional semantics
+    \begin{itemize}
+    \item Classic LSA \citep{Landauer:Dumais:97}: 64.4\%
+    \item Padó and Lapata's (\citeyear{Pado:Lapata:07}) dependency-based model: 73.0\%
+    \item Distributional memory \citep{Baroni:Lenci:10}: 76.9\%
+    \item Rapp's (\citeyear{Rapp:04a}) SVD-based model, lemmatized BNC: 92.5\%
+    \item \citet{Bullinaria:Levy:12} carry out aggressive parameter optimization: \primary{100.0\%}
+    \end{itemize}
+  \end{itemize}
+
+\begin{Rcode}[And you?]
+> eval.multiple.choice(TOEFL80, M)
+\end{Rcode}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Semantic similarity judgments}
+
+\ungap[1]
+\begin{itemize}
+\item \citet{Rubenstein:Goodenough:65} collected similarity ratings for 65 noun pairs from 51 subjects on a 0--4 scale
+  \begin{center}
+    \begin{tabular}{llr}
+      $w_1$ & $w_2$ & avg.\ rating\\
+      \toprule
+      \emph{car} & \emph{automobile} & \secondary{3.9}\\
+      \emph{food} &  \emph{fruit}  & \secondary{2.7}\\
+      \emph{cord} & \emph{smile} & \secondary{0.0}\\
+    \end{tabular}
+  \end{center}
+\item<2-> DSMs \vs\ Rubenstein \& Goodenough
+  \begin{enumerate}
+  \item for each test pair $(w_1, w_2)$, take vectors $\Vector{w}_1$ and $\Vector{w}_2$
+  \item measure the distance (e.g.\ cosine) between $\Vector{w}_1$ and $\Vector{w}_2$
+  \item measure (Pearson) correlation between vector distances and R\&G average judgments \citep{Pado:Lapata:07}
+  \end{enumerate}
+\end{itemize}
+
+\begin{Rcode}
+> RG65[seq(0,65,5), ]
+> head(WordSim353) \REM{extension of Rubenstein-Goodenough}
+\end{Rcode}
+\end{frame}  
+
+\begin{frame}
+  \frametitle{Semantic similarity judgments: example}
+  \ungap[1]
+  \begin{center}
+    \includegraphics[width=10cm]{img/bnc_rg65}
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Semantic similarity judgments: results}
+
+Results on RG65 task:
+\begin{itemize}
+\item Padó and Lapata's (\citeyear{Pado:Lapata:07}) dependency-based model: 0.62
+\item Dependency-based on Web corpus \citep{Herdagdelen:Erk:Baroni:09}
+  \begin{itemize}
+  \item without SVD reduction: 0.69
+  \item with SVD reduction: 0.80
+  \end{itemize}
+\item Distributional memory \citep{Baroni:Lenci:10}: 0.82
+\item Salient Semantic Analysis \citep{Hassan:Mihalcea:11}: 0.86
+\end{itemize}
+
+
+\begin{Rcode}[And you?]
+> eval.similarity.correlation(RG65, M, convert=FALSE)\begin{Rout}
+       rho  p.value missing     r r.lower r.upper
+RG65 0.687 2.61e-10       0 0.678    0.52   0.791\end{Rout}
+> plot(eval.similarity.correlation( \REM{cosine similarity}
+       RG65, M, convert=FALSE, details=TRUE))
+\end{Rcode}
+\end{frame}
+
 
 \begin{frame}
 \frametitle{Noun categorization}
@@ -229,8 +410,8 @@ Nearest DSM neighbors have different types of \primary{semantic relations}.
 \end{frame}
 
 
-\frame{
-\frametitle{Noun categorization: the ESSLLI 2008 dataset}
+\begin{frame}[fragile]
+  \frametitle{Noun categorization: the ESSLLI 2008 dataset}
 
   Dataset of 44 concrete nouns (ESSLLI 2008 Shared Task)
   \begin{itemize}
@@ -242,37 +423,35 @@ Nearest DSM neighbors have different types of \primary{semantic relations}.
   \item 20 artifacts
     \begin{itemize}
     \item 13 tools (\emph{hammer}), 7 vehicles (\emph{car})
+    \item[]
     \end{itemize}
+  \item<2-> DSMs operationalize categorization as a \primary{clustering task}
+    \begin{enumerate}
+    \item for each noun $w_i$ in the dataset, take its vector $\vw_i$
+    \item use a \primary{clustering method} to group similar vectors $\vw_i$
+    \item evaluate whether clusters correspond to gold-standard semantic
+      classes (purity, entropy, \ldots)
+    \end{enumerate}
   \end{itemize}
 
-\pause
-\gap[1.5]
-DSMs and noun categorization
-\begin{itemize}
-\item categorization can be operationalized as a \primary{clustering task}
-\begin{enumerate}
-\item for each noun $w_i$ in the dataset, take its vector $\vw_i$
-\item use a \primary{clustering method} to group similar vectors $\vw_i$
-\item evaluate whether clusters correspond to gold-standard semantic
-  classes (purity, entropy, \ldots)
-\end{enumerate}
-\end{itemize}
-
-}
+\begin{Rcode}
+> ESSLLI08_Nouns[seq(1,40,5), ]
+\end{Rcode}
+\end{frame}
 
 
 \begin{frame}
 \frametitle{Noun categorization: example}
 \ungap[1]
 \begin{center}
-  \only<beamer:1| handout:0>{\includegraphics[width=8cm]{img/hieroglyph_clustering}}%
-  \only<beamer:2-| handout:1>{\includegraphics[width=8cm]{img/hieroglyph_clustering_6}}%
+  \only<beamer:1| handout:0>{\includegraphics[width=8cm]{img/vobj_clustering}}%
+  \only<beamer:2-| handout:1>{\includegraphics[width=8cm]{img/vobj_clustering_6}}%
 \end{center}
 \ungap[1]
 \begin{itemize}
-\item<3-> majority labels: greens, birds, vehicles, tools, tools, tools
-\item<3-> correct: 5/11, 5/9, 7/11, 8/8, 1/1, 4/4
-\item<4-> purity = 30 correct out of 44 = 68.2\%
+\item<3-> majority labels: {\color{pureblue}tools}, {\color{pureblue}tools}, {\color[rgb]{.7, .1, .7}vehicles}, {\color{purered}birds}, {\color{puregreen}greens}, {\color[rgb]{.7, .6, .1}animals}
+\item<3-> correct: 4/4, 9/10, 6/6, 2/3, 5/10, 7/11
+\item<4-> purity = 33 correct out of 44 = 75.0\%
 \end{itemize}
 \end{frame}
 
@@ -295,20 +474,20 @@ artifacts) and 2-way (natural and artificial entities) clusterings
 \begin{displaymath}
 \sum_{i=1}^3 \text{Purity}_i -  \sum_{i=1}^3 \text{Entropy}_i
 \end{displaymath}
-
 \end{itemize}
 \end{itemize}
 \end{frame}
 
-\frame{
-\frametitle{ESSLLI 2008 shared task}
+\begin{frame}[fragile]
+  \frametitle{ESSLLI 2008 shared task}
 
- \begin{center}
-  \begin{tabular}{|l|r|r||r|r||r|r||r|}
+  \ungap[1]
+  \begin{center}\small
+    \begin{tabular}{|l|r|r||r|r||r|r||r|}
       \hline
       \emph{model} &\multicolumn{2}{|c||}{\emph{6-way}} &  \multicolumn{2}{|c||}{\emph{3-way}} & \multicolumn{2}{|c||}{\emph{2-way}}&  \multicolumn{1}{|c|}{\emph{global}}\\
       \cline{2-7}
-      &   \emph{P} & \emph{E}  & \emph{P} & \emph{E}  & \emph{P} & \emph{E} &\\
+                   &   \emph{P} & \emph{E}  & \emph{P} & \emph{E}  & \emph{P} & \emph{E} &\\
       \hline
       \hline
       Katrenko & 89 & 13 & 100 & 0 & 80 & 59 & 197\\ 
@@ -326,20 +505,23 @@ artifacts) and 2-way (natural and artificial entities) clusterings
       Shaoul & 41& 77& 52& 84 & 55& 93& -106\\
       \hline
     \end{tabular}
-\end{center}
+  \end{center}
 
-\begin{center}\footnotesize
-  {\tt Katrenko, Peirsman+/-, Shaoul}: ESSLLI 2008 Shared Task\\
-  {\tt DM}: Baroni \& Lenci (2009)
-\end{center}
+  \begin{center}\footnotesize
+    {\tt Katrenko, Peirsman+/-, Shaoul}: ESSLLI 2008 Shared Task\\
+    {\tt DM}: Baroni \& Lenci (2009)
+  \end{center}
 
-}
+\begin{Rcode}[And you?]
+> eval.clustering(ESSLLI08_Nouns, M) \REM{uses PAM clustering}
+\end{Rcode}
+\end{frame}
 
 \begin{frame}
   \frametitle{Semantic priming}
   \begin{itemize}
   \item Hearing/reading a ``related'' prime facilitates access to a
-    target in various lexical tasks (naming, lexical decision,
+    target in various psycholing.\ tasks (naming, lexical decision,
     reading)
     \begin{itemize}
   \item the word \emph{pear} is recognized faster if heard/read after \emph{apple}
@@ -380,12 +562,12 @@ artifacts) and 2-way (natural and artificial entities) clusterings
     than average similarity between unrelated items
     \item[]
   \end{enumerate}
-\item<2-> Significant effects ($p < .01$) for all semantic relations 
+\item<4-> Significant effects ($p < .01$) for all semantic relations 
   \begin{itemize}
   \item strongest effects for synonyms, antonyms \& coordinates
   \item[]
   \end{itemize}
-\item<3-> Alternative: \primary{classification} task
+\item<5-> Alternative: \primary{classification} task
   \begin{itemize}
   \item given target and two primes, identify related prime\\ (\so multiple choice like TOEFL)
   \end{itemize}
@@ -403,10 +585,10 @@ artifacts) and 2-way (natural and artificial entities) clusterings
   \frametitle{DSM evaluation in published studies}
 
   \begin{itemize}
-  \item \primary{One model, many tasks} \citep{Pado:Lapata:07,Baroni:Lenci:10}
+  \item \primary{One model, many tasks} \citep{Pado:Lapata:07,Baroni:Lenci:10,Pennington:Socher:Manning:14}
     \begin{itemize}
     \item A novel DSM is proposed, with specific features \& parameters
-    \item This DSM is tested on a range of different tasks (e.g.\ TOEFL, priming, semantic clustering)
+    \item This DSM is tested on a range of different tasks\\ (e.g.\ TOEFL, priming, semantic clustering)
     \item[]
     \end{itemize}
 
@@ -543,7 +725,7 @@ artifacts) and 2-way (natural and artificial entities) clusterings
 \end{frame}
 
 \begin{frame}
-  \frametitle{Semantic Categorization: dimensionality reduction}
+  \frametitle{Semantic categorization: dimensionality reduction}
   \framesubtitle{\citep[p.~898, Fig.~5]{Bullinaria:Levy:12}}
 
   \ungap[1]
@@ -603,7 +785,7 @@ artifacts) and 2-way (natural and artificial entities) clusterings
   \hh{\large A (very) large-scale evaluation study}
   
   \gap[2]
-  Based on research by Gabriella Lapesa.
+  \citep{Lapesa:Evert:14a}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -615,20 +797,20 @@ artifacts) and 2-way (natural and artificial entities) clusterings
   \begin{enumerate}
   \item \hh{Classification}
     \begin{itemize}
-    \item TOEFL multiple-choice classification task \citep{Landauer:Dumais:97}
+    \item \code{TOEFL80}: multiple-choice classification task\\ \citep{Landauer:Dumais:97}
     \item[]
     \end{itemize}
   \item \hh{Correlation to Similarity Ratings}
     \begin{itemize}
-    \item RG65: 65 noun pairs \citep{Rubenstein:Goodenough:65}
-    \item WordSim353: 351 noun pairs \citep{Finkelstein:etc:02}
+    \item \code{RG65}: 65 noun pairs \citep{Rubenstein:Goodenough:65}
+    \item \code{WordSim353}: 351 noun pairs \citep{Finkelstein:etc:02}
     \item[]
     \end{itemize}  
   \item \hh{Semantic Clustering} 
     \begin{itemize} 
-    \item Battig: 83 nouns, 10 classes \citep{VanOverschelde:Rawson:Dunlosky:04}
-    \item AP: 402 nouns, 21 classes \citep{Almuhareb:06}
-    \item ESSLLI 2008: 44 nouns, 6 classes\footnote{\scriptsize\url{http://wordspace.collocations.de/doku.php/data:esslli2008:concrete_nouns_categorization}}
+    \item \code{Battig82}: 82 nouns, 10 classes \citep{VanOverschelde:Rawson:Dunlosky:04}
+    \item \code{AP402}: 402 nouns, 21 classes \citep{Almuhareb:06}
+    \item \code{ESSLLI08\_Nouns}: 44 nouns, 6 classes
     \item Mitchell: 60 nouns, 12 classes \citep{Mitchell:etc:08}
     \item[]
     \end{itemize}   
@@ -652,9 +834,8 @@ artifacts) and 2-way (natural and artificial entities) clusterings
   \end{itemize}
 
   \begin{block}{}\footnotesize
-    Distributional models were compiled and evaluated using the IMS \primary{Corpus Workbench}\footnote{\scriptsize\url{http://cwb.sf.net/}}, the \primary{UCS toolkit}\footnote{\scriptsize\url{http://www.collocations.de/software.html}} and the \primary{\texttt{wordspace} package}\footnote{\scriptsize\url{http://wordspace.r-forge.r-project.org/}} for R.
+    Distributional models were compiled and evaluated using the IMS \primary{Corpus Workbench}\footnote{\scriptsize\url{http://cwb.sf.net/}}, the \primary{UCS toolkit}\footnote{\scriptsize\url{http://www.collocations.de/software.html}} and the \primary{\texttt{wordspace} package} for R.
   \end{block}
-
 \end{frame}
 
 \begin{frame}
@@ -666,7 +847,7 @@ artifacts) and 2-way (natural and artificial entities) clusterings
       Our source corpora -- standard choices in distributional semantics -- differ in both size and quality. Is there a quantity/quality trade-off?
     \end{block}
     
-  \item  \textbf{Window}
+  \item  \textbf{Window} (= surface span)
     \begin{itemize}
     \item  \h{Direction}: directed (= structured), undirected
     \item  \h{Size}: 1, 2, 4, 8, 16 words
@@ -1283,33 +1464,33 @@ artifacts) and 2-way (natural and artificial entities) clusterings
     \begin{column}{0.5 \textwidth}
       \begin{exampleblock}{Almuhareb \& Poesio}
         \textbf{402 nouns, 21 classes} \\
-        \textit{day} $\Longrightarrow$ \textsc{TIME}   \\
-        \textit{kiwi} $\Longrightarrow$ \textsc{FRUIT}  \\
-        \textit{kitten} $\Longrightarrow$ \textsc{ANIMAL} \\
-        \textit{volleyball} $\Longrightarrow$ \textsc{GAME}
+        \textit{day} $\Longrightarrow$ \textsc{time}   \\
+        \textit{kiwi} $\Longrightarrow$ \textsc{fruit}  \\
+        \textit{kitten} $\Longrightarrow$ \textsc{animal} \\
+        \textit{volleyball} $\Longrightarrow$ \textsc{game}
       \end{exampleblock}
       \begin{exampleblock}{ESSLLI categorization task}
         \textbf{44 nouns, 6 classes} \\
-        \textit{potato} $\Longrightarrow$ \textsc{GREEN}  \\
-        \textit{hammer} $\Longrightarrow$ \textsc{TOOL}  \\
-        \textit{car} $\Longrightarrow$ \textsc{VEHICLE} \\
-        \textit{peacock} $\Longrightarrow$ \textsc{BIRD}     
+        \textit{potato} $\Longrightarrow$ \textsc{green}  \\
+        \textit{hammer} $\Longrightarrow$ \textsc{tool}  \\
+        \textit{car} $\Longrightarrow$ \textsc{vehicle} \\
+        \textit{peacock} $\Longrightarrow$ \textsc{bird}     
       \end{exampleblock}
     \end{column}
     \begin{column}{0.5 \textwidth}
       \begin{exampleblock}{BATTIG set}
-        \textbf{83 nouns, 10 classes} \\
-        \textit{chicken} $\Longrightarrow$ \textsc{BIRD}   \\
-        \textit{bear} $\Longrightarrow$ \textsc{LAND\_MAMMAL}  \\
-        \textit{pot} $\Longrightarrow$ \textsc{KITCHENWARE} \\
-        \textit{oak} $\Longrightarrow$ \textsc{TREE} 
+        \textbf{82 nouns, 10 classes} \\
+        \textit{chicken} $\Longrightarrow$ \textsc{bird}   \\
+        \textit{bear} $\Longrightarrow$ \textsc{land\_mammal}  \\
+        \textit{pot} $\Longrightarrow$ \textsc{kitchenware} \\
+        \textit{oak} $\Longrightarrow$ \textsc{tree} 
       \end{exampleblock}
       \begin{exampleblock}{MITCHELL set}
         \textbf{60 nouns, 12 classes} \\
-        \textit{ant} $\Longrightarrow$ \textsc{INSECT}   \\
-        \textit{carrot} $\Longrightarrow$ \textsc{VEGETABLE}  \\
-        \textit{train} $\Longrightarrow$ \textsc{VEHICLE} \\
-        \textit{cat} $\Longrightarrow$ \textsc{ANIMAL}
+        \textit{ant} $\Longrightarrow$ \textsc{insect}   \\
+        \textit{carrot} $\Longrightarrow$ \textsc{vegetable}  \\
+        \textit{train} $\Longrightarrow$ \textsc{vehicle} \\
+        \textit{cat} $\Longrightarrow$ \textsc{animal}
       \end{exampleblock}
     \end{column}
   \end{columns}
@@ -1575,15 +1756,17 @@ artifacts) and 2-way (natural and artificial entities) clusterings
     \setlength{\tabcolsep}{3.5pt}
     \footnotesize
     \begin{tabular}{lrlllllllllllllllll}
-      \hline
-      dataset & corpus & w &  o.dim & sc & tr & m  & rel.ind & n.dim & d.sk & best.s & best.m\\  \hline
+      \toprule
+      dataset & corpus & w &  o.dim & sc & tr & m  & rel.ind & n.dim & d.sk & best.s & best.m\\ 
+      \midrule
       TOEFL & ukwac & \primary{2}  & 5k & s-ll & log & cos & rank  & \primary{900} & \primary{100} & 92.5 & 98.75 \\  
       WS & wacky & \primary{4} & 50k & s-ll  & log & cos & rank   & \primary{300} & \primary{50} &  0.67  & 0.73 \\ 
       RG &  wacky & \primary{4} & 50k & s-ll  & log & cos & rank   & \primary{300} & \primary{50} & 0.86  & 0.89 \\  
       AP & wacky & \primary{4} & 20k & s-ll & log & cos & rank   & \primary{300} & \primary{0} & 0.69 & 0.76 \\ 
       BATTIG & wacky & \primary{8}  & 50k & s-ll & log & cos & rank   & \primary{500} & \primary{0} & 0.98  & 0.99 \\ 
       ESSLLI & wacky & \primary{2} & 20k & t-sc & log & cos & rank   & \primary{300} & \primary{0} & \textit{0.77} & \textit{0.98} \\   
-      MITCHELL & wacky & \primary{4}  & 50k & s-ll & log & cos & rank  & \primary{500} & \primary{0} & 0.88 & 0.97 \\   \hline 
+      MITCHELL & wacky & \primary{4}  & 50k & s-ll & log & cos & rank  & \primary{500} & \primary{0} & 0.88 & 0.97 \\
+      \bottomrule
     \end{tabular}
 
     \gap[1]
@@ -1607,37 +1790,41 @@ artifacts) and 2-way (natural and artificial entities) clusterings
     \setlength{\tabcolsep}{3.5pt}
     \footnotesize
     \begin{tabular}{lrllllllllllllr}
-      \hline
+      \toprule
       task & corpus & w &  o.dim & sc & tr. & m  & rel.ind  & n.dim  & d.sk \\  
-      \hline 
+      \midrule 
       TOEFL & ukwac & 2 &  5k & s-ll & log & cos & rank  & 900 & 100 \\   
       Rating & wacky & 4 & 50k & s-ll & log & cos & rank  & 300 & 50 \\  
       Clustering & wacky & 4 & 50k & s-ll & log  & cos & rank & 500 & 0 \\ 
       \primary{General} & \primary{wacky} & \primary{4} & \primary{50k} & \primary{s-ll} & \primary{log}  & \primary{cos} & \primary{rank} & \primary{500} & \primary{50} \\ 
-      \hline 
+      \bottomrule 
     \end{tabular}
 
-    \gap[1]
+    \gap[.5]
     \secondary{\normalsize General best settings} 
-
-    \gap[2]
-    \begin{tabular}{lccc>{\color{primary}}c}
-      \hline
-      Task & TOEFL &  RATINGS &   CLUSTERING &  GENERAL  \\  
-      \hline 
-      TOEFL & 92.5 & 85.0  & 75.0 & 90.0   \\  
-      WS & 0.60 & 0.67 & 0.64  & 0.68 \\  
-      RG & 0.85 & 0.86  & 0.84 &  0.87 \\  
-      AP & 0.60 & 0.66 & 0.67 & 0.67 \\  
-      BATTIG & 0.85   & 0.91 & 0.98 & 0.90  \\  
-      ESSLLI & 0.70 & 0.77  & 0.80 & 0.77  \\  
-      MITCHELL & 0.73 & 0.83 &  0.88 & 0.83 \\ \hline     
-    \end{tabular}
-
-    \gap[1]
-    \secondary{\normalsize General best settings -- Performance}
   \end{center}
   
+  \pause
+  \begin{center}
+    \footnotesize
+    \begin{tabular}{lccc>{\color{primary}}c>{\color{counterpoint}}c}
+      \toprule
+      Task & TOEFL &  RATINGS &   CLUSTERING &  GENERAL & SoA \\  
+      \midrule 
+      TOEFL & 92.5 & 85.0  & 75.0 & 90.0 & 100.0  \\  
+      RG & 0.85 & 0.86  & 0.84 &  0.87 & 0.86 \\  
+      WS & 0.60 & 0.67 & 0.64  & 0.68 & 0.81 \\  
+      AP402 & 0.60 & 0.66 & 0.67 & 0.67 & 0.79 \\  
+      BATTIG & 0.85   & 0.91 & 0.98 & 0.90 & 0.96 \\  
+      ESSLLI & 0.70 & 0.77  & 0.80 & 0.77 & 0.91  \\  
+      MITCHELL & 0.73 & 0.83 &  0.88 & 0.83 & 0.94 \\
+      \bottomrule
+    \end{tabular}
+
+    \gap[.5]
+    \secondary{\normalsize General best settings -- Performance}
+  \end{center}
+
 \end{frame}
 
 \begin{frame}
