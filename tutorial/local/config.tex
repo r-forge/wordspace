@@ -22,9 +22,12 @@
 \usepackage{rotating}
 \usepackage{multirow}
 \usepackage[normalem]{ulem}
+\usepackage{calc}
 
 \usetikzlibrary{arrows.meta}
 \usetikzlibrary{shadows}
+\usetikzlibrary{matrix}
+\usetikzlibrary{positioning}
 
 %% ----- predefined TikZ styles
 
@@ -47,6 +50,37 @@ thick, draw=white, color=white]
 \tikzstyle{diagram arrow}[secondary]=[
 ->, >={Latex[width=4pt, length=4pt]}, ultra thick, color=#1]
 
+%% matrix: **EXPERIMENTAL**
+%%   fixed matrix[=grid]  ... matrix with fixed distances between cells
+%%   cell matrix[=size]   ... cells with fixed size (as long as contents fit)
+%%   bmatrix[=margin]     ... bracketed matrix with margin adjustment (margin = cell margin)
+%%   nmatrix[=matrix]     ... plain matrix, but use same margin adjustment as bmatrix
+%%   cellbox[=colour]     ... draw cell node as coloured box (must be applied as node style)
+%%   boxnodes[=colour]    ... draw all cell nodes in cellbox style
+%%   debug matrix         ... show node and matrix frames
+\tikzstyle{fixed matrix}[1cm]=[
+row sep={#1,between origins}, column sep={#1,between origins}, nodes={anchor=base}]
+\tikzstyle{bmatrix}[4pt]=[
+left delimiter={[}, right delimiter={]}, inner sep=1pt, outer xsep=-#1, nodes={inner sep=#1}]
+\tikzstyle{nmatrix}[4pt]=[
+inner sep=1pt, nodes={inner sep=#1}] % without delimiters, but adjusted spacing
+\tikzstyle{cell matrix}[5mm]=[
+nodes={minimum size=#1, text depth={0.3 * #1}, text height={0.7 * #1}, inner sep=0pt, anchor=center}]
+\tikzstyle{cellbox}[primary]=[
+fill=#1!40!white, draw=#1, line width=1pt]
+\tikzstyle{boxnodes}[primary]=[
+nodes={cellbox=#1}]
+\tikzstyle{debug matrix}=[nodes={draw=red, thin}, draw=green, thin]
+
+%% hacked latex dots that can be scaled properly, with some vertical adjustment
+%% \scaleDots[<raise>]{<factor>}{<dots-command>}
+%% \scaleVdots[<factor>]  ...  \vdots scaled by <factor>
+%% \scaleDdots[<factor>]  ...  \ddots scaled by <factor>
+%% \scaleCdots[<factor>]  ...  \cdots scaled by <factor>
+\newcommand{\scaleDots}[3][0ex]{\scalebox{#2}{\raisebox{#1}{\normalsize\ensuremath{#3}}}}
+\newcommand{\scaleVdots}[1][1]{\scaleDots[-0.5ex]{#1}{\vdots}}
+\newcommand{\scaleCdots}[1][1]{\scaleDots{#1}{\cdots}}
+\newcommand{\scaleDdots}[1][1]{\scaleDots[-0.3ex]{#1}{\ddots}}
 
 %% ----- general copyright message (authors may change between versions of the tutorial)
 \newcommand{\dsmcopyright}{%
@@ -67,10 +101,13 @@ thick, draw=white, color=white]
 
 %% \begin{Rcode} .. \end{Rcode}
 \newenvironment{Rcode}[1][]{%
-\setbeamercolor{block title}{fg=counterpoint,bg=counterpoint!15!white}%
-\setbeamercolor{block body}{bg=counterpoint!5!white}\small%
-\begin{block}{#1}\begin{alltt}\ungap[1]}{%
-\ungap[1]\end{alltt}\end{block}}
+  \setbeamercolor{block title}{fg=counterpoint,bg=counterpoint!15!white}%
+  \setbeamercolor{block body}{bg=counterpoint!5!white}\small%
+  \begin{block}{#1}\begin{alltt}\ungap[1]}{%
+      \ungap[1]\end{alltt}\end{block}}
+
+%% use \sbox{\Rbox} ... \usebox{\Rbox} to insert arbitray latex into Rcode environment
+\newsavebox{\Rbox}
 
 %% > plot(x,y)      \REM{this produces a scatterplot}
 \newcommand{\REM}[2][\small]{\textsf{#1\color{primary}\# #2}}
@@ -78,7 +115,7 @@ thick, draw=white, color=white]
 %% nice colour for R output: \begin{Rout} .. \end{Rout}
 \newenvironment{Rout}[1][\footnotesize]{%
   \begin{footnotesize}#1\color{secondary}\bfseries}{%
-  \color{black}\mdseries\end{footnotesize}}
+    \color{black}\mdseries\end{footnotesize}}
 
 %% symbols for centroid vector and singular value matrix 
 %% \newcommand{\vmu}[1][]{\boldsymbol{\mu}\ifthenelse{\equal{#1}{}}{}{^{(#1)}}}
