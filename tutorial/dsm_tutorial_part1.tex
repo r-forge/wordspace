@@ -78,32 +78,37 @@
   \end{itemize}
 \end{frame}
 
+\newcommand{\bardiwac}{\primary{\only<beamer:1-7| handout:1>{bardiwac}\only<beamer:8-| fhandout:0>{\makebox[\widthof{bardiwac}][c]{claret}}}}%
 \begin{frame}
   \frametitle{What is the meaning of ``\textbf{bardiwac}''?}
-  % \framesubtitle{}
+  \framesubtitle{Can we infer meaning from usage?}
 
+  \ungap
   \begin{itemize}
-  \item<2-> He handed her her glass of \primary{bardiwac}.
-  \item<3-> Beef dishes are made to complement the \primary{bardiwacs}.
-  \item<4-> Nigel staggered to his feet, face flushed from too much \primary{bardiwac}.
-  \item<5-> Malbec, one of the lesser-known \primary{bardiwac} grapes, responds well to Australia's sunshine.
-  \item<6-> I dined off bread and cheese and this excellent \primary{bardiwac}.
-  \item<7-> The drinks were delicious: blood-red \primary{bardiwac} as well as light, sweet Rhenish.
-  \item[\hand]<8-> bardiwac is a heavy red alcoholic beverage made from grapes
+  \item<2-> He handed her her glass of \bardiwac{}.
+  \item<3-> Beef dishes are made to complement the \bardiwac{}s.
+  \item<4-> Nigel staggered to his feet, face flushed from too much \bardiwac{}.
+  \item<5-> Malbec, one of the lesser-known \bardiwac{} grapes, responds well to Australia's sunshine.
+  \item<6-> I dined off bread and cheese and this excellent \bardiwac{}.
+  \item<7-> The drinks were delicious: blood-red \bardiwac{} as well as light, sweet Rhenish.
+  \item[\hand]<8-> claret is a heavy red alcoholic beverage made from grapes
   \end{itemize}
 
   \gap
-  \begin{small}
-    \visible<8->{\light{The examples above are handpicked and edited, of course.  But in a corpus like the BNC, you will find at least as much relevant information.}}
-  \end{small}
+  \begin{footnotesize}
+    \visible<8->{\light{All examples from British National Corpus (handpicked and slightly edited).}}
+  \end{footnotesize}
 \end{frame}
 
 \begin{frame}[c]
-  \frametitle{What is the meaning of ``\textbf{bardiwac}''?}
+  \frametitle{Word sketch of ``\textbf{cat}''}
+  \framesubtitle{Can we infer meaning from collocations?}
 
-  \centering
-  \only<beamer:0| handout:0>{\includegraphics[width=10cm]{img/SE_bardiwac_conc}}%
-  \only<beamer:1| handout:1>{\includegraphics[width=10cm]{img/SE_bardiwac_sketch}}%
+  \centering\ungap[.5]
+  \begin{tikzpicture}
+    \node[anchor=north west] at (0,0) {\includegraphics[width=10cm]{img/SE_cat}} ;
+    \node[anchor=north east] at (10,0) {\tiny\light{\url{https://the.sketchengine.co.uk/}}} ;
+  \end{tikzpicture}
 \end{frame}
 
 {\newcommand{\hg}[1]{\scriptsize\textpmhg{#1}}
@@ -113,9 +118,10 @@
   \frametitle{A thought experiment: deciphering hieroglyphs}
   % \framesubtitle{}
 
+  \ungap[1]
   \begin{center}
     \setlength{\arrayrulewidth}{1pt}
-    \begin{tabular}{@{\rule{0mm}{1.2em} }lr*{6}{|c}|}
+    \begin{tabular}{@{\rule{0mm}{1.4em} }lr*{6}{|c}|}
       && \hg{get} & \hg{sij} & \hg{ius} & \hg{hir} & \hg{iit} & \hg{kil} \\
       \hline
       \tikz[remember picture, inner sep=0pt]{\node(knife){\colB<beamer:2| handout:2>{(knife)}}} & \colB<beamer:2| handout:2>{\hg{naif}} & \colB<beamer:2| handout:2>{51} & \colB<beamer:2| handout:2>{20} & \colB<beamer:2| handout:2>{84} &  \colB<beamer:2| handout:2>{0} &  \colB<beamer:2| handout:2>{3} &  \colB<beamer:2| handout:2>{0} \\
@@ -134,7 +140,7 @@
       \hline
     \end{tabular}
     
-    \gap[2]\Large
+    \gap[2]\large
     \begin{tikzpicture}[remember picture, overlay]
       \draw<beamer:2| handout:2>[<->,puregreen,very thick] (dog.west) to[out=160, in=200] (knife.west) ;
       \draw<beamer:3| handout:3>[<->,puregreen,very thick] (dog.west) to[out=210, in=150] (pig.west) ;
@@ -374,7 +380,8 @@
     }
     \visible<7->{
       \node[diagram ghost] (prob) at (2, 2) {} ;
-      \draw[diagram arrow=counterpoint] (geom_prob) -- node[right=1.5em] {probabilistic analysis} (prob) ;
+      \draw[diagram arrow=counterpoint] (geom_prob) -- node[right=1.5em] (probanal) {probabilistic analysis} (prob) ;
+      \node[below=1mm of probanal, text width=30mm, align=center, color=counterpoint] {embedding learned by\\ neural network} ;
     }
     \visible<8->{
       \node[diagram box] (scoring) at (-2, 2) {feature scaling} ;
@@ -459,7 +466,7 @@
 \end{frame}
 
 \begin{frame}[c]
-  \frametitle{Latent dimensions}
+  \frametitle{Latent ``meaning'' dimensions}
   % \framesubtitle{}
 
   \ungap[1]
