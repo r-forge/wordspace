@@ -181,7 +181,8 @@
     \draw[diagram arrow=counterpoint] (corpus) -- node[left=1.5em] {term-context matrix} (tc_terms) ;
     \draw[diagram arrow] (tc_terms) -- (tc_context) ;
     \draw[diagram arrow] (tc_context) -- (geom_prob) ;
-    \draw[diagram arrow=counterpoint] (geom_prob) -- node[right=1.5em] {probabilistic analysis} (prob) ;
+    \draw[diagram arrow=counterpoint] (geom_prob) -- node[right=1.5em] (probanal) {probabilistic analysis} (prob) ;
+    \node[below=1mm of probanal, text width=30mm, align=center, color=counterpoint] {embedding learned by\\ neural network} ;
     \draw[diagram arrow=counterpoint] (geom_prob) -- node[left=1.5em] {geometric analysis} (scoring) ;
     \draw[diagram arrow] (scoring) -- (metric) ;
     \draw[diagram arrow] (metric) -- (dimred) ;
@@ -365,7 +366,7 @@
 
   \centering
   Nearest neighbours of \emph{walk} (BNC)
-  \footnotesize
+  \ungap\footnotesize
   \begin{columns}[t]
     \column{4cm}
     \begin{block}{word forms}
@@ -398,6 +399,10 @@
       \end{itemize}
     \end{block}
   \end{columns}
+
+  \hfill\light{\tiny \url{http://clic.cimec.unitn.it/infomap-query/}}
+  \addnote{All models built with Infomap NLP: 2-word window, 20k targets, 2k features, 300 latent dims}%
+  \addnote{Lemmatised model uses BNC lemma annotation (with POS category)}%
 \end{frame}
 
 \begin{frame}
@@ -405,7 +410,7 @@
 
   \centering
   Nearest neighbours of \emph{arrivare} (Repubblica)
-  \footnotesize
+  \ungap\footnotesize
   \begin{columns}[t]
     \column{4cm}
     \begin{block}{word forms}
@@ -438,7 +443,11 @@
       \end{itemize}
     \end{block}
   \end{columns}
+  
+  \hfill\light{\tiny \url{http://clic.cimec.unitn.it/infomap-query/}}
   \addnote{Colours seem to indicate inflected forms belonging to the same lemma.}%
+  \addnote{Based on La Repubblica SSLMiT corpus}%
+  \addnote{Lemmatised model includes two-letter POS codes}%
 \end{frame}
 
 \begin{frame}
@@ -480,11 +489,8 @@
     Context term occurs \primary{within a span of $k$ words} around target.
   \end{center}
 
-  The {\color{secondary}\uline{silhouette of the}} \primary{sun}
-  {\color{secondary}\uline{beyond a wide-open}} bay on {\color{secondary}\uline{the lake;
-    the}} \primary{sun} {\color{secondary}\uline{still glitters although}} evening
-  has arrived in Kuhmo. It's midsummer; the living room has its
-  instruments and other objects in each of its corners. $\quad$ \primary{[L3/R3 span, $k = 6$]}
+  The \secondary{\uline{silhouette of the}}\primary{\dotuline{ sun }}\secondary{\uline{beyond a wide-open}} bay on \secondary{\uline{the lake; the}}\primary{\dotuline{ sun }}\secondary{\uline{still glitters although}} evening has arrived in Kuhmo. It's midsummer; the living room has its instruments and other objects in each of its corners.
+  $\quad$ \primary{[L3/R3 span, $k = 6$]}
   
   \gap
   Parameters:
@@ -503,7 +509,7 @@
 
   \centering
   Nearest neighbours of \emph{dog} (BNC)
-  \footnotesize
+  \ungap\footnotesize
   \begin{columns}[t]
     \column{4cm}
     \begin{block}{2-word span}
@@ -536,6 +542,8 @@
       \end{itemize}
     \end{block}
   \end{columns}
+
+  \hfill\light{\tiny \url{http://clic.cimec.unitn.it/infomap-query/}}
 \end{frame}
 
 
@@ -833,12 +841,14 @@
       \]
       with $R, C$ = individual corpus frequencies and $N$ = corpus size
     \item can also be implemented by pre-multiplying $R' = k\cdot R$
+    \item[\hand] alternatively, compute marginals and sample size by summing
+      over full co-occurrence matrix (\so $E$ as above, but inflated $N$)
     \item[]
     \end{itemize}
   \item<2-> NB: shifted PPMI \citep{Levy:Goldberg:14} corresponds to a post-hoc application of the span size adjustment
     \begin{itemize}
     \item performs worse than PPMI, but paper suggests they already
-      may have over-adjusted by factor $k^2$ through the marginals
+      approximate correct $E$ by summing over co-occurrence matrix
     \end{itemize}
   \end{itemize}
 \end{frame}
@@ -1048,7 +1058,10 @@ effect  -Inf -2.116 -2.468 -2.459     0.791  1.6312  0.9221\end{Rout}
   \end{itemize}
 
   \begin{center}
-    \includegraphics[width=8cm]{img/transformation_functions}
+    \only<beamer:1| handout:0>{\includegraphics[width=8.5cm]{img/transformation_functions_0}}%
+    \only<beamer:2| handout:0>{\includegraphics[width=8.5cm]{img/transformation_functions_1}}%
+    \only<beamer:3| handout:0>{\includegraphics[width=8.5cm]{img/transformation_functions_2}}%
+    \only<beamer:4-| handout:1>{\includegraphics[width=8.5cm]{img/transformation_functions}}%
   \end{center}
 \end{frame}
 
@@ -1580,7 +1593,7 @@ effect -0.871  0.4794
     \begin{itemize}
     \item term-term matrix with unstructured dependency context
     \item weighting: log-likelihood ratio
-    \item distance measure: information-theoretic \citep{Lin:98a}
+    \item distance measure: PPMI-weighted Dice \citep{Lin:98b}
     \item dimensionality reduction: none
     \end{itemize}
   \end{block}
@@ -1702,7 +1715,7 @@ effect -0.871  0.4794
   \begin{itemize}
   \item A sparse DSM matrix can be represented as a table of triplets (target, feature, co-occurrence frequency)
     \begin{itemize}
-    \item for syntactic co-occurrence and term documents, marginals can be computed from a complete triplet table
+    \item for syntactic co-occurrence and term-document matrices, marginals can be computed from a complete triplet table
     \item for surface and textual co-occurrence, marginals have to be provided in separate files (see \code{?read.dsm.triplet})
     \end{itemize}
   \end{itemize}
