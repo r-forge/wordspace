@@ -14,9 +14,21 @@ VN <- subset(VN, nnzero >= 10, nnzero >= 5, recursive=TRUE)
 VN <- dsm.score(VN, score="simple-ll", transform="log", sparse=TRUE, normalize=TRUE) 
 SVD <- dsm.projection(VN, n=100, method="svd") # SVD projection
 
+## nearest neighbours with nice formatting
+print.nn <- function (x, name=NA, digits=1) {
+  if (is.list(x)) {
+    for (i in seq_along(x)) print.nn(x[[i]], name=names(x)[i], digits=digits)
+  } else {
+    fmt <- sprintf("%s (%g)", names(x), round(x, digits))
+    if (!is.na(name)) cat(sprintf("%s: ", name))
+    cat(paste(fmt, collapse=", "), "\n\n", sep="")
+  }  
+}
+
 nearest.neighbours(VN, c("coffee", "plant", "dog", "book", "school"), 20)
 nearest.neighbours(SVD, c("coffee", "plant", "dog", "book", "school"), 20)
-
+print.nn(nearest.neighbours(SVD, c("coffee", "plant", "dog", "book", "school"), 20))
+print.nn(nearest.neighbours(SVD, c("bucket", "rose", "cat", "coffee"), 20), digits=0)
 
 ## semantic map and clustering for nouns from ESSLLI 2008 task
 task <- ESSLLI08_Nouns
