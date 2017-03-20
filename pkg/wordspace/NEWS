@@ -1,3 +1,8 @@
+Version 0.2-1:
+
+  - dsm.score() now supports user-defined association measures, which are automatically evaluated in batches to reduce memory overhead compared to a naive vectorized implementation
+  - subset(..., recursive=TRUE) now runs garbage collection after every iteration to avoid multiple copies of DSM object
+
 Version 0.2-0:
 
   - the first public release of the wordspace package \o/

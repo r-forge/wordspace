@@ -6,7 +6,7 @@
 }
 \description{
 
-  This functions loads a sparse distributional semantic model in triplet representation -- (target label, feature label, score) -- from a disk file or a pipe.  Such a triplet file usually represents a pre-scored DSM, but it can also be used to read raw co-occurrence frequencies.  In this case, marginals and sample size can either be derived from the co-occurrence matrix (for syntactic and term-context models) or provided in separate TAB-delimited tables (for surface and textual co-occurrence, or if frequency thresholds have been applied).
+  This function loads a sparse distributional semantic model in triplet representation -- (target label, feature label, score) -- from a disk file or a pipe.  Such a triplet file usually represents a pre-scored DSM, but it can also be used to read raw co-occurrence frequencies.  In this case, marginals and sample size can either be derived from the co-occurrence matrix (for syntactic and term-context models) or provided in separate TAB-delimited tables (for surface and textual co-occurrence, or if frequency thresholds have been applied).
 
 }
 \usage{
