@@ -13,7 +13,7 @@
 }
 \usage{
 
-convert.lemma(lemma, format=c("CWB", "BNC", "DM", "HW", "HWLC"))
+convert.lemma(lemma, format=c("CWB", "BNC", "DM", "HW", "HWLC"), hw.tolower=FALSE)
 
 }
 \arguments{
@@ -21,6 +21,8 @@ convert.lemma(lemma, format=c("CWB", "BNC", "DM", "HW", "HWLC"))
   \item{lemma}{a character vector specifying one or more POS-disambiguated lemmas in CWB/Penn notation}
 
   \item{format}{the notation format to be generated (see Details)}
+
+  \item{hw.tolower}{convert headword part to lowercase, regardless of output format}
   
 }
 \details{
@@ -28,13 +30,18 @@ convert.lemma(lemma, format=c("CWB", "BNC", "DM", "HW", "HWLC"))
   Input strings must be POS-disambiguated lemmas in CWB/Penn notation, i.e. in the form
   \preformatted{
     <headword>_<P> }
-  where \code{<headword>} is a dictionary headword (usually case-sensitive) and \code{<P>} is
+  where \code{<headword>} is a dictionary headword (which may be case-sensitive) and \code{<P>} is
   a one-letter code specifying the simple part of speech.  Standard POS codes are
   \preformatted{
-    N ... nouns and proper nouns
+    N ... nouns
+    Z ... proper nouns
     V ... lexical and auxiliary verbs
     J ... adjectives
-    R ... adverbs  }
+    R ... adverbs
+    I ... prepositions (including all uses of "to")
+    D ... determiners
+    . ... punctuation
+  }
   For other parts of speech, the first character of the corresponding Penn tag may be used.
   Note that these codes are not standardised and are only useful for distinguishing between content
   words and function words.
@@ -50,9 +57,10 @@ convert.lemma(lemma, format=c("CWB", "BNC", "DM", "HW", "HWLC"))
       BNC-style POS-disambiguated lemmas based on the simplified CLAWS tagset.
       The headword part of the lemma is unconditionally converted to lowercase.
       The standard POS codes listed above are translated into
-      \code{SUBST} (nouns), \code{VERB} (verbs), \code{ADJ} (adjectives) and \code{ADV} (adverbs).
+      \code{SUBST} (nouns and proper nouns), \code{VERB} (verbs), \code{ADJ} (adjectives), \code{ADV} (adverbs),
+      \code{ART} (determiners), \code{PREP} (prepositions), and \code{STOP} (punctuation).
       Other POS codes have no direct CLAWS equivalents and are mapped to \code{UNC} (unclassified),
-      so the transformation should only be used for noun, verbs, adjectives and adverbs.
+      so the transformation should only be used for the categories listed above.
     }
 
     \item{\code{DM}}{
@@ -66,7 +74,7 @@ convert.lemma(lemma, format=c("CWB", "BNC", "DM", "HW", "HWLC"))
     }
 
     \item{\code{HWLC}}{
-      undisambiguated headword mapped to lowercase
+      undisambiguated headword mapped to lowercase (same as \code{HW} with \code{hw.tolower=TRUE})
     }
   }
 
