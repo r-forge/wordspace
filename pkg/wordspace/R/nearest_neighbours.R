@@ -1,12 +1,11 @@
 nearest.neighbours <- function (M, term, n=10, M2=NULL, byrow=TRUE, drop=TRUE, skip.missing=FALSE, dist.matrix=FALSE, ..., batchsize=50e6, verbose=FALSE) {
-  is.dist <- inherits(M, "dist.matrix")
+  is.dist <- inherits(M, "dist.matrix") || isTRUE(attr(M, "dist.matrix"))
   if (is.dist) {
     ## case 1: M is a pre-computed distance matrix
     ##  - byrow determines if target term is looked up in rows or columns of M
     ##  - if M is not marked symmetric, we need to treat this as a cross-distance computation
     cross.distance <- !isTRUE(attr(M, "symmetric"))
     if (!is.null(M2)) stop("M2 cannot be specified if M is a pre-computed distance matrix")
-    if (dist.matrix && cross.distance) stop("dist.matrix=TRUE is only supported for a symmetric pre-computed distance matrix")
   } else {
     ## case 2: M is a matrix of row or column vectors
     ##   - compute cross-distances if M2 is specified, otherwise (usually symmetric) distances in M

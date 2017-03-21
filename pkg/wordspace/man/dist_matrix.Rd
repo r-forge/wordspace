@@ -112,7 +112,9 @@ dist.matrix(M, M2 = NULL, method = "cosine", p = 2,
 %% }
 \seealso{
   
-  \code{\link{rowNorms}}
+  \code{\link[=plot.dist.matrix]{plot}} and \code{\link[=head.dist.matrix]{head}} methods for distances matrices; \code{\link{nearest.neighbours}} and \code{\link{pair.distances}} also accept a precomputed \code{dist.matrix} object instead of a DSM matrix \code{M}
+  
+  \code{\link{rowNorms}} for length normalization of DSM vectors, which is highly recommended for most distance metrics (and implicit in \code{cosine})
 
 }
 \examples{

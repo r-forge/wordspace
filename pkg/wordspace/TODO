@@ -9,9 +9,7 @@
 
 * Urgent updates
     
-  - extend read.dsm.triplet() to read in separate colinfo and rowinfo tables (simply with =read.delim()=)
   - note that (dense) matrix should be saved to text format with =write.table()= rather than =write()= (inserts spurious line break every INT_MAX chars), either in examples or in a (new) vignette
-  - improve Web page
 
 
 * Bug fixes and improvements

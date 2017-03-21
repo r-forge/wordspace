@@ -2,6 +2,7 @@ Version 0.2-1:
 
   - dsm.score() now supports user-defined association measures, which are automatically evaluated in batches to reduce memory overhead compared to a naive vectorized implementation
   - subset(..., recursive=TRUE) now runs garbage collection after every iteration to avoid multiple copies of DSM object
+  - as.distmat() marks and arbitrary matrix as a pre-computed dist.matrix object, so it can be used for lookup with nearest.neighbours() and pair.distances()
 
 Version 0.2-0:
 
