@@ -48,3 +48,8 @@ S3method(plot, eval.similarity.correlation)
 export(as.dsm)
 S3method(as.dsm, TermDocumentMatrix)
 S3method(as.dsm, DocumentTermMatrix)
+
+export(as.distmat)
+S3method(as.distmat, matrix)
+S3method(as.distmat, sparseMatrix)
+
