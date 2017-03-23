@@ -13,10 +13,16 @@ as.distmat.matrix <- function (x, similarity=FALSE, symmetric=FALSE, ...) {
   x
 }
 
+# default method for sparse matrix
 as.distmat.sparseMatrix <- function (x, similarity=FALSE, symmetric=FALSE, force.dense=FALSE, ...) {
   if (force.dense) {
     x <- as.matrix(x)
     class(x) <- c("dist.matrix", class(x))
+  }
+  else {
+    if (!similarity) stop("only non-negative similarity matrix is supported in sparse format")
+    x <- dsm.canonical.matrix(x, annotate=TRUE, nonneg.check=TRUE)
+    if (!isTRUE(attr(x, "nonneg"))) stop("only non-negative similarity matrix is supported in sparse format")
   }
   attr(x, "dist.matrix") <- TRUE
   attr(x, "similarity") <- similarity
@@ -26,4 +32,9 @@ as.distmat.sparseMatrix <- function (x, similarity=FALSE, symmetric=FALSE, force
     attr(x, "symmetric") <- symmetric
   }
   x
+}
+
+# default method for DSM object
+as.distmat.dsm <- function (x, similarity=FALSE, symmetric=FALSE, force.dense=FALSE, ...) {
+  as.distmat(find.canonical.matrix(x), similarity=similarity, symmetric=symmetric, force.dense=force.dense, ...)
 }

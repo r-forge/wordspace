@@ -47,14 +47,14 @@ nearest.neighbours(M, term, n = 10, M2 = NULL, byrow = TRUE,
   }
 
   \item{dist.matrix}{
-    if \code{TRUE}, return a full distance matrix between the target term and its nearest neighbours (instead of a vector of neighbours)
+    if \code{TRUE}, return a full distance matrix between the target term and its nearest neighbours (instead of a vector of neighbours).  Note that a pre-computed distance matrix \code{M} must be symmetric in this case.
   }
 
   \item{\dots}{
     additional arguments are passed to \code{dist.matrix} if \code{M} is a scored DSM matrix.  See the manpage of \code{\link{dist.matrix}} for details on available parameters and settings.
   }
     
-  \item{batchsize}{if \code{term} is a long list of lookup terms, it will automatically be processed in batches.  The number of terms per batch is chosen in such a way that approximately \code{batchsize} intermediate similarity values have to be computed and stored at a time.}
+  \item{batchsize}{if \code{term} is a long list of lookup terms, it will automatically be processed in batches.  The number of terms per batch is chosen in such a way that approximately \code{batchsize} intermediate similarity values have to be computed and stored at a time (not used if \code{M} is a pre-computed distance matrix).}
   
   \item{verbose}{if \code{TRUE}, display some progress messages indicating how data are split into batches}
    
@@ -68,6 +68,8 @@ nearest.neighbours(M, term, n = 10, M2 = NULL, byrow = TRUE,
   }
 
   With \code{dist.matrix=TRUE}, the returned distance matrix always includes the target term.
+  
+  \code{M} can also be a pre-computed distance or similarity matrix from an external source, which must be marked with \code{\link{as.distmat}}.  If \code{M} is a sparse similarity matrix, only non-zero cells will be considered when looking for the nearest neighbours.  Keep in mind that \code{dist.matrix=TRUE} is only valid if \code{M} is a symmetric matrix and marked as such.
   
 }
 \value{

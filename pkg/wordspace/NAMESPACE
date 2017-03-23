@@ -52,4 +52,5 @@ S3method(as.dsm, DocumentTermMatrix)
 export(as.distmat)
 S3method(as.distmat, matrix)
 S3method(as.distmat, sparseMatrix)
+S3method(as.distmat, dsm)
 
