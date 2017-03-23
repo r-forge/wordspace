@@ -8,7 +8,11 @@ dsm.is.canonical <- function (x, nonneg.check = FALSE) {
     canonical <- if (sparse && is(x, "dgCMatrix")) TRUE else FALSE
   }
   if (nonneg.check) {
-    nonneg <- !any(x < 0) # caution: all(x >= 0) would result in dense matrix!
+    if (sparse && canonical) {
+      nonneg <- all(x@x >= 0) # only need to check non-empty cells in @x
+    } else {
+      nonneg <- !any(x < 0) # caution: all(x >= 0) would result in dense matrix!
+    }
   } else {
     nonneg <- attr(x, "nonneg")
     if (is.null(nonneg)) nonneg <- NA

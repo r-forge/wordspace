@@ -6,6 +6,7 @@ nearest.neighbours <- function (M, term, n=10, M2=NULL, byrow=TRUE, drop=TRUE, s
     ##  - if M is not marked symmetric, we need to treat this as a cross-distance computation
     cross.distance <- !isTRUE(attr(M, "symmetric"))
     if (!is.null(M2)) stop("M2 cannot be specified if M is a pre-computed distance matrix")
+    if (dist.matrix && cross.distance) stop("pre-computed distance matrix must be symmetric for dist.matrix=TRUE")
   } else {
     ## case 2: M is a matrix of row or column vectors
     ##   - compute cross-distances if M2 is specified, otherwise (usually symmetric) distances in M
@@ -55,25 +56,45 @@ nearest.neighbours <- function (M, term, n=10, M2=NULL, byrow=TRUE, drop=TRUE, s
     }
   }
 
-  ## prepare distance matrix DM between all targets and candidates
+  ## items to look up
+  items <- if (nn.of.vector) rownames(term) else term 
+  
+  ## prepare distance matrix DM between all targets and candidates,
+  ## arranging so that it is always accessed by column (which is more efficient)
   if (is.dist) {
-    DM <- M                             # precomputed distance matrix
-    byrow.DM <- byrow
+    ## pre-computed distance matrix: extract relevant rows or columns
+    if (byrow) {
+      items.ok <- items[items %in% rownames(M)]
+      DM <- t(M[items.ok, , drop=FALSE]) # now accessed by column
+    } else {
+      items.ok <- items[items %in% colnames(M)]
+      DM <- M[, items.ok, drop=FALSE]
+    }
+    ## there should be methods [.dist.matrix and [<-.dist.matrix so that we don't need to reconstruct a dist.matrix object here, 
+    ## but this would probably make row and column access considerably slower; and a sparse distance matrix works differently anyway
+    DM <- as.distmat(DM, similarity=isTRUE(attr(M, "similarity"))) # won't be symmetric, even if M is
   } else {
+    ## compute distance matrix between specified items and all other targets
     if (nn.of.vector) {
       M.term <- if (byrow) term else t(term) # M.term = matrix of target vectors (rows or columns)
     } else {
       M.term <- if (byrow) M[term, , drop=FALSE] else M[, term, drop=FALSE]
     }
-    DM <- dist.matrix(M=M2, M2=M.term, byrow=byrow, ...)
-    byrow.DM <- FALSE  # dist.matrix computed on the fly is always accessed by columns (faster than by rows)
+    DM <- dist.matrix(M=M2, M2=M.term, byrow=byrow, ...) # items correspond to columns, regardless of <byrow>
   }
   similarity <- isTRUE(attr(DM, "similarity"))
-  symmetric <- isTRUE(attr(DM, "symmetric"))
-
-  items <- if (nn.of.vector) rownames(term) else term 
+  sparse <- dsm.is.canonical(DM)$sparse # may only happen for pre-computed similarity matrix
+  if(sparse && !similarity) stop("only non-negative similarity matrix supported in sparse format")
+  
   result <- lapply(items, function (.t) {
-    neighbours <- if (byrow.DM) DM[.t, ] else DM[, .t]
+    if (sparse) {
+      ## sparse pre-computed similarity matrix
+      neighbours <- DM[, .t]
+      neighbours <- neighbours[neighbours > 0] # only non-zero cells are candidates for neighbours
+    } else {
+      ## in all other cases
+      neighbours <- DM[, .t]
+    }
     neighbours <- sort(neighbours, decreasing=similarity)
     if (!nn.of.vector && !cross.distance) {
       neighbours <- head(neighbours, n + 1) # remove target from list of nearest neighbours
@@ -84,26 +105,24 @@ nearest.neighbours <- function (M, term, n=10, M2=NULL, byrow=TRUE, drop=TRUE, s
       ## case 1: compute distance matrix between nearest neighbours (including target term)
       nn.terms <- names(neighbours)
       if (is.dist) {
-        nn.terms <- c(.t, nn.terms) # extract distances for neighbours and target term
-        nn.dist <- DM[nn.terms, nn.terms] # pre-computed distance matrix must be symmetric
-        ## there should be methods [.dist.matrix and [<-.dist.matrix so that we don't need to reconstruct
-        ## a dist.matrix object here, but this would probably make row and column access considerably slower
-        class(nn.dist) <- c("dist.matrix", "matrix") 
-        if (similarity) attr(nn.dist, "similarity") <- TRUE
-        if (symmetric) attr(nn.dist, "symmetric") <- TRUE
+        ## pre-computed distance matrix M must be symmetric (i.e. !cross.distance)
+        nn.terms <- c(.t, nn.terms) # prepend target term to list of neighbours (has been removed above)
+        nn.dist <- M[nn.terms, nn.terms] 
+        nn.dist <- as.distmat(nn.dist, symmetric=TRUE, similarity=similarity)
       } else {
+        ## dense (cross-)distance matrix computed on the fly
         nn.matrix <- if (byrow) M2[nn.terms, , drop=FALSE] else t(M2[, nn.terms, drop=FALSE]) # matrix of row vectors for all neighbours
         nn.terms <- c(.t, nn.terms) # add target term
         if (nn.of.vector) {
           nn.matrix <- rbind2(term[.t, , drop=FALSE], nn.matrix) # add specified target vector
-		  ## NB: rbind() doesn't dispatch to Matrix package; need rbind2() or rBind()
+          ## NB: rbind() doesn't dispatch to Matrix package; need rbind2() or rBind()
         } else {
           nn.matrix <- rbind2(if (byrow) M[.t, , drop=FALSE] else t(M[, .t, drop=FALSE]), nn.matrix) # add target vector from M
         }
         rownames(nn.matrix) <- nn.terms
         nn.dist <- dist.matrix(nn.matrix, byrow=TRUE, ...)
       }
-      attr(nn.dist, "selected") <- seq_along(nn.terms) == 1 # marked target as selected
+      attr(nn.dist, "selected") <- nn.terms == .t # mark target as selected
       nn.dist
     } else {
       ## case 2: return specified number of nearest neighbours
