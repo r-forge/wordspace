@@ -123,14 +123,9 @@ output:
     - cosine distance for dense (and possibly also sparse) matrix; very substantial overhead in "SVD-100 cosine distances" benchmark
     - dense `dist.matrix()` compared to `dist()`
     - overhead in `read.dsm.ucs()` has considerable overhead in R-level implementation of readMM
-    - triplet representation is read efficiently using scan with known size
-    - but then returned as a dgTMatrix, which is then converted to a dgCMatrix by `read.dsm.ucs()`
-    - perhaps overhead can be reduced without the intermediate dgTMatrix (but need at least one complete copy for reording triplets into CSR)
-    - non-zero counts have unnecessary memory overhead, in particular in `dsm()` constructor
-    - implemented as `rowSums(M != 0)` / `colSums(M != 0)`
-    - logical vectors are stored as `int`'s, hence the logical matrix `(M != 0)` needs considerable storage
-    - even though `rowSums` and `colSums` have C-level method implementations for a `lgCMatrix`, it is converted internally to a `dgCMatrix` with huge memory overhead
-    - should implement our own `rowsNNzero` and `colsNNzero` functions for sparse (and dense) matrices; first check which other operations may need to be supported
+        - triplet representation is read efficiently using scan with known size
+        - but then returned as a dgTMatrix, which is then converted to a dgCMatrix by `read.dsm.ucs()`
+          - perhaps overhead can be reduced without the intermediate dgTMatrix (but need at least one complete copy for reording triplets into CSR)
 *  `dsm.projection()` could have option `renormalized` that performs row normalization in-place (with additional arguments passed on to rowNorms())
 
 

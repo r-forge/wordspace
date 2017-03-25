@@ -12,7 +12,7 @@ print.dsm <- function (x, ...) {
   if (info$M$ok) {
     cat("* raw co-occurrence matrix M available\n")
     if (info$M$sparse) {
-      n.nz <- nnzero(x$M)
+      n.nz <- sum(colNorms(x$M, method="minkowski", p=0)) # = nnzero(x$M)
       cat(sprintf("  - sparse matrix with %s / %s nonzero entries (fill rate = %.2f%%)\n", qformat(n.nz), qformat(n.cells), 100 * n.nz / n.cells))
     } else {
       cat(sprintf("  - dense matrix with %s cells\n", qformat(n.cells)))
@@ -24,7 +24,7 @@ print.dsm <- function (x, ...) {
   if (info$S$ok) {
     cat("* scored matrix S available\n")
     if (info$S$sparse) {
-      n.nz <- nnzero(x$S)
+      n.nz <- sum(colNorms(x$S, method="minkowski", p=0)) # = nnzero(x$S)
       cat(sprintf("  - sparse matrix with %s / %s nonzero entries (fill rate = %.2f%%)\n", qformat(n.nz), qformat(n.cells), 100 * n.nz / n.cells))
     } else {
       cat(sprintf("  - dense matrix with %s cells\n", qformat(n.cells)))

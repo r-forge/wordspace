@@ -44,6 +44,7 @@ b.exp <- c(2,     Inf,  2,    Inf,       Inf,  1,         Inf)
 d3 <- pair.distances(w1, w2, DM)
 stopifnot(all(d3 == d.exp))
 stopifnot(all(names(d3) == paste(w1, w2, sep="/")))
+stopifnot(isTRUE(attr(d3, "similarity"))) # should be marked as similarity values
 
 r3 <- pair.distances(w1, w2, DM, rank="fwd")
 stopifnot(all(r3 == r.exp))

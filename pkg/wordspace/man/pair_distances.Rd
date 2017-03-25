@@ -15,7 +15,8 @@
 }
 \usage{
 
-pair.distances(w1, w2, M, \dots, rank = c("none", "fwd", "bwd", "avg"), transform = NULL,
+pair.distances(w1, w2, M, \dots, transform = NULL, 
+               rank = c("none", "fwd", "bwd", "avg"),
                avg.method = c("arithmetic", "geometric", "harmonic"),
                batchsize = 10e6, verbose = FALSE)
 
@@ -57,7 +58,7 @@ pair.distances(w1, w2, M, \dots, rank = c("none", "fwd", "bwd", "avg"), transfor
   
   For a sparse pre-computed similarity matrix \code{M}, only non-zero cells are considered as neighbours and all other ranks are set to \code{Inf}.  This is consistent with the behaviour of \code{\link{nearest.neighbours}}.
 
-  \code{pair.distances} is used as a default callback in several evaluation functions.
+  \code{pair.distances} is used as a default callback in several evaluation functions, which rely on the attribute \code{similarity} to distinguish between distance measures and similarity scores.  For this reason, transformation functions should always be \bold{isotonic} (order-preserving) so as not to mislead the evaluation procedure.
 
 }
 \value{
@@ -69,6 +70,7 @@ pair.distances(w1, w2, M, \dots, rank = c("none", "fwd", "bwd", "avg"), transfor
   forward, backward or average neighbour rank for the two terms.
   
   In either case, a distance or rank of \code{Inf} (or a similarity of \code{-Inf}) is returned for any term pair not represented in the DSM.
+  Attribute \code{similarity} is set to \code{TRUE} if the returned values are similarity scores rather than distances.
 
 }
 \seealso{

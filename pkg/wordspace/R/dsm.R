@@ -96,12 +96,8 @@ dsm <- function (M = NULL, target = NULL, feature = NULL, score = NULL, rowinfo 
 
   if (verbose) cat(" - computing marginal statistics\n")
   if (is.na(N) && !is.null(globals$N)) N <- globals$N  # use sample size from globals unless specified with N=
-  do.nnzero.rows <- !("nnzero" %in% colnames(rowinfo))
-  do.nnzero.cols <- !("nnzero" %in% colnames(colinfo))
-  is.nzero <- if (do.nnzero.rows || do.nnzero.cols) M != 0 else NULL
-  if (do.nnzero.rows) rowinfo$nnzero <- rowSums(is.nzero)
-  if (do.nnzero.cols) colinfo$nnzero <- colSums(is.nzero)
-  rm(is.nzero) # free memory
+  if (!("nnzero" %in% colnames(rowinfo))) rowinfo$nnzero <- rowNorms(M, method="minkowski", p=0) # we now have efficient nonzero counts with "Hamming length"
+  if (!("nnzero" %in% colnames(colinfo))) colinfo$nnzero <- colNorms(M, method="minkowski", p=0)
   if (raw.freq) {
     if (!("f" %in% colnames(rowinfo))) rowinfo$f <- rowSums(M) # M must be non-negative at this point
     if (!("f" %in% colnames(colinfo))) colinfo$f <- colSums(M)
@@ -123,6 +119,5 @@ dsm <- function (M = NULL, target = NULL, feature = NULL, score = NULL, rowinfo 
     dsm.obj <- list(S=M, rows=rowinfo, cols=colinfo, globals=globals)
   }
   
-  class(dsm.obj) <- c("dsm", "list")
-  dsm.obj
+  structure(dsm.obj, class=c("dsm", "list"))
 }

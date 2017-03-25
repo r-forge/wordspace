@@ -19,11 +19,13 @@ function (task, M, dist.fnc=pair.distances, ..., details=FALSE, format=NA, taskn
     w2 <- convert.lemma(w2, format)
   }
   distance <- dist.fnc(w1, w2, M, ...)
+  is.similarity <- isTRUE(attr(distance, "similarity"))
   distance <- matrix(distance, ncol=n.choices, byrow=FALSE) # distances in matrix format corresponding to choices
-
+  if (is.similarity) distance <- -distance # simple trick 
+  
   res.list <- lapply(1:n.items, function (i) {
     d <- distance[i, ]
-    ranks <- rank(d, ties.method="max")
+    ranks <- rank(d, ties.method="max") # so we don't get a correct answer if it is tied with a distractor
     best <- which.min(ranks)
     correct <- if (d[best] < Inf) ranks[1] == 1 else NA # whether correct answer is ranked first (NA if all pairings not in DSM)
     data.frame(
@@ -36,6 +38,10 @@ function (task, M, dist.fnc=pair.distances, ..., details=FALSE, format=NA, taskn
   res <- do.call("rbind", res.list)
   
   if (details) {
+    if (is.similarity) {
+      res$best.dist    <- -res$best.dist    # convert back to similarity scores
+      res$correct.dist <- -res$correct.dist # (can't use transform() because of warnings from "make check")
+    }
     res
   } else {
     tp <- sum(res$correct, na.rm=TRUE)

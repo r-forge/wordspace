@@ -184,10 +184,8 @@ dsm.score <- function (model, score="frequency",
   } else {
     model$S <- scores
     if (update.nnzero) {
-      is.nzero <- scores != 0
-      model$rows$nnzero <- rowSums(is.nzero)
-      model$cols$nnzero <- colSums(is.nzero)
-      rm(is.nzero)
+      model$rows$nnzero <- rowNorms(scores, method="minkowski", p=0)
+      model$cols$nnzero <- colNorms(scores, method="minkowski", p=0)
     }
     return(model)
   }
