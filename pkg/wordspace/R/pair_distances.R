@@ -1,4 +1,4 @@
-pair.distances <- function (w1, w2, M, ..., rank=c("none", "fwd", "bwd", "avg"), transform=NULL, avg.method=c("arithmetic", "geometric", "harmonic"), batchsize=10e6, verbose=FALSE) {
+pair.distances <- function (w1, w2, M, ..., transform=NULL, rank=c("none", "fwd", "bwd", "avg"), avg.method=c("arithmetic", "geometric", "harmonic"), batchsize=10e6, verbose=FALSE) {
   rank <- match.arg(rank)
   avg.method <- match.arg(avg.method)
   if (!is.null(transform) && !is.function(transform)) stop("transform= must be a vectorized function expecting a single argument")
@@ -40,10 +40,10 @@ pair.distances <- function (w1, w2, M, ..., rank=c("none", "fwd", "bwd", "avg"),
       if (split.batch) {
         pivot <- floor(n/2)
         verbose.val <- if (verbose) verbose + 2 else FALSE
-        res <- c(
-          pair.distances(w1[1:pivot], w2[1:pivot], M, ..., batchsize=batchsize, verbose=verbose.val),
-          pair.distances(w1[(pivot+1):n], w2[(pivot+1):n], M, ..., batchsize=batchsize, verbose=verbose.val)
-        )
+        res1 <- pair.distances(w1[1:pivot], w2[1:pivot], M, ..., batchsize=batchsize, verbose=verbose.val)
+        res2 <- pair.distances(w1[(pivot+1):n], w2[(pivot+1):n], M, ..., batchsize=batchsize, verbose=verbose.val)
+        is.similarity <- isTRUE(attr(res1, "similarity")) # pass through similarity marker
+        res <- structure(c(res1, res2), similarity=is.similarity)
         if (!is.null(transform)) return(transform(res)) else return(res)
       }
     }
@@ -64,7 +64,7 @@ pair.distances <- function (w1, w2, M, ..., rank=c("none", "fwd", "bwd", "avg"),
     w2.col <- match(w2, colnames(distances)) # column index of w1
     is.known <- !is.na(w1.row) & !is.na(w2.col)
     res[is.known] <- distances[cbind(w1.row[is.known], w2.col[is.known])]
-    names(res) <- paste(w1, w2, sep="/")
+    res <- structure(res, names=paste(w1, w2, sep="/"), similarity=is.similarity)
     if (!is.null(transform)) return(transform(res)) else return(res)
   }
 }
@@ -135,5 +135,5 @@ pair.ranks <- function (w1, w2, M, ..., rank=c("fwd", "bwd"), is.dist=FALSE, bat
     }
   }
     
-  structure(res, names=paste(w1, w2, sep="/"))
+  structure(res, names=paste(w1, w2, sep="/"), similarity=FALSE)
 }

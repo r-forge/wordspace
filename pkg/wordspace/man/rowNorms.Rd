@@ -68,7 +68,9 @@ colNorms(M, method = "euclidean", p = 2)
 
 rowNorms(DSM_TermContextMatrix, "manhattan")
 
-colNorms(DSM_TermContextMatrix, "minkowski", p=0) # number of nonzero cells
-
+# fast and memory-friendly nonzero counts with "Hamming length"
+rowNorms(DSM_TermContextMatrix, "minkowski", p=0)
+colNorms(DSM_TermContextMatrix, "minkowski", p=0)
+sum(colNorms(DSM_TermContextMatrix, "minkowski", p=0)) # = nnzero(DSM_TermContextMatrix)
 }
 \author{Stefan Evert (\url{http://purl.org/stefan.evert})}

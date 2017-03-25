@@ -42,10 +42,10 @@ subset.dsm <- function (x, subset=NULL, select=NULL, recursive=FALSE, drop.zeroe
     
   if (drop.zeroes) {
     M <- if (info$S$ok) x$S else x$M  # primary data matrix (use scores if available, which may be sparser than frequencies)
-    is.nzero <- M[row.idx, col.idx, drop=FALSE] != 0
-    nnzero.rows <- rowSums(is.nzero)
-    nnzero.cols <- colSums(is.nzero)
-    rm(M, is.nzero)
+    M.sub <- M[row.idx, col.idx, drop=FALSE] # proposed subset matrix
+    nnzero.rows <- rowNorms(M.sub, method="minkowski", p=0)
+    nnzero.cols <- colNorms(M.sub, method="minkowski", p=0)
+    rm(M.sub) # will take the real subset matrix in the code below (it would be better to just keep M.sub if no zeroes need to be deleted)
     keep.rows <- nnzero.rows > 0
     row.idx <- row.idx[keep.rows] # drop rows without nonzero entries
     nnzero.rows <- nnzero.rows[keep.rows] # updated nnzero counts for final subset
@@ -79,12 +79,11 @@ subset.dsm <- function (x, subset=NULL, select=NULL, recursive=FALSE, drop.zeroe
     y$cols$nnzero <- nnzero.cols
   } else {
     if (update.nz.rows || update.nz.cols) {
-      is.nzero <- if (info$S$ok) y$S != 0 else y$M != 0
-      if (update.nz.rows) y$rows$nnzero <- rowSums(is.nzero)
-      if (update.nz.cols) y$cols$nnzero <- colSums(is.nzero)
+      M <- if (info$S$ok) y$S else y$M # nonzero counts are based on the primary data matrix
+      if (update.nz.rows) y$rows$nnzero <- rowNorms(M, method="minkowski", p=0)
+      if (update.nz.cols) y$cols$nnzero <- colNorms(M, method="minkowski", p=0)
     }
   }
 
-  class(y) <- c("dsm", "list")
-  return(y)
+  structure(y, class=c("dsm", "list"))
 }

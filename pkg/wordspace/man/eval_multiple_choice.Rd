@@ -7,7 +7,7 @@
 }
 \description{
 
-  Evaluates DSM on a multiple choice task by selecting the answer option closest to the target word in distributional space.
+  Evaluates DSM on a multiple choice task by selecting the answer option closest to the target term in distributional space.
   A typical example is the TOEFL Synonym Task (Landauer & Dumais 1997).
   
 }
@@ -25,12 +25,7 @@ eval.multiple.choice(task, M, dist.fnc = pair.distances, \dots,
 
   \item{M}{a scored DSM matrix, passed to \code{dist.fnc}}
   
-  \item{dist.fnc}{a callback function used to compute distances between word pairs.
-    It will be invoked with character vectors containing the components of the word pairs as first and second argument,
-    the DSM matrix \code{M} as third argument, plus any additional arguments (\code{\dots}) passed to \code{eval.multiple.choice}.
-    The return value must be a numeric vector of appropriate length.  If one of the words in a pair is not represented in the DSM,
-    the corresponding distance value should be set to \code{Inf}.
-  }
+  \item{dist.fnc}{a callback function used to compute distances between term pairs (or similarity scores, which must be marked with an attribute \code{similarity=TRUE}). See \dQuote{Details} below for further information.}
 
   \item{\dots}{any further arguments are passed to \code{dist.fnc} and can be used e.g. to select a distance measure}
 
@@ -49,6 +44,12 @@ eval.multiple.choice(task, M, dist.fnc = pair.distances, \dots,
 }
 \details{
   
+  The callback function \code{dist.fnc} will be invoked with character vectors containing the components of the term pairs as first and second argument,
+  the DSM matrix \code{M} as third argument, plus any additional arguments (\code{\dots}) passed to \code{eval.multiple.choice}.
+  The return value must be a numeric vector of appropriate length.  If one of the terms in a pair is not represented in the DSM,
+  the corresponding distance value should be set to \code{Inf} (or \code{-Inf} in the case of similarity scores).
+  In most cases, the default callback \code{\link{pair.distances}} is sufficient if used with suitable parameter settings.
+
   For each task item, distances between the target word and the possible choices are computed.  Then all choices
   are ranked according to their distances; in the case of a tie, the \emph{higher} rank is assigned to both words.
   A task item counts as a TP (\emph{true positive}, i.e. a successful answer by the DSM) if the correct choice is

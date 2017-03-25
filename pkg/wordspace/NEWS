@@ -1,10 +1,14 @@
 Version 0.2-1:
 
   - dsm.score() now supports user-defined association measures, which are automatically evaluated in batches to reduce memory overhead compared to a naive vectorized implementation
-  - subset(..., recursive=TRUE) now runs garbage collection after every iteration to avoid multiple copies of DSM object
-  - as.distmat() marks and arbitrary matrix as a pre-computed dist.matrix object, so it can be used for lookup with nearest.neighbours() and pair.distances()
+  - as.distmat() marks an arbitrary matrix as a pre-computed dist.matrix object, so it can be used for lookup with nearest.neighbours() and pair.distances()
   - nearest.neighbours() improved to support lookup in sparse pre-computed distance matrix
   - pair.distances() improved to support lookup (and calculation of neighbour ranks) in a pre-computed distance matrix
+  - more efficient implementation of nonzero counts using "Hamming length" (Minkowski p=0)
+    - naive implementation rowSums(M != 0) involves temporary logical matrix, stored as 32-bit integers
+    - rowSums/colSums in Matrix package additionally converts lgcMatrix into a matrix of doubles (dgCMatrix), resulting in huge memory overhead
+    - even nnzero(M) has considerable memory overhead for sparse matrices
+  - subset(..., recursive=TRUE) now runs garbage collection after every iteration to avoid multiple copies of DSM object
 
 Version 0.2-0:
 
