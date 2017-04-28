@@ -77,8 +77,7 @@ read.dsm.ucs <- function (filename, encoding=getOption("encoding"), verbose=FALS
   }
   
   stopifnot(nrow(M) == n.rows && ncol(M) == n.cols)
-  rownames(M) <- rows$term
-  colnames(M) <- cols$term
+  dimnames(M) <- list(rows$term, cols$term)
 
   dsm(M=M, rowinfo=rows, colinfo=cols, globals=globals, raw.freq=TRUE, verbose=verbose)
 }

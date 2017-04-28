@@ -74,7 +74,6 @@ dist.matrix <- function (M, M2=NULL, method="cosine", p=2, normalized=FALSE, byr
     }
 
     if (convert) {
-      n <- prod(dim(result))
       transform_code <- 0L # cosine -> angle transformation
       tol <- 1e-12
       result <- CPP_similarity_to_distance(result, transform_code, tol, duplicate=FALSE) # can operate inplace on <result>

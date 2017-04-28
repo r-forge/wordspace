@@ -102,13 +102,13 @@ output:
     - can this still be interpreted as a projection method, or do we need a second function `dsm.decomp()`?
     - some authors claim that NMF is equivalent to probabilistic LSA, and it may be equivalent to LDA with suitable regularization
 *  neural embeddings and sparseness
-    - learned neural embeddings (esp. Mikolov's /word2vec/) seem to work extremely well (Baroni, Dinu & Kruszewski 2014)
+    - learned neural embeddings (esp. Mikolov's _word2vec_) seem to work extremely well (Baroni, Dinu & Kruszewski 2014)
     - should train word2vec embeddings on various corpora and include as pre-compiled models (Web downloads)
 *  preliminary comparison suggests that learned embeddings are more homogeneous
-    - column norms of reduced matrix are nearly constant for /word2vec/, whereas first SVD dimensions capture a large part of the variance
+    - column norms of reduced matrix are nearly constant for _word2vec_, whereas first SVD dimensions capture a large part of the variance
     - similarly for Senne embeddings, though with only 50 dims and different training regime, they don't work very well in standard tasks
     - can we generate homogenous embeddings from SVD projection?
-*  /word2vec/-like model trained on co-occurrence matrix?
+*  _word2vec_-like model trained on co-occurrence matrix?
     - what would be an appropriate goal criterion?
 
 
@@ -121,11 +121,15 @@ output:
 
 *  investigate memory overhead shown by benchmarks
     - cosine distance for dense (and possibly also sparse) matrix; very substantial overhead in "SVD-100 cosine distances" benchmark
+        - key problem seems to be copy-on-write duplication of resulting matrix during post-processing, especially when setting attributes
+        - not entirely clear when and why this happens; there seem to be at least two extra copies of the matrix despite in-place margin scaling
+        - counter-intuitively, without rescaling (`normalized=TRUE`), a third copy seems to be made; whether or not cosine similarities are converted to distances seems to have no effect
+        - should use `tracemem()` and `refs()` (from `pryr` package) to investigate
     - dense `dist.matrix()` compared to `dist()`
-    - overhead in `read.dsm.ucs()` has considerable overhead in R-level implementation of readMM
-        - triplet representation is read efficiently using scan with known size
-        - but then returned as a dgTMatrix, which is then converted to a dgCMatrix by `read.dsm.ucs()`
-          - perhaps overhead can be reduced without the intermediate dgTMatrix (but need at least one complete copy for reording triplets into CSR)
+    - `read.dsm.ucs()` has considerable overhead in R-level implementation of `readMM`
+        - triplet representation is read efficiently using `scan` with known size
+        - but then returned as a `dgTMatrix`, which is then converted to a `dgCMatrix` by `read.dsm.ucs()`
+          - perhaps overhead can be reduced without the intermediate dgTMatrix (but need at least one complete copy for reordering triplets into CSR)
 *  `dsm.projection()` could have option `renormalized` that performs row normalization in-place (with additional arguments passed on to rowNorms())
 
 
