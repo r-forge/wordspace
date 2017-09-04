@@ -19,7 +19,7 @@ dsm.score(model, score = "frequency",
           scale = c("none", "standardize", "center", "scale"),
           normalize = FALSE, method = "euclidean", p = 2,
           matrix.only = FALSE, update.nnzero = FALSE,
-          batchsize = 1e6)
+          batchsize = 1e6, gc.iter = Inf)
 
 }
 \arguments{
@@ -33,7 +33,7 @@ dsm.score(model, score = "frequency",
   }
 
   \item{negative.ok}{whether operations that introduce negative values into the score matrix (non-sparse association scores, standardization of columns, etc.) are allowed.
-    The default (\code{negative.ok=NA}) is \code{TRUE} if the co-occurrence matrix \eqn{M} is dense, and \code{FALSE} if it is sparse.
+    The default (\code{negative.ok=NA}) is \code{TRUE} if the co-occurrence matrix \eqn{M} is dense, and \code{FALSE} if it is sparse.  See \dQuote{Details} below for the special value \code{negative.ok="nonzero"}. 
   }
     
   \item{transform}{scale transformation to be applied to association scores (see \dQuote{Details} below)}
@@ -51,6 +51,8 @@ dsm.score(model, score = "frequency",
   \item{update.nnzero}{if \code{TRUE} and a full DSM model is returned, update the counts of nonzero entries in rows and columns according to the matrix of scores (there may be fewer nonzero entries with sparse association scores, or more from dense association scores and/or column scaling)}
 
   \item{batchsize}{if \code{score} is a user-defined function, the co-occurrence matrix is divided into blocks of approx. \code{batchsize} elements each in order to reduce memory overhead}
+
+  \item{gc.iter}{how often to run the garbage collector when computing user-defined association scores; \code{gc()} is called after every \code{gc.iter} batches in order to reclaim temporary data and keep memory overhead as low as possible. This option should only be specified if memory is very tight, since garbage collector runs can be expensive (e.g. when there are many distinct strings in the workspace). With the default value \code{gc.iter=Inf}, no calls to \code{gc()} will be made; \code{gc.iter=4} seems to give a good trade-off between memory overhead and degraded performance.}
 }
 \details{
   \subsection{Association measures}{
@@ -126,6 +128,8 @@ dsm.score(model, score = "frequency",
     If \code{sparse=TRUE}, negative association scores are cut off at 0 in order to (i) ensure that the scored matrix is non-negative and (ii) preserve sparseness.  The implementation assumes that association scores are always \eqn{\leq 0}{≤ 0} for \eqn{O_{11} = 0}{O11 = 0} in this case and only computes scores for nonzero entries in a sparse matrix.  All built-in association measures satisfy this criterion.
     
     Other researchers sometimes refer to such sparse scores as "positive" measures, most notably positive point-wise Mutual Information (PPMI). Since \code{sparse=TRUE} is the default setting, \code{score="MI"} actually computes the PPMI measure.
+
+    Non-sparse association scores can only be computed if \code{negative.ok=TRUE} and will force a dense matrix representation. For this reason, the default is \code{FALSE} for a sparse co-occurrence matrix and \code{TRUE} for a dense one.  A special setting \code{negative.ok="nonzero"} is provided for those who wish to abuse \code{dsm.score} for collocation analysis.  In combination with \code{sparse=FALSE}, it will allow negative score values, but compute them only for the nonzero entries of a sparse co-occurrence matrix.  For a dense co-occurrence matrix, this setting is fully equivalent to \code{negative.ok=TRUE}.
   }
   \subsection{Scale transformations}{
     Association scores can be re-scaled with an isotonic transformation function that preserves sign and ranking of the scores. This is often done in order to de-skew the distribution of scores or as an approximate binarization (presence vs. absence of features).  The following built-in transformations are available:

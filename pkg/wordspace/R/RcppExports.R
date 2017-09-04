@@ -2,58 +2,58 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 CPP_col_dist_dense <- function(x, y, metric_code, param1, symmetric) {
-    .Call('wordspace_CPP_col_dist_dense', PACKAGE = 'wordspace', x, y, metric_code, param1, symmetric)
+    .Call(`_wordspace_CPP_col_dist_dense`, x, y, metric_code, param1, symmetric)
 }
 
 CPP_col_dist_sparse <- function(nc1, xp, xrow, x, nc2, yp, yrow, y, metric_code, param1, symmetric) {
-    .Call('wordspace_CPP_col_dist_sparse', PACKAGE = 'wordspace', nc1, xp, xrow, x, nc2, yp, yrow, y, metric_code, param1, symmetric)
+    .Call(`_wordspace_CPP_col_dist_sparse`, nc1, xp, xrow, x, nc2, yp, yrow, y, metric_code, param1, symmetric)
 }
 
 CPP_get_openmp_threads <- function() {
-    .Call('wordspace_CPP_get_openmp_threads', PACKAGE = 'wordspace')
+    .Call(`_wordspace_CPP_get_openmp_threads`)
 }
 
 CPP_set_openmp_threads <- function(n) {
-    invisible(.Call('wordspace_CPP_set_openmp_threads', PACKAGE = 'wordspace', n))
+    invisible(.Call(`_wordspace_CPP_set_openmp_threads`, n))
 }
 
 CPP_random_indexing_sparse <- function(nr, nc, p, row_of, x, n_ri, rate, verbose = TRUE) {
-    .Call('wordspace_CPP_random_indexing_sparse', PACKAGE = 'wordspace', nr, nc, p, row_of, x, n_ri, rate, verbose)
+    .Call(`_wordspace_CPP_random_indexing_sparse`, nr, nc, p, row_of, x, n_ri, rate, verbose)
 }
 
 CPP_row_norms_dense <- function(x, norm_code, p_norm = 2.0) {
-    .Call('wordspace_CPP_row_norms_dense', PACKAGE = 'wordspace', x, norm_code, p_norm)
+    .Call(`_wordspace_CPP_row_norms_dense`, x, norm_code, p_norm)
 }
 
 CPP_row_norms_sparse <- function(nr, nc, p, row_of, x, norm_code, p_norm = 2.0) {
-    .Call('wordspace_CPP_row_norms_sparse', PACKAGE = 'wordspace', nr, nc, p, row_of, x, norm_code, p_norm)
+    .Call(`_wordspace_CPP_row_norms_sparse`, nr, nc, p, row_of, x, norm_code, p_norm)
 }
 
 CPP_col_norms_dense <- function(x, norm_code, p_norm = 2.0) {
-    .Call('wordspace_CPP_col_norms_dense', PACKAGE = 'wordspace', x, norm_code, p_norm)
+    .Call(`_wordspace_CPP_col_norms_dense`, x, norm_code, p_norm)
 }
 
 CPP_col_norms_sparse <- function(nr, nc, p, row_of, x, norm_code, p_norm = 2.0) {
-    .Call('wordspace_CPP_col_norms_sparse', PACKAGE = 'wordspace', nr, nc, p, row_of, x, norm_code, p_norm)
+    .Call(`_wordspace_CPP_col_norms_sparse`, nr, nc, p, row_of, x, norm_code, p_norm)
 }
 
 CPP_scale_margins_dense <- function(M, rows, cols, duplicate = TRUE) {
-    .Call('wordspace_CPP_scale_margins_dense', PACKAGE = 'wordspace', M, rows, cols, duplicate)
+    .Call(`_wordspace_CPP_scale_margins_dense`, M, rows, cols, duplicate)
 }
 
 CPP_scale_margins_sparse <- function(M, rows, cols, duplicate = TRUE) {
-    .Call('wordspace_CPP_scale_margins_sparse', PACKAGE = 'wordspace', M, rows, cols, duplicate)
+    .Call(`_wordspace_CPP_scale_margins_sparse`, M, rows, cols, duplicate)
 }
 
 CPP_dsm_score_dense <- function(f, f1, f2, N, am_code, sparse, transform_code) {
-    .Call('wordspace_CPP_dsm_score_dense', PACKAGE = 'wordspace', f, f1, f2, N, am_code, sparse, transform_code)
+    .Call(`_wordspace_CPP_dsm_score_dense`, f, f1, f2, N, am_code, sparse, transform_code)
 }
 
 CPP_dsm_score_sparse <- function(nr, nc, p, row_of, f, f1, f2, N, am_code, sparse, transform_code) {
-    .Call('wordspace_CPP_dsm_score_sparse', PACKAGE = 'wordspace', nr, nc, p, row_of, f, f1, f2, N, am_code, sparse, transform_code)
+    .Call(`_wordspace_CPP_dsm_score_sparse`, nr, nc, p, row_of, f, f1, f2, N, am_code, sparse, transform_code)
 }
 
 CPP_similarity_to_distance <- function(M, opcode, tol, duplicate = TRUE) {
-    .Call('wordspace_CPP_similarity_to_distance', PACKAGE = 'wordspace', M, opcode, tol, duplicate)
+    .Call(`_wordspace_CPP_similarity_to_distance`, M, opcode, tol, duplicate)
 }
 

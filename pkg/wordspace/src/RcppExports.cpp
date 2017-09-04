@@ -7,7 +7,7 @@ using namespace Rcpp;
 
 // CPP_col_dist_dense
 NumericMatrix CPP_col_dist_dense(NumericMatrix x, NumericMatrix y, int metric_code, double param1, bool symmetric);
-RcppExport SEXP wordspace_CPP_col_dist_dense(SEXP xSEXP, SEXP ySEXP, SEXP metric_codeSEXP, SEXP param1SEXP, SEXP symmetricSEXP) {
+RcppExport SEXP _wordspace_CPP_col_dist_dense(SEXP xSEXP, SEXP ySEXP, SEXP metric_codeSEXP, SEXP param1SEXP, SEXP symmetricSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -22,7 +22,7 @@ END_RCPP
 }
 // CPP_col_dist_sparse
 NumericMatrix CPP_col_dist_sparse(int nc1, IntegerVector xp, IntegerVector xrow, NumericVector x, int nc2, IntegerVector yp, IntegerVector yrow, NumericVector y, int metric_code, double param1, bool symmetric);
-RcppExport SEXP wordspace_CPP_col_dist_sparse(SEXP nc1SEXP, SEXP xpSEXP, SEXP xrowSEXP, SEXP xSEXP, SEXP nc2SEXP, SEXP ypSEXP, SEXP yrowSEXP, SEXP ySEXP, SEXP metric_codeSEXP, SEXP param1SEXP, SEXP symmetricSEXP) {
+RcppExport SEXP _wordspace_CPP_col_dist_sparse(SEXP nc1SEXP, SEXP xpSEXP, SEXP xrowSEXP, SEXP xSEXP, SEXP nc2SEXP, SEXP ypSEXP, SEXP yrowSEXP, SEXP ySEXP, SEXP metric_codeSEXP, SEXP param1SEXP, SEXP symmetricSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -43,7 +43,7 @@ END_RCPP
 }
 // CPP_get_openmp_threads
 DataFrame CPP_get_openmp_threads();
-RcppExport SEXP wordspace_CPP_get_openmp_threads() {
+RcppExport SEXP _wordspace_CPP_get_openmp_threads() {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -53,7 +53,7 @@ END_RCPP
 }
 // CPP_set_openmp_threads
 void CPP_set_openmp_threads(int n);
-RcppExport SEXP wordspace_CPP_set_openmp_threads(SEXP nSEXP) {
+RcppExport SEXP _wordspace_CPP_set_openmp_threads(SEXP nSEXP) {
 BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< int >::type n(nSEXP);
@@ -63,7 +63,7 @@ END_RCPP
 }
 // CPP_random_indexing_sparse
 NumericMatrix CPP_random_indexing_sparse(int nr, int nc, IntegerVector p, IntegerVector row_of, NumericVector x, int n_ri, double rate, bool verbose);
-RcppExport SEXP wordspace_CPP_random_indexing_sparse(SEXP nrSEXP, SEXP ncSEXP, SEXP pSEXP, SEXP row_ofSEXP, SEXP xSEXP, SEXP n_riSEXP, SEXP rateSEXP, SEXP verboseSEXP) {
+RcppExport SEXP _wordspace_CPP_random_indexing_sparse(SEXP nrSEXP, SEXP ncSEXP, SEXP pSEXP, SEXP row_ofSEXP, SEXP xSEXP, SEXP n_riSEXP, SEXP rateSEXP, SEXP verboseSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -81,7 +81,7 @@ END_RCPP
 }
 // CPP_row_norms_dense
 NumericVector CPP_row_norms_dense(NumericMatrix x, int norm_code, double p_norm);
-RcppExport SEXP wordspace_CPP_row_norms_dense(SEXP xSEXP, SEXP norm_codeSEXP, SEXP p_normSEXP) {
+RcppExport SEXP _wordspace_CPP_row_norms_dense(SEXP xSEXP, SEXP norm_codeSEXP, SEXP p_normSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -94,7 +94,7 @@ END_RCPP
 }
 // CPP_row_norms_sparse
 NumericVector CPP_row_norms_sparse(int nr, int nc, IntegerVector p, IntegerVector row_of, NumericVector x, int norm_code, double p_norm);
-RcppExport SEXP wordspace_CPP_row_norms_sparse(SEXP nrSEXP, SEXP ncSEXP, SEXP pSEXP, SEXP row_ofSEXP, SEXP xSEXP, SEXP norm_codeSEXP, SEXP p_normSEXP) {
+RcppExport SEXP _wordspace_CPP_row_norms_sparse(SEXP nrSEXP, SEXP ncSEXP, SEXP pSEXP, SEXP row_ofSEXP, SEXP xSEXP, SEXP norm_codeSEXP, SEXP p_normSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -111,7 +111,7 @@ END_RCPP
 }
 // CPP_col_norms_dense
 NumericVector CPP_col_norms_dense(NumericMatrix x, int norm_code, double p_norm);
-RcppExport SEXP wordspace_CPP_col_norms_dense(SEXP xSEXP, SEXP norm_codeSEXP, SEXP p_normSEXP) {
+RcppExport SEXP _wordspace_CPP_col_norms_dense(SEXP xSEXP, SEXP norm_codeSEXP, SEXP p_normSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -124,7 +124,7 @@ END_RCPP
 }
 // CPP_col_norms_sparse
 NumericVector CPP_col_norms_sparse(int nr, int nc, IntegerVector p, IntegerVector row_of, NumericVector x, int norm_code, double p_norm);
-RcppExport SEXP wordspace_CPP_col_norms_sparse(SEXP nrSEXP, SEXP ncSEXP, SEXP pSEXP, SEXP row_ofSEXP, SEXP xSEXP, SEXP norm_codeSEXP, SEXP p_normSEXP) {
+RcppExport SEXP _wordspace_CPP_col_norms_sparse(SEXP nrSEXP, SEXP ncSEXP, SEXP pSEXP, SEXP row_ofSEXP, SEXP xSEXP, SEXP norm_codeSEXP, SEXP p_normSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -141,7 +141,7 @@ END_RCPP
 }
 // CPP_scale_margins_dense
 NumericMatrix CPP_scale_margins_dense(NumericMatrix M, NumericVector rows, NumericVector cols, bool duplicate);
-RcppExport SEXP wordspace_CPP_scale_margins_dense(SEXP MSEXP, SEXP rowsSEXP, SEXP colsSEXP, SEXP duplicateSEXP) {
+RcppExport SEXP _wordspace_CPP_scale_margins_dense(SEXP MSEXP, SEXP rowsSEXP, SEXP colsSEXP, SEXP duplicateSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -155,7 +155,7 @@ END_RCPP
 }
 // CPP_scale_margins_sparse
 S4 CPP_scale_margins_sparse(S4 M, NumericVector rows, NumericVector cols, bool duplicate);
-RcppExport SEXP wordspace_CPP_scale_margins_sparse(SEXP MSEXP, SEXP rowsSEXP, SEXP colsSEXP, SEXP duplicateSEXP) {
+RcppExport SEXP _wordspace_CPP_scale_margins_sparse(SEXP MSEXP, SEXP rowsSEXP, SEXP colsSEXP, SEXP duplicateSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -169,7 +169,7 @@ END_RCPP
 }
 // CPP_dsm_score_dense
 NumericMatrix CPP_dsm_score_dense(NumericMatrix f, NumericVector f1, NumericVector f2, double N, int am_code, int sparse, int transform_code);
-RcppExport SEXP wordspace_CPP_dsm_score_dense(SEXP fSEXP, SEXP f1SEXP, SEXP f2SEXP, SEXP NSEXP, SEXP am_codeSEXP, SEXP sparseSEXP, SEXP transform_codeSEXP) {
+RcppExport SEXP _wordspace_CPP_dsm_score_dense(SEXP fSEXP, SEXP f1SEXP, SEXP f2SEXP, SEXP NSEXP, SEXP am_codeSEXP, SEXP sparseSEXP, SEXP transform_codeSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -186,7 +186,7 @@ END_RCPP
 }
 // CPP_dsm_score_sparse
 NumericVector CPP_dsm_score_sparse(int nr, int nc, IntegerVector p, IntegerVector row_of, NumericVector f, NumericVector f1, NumericVector f2, double N, int am_code, int sparse, int transform_code);
-RcppExport SEXP wordspace_CPP_dsm_score_sparse(SEXP nrSEXP, SEXP ncSEXP, SEXP pSEXP, SEXP row_ofSEXP, SEXP fSEXP, SEXP f1SEXP, SEXP f2SEXP, SEXP NSEXP, SEXP am_codeSEXP, SEXP sparseSEXP, SEXP transform_codeSEXP) {
+RcppExport SEXP _wordspace_CPP_dsm_score_sparse(SEXP nrSEXP, SEXP ncSEXP, SEXP pSEXP, SEXP row_ofSEXP, SEXP fSEXP, SEXP f1SEXP, SEXP f2SEXP, SEXP NSEXP, SEXP am_codeSEXP, SEXP sparseSEXP, SEXP transform_codeSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -207,7 +207,7 @@ END_RCPP
 }
 // CPP_similarity_to_distance
 NumericMatrix CPP_similarity_to_distance(NumericMatrix M, int opcode, double tol, bool duplicate);
-RcppExport SEXP wordspace_CPP_similarity_to_distance(SEXP MSEXP, SEXP opcodeSEXP, SEXP tolSEXP, SEXP duplicateSEXP) {
+RcppExport SEXP _wordspace_CPP_similarity_to_distance(SEXP MSEXP, SEXP opcodeSEXP, SEXP tolSEXP, SEXP duplicateSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -218,4 +218,27 @@ BEGIN_RCPP
     rcpp_result_gen = Rcpp::wrap(CPP_similarity_to_distance(M, opcode, tol, duplicate));
     return rcpp_result_gen;
 END_RCPP
+}
+
+static const R_CallMethodDef CallEntries[] = {
+    {"_wordspace_CPP_col_dist_dense", (DL_FUNC) &_wordspace_CPP_col_dist_dense, 5},
+    {"_wordspace_CPP_col_dist_sparse", (DL_FUNC) &_wordspace_CPP_col_dist_sparse, 11},
+    {"_wordspace_CPP_get_openmp_threads", (DL_FUNC) &_wordspace_CPP_get_openmp_threads, 0},
+    {"_wordspace_CPP_set_openmp_threads", (DL_FUNC) &_wordspace_CPP_set_openmp_threads, 1},
+    {"_wordspace_CPP_random_indexing_sparse", (DL_FUNC) &_wordspace_CPP_random_indexing_sparse, 8},
+    {"_wordspace_CPP_row_norms_dense", (DL_FUNC) &_wordspace_CPP_row_norms_dense, 3},
+    {"_wordspace_CPP_row_norms_sparse", (DL_FUNC) &_wordspace_CPP_row_norms_sparse, 7},
+    {"_wordspace_CPP_col_norms_dense", (DL_FUNC) &_wordspace_CPP_col_norms_dense, 3},
+    {"_wordspace_CPP_col_norms_sparse", (DL_FUNC) &_wordspace_CPP_col_norms_sparse, 7},
+    {"_wordspace_CPP_scale_margins_dense", (DL_FUNC) &_wordspace_CPP_scale_margins_dense, 4},
+    {"_wordspace_CPP_scale_margins_sparse", (DL_FUNC) &_wordspace_CPP_scale_margins_sparse, 4},
+    {"_wordspace_CPP_dsm_score_dense", (DL_FUNC) &_wordspace_CPP_dsm_score_dense, 7},
+    {"_wordspace_CPP_dsm_score_sparse", (DL_FUNC) &_wordspace_CPP_dsm_score_sparse, 11},
+    {"_wordspace_CPP_similarity_to_distance", (DL_FUNC) &_wordspace_CPP_similarity_to_distance, 4},
+    {NULL, NULL, 0}
+};
+
+RcppExport void R_init_wordspace(DllInfo *dll) {
+    R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
+    R_useDynamicSymbols(dll, FALSE);
 }

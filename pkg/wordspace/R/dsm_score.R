@@ -4,7 +4,7 @@ dsm.score <- function (model, score="frequency",
                        scale=c("none", "standardize", "center", "scale"),
                        normalize=FALSE, method="euclidean", p=2,
                        matrix.only=FALSE, update.nnzero=FALSE,
-                       batchsize=1e6) {
+                       batchsize=1e6, gc.iter=Inf) {
   ## validate DSM object
   model.info <- check.dsm(model, validate=TRUE)
   have.M <- model.info$M$ok
@@ -72,18 +72,27 @@ dsm.score <- function (model, score="frequency",
   ## check matrix format and sparse/dense representation
   matrix.info <- dsm.is.canonical(cooc.matrix)
   cooc.sparse <- matrix.info$sparse
-  if (is.na(negative.ok)) negative.ok <- !cooc.sparse
+  scaling.not.sparse <- scale %in% c("standardize", "center")
 
-  if (!negative.ok) {
-    if (!sparse) stop("computation of non-sparse association scores would introduce negative values and force dense representation: specify negative.ok=TRUE if you really want to do this")
-    if (scale %in% c("standardize", "center")) stop("column scaling would introduce negative values and force dense representation: specify negative.ok=TRUE if you really want to do this")
+  if (is.na(negative.ok)) negative.ok <- !cooc.sparse
+  if (is.character(negative.ok)) negative.ok <- match.arg(negative.ok, "nonzero")
+  if (negative.ok == "nonzero") {
+    if (scaling.not.sparse) stop("column scaling would introduce negative values and force dense representation: specify negative.ok=TRUE if you really want to do this")
+    negative.ok <- !sparse # allow negative values for nonzero cells if sparse=FALSE
   }
-  if (!sparse && cooc.sparse) {
-    cooc.matrix <- as.matrix(cooc.matrix) # make co-occurrence matrix dense for non-sparse association scores
-    matrix.info <- list(sparse=FALSE, canonical=TRUE, nonneg=FALSE)
-    cooc.sparse <- FALSE
+  else {
+    if (!negative.ok) {
+      if (!sparse) stop("computation of non-sparse association scores would introduce negative values and force dense representation: specify negative.ok=TRUE if you really want to do this")
+      if (scaling.not.sparse) stop("column scaling would introduce negative values and force dense representation: specify negative.ok=TRUE if you really want to do this")
+    }
+    if (!sparse && cooc.sparse) {
+      cooc.matrix <- as.matrix(cooc.matrix) # make co-occurrence matrix dense for non-sparse association scores
+      matrix.info <- list(sparse=FALSE, canonical=TRUE, nonneg=FALSE)
+      cooc.sparse <- FALSE
+    }
+    if (negative.ok && sparse && !scaling.not.sparse) negative.ok <- FALSE # scored matrix will be non-negative, so mark it as such
   }
-  
+
   if (!matrix.info$canonical) cooc.matrix <- dsm.canonical.matrix(cooc.matrix)
 
   ## compute association scores and apply optional transformation
@@ -108,23 +117,30 @@ dsm.score <- function (model, score="frequency",
       i.col <- rep(seq_len(ncol(cooc.matrix)), times=diff(cooc.matrix@p)) # large vector, but can't be done effectively in batches
       n <- length(cooc.matrix@x)
       scores.x <- numeric(n) # pre-allocate result vector
-      i1 <- 1
+      i1 <- 1 
+      gc.step <- 1
       while (i1 <= n) {
         i2 <- min(i1 + batchsize - 1, n)
         ## cat(sprintf("dsm.score: processing cells #%d .. #%d\n", i1, i2))
         idx <- i1:i2 # cells to process in this batch
         i.row.idx <- cooc.matrix@i[idx] + 1L
         i.col.idx <- i.col[idx]
-        scores.x[idx] <- pmax(0, transform.fun(compute.AM(
+        y <- transform.fun(compute.AM(
           AM, f=cooc.matrix@x[idx], f1=f1[i.row.idx], f2=f2[i.col.idx], N=N,
           rows=model$rows[i.row.idx, ], cols=model$cols[i.col.idx, ]
-        )))
+        ))
+        scores.x[idx] <- if (sparse) pmax(0, y) else y
         i1 <- i1 + batchsize
-        gc() # clean up temporary objects so they don't accumulate in RAM
+        gc.step <- gc.step + 1
+        if (gc.step > gc.iter) {
+          gc(verbose=FALSE) # clean up temporary objects so they don't accumulate in RAM
+          gc.step <- 1
+        }
       }
-      rm(i.col, idx); gc()
+      rm(i.col, idx, y)
+      if (gc.iter < Inf) gc(verbose=FALSE)
       scores <- new("dgCMatrix", Dim=as.integer(c(model.info$nrow, model.info$ncol)), p=cooc.matrix@p, i=cooc.matrix@i, x=scores.x)
-      rm(scores.x); gc()
+      rm(scores.x) # no need to re-run gc() because scores.x has been integrated into the new sparseMatrix object
     } else {
       ## dense matrix: divide columns into batches
       nR <- nrow(cooc.matrix)
@@ -132,20 +148,27 @@ dsm.score <- function (model, score="frequency",
       batch.cols <- ceiling(batchsize / nC) # number of columns per batch
       scores <- matrix(0, nR, nC)
       i1 <- 1
+      gc.step <- 1
       while (i1 <= nC) {
         i2 <- min(i1 + batch.cols - 1, nC)
         ## cat(sprintf("dsm.score: processing columns #%d .. #%d\n", i1, i2))
         idx <- i1:i2 # columns in batch
         i.row <- rep(1:nR, length(idx)) # row index for batch matrix
         i.col <- rep(idx, each=nR)      # column index for batch matrix
-        scores[, idx] <- pmax(if (sparse) 0 else -Inf, transform.fun(compute.AM(
+        y <- transform.fun(compute.AM(
           AM, f=cooc.matrix[, idx, drop=FALSE], f1=f1[i.row], f2=f2[i.col], N=N, 
           rows=model$rows[i.row, ], cols=model$cols[i.col, ]
-        )))
+        ))        
+        scores[, idx] <- if (sparse) pmax(0, y) else y
         i1 <- i1 + batch.cols
-        gc() # clean up temporary objects so they don't accumulate in RAM
+        gc.step <- gc.step + 1
+        if (gc.step > gc.iter) {
+          gc(verbose=FALSE) # clean up temporary objects so they don't accumulate in RAM
+          gc.step <- 1
+        }
       }
-      rm(i.row, i.col, idx); gc()
+      rm(i.row, i.col, idx, y)
+      if (gc.iter < Inf) gc(verbose=FALSE)
     }
   } else {
     ## (B) built-in association measures: C code for optimal memory-efficiency
