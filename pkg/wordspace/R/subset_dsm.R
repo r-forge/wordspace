@@ -1,4 +1,7 @@
-subset.dsm <- function (x, subset=NULL, select=NULL, recursive=FALSE, drop.zeroes=FALSE, matrix.only=FALSE, envir=parent.frame(), ...) {
+subset.dsm <- function (x, subset=NULL, select=NULL,
+                        recursive=FALSE, drop.zeroes=FALSE, matrix.only=FALSE,
+                        envir=parent.frame(), run.gc = FALSE,
+                        ...) {
   info <- check.dsm(x, validate=TRUE) # make sure that rows/columns are consistent
   if (recursive && matrix.only) stop("matrix.only=TRUE cannot be combined with recursive=TRUE")
 
@@ -9,7 +12,7 @@ subset.dsm <- function (x, subset=NULL, select=NULL, recursive=FALSE, drop.zeroe
     if (y.info$nrow == info$nrow && y.info$ncol == info$ncol) return(y)
     x <- y
     info <- y.info
-    gc(verbose=FALSE) # avoid more than one duplicate during recursion
+    if (run.gc) gc(verbose=FALSE) # avoid more than one duplicate during recursion
   }
   
   condition <- substitute(subset)

@@ -11,10 +11,9 @@
 \usage{
 
 \method{subset}{dsm}(x, subset, select, recursive = FALSE, drop.zeroes = FALSE,
-       matrix.only = FALSE, envir = parent.frame(), \dots)
+       matrix.only = FALSE, envir = parent.frame(), run.gc = FALSE, \dots)
 
 }
-%- maybe also 'usage' for other objects documented here.
 \arguments{
 
   \item{x}{
@@ -45,7 +44,9 @@
   \item{envir}{
     environment in which the \code{subset} and \code{select} conditions are evaluated.  Defaults to the context of the function call, so all variables visible there can be used in the expressions.
   }
-  
+
+  \item{run.gc}{whether to run the garbage collector after each iteration of a recursive subset (\code{recursive=TRUE}) in order to keep memory overhead as low as possible. This option should only be specified if memory is very tight, since garbage collector runs can be expensive (e.g. when there are many distinct strings in the workspace).}
+
   \item{\dots}{
     any further arguments are silently ignored
   }

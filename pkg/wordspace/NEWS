@@ -1,3 +1,7 @@
+Version 0.2-2:
+
+  - dsm.score() can now also be abused for collocation analysis with negative.ok="nonzero" (using a sparse DSM to represent a co-occurrence data set)
+ 
 Version 0.2-1:
 
   - dsm.score() now supports user-defined association measures, which are automatically evaluated in batches to reduce memory overhead compared to a naive vectorized implementation
@@ -8,7 +12,9 @@ Version 0.2-1:
     - naive implementation rowSums(M != 0) involves temporary logical matrix, stored as 32-bit integers
     - rowSums/colSums in Matrix package additionally converts lgcMatrix into a matrix of doubles (dgCMatrix), resulting in huge memory overhead
     - even nnzero(M) has considerable memory overhead for sparse matrices
-  - subset(..., recursive=TRUE) now runs garbage collection after every iteration to avoid multiple copies of DSM object
+  - subset(..., recursive=TRUE) can now optionally run garbage collection after every iteration to avoid multiple copies of DSM object
+    - garbage collection is extremely expensive if the workspace contains many distinct strings (which is quite common for natural language data), so the aggressive gc() calls have to be enable explicitly by the user (if memory is so tight that the CPU overhead has to be tolerated)
+    - several intermediate gc() calls in dsm.score() also have to be enabled explicitly by the user
 
 Version 0.2-0:
 
