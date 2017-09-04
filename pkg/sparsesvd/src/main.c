@@ -93,3 +93,14 @@ SEXP svdLAS2_(SEXP dim, SEXP i, SEXP p, SEXP x, SEXP dimensions, SEXP exclude, S
   UNPROTECT(5);
   return res;
 }
+
+static const R_CallMethodDef sparsesvd_methods[] = {
+  {"svdLAS2_", (DL_FUNC) &svdLAS2_, 7},
+  {NULL, NULL, 0}
+};
+
+void R_init_sparsesvd(DllInfo *dll) {
+  R_registerRoutines(dll, NULL, sparsesvd_methods, NULL, NULL);
+  R_useDynamicSymbols(dll, FALSE);
+  R_forceSymbols(dll, TRUE);
+}
