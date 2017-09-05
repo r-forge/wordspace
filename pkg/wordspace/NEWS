@@ -1,6 +1,7 @@
 Version 0.2-2:
 
   - dsm.score() can now also be abused for collocation analysis with negative.ok="nonzero" (using a sparse DSM to represent a co-occurrence data set)
+  - new association measures log-likelihood and chi-squared (with Yates correction); more thorough unit tests of dsm.score()
  
 Version 0.2-1:
 

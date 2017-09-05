@@ -18,8 +18,8 @@ dsm.score <- function (model, score="frequency",
     if (!have.M) stop("cannot compute association scores: no co-occurrence frequency data available")
     if (model.info$locked) stop("marginal frequencies are invalid, cannot compute association scores")
   } else {
-    score <- match.arg(score, c("frequency", "simple-ll", "t-score", "z-score", "Dice", "MI", "tf.idf", "reweight"))
-    score.code <- switch(score, frequency=0, reweight=0, "simple-ll"=1, "t-score"=2, "z-score"=3, Dice=4, MI=5, tf.idf=6)
+    score <- match.arg(score, c("frequency", "simple-ll", "t-score", "z-score", "Dice", "MI", "tf.idf", "log-likelihood", "chi-squared", "reweight"))
+    score.code <- switch(score, frequency=0, reweight=0, "simple-ll"=1, "t-score"=2, "z-score"=3, Dice=4, MI=5, tf.idf=6, "log-likelihood"=7, "chi-squared"=8)
     if (score.code %in% c(0, 4, 6)) sparse <- TRUE # frequency measure, reweighting, tf.idf and Dice are always sparse
     if (score == "reweight" && !have.S) stop("cannot use score='reweight': association scores have not been computed yet")
     if (score != "reweight" && !have.M) stop("cannot compute association scores: no co-occurrence frequency data available")
