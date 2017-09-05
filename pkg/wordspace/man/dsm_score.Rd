@@ -80,19 +80,38 @@ dsm.score(model, score = "frequency",
         
         The sparse version of MI (with negative scores cut off at 0) is sometimes referred to as "positive pointwise Mutual Information" (\bold{PPMI}) in the literature.
       }
+      \item{\code{log-likelihood}}{
+        The \eqn{G^2} statistic of a likelihood ratio test for independence of rows and columns in a contingency table, which is very popular in computational linguistics under the name \bold{log-likelihood}: \deqn{
+          \pm 2 \left( \sum_{ij} O_{ij}\cdot \log \frac{O_{ij}}{E_{ij}} \right)
+        }{ ± 2 * ( SUM[ij] Oij * log(Oij / Eij) ) }
+        This implementation computes \emph{signed} association scores, which are negative iff \eqn{O_{11} < E_{11}}{O11 < E11}.
+        Log-likelihood has a strong bias towards high co-occurrence frequency and often produces a highly skewed distribution of scores. It may therefore be advisable to combine it with an additional \code{log} transformation.
+      }
       \item{\code{simple-ll}}{
         Simple \bold{log-likelihood} (Evert 2008, p. 1225): \deqn{
           \pm 2 \left( O_{11}\cdot \log \frac{O_{11}}{E_{11}} - (O_{11} - E_{11}) \right)
         }{ ± 2 * ( O11 * log(O11 / E11) - (O11 - E11) ) }
-        This measure provides a good approximation to the full log-likelihood measure (Evert 2008, p. 1235), but can be computed much more efficiently. It is also very similar to the \bold{local-MI} measure used by several popular DSMs. The implementation used here computes \emph{signed} association scores, which are negative iff \eqn{O_{11} < E_{11}}{O11 < E11}.
-        
-        Log-likelihood has a strong bias towards high co-occurrence frequency and often produces a highly skewed distribution of scores. It may therefore be advisable to combine it with an additional \code{log} transformation.
+        This measure provides a good approximation to the full log-likelihood measure (Evert 2008, p. 1235), but can be computed much more efficiently. It is also very similar to the \bold{local-MI} measure used by several popular DSMs.
+
+        Like \code{log-likelihood}, this measure computes \emph{signed} association scores and has a strong bias towards high co-occurrence frequency.
       }
       \item{\code{t-score}}{
         The \bold{t-score} association measure, which is popular for collocation identification in computational lexicography: \deqn{
           \frac{O_{11} - E_{11}}{\sqrt{O_{11}}}
         }{ (O11 - E11) / sqrt(O11) }
         T-score is known to filter out low-frequency data effectively.  If used as a non-sparse measure, a \dQuote{discounted} version with \eqn{\sqrt(O + 1)} in the denominator is computed.
+      }
+      \item{\code{chi-squared}}{
+        The \eqn{X^2} statistic of Pearson's \bold{chi-squared} test for independence of rows and columns in a contingency table, with Yates's correction applied: \deqn{
+          \pm \frac{
+            N \bigl( | O_{11}O_{22} - O_{12} O_{21} | - N/2 \bigr)^2
+          }{
+            R_1 R_2 C_1 C_2
+          }
+        }{ ± N * (|O12 * O22 - O12 * O21| - N/2)^2 / (R1 * R2 * C1 * C2) }
+        This implementation computes \emph{signed} association scores, which are negative iff \eqn{O_{11} < E_{11}}{O11 < E11}.
+
+        The formula above gives a more compact form of Yates's correction than the familiar sum over the four cells of the contingency table.
       }
       \item{\code{z-score}}{
         The \bold{z-score} association measure, based on a normal approximation to the binomial distribution of co-occurrence by chance: \deqn{

@@ -48,6 +48,33 @@ double am_tf_idf(double f, double f1, double f2, double N, int sparse) {
   return (f2 > 0) ? f * log(N / f2) : 0; /* avoid division by zero if f2 == 0 */
 }
 
+double am_log_likelihood(double f, double f1, double f2, double N, int sparse) {
+  double R1 = f1, R2 = N - f1, C1 = f2, C2 = N - f2;
+  double O11 = f, O12 = R1 - f, O21 = C1 - f, O22 = C2 - O12;
+  double E11 = R1 * C1 / N, E12 = R1 * C2 / N, E21 = R2 * C1 / N, E22 = R2 * C2 / N;
+  double G2 =
+    ((O11 > 0) ? O11 * log(O11 / E11) : 0) +
+    ((O12 > 0) ? O12 * log(O12 / E12) : 0) +
+    ((O21 > 0) ? O21 * log(O21 / E21) : 0) +
+    ((O22 > 0) ? O22 * log(O22 / E22) : 0);
+  if (sparse)
+    return (O11 > E11) ? 2 * G2 : 0;
+  else
+    return (O11 >= E11) ? 2 * G2 : -2 * G2;
+}
+
+double am_chi_squared(double f, double f1, double f2, double N, int sparse) {
+  double R1 = f1, R2 = N - f1, C1 = f2, C2 = N - f2;
+  double O11 = f, O12 = R1 - f, O21 = C1 - f, O22 = C2 - O12;
+  double E11 = R1 * C1 / N;
+  double yates = abs(O11 * O22 - O12 * O21) - N / 2;
+  double X2 = N * yates * yates / (R1 * R2 * C1 * C2);
+  if (sparse)
+    return (O11 > E11) ? X2 : 0;
+  else
+    return (O11 >= E11) ? X2 : -X2;
+}
+
 double transform(double x, int method) {
   switch (method) {
     case 0:       /* 0 = none */
@@ -64,7 +91,7 @@ double transform(double x, int method) {
   }
 }
 
-int am_table_entries = 7;
+int am_table_entries = 9;
 
 am_func am_table[] = {
   &am_frequency,
@@ -74,5 +101,7 @@ am_func am_table[] = {
   &am_Dice,
   &am_MI,
   &am_tf_idf,
+  &am_log_likelihood,
+  &am_chi_squared
 };
 
