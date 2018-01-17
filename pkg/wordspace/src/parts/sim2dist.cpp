@@ -4,11 +4,12 @@
 
 /* internal codes for type of transformation
  *  0 = cosine -> angle
+ *  1 = sim -> d = 1 - sim
 */
 
 // [[Rcpp::export]]
 NumericMatrix CPP_similarity_to_distance(NumericMatrix M, int opcode, double tol, bool duplicate = true) {
-  if (!R_FINITE(opcode) || opcode < 0 || opcode > 0)
+  if (!R_FINITE(opcode) || opcode < 0 || opcode > 1)
     stop("internal error -- invalid transformation method code");
 
   unsigned int n_items = M.length();
@@ -21,17 +22,20 @@ NumericMatrix CPP_similarity_to_distance(NumericMatrix M, int opcode, double tol
   for (unsigned int i = 0; i < n_items; i++) {
     double x = _res[i];
     switch (opcode) {
-      case 0:
-        if (x < -(1-tol)) {
-          if (x < -(1+tol)) n_clamped++;
-          x = -1;
-        }
-        else if (x > (1-tol)) {
-          if (x > (1+tol)) n_clamped++;
-          x = 1;
-        }
-        x = acos(x) * 180 / M_PI; 
-        break;
+    case 0:
+      if (x < -(1-tol)) {
+        if (x < -(1+tol)) n_clamped++;
+        x = -1;
+      }
+      else if (x > (1-tol)) {
+        if (x > (1+tol)) n_clamped++;
+        x = 1;
+      }
+      x = acos(x) * 180 / M_PI; 
+      break;
+    case 1:
+      x = 1 - x;
+      break;
     }
     _res[i] = x;
   }
