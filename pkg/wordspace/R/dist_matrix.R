@@ -1,16 +1,25 @@
 dist.matrix <- function (M, M2=NULL, method="cosine", p=2, normalized=FALSE, byrow=TRUE, convert=TRUE, as.dist=FALSE, terms=NULL, terms2=terms, skip.missing=FALSE) {
-  method <- match.arg(method, c("cosine", "euclidean", "maximum", "manhattan", "minkowski", "canberra"))
+  method <- match.arg(method, c("cosine", "euclidean", "maximum", "manhattan", "minkowski", "canberra", "jaccard", "overlap"))
   similarity <- (method %in% c("cosine")) && !convert
-  symmetric <- !(method %in% c()) # FALSE if distance/similarity measure is asymmetric
+  symmetric <- !(method %in% c("fwd_jaccard")) # FALSE if distance/similarity measure is asymmetric
   cross.distance <- !is.null(M2)  # TRUE if calculating (rectangular) cross-distance matrix
-
+  need.nonneg <- method %in% c("jaccard", "overlap")
+  
   if (method == "minkowski" && (p < 0 || !is.finite(p))) stop("Minkowski p-distance can only be computed for 0 <= p < Inf")
   if (as.dist && similarity) stop("cannot create 'dist' object from similarity matrix")
   if (as.dist && cross.distance) stop("cannot create 'dist' object from cross-distance matrix")
   if (as.dist && !symmetric) stop("cannot create 'dist' object for asymmetric distance measure")
+
+  ensure.nonneg <- function (M, name="M") {
+    is.nonneg <- dsm.is.canonical(M)$nonneg
+    if (is.na(is.nonneg)) is.nonneg <- dsm.is.canonical(M, nonneg.check=TRUE)$nonneg
+    if (!is.nonneg) stop(sprintf("%s must be a non-negative matrix", name))
+  }
   
   M <- find.canonical.matrix(M) # extract co-occurence matrix from DSM object, ensure canonical format
   sparse.M <- dsm.is.canonical(M)$sparse
+  if (need.nonneg) ensure.nonneg(M)
+  
   if (cross.distance) {
     M2 <- find.canonical.matrix(M2)
     sparse.M2 <- dsm.is.canonical(M2)$sparse
@@ -19,6 +28,7 @@ dist.matrix <- function (M, M2=NULL, method="cosine", p=2, normalized=FALSE, byr
     } else {
       if (nrow(M) != nrow(M2)) stop("M and M2 are not conformable (must have same number of rows)")        
     }
+    if (need.nonneg) ensure.nonneg(M2, name="M2")
   }
 
   if (!is.null(terms) || !is.null(terms2)) {
@@ -92,13 +102,26 @@ dist.matrix <- function (M, M2=NULL, method="cosine", p=2, normalized=FALSE, byr
       .M2 <- .M
     }
 
-    method.code <- switch(method, euclidean=0, maximum=1, manhattan=2, minkowski=3, canberra=4) # must be kept in sync with C code
-    param1 <- switch(method, euclidean=0, maximum=0, manhattan=0, minkowski=p, canberra=0)
+    method.code <- switch(method, euclidean=0, maximum=1, manhattan=2, minkowski=3, canberra=4, jaccard=5, overlap=6) # must be kept in sync with C code
+    param1 <- switch(method, euclidean=0, maximum=0, manhattan=0, minkowski=p, canberra=0, jaccard=0, overlap=0)
   
     if (sparse.M) {
       result <- CPP_col_dist_sparse(ncol(.M), .M@p, .M@i, .M@x, ncol(.M2), .M2@p, .M2@i, .M2@x, method.code, param1, symmetric && !cross.distance)
     } else {
       result <- CPP_col_dist_dense(.M, .M2, method.code, param1, symmetric && !cross.distance)
+    }
+    if (method %in% c("jaccard", "overlap")) {
+      if (method == "overlap" && !normalized) {
+        ## asymmetric overlap relative to x, so values must be normalised with ||x||_1 = sum x_i
+        norms.M <- if (byrow) rowNorms(M, "manhattan") else colNorms(M, "manhattan")
+        result <- scaleMargins(result, rows=1/norms.M, duplicate=FALSE) # can operate inplace on <result>
+        idx <- norms.M == 0   # special case: o(0, x) = 1
+        if (any(idx)) result[idx, ] <- 1 
+      }
+      if (convert) {
+        transform_code <- 1L # d = 1 - sim is a metric (jaccard) or dissimilarity (overlap)
+        result <- CPP_similarity_to_distance(result, transform_code, 0, duplicate=FALSE) # can operate inplace on <result>
+      }
     }
     dimnames(result) <- list(colnames(.M), colnames(.M2))
   }

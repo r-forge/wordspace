@@ -97,15 +97,27 @@ dist.matrix(M, M2 = NULL, method = "cosine", p = 2,
     }
   }
 
-  In addition, the following similarity measures can be computed and optionally converted to a distance metric:
+  In addition, the following similarity measures can be computed and optionally converted to a distance metric (or dissimilarity):
   \describe{
     \item{\code{cosine} (default)}{The cosine similarity given by \deqn{
         \cos \phi = \frac{x^T y}{||x||_2 \cdot ||y||_2} 
       }{ cos(phi) = x' y / |x| |y| }
       If \code{normalized=TRUE}, the denominator is omitted. If \code{convert=TRUE} (the default), the cosine similarity is converted to angular distance \eqn{\phi}, given in degrees ranging from 0 to 180.
     }
+    \item{\code{jaccard}}{The generalized Jaccard coefficient given by \deqn{
+        J(x, y) = \frac{ \sum_i \min(x_i, y_i) }{ \sum_i \max(x_i, y_i) }
+      }{ J(x,y) = SUM(i) min(x_i, y_i) / SUM(i) max(x_i, y_i) }
+      which is only defined for non-negative vectors \eqn{x} and \eqn{y}.  If \code{convert=TRUE} (the default), the Jaccard metric \eqn{1 - J(x,y)} is returned (see Kosub 2016 for details).  Note that \eqn{J(0, 0) = 1}.
+    }
+    \item{\code{overlap}}{An asymmetric measure of overlap given by \deqn{
+        o(x, y) = \frac{ \sum_i \min(x_i, y_i) }{ \sum_i x_i }
+      }{ o(x,y) = SUM(i) min(x_i, y_i) / SUM(i) x_i }
+      for non-negative vectors \eqn{x} and \eqn{y}. If \code{convert=TRUE} (the default), the result is converted into a dissimilarity measure \eqn{1 - o(x,y)}, which is not a metric, of course.  Note that \eqn{o(0, y) = 1} and in particular \eqn{o(0, 0) = 1}.
 
-  }  
+      Overlap computes the proportion of the \dQuote{mass} of \eqn{x} that is shared with \eqn{y}; as a consequence, \eqn{o(x, y) = 1} whenever \eqn{x \le y}{x <= y}.  If both vectors are normalized as probability distributions (\eqn{||x||_1 = ||y||_1 = 1}{|x|_1 = |y|_1 = 1}) then overlap is symmetric (\eqn{o(x, y) = o(y, x)}) and can be thought of as the shared probability mass of the two distributions.  In this case, \code{normalized=TRUE} can be passed in order to simplify the computation to \eqn{o(x, y) = \sum_i \min(x_i, y_i)}{o(x, y) = SUM(i) min(x_i, y_i)}.
+    }
+    
+  }
 
 }
 %% \references{
