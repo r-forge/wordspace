@@ -73,7 +73,7 @@ void   purge(long n, long ll, double *r, double *q, double *ra,
 void   ortbnd(double *alf, double *eta, double *oldeta, double *bet, long step,
               double rnm);
 double startv(SMat A, double *wptr[], long step, long n);
-void   store(long, long, long, double *);
+void   store_vec(long, long, long, double *);
 void   imtql2(long, long, double *, double *, double *);
 void   imtqlb(long n, double d[], double e[], double bnd[]);
 void   write_header(long, long, double, double, long, double, long, long, 
@@ -118,12 +118,12 @@ void   machar(long *ibeta, long *it, long *irnd, long *machep, long *negep);
    so that {u,sqrt(lambda),v} is a singular triplet of A.        
    (A' = transpose of A)                                      
                                                             
-   User supplied routines: svd_opa, opb, store, timer              
+   User supplied routines: svd_opa, opb, store_vec, timer              
                                                         
    svd_opa(     x,y) takes an n-vector x and returns A*x in y.
    svd_opb(ncol,x,y) takes an n-vector x and returns B*x in y.
                                                                   
-   Based on operation flag isw, store(n,isw,j,s) stores/retrieves 
+   Based on operation flag isw, store_vec(n,isw,j,s) stores/retrieves 
    to/from storage a vector of length n in s.                   
                                                                
    User should edit timer() with an appropriate call to an intrinsic
@@ -553,7 +553,7 @@ abort:
    --------------
 
    BLAS		svd_dscal, svd_dcopy, svd_daxpy
-   USER		store
+   USER		store_vec
    		imtql2
 
  ***********************************************************************/
@@ -616,7 +616,7 @@ long ritvec(long n, SMat A, SVDRec R, double kappa, double *ritz, double *bnd,
 	w1 = R->Vt->value[x];
 	for (i = 0; i < n; i++) w1[i] = 0.0;
 	for (i = 0; i < js; i++) {
-	  store(n, RETRQ, i, w2);
+	  store_vec(n, RETRQ, i, w2);
 	  svd_daxpy(n, s[tmp], w2, 1, w1, 1);
 	  tmp -= js;
 	}
@@ -804,7 +804,7 @@ int lanso(SMat A, long iterations, long dimensions, double endl,
     /* id1++; */
     /* Rprintf("id1=%d dimen=%d first=%d\n", id1, dimensions, first); */
   }
-  store(n, STORQ, j, wptr[1]);
+  store_vec(n, STORQ, j, wptr[1]);
   return j;
 }
 
@@ -841,7 +841,7 @@ int lanso(SMat A, long iterations, long dimensions, double endl,
    --------------
 
    BLAS		svd_ddot, svd_dscal, svd_daxpy, svd_datx, svd_dcopy
-   USER		store
+   USER		store_vec
    LAS		purge, ortbnd, startv
    UTILITY	svd_imin, svd_imax
 
@@ -862,8 +862,8 @@ long lanczos_step(SMat A, long first, long last, double *wptr[],
       wptr[3] = wptr[4];
       wptr[4] = mid;
 
-      store(n, STORQ, j-1, wptr[2]);
-      if (j-1 < MAXLL) store(n, STORP, j-1, wptr[4]);
+      store_vec(n, STORQ, j-1, wptr[2]);
+      if (j-1 < MAXLL) store_vec(n, STORP, j-1, wptr[4]);
       bet[j] = rnm;
 
       /* restart if invariant subspace is found */
@@ -895,9 +895,9 @@ long lanczos_step(SMat A, long first, long last, double *wptr[],
       if (j <= MAXLL && (fabs(alf[j-1]) > 4.0 * fabs(alf[j])))
 	 *ll = j;  
       for (i=0; i < svd_imin(*ll, j-1); i++) {
-	 store(n, RETRP, i, wptr[5]);
+	 store_vec(n, RETRP, i, wptr[5]);
 	 t = svd_ddot(n, wptr[5], 1, wptr[0], 1);
-	 store(n, RETRQ, i, wptr[5]);
+	 store_vec(n, RETRQ, i, wptr[5]);
          svd_daxpy(n, -t, wptr[5], 1, wptr[0], 1);
 	 eta[i] = eps1;
 	 oldeta[i] = eps1;
@@ -1024,7 +1024,7 @@ void ortbnd(double *alf, double *eta, double *oldeta, double *bet, long step,
    --------------
 
    BLAS		svd_daxpy,  svd_dcopy,  svd_idamax,  svd_ddot
-   USER		store
+   USER		store_vec
 
  ***********************************************************************/
 
@@ -1049,7 +1049,7 @@ void purge(long n, long ll, double *r, double *q, double *ra,
         tq = 0.0;
         tr = 0.0;
         for (i = ll; i < step; i++) {
-          store(n,  RETRQ,  i,  wrk);
+          store_vec(n,  RETRQ,  i,  wrk);
           t   = -svd_ddot(n, qa, 1, wrk, 1);
           tq += fabs(t);
           svd_daxpy(n,  t,  wrk,  1,  q,  1);
@@ -1111,7 +1111,7 @@ void purge(long n, long ll, double *r, double *q, double *ra,
    --------------
 
    BLAS		svd_daxpy, svd_datx, svd_dcopy, svd_ddot, svd_dscal
-   USER		store, opb
+   USER		store_vec, opb
    LAS		startv
 
  ***********************************************************************/
@@ -1177,7 +1177,7 @@ void stpone(SMat A, double *wrkptr[], double *rnmp, double *tolp, long n) {
    --------------
 
    BLAS		svd_ddot, svd_dcopy, svd_daxpy
-   USER		svd_opb, store
+   USER		svd_opb, store_vec
    MISC		random
 
  ***********************************************************************/
@@ -1210,7 +1210,7 @@ double startv(SMat A, double *wptr[], long step, long n) {
    }
    if (step > 0) {
       for (i = 0; i < step; i++) {
-         store(n, RETRQ, i, wptr[5]);
+         store_vec(n, RETRQ, i, wptr[5]);
 	 t = -svd_ddot(n, wptr[3], 1, wptr[5], 1);
 	 svd_daxpy(n, t, wptr[5], 1, wptr[0], 1);
       }
@@ -1732,7 +1732,7 @@ void machar(long *ibeta, long *it, long *irnd, long *machep, long *negep) {
 
 /***********************************************************************
  *                                                                     *
- *                     store()                                         *
+ *                     store_vec()                                         *
  *                                                                     *
  ***********************************************************************/
 /***********************************************************************
@@ -1740,7 +1740,7 @@ void machar(long *ibeta, long *it, long *irnd, long *machep, long *negep) {
    Description
    -----------
 
-   store() is a user-supplied function which, based on the input
+   store_vec() is a user-supplied function which, based on the input
    operation flag, stores to or retrieves from memory a vector.
 
 
@@ -1766,8 +1766,8 @@ void machar(long *ibeta, long *it, long *irnd, long *machep, long *negep) {
 
  ***********************************************************************/
 
-void store(long n, long isw, long j, double *s) {
-  /* Rprintf("called store %ld %ld\n", isw, j); */
+void store_vec(long n, long isw, long j, double *s) {
+  /* Rprintf("called store_vec %ld %ld\n", isw, j); */
   switch(isw) {
   case STORQ:
     if (!LanStore[j + MAXLL]) {
@@ -1778,13 +1778,13 @@ void store(long n, long isw, long j, double *s) {
     break;
   case RETRQ:	
     if (!LanStore[j + MAXLL])
-      svd_fatalError("svdLAS2: store (RETRQ) called on index %d (not allocated)", 
+      svd_fatalError("svdLAS2: store_vec (RETRQ) called on index %d (not allocated)", 
                      j + MAXLL);
     svd_dcopy(n, LanStore[j + MAXLL], 1, s, 1);
     break;
   case STORP:	
     if (j >= MAXLL) {
-      svd_error("svdLAS2: store (STORP) called with j >= MAXLL");
+      svd_error("svdLAS2: store_vec (STORP) called with j >= MAXLL");
       break;
     }
     if (!LanStore[j]) {
@@ -1795,11 +1795,11 @@ void store(long n, long isw, long j, double *s) {
     break;
   case RETRP:	
     if (j >= MAXLL) {
-      svd_error("svdLAS2: store (RETRP) called with j >= MAXLL");
+      svd_error("svdLAS2: store_vec (RETRP) called with j >= MAXLL");
       break;
     }
     if (!LanStore[j])
-      svd_fatalError("svdLAS2: store (RETRP) called on index %d (not allocated)", 
+      svd_fatalError("svdLAS2: store_vec (RETRP) called on index %d (not allocated)", 
                      j);
     svd_dcopy(n, LanStore[j], 1, s, 1);
     break;
