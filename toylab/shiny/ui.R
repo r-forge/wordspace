@@ -9,6 +9,7 @@ shinyUI(pageWithSidebar(
     textInput("target", "Find nearest neighbours of:", value="", width="100%"),
     selectInput("candidates", label=NULL, choices=NULL, size=8, selectize=FALSE, width="100%"),
     sliderInput("NN", "Number of neighbours", min=5, max=50, value=20, step=1, width="100%"),
+    selectInput("model", label=NULL, choices=Names, selectize=FALSE, width="100%"),
     tags$div(style = "margin-top: 1em;",
       tags$span(style = "font-weight: bold;", "Instructions:"),
       tags$ul(
