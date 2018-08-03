@@ -6,9 +6,9 @@
 
 ## Press Ctrl-C to stop GUI server
 
-if [[ $# -lt 1 || $# -gt 2 ]]
+if [[ $# -lt 1 ]]
 then
-  echo "Usage:  ./start_gui.sh model.rda [n.dims]"
+  echo "Usage:  ./start_gui.sh model.rda [model2.rda ...]"
   exit 1
 fi
 

@@ -7,6 +7,8 @@ max.cand <- 100 # max. number of completion candidates to show in UI
 shinyServer(function(input, output, session) {
   ENV <- reactiveValues(
     target="",
+    model=NULL,
+    terms=NULL,
     coord=NULL
   )
   
@@ -18,7 +20,8 @@ shinyServer(function(input, output, session) {
   })
   
   observeEvent(c(input$target, input$candidates), {
-    target <- input$target    
+    target <- input$target
+    terms.sorted <- ENV$terms
     if (grepl("%+$", target, perl=TRUE)) {
       ## explicit prefix search
       target <- sub("%+$", "", target, perl=TRUE)
@@ -42,9 +45,27 @@ shinyServer(function(input, output, session) {
     } 
   })
 
+  observeEvent(input$model, {
+    name <- input$model
+    if (! (name %in% names(Models))) {
+      showModal(modalDialog(
+        title="Loading model ...", footer=NULL,
+        strong(name), sprintf("– %.1f MiB", file.info(Files[name])$size / (2^20)),
+        br(), em(Files[name])
+      ))
+      ENV$model <- fetch.model(name)
+      removeModal()
+    } else {
+      ENV$model <- Models[[ name ]]
+    }
+    ENV$terms <- Terms[[ name ]]
+    updateSelectInput(session, "candidates", choices=character(0), selected=character(0))
+  })
+
   NN <- reactive({
     target <- ENV$target
-    ok <- target %in% terms.sorted
+    M <- ENV$model
+    ok <- target %in% ENV$terms
     if (ok) {
       nearest.neighbours(M, target, n=input$NN, dist.matrix=TRUE)
     } else {
