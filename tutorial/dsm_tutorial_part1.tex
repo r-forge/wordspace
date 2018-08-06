@@ -638,7 +638,7 @@
     \begin{itemize}
     \item part 2: The parameters of a DSM
     \item part 3: Evaluating DSM representations
-    \item part 4: The mathematics of DSMs
+    \item part 4: Matrix algebra \& SVD
     \item part 5: Understanding distributional semantics
     \item[]
     \end{itemize}
@@ -656,37 +656,45 @@
   \frametitle{Some applications in computational linguistics}
   % \framesubtitle{}
 
-  \ungap
+  \ungap[1.5]
   \begin{itemize}
-  \item Unsupervised part-of-speech induction \citep{Schuetze:95}
-  \item Word sense disambiguation \citep{Schuetze:98}
   \item Query expansion in information retrieval \citep{Grefenstette:94}
-  \item Synonym tasks \& other language tests\\\ \citep{Landauer:Dumais:97,Turney:etc:03}
+  \item Unsupervised part-of-speech induction \citep{Schuetze:95}
+  \item Word sense disambiguation \citep{Schuetze:98,Rapp:04b}
   \item Thesaurus compilation \citep{Lin:98b,Rapp:04a}
-  \item Ontology \& wordnet expansion \citep{Pantel:etc:09}
   \item Attachment disambiguation \citep*{Pantel:Lin:00}
   \item Probabilistic language models \citep{Bengio:etc:03b}
-  \item Sub-symbolic input representation for neural networks
-  \item Many other tasks in computational semantics:\\
-    entailment detection, noun compound interpretation, identification
-    of noncompositional expressions, \ldots
+  \item Translation equivalents \citep{Sahlgren:Karlgren:05}
+  \item Ontology \& wordnet expansion \citep{Pantel:etc:09}
+  \item Language change \citep{Sagi:Kaufmann:Clark:09,Hamilton:etc:16}
+  \item Multiword expressions \citep{Kiela:Clark:13}
+  \item Analogies \citep{Turney:13,Gladkova:Drozd:Matsuoka:16}
+  \item Sentiment analysis \citep{Rothe:Schuetze:16,Yu:etc:17}
+  \item[\hand] Input representation for neural networks \& machine learning
   \end{itemize}
 \end{frame}
 
 \begin{frame}
-  \frametitle{Recent conferences and workshops}
+  \frametitle{Recent workshops and tutorials}
   % \framesubtitle{}
 
   \ungap[1]
   \begin{itemize}
   \item \primary{2007}: \href{http://clic.cimec.unitn.it/marco/beyond_words/}{CoSMo Workshop} (at Context '07)
-  \item \primary{2008}: \href{http://wordspace.collocations.de/doku.php/workshop:esslli:start}{ESSLLI Lexical Semantics Workshop} \& \href{http://wordspace.collocations.de/doku.php/workshop:esslli:task}{Shared Task}, \href{http://linguistica.sns.it/RdL/2008.html}{Special Issue of the Italian Journal of Linguistics}
-  \item \primary{2009}: \href{http://art.uniroma2.it/gems/}{GeMS Workshop} (EACL 2009), \href{http://www.let.rug.nl/disco2009/}{DiSCo Workshop} (CogSci 2009), \href{http://wordspace.collocations.de/doku.php/course:esslli2009:start}{ESSLLI Advanced Course on DSM}
-  \item \primary{2010}: \href{http://art.uniroma2.it/gems010/}{2nd GeMS} (ACL 2010), \href{http://clic.cimec.unitn.it/roberto/ESSLLI10-dsm-workshop/}{ESSLLI Workshop on Compositionality and DSM}, \href{http://naaclhlt2010.isi.edu/tutorials/t4.html}{DSM Tutorial} (NAACL 2010), \href{http://journals.cambridge.org/action/displayIssue?iid=7911772}{Special Issue of JNLE on Distributional Lexical Semantics}
-  \item \primary{2011}: \href{http://disco2011.fzi.de}{2nd DiSCo} (ACL 2011), \href{https://sites.google.com/site/geometricalmodels/}{3rd GeMS} (EMNLP 2011)
-  \item \primary{2012}: \href{http://didas.org}{DiDaS} (at ICSC 2012)
-  \item \primary{2013}: \href{https://sites.google.com/site/cvscworkshop/}{CVSC} (ACL 2013), \href{http://clic.cimec.unitn.it/roberto/IWCS-TFDS2013/}{TFDS} (IWCS 2013), \href{http://www.dagstuhl.de/en/program/calendar/semhp/?semnr=13462}{Dagstuhl}
-  \item \primary{2014}: \href{https://sites.google.com/site/cvscworkshop2014/}{2nd CVSC} (at EACL 2014)
+  \item \primary{2008}: \href{http://wordspace.collocations.de/doku.php/workshop:esslli:start}{ESSLLI Wshp} \& \href{http://wordspace.collocations.de/doku.php/workshop:esslli:task}{Shared Task}, \href{http://linguistica.sns.it/RdL/2008.html}{Italian J of Linguistics}
+  \item \primary{2009}: \href{http://art.uniroma2.it/gems/}{GeMS Wshp} (EACL), \href{http://www.let.rug.nl/disco2009/}{DiSCo Wshp} (CogSci), \href{http://wordspace.collocations.de/doku.php/course:esslli2009:start}{ESSLLI}
+  \item \primary{2010}: \href{http://art.uniroma2.it/gems010/}{2nd GeMS} (ACL), \href{http://clic.cimec.unitn.it/roberto/ESSLLI10-dsm-workshop/}{ESSLLI Wshp}, \href{http://naaclhlt2010.isi.edu/tutorials/t4.html}{Tutorial} (NAACL),\\
+   \hide{2010:} \href{https://www.cambridge.org/core/journals/natural-language-engineering/issue/0C6E78AFDAB2AC263CDC331193B5E83A}{J Natural Language Engineering}
+ \item \primary{2011}: \href{https://www.aclweb.org/anthology/W/W11/\#1300}{2nd DiSCo} (ACL), \href{https://sites.google.com/site/geometricalmodels/}{3rd GeMS} (EMNLP)
+   %% DiSCo website seems offline: http://disco2011.fzi.de
+  \item \primary{2012}: \href{http://didas.org}{DiDaS Wshp} (ICSC), \href{https://www.cl.cam.ac.uk/~ah433/esslli2012/coursecontent.html}{ESSLLI Course}
+  \item \primary{2013}: \href{https://sites.google.com/site/cvscworkshop/}{CVSC Wshp} (ACL), \href{http://clic.cimec.unitn.it/roberto/IWCS-TFDS2013/}{TFDS Wshp} (IWCS), \href{http://www.dagstuhl.de/en/program/calendar/semhp/?semnr=13462}{Dagstuhl}
+  \item \primary{2014}: \href{https://sites.google.com/site/cvscworkshop2014/}{2nd CVSC} (EACL), \href{https://sites.google.com/site/insightdistsemws/}{DSM Wshp} (Insight)
+  \item \primary{2015}: \href{https://aclanthology.coli.uni-saarland.de/volumes/proceedings-of-the-1st-workshop-on-vector-space-modeling-for-natural-language-processing}{VSM4NLP} (NAACL), \href{https://staff.fnwi.uva.nl/w.zuidema/teaching/compositional-and-vectorial-semantics-esslli-2015/}{ESSLLI Course}, \href{https://hal.archives-ouvertes.fr/hal-01259695/}{TAL Journal}
+  \item \primary{2016}: \href{http://esslli2016.unibz.it/?page_id=256}{DSALT Wshp} (ESSLLI), \href{http://coling2016.anlp.jp/tutorials/T1/}{Tutorial} (COLING), \href{https://sites.google.com/site/konvens2016jobimtexttutorial/}{Tutorial}\\
+    \hide{2016:} (Konvens), \href{http://esslli2016.unibz.it/?page_id=242}{ESSLLI Course}, \href{http://www.aclweb.org/anthology/J/J16/\#4000}{Computational Linguistics}
+  \item \primary{2017}: \href{https://www.irit.fr/esslli2017/courses/34}{ESSLLI Course}
+  \item \primary{2018}: \href{http://text-machine.cs.uml.edu/lrec2018_t4/}{Tutorial} (LREC), \href{http://wordspace.collocations.de/doku.php/course:esslli2018:start}{ESSLLI Course\textsubscript{1}} \& \href{http://esslli2018.folli.info/word-vector-space-specialisation/}{Course\textsubscript{2}}
   \end{itemize}
   \hfill\light{\small click on Workshop name to open Web page}
   \addnote{CoSMo = \underline{Co}ntextual Information in \underline{S}emantic Space \underline{M}odels}%
@@ -704,16 +712,18 @@
   \frametitle{Software packages}
 
   \begin{tabular}{>{\color{secondary}}ll>{\itshape}p{6cm}}
+    \href{http://infomap-nlp.sourceforge.net/}{Infomap NLP} & C & classical LSA-style DSM \\
     \href{http://www.psych.ualberta.ca/~westburylab/downloads/HiDEx.download.html}{HiDEx} & C++ & re-implementation of the HAL model \citep{Lund:Burgess:96} \\
     \href{http://code.google.com/p/semanticvectors/}{SemanticVectors} & Java & scalable architecture based on random indexing representation \\
     \href{http://github.com/fozziethebeat/S-Space}{S-Space} & Java & complex object-oriented framework \\
-    \href{http://maggie.lt.informatik.tu-darmstadt.de/jobimtext/}{JoBimText} & Java & UIMA / Hadoop framework \\
+    \href{http://ltmaggie.informatik.uni-hamburg.de/jobimtext/}{JoBimText} & Java & UIMA / Hadoop framework \\
     \href{http://radimrehurek.com/gensim/}{Gensim} & Python & complex framework, focus on parallelization and out-of-core algorithms \\
+    \href{http://vecto.space/}{Vecto} & Python & framework for count \& predict models \\
     \href{http://clic.cimec.unitn.it/composes/toolkit/}{DISSECT} & Python & user-friendly, designed for research on compositional semantics \\
     \href{http://wordspace.r-forge.r-project.org/}{\color{primary}\texttt{wordspace}} & R & interactive research laboratory, but scales to real-life data sets
   \end{tabular}
 
-  \vspace{1em}
+  \gap[0.5]
   \hfill\light{\small click on package name to open Web page}
 \end{frame}
 
@@ -764,14 +774,14 @@
 
   Software installation
   \begin{itemize}
-  \item \hh{R} version 3.3 or newer from \url{http://www.r-project.org/}
+  \item \hh{R} version 3.5 or newer from \url{http://www.r-project.org/}
   \item RStudio from \url{http://www.rstudio.com/}
   \item R packages from CRAN (through RStudio menu):
-    \hh{\texttt{sparsesvd}}, \hh{\texttt{wordspace}}
+    \hh{\texttt{sparsesvd}}, \hh{\texttt{wordspace}} (optional: \secondary{\texttt{tm}}, \secondary{\texttt{quanteda}}, \secondary{\texttt{Rtsne}})
     \begin{itemize}
     \item if you are attending a course, you may also be asked to install the \hh{\texttt{wordspaceEval}} package with some non-public data sets
     \end{itemize}
-  \item Data sets from \url{http://www.collocations.de/data/\#dsm}
+  \item Get data sets, precompiled DSMs and \secondary{\texttt{wordspaceEval}} from\\ \primary{\href{http://wordspace.collocations.de/doku.php/course:material}{http://wordspace.collocations.de/doku.php/course:material}}
   \end{itemize}
 \end{frame}
 
@@ -909,6 +919,19 @@ banana  11   2   2    0  18    0
 
 \end{frame}
 
+\begin{frame}[c]
+  \begin{center}
+    \huge
+    \h{Thank} \hh{you!}
+  \end{center}
+
+  \gap[2]
+  Until part 2, you can explore some DSM similarity networks online:
+  \begin{itemize}
+  \item \secondary{\href{https://corpora.linguistik.uni-erlangen.de/shiny/wordspace/}{https://corpora.linguistik.uni-erlangen.de/shiny/wordspace/}}
+  \item built in R with \texttt{wordspace} and \texttt{shiny}
+\end{itemize}
+\end{frame}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
