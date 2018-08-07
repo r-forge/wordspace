@@ -415,10 +415,10 @@
     \column{4cm}
     \begin{block}{word forms}
       \begin{itemize}
-      \item  giungere
+      \item  \counterpoint{giungere}
       \item  \counterpoint{raggiungere}
       \item  \primary{arrivi}
-      \item  raggiungimento
+      \item  \counterpoint{raggiungimento}
       \item  \counterpoint{raggiunto}
       \item  trovare
       \item  \counterpoint{raggiunge}
@@ -458,7 +458,7 @@
     \begin{itemize}
     \item 762,424 distinct word forms in BNC, 605,910 lemmata
     \item large Web corpora have $>$ 10 million distinct word forms
-    \item low-frequency targets (and features) do not provide reliable distributional information (too much ``noise'')
+    \item low-frequency targets (and features) are not reliable (``noisy'')
     \end{itemize}
   \item<2-> Frequency-based selection
     \begin{itemize}
@@ -469,12 +469,13 @@
   \item<3-> Relevance-based selection
     \begin{itemize}
     \item criterion from IR: document frequency $df$
-    \item terms with high $df$ are too general \so uninformative
-    \item terms with very low $df$ may be too sparse to be useful
+    \item high $df$ \so uninformative / low $df$ \so too sparse to be useful
+    \item alternatives: entropy $H$ or chi-squared statistic $X^2$
     \end{itemize}
   \item<4-> Other criteria
     \begin{itemize}
-    \item POS-based filter: no function words, only verbs, \ldots
+    \item POS-based filter: no function words, only verbs, nouns, \ldots
+    \item general dictionary, words required for particular task, \ldots
     \end{itemize}
   \end{itemize}
 \end{frame}
@@ -497,7 +498,7 @@
   \begin{itemize}
   \item span size (in words or characters)
   \item symmetric \vs\ one-sided span
-  \item uniform or ``triangular'' (distance-based) weighting
+  \item uniform or ``triangular'' (distance-based) weighting \light{(don't!)}
   \item spans clamped to sentences or other textual units?
   \end{itemize}
 \end{frame}
@@ -569,6 +570,7 @@
     \item paragraph
     \item turn in a conversation
     \item Web page
+    \item tweet
     \end{itemize}
   \end{itemize}
 \end{frame}
@@ -600,10 +602,6 @@
   \begin{itemize}
   \item types of syntactic dependency \citep{Pado:Lapata:07}
   \item direct \vs\ indirect dependency paths
-    \begin{itemize}
-    \item direct dependencies
-    \item direct + indirect dependencies
-    \end{itemize}
   \item homogeneous data (e.g.\ only verb-object) \vs\\
     heterogeneous data (e.g.\ all children and parents of the verb)
   \item maximal length of dependency path
@@ -638,6 +636,28 @@
     \item patterns are mined from large corpora and automatically generalised (optional elements, POS tags or semantic classes)
     \end{itemize}
   \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Comparison of co-occurrence contexts}
+
+  Contexts range from general/\primary{implict} to specific/\primary{explicit}:
+
+  \gap[1]
+  \begin{center}
+    \begin{tabular}{>{\color{secondary}}l@{\hspace{1cm}}c}
+      & features are \\
+      \toprule
+      textual / large span & from same general domain\\
+      \\\onslide<2->
+      small span & collocations \\
+      \\\onslide<3->
+      syntactic & attributes \\
+      \counterpoint{(single relation)} & \counterpoint{(focus on aspect)} \\
+      \\\onslide<4->
+      knowledge pattern & properties
+    \end{tabular}
+  \end{center}
 \end{frame}
 
 \begin{frame}[c]
@@ -856,7 +876,7 @@
 \begin{frame}[fragile]
   \frametitle{Marginal frequencies in \texttt{wordspace}}
   
-  DSM objects in \texttt{wordspace} include marginal frequencies as well as
+  DSM objects in \texttt{wordspace} (class \code{dsm}) include marginal frequencies as well as
   counts of nonzero cells for rows and columns.
 \begin{Rcode}
 > TT$rows\begin{Rout}
@@ -1006,7 +1026,7 @@ effect  -Inf -2.116 -2.468 -2.459     0.791  1.6312  0.9221\end{Rout}
 \begin{itemize}
 \item<2->[\hand] sparseness of the matrix has been lost!
 \item<2->[\hand] cells with score $x = -\infty$ are inconvenient
-\item<2->[\hand] distribution of scores may be even more skewed than co-occurrence frequencies (esp.\ for local-MI)
+\item<2->[\hand] distribution of scores may be even more skewed than co-occurrence frequencies themselves (esp.\ for local-MI)
 \end{itemize}
 \end{frame}
 
@@ -1026,16 +1046,16 @@ effect  -Inf -2.116 -2.468 -2.459     0.791  1.6312  0.9221\end{Rout}
     \begin{itemize}
     \item \primary{PPMI} = positive pointwise MI \citep[e.g.][]{Bullinaria:Levy:07}
     \item \texttt{wordspace} computes sparse AMs by default \so \texttt{"MI"} = PPMI
-    \item[]
     \end{itemize}
   \item<2-> Preserves sparseness if $x \leq 0$ for all empty cells ($O = 0$)
     \begin{itemize}
+    \item combine with \secondary{signed} AM ($x > 0$ for $O > E$, $x < 0$ for $O < E$)
     \item sparseness may even increase: cells with $x < 0$ become empty
     \end{itemize}
-  \item<2-> Usually combined with \secondary{signed} association measure satisfying
+  \item<3-> Further thinning may be beneficial \citep{Polajnar:Clark:14}
     \begin{itemize}
-    \item $x > 0$ for $O > E$
-    \item $x < 0$ for $O < E$
+    \item apply shifted cutoff threshold $x > \theta$ \citep{Levy:Goldberg:Dagan:15}
+    \item keep only $k$ top-scoring features for each target
     \end{itemize}
   \end{itemize}
 \end{frame}
@@ -1054,14 +1074,15 @@ effect  -Inf -2.116 -2.468 -2.459     0.791  1.6312  0.9221\end{Rout}
     \[
     f(x) = \tanh x
     \]
-  \item<4->\counterpoint{sparse} AM as cutoff transformation
+  \item<4-> \counterpoint{sparse} AM as \only<5->{\counterpoint{(shifted)} }cutoff transformation
   \end{itemize}
 
   \begin{center}
     \only<beamer:1| handout:0>{\includegraphics[width=8.5cm]{img/transformation_functions_0}}%
     \only<beamer:2| handout:0>{\includegraphics[width=8.5cm]{img/transformation_functions_1}}%
     \only<beamer:3| handout:0>{\includegraphics[width=8.5cm]{img/transformation_functions_2}}%
-    \only<beamer:4-| handout:1>{\includegraphics[width=8.5cm]{img/transformation_functions}}%
+    \only<beamer:4| handout:0>{\includegraphics[width=8.5cm]{img/transformation_functions_3}}%
+    \only<beamer:5-| handout:1>{\includegraphics[width=8.5cm]{img/transformation_functions}}%
   \end{center}
 \end{frame}
 
@@ -1097,14 +1118,14 @@ effect  0.00 0.00 0.00 0.00     0.791  1.6312  0.922
 
   \begin{itemize}
   \item In statistical analysis and machine learning, features are
-    usually \primary{centred} and \primary{scaled} so that
+    usually \primary{centered} and \primary{scaled} so that
     \begin{align*}
       \text{mean} & \quad \mu = 0 \\
       \text{variance} & \quad \sigma^2 = 1
     \end{align*}
   \item<2-> In DSM research, this step is less common for columns of $\mathbf{M}$
     \begin{itemize}
-    \item centring is a prerequisite for certain dimensionality
+    \item centering is a prerequisite for certain dimensionality
       reduction and data analysis techniques (esp.\ PCA)
     \item but co-occurrence matrix no longer sparse!
     \item scaling may give too much weight to rare features
@@ -1218,7 +1239,7 @@ Compute distances between individual term pairs \ldots
         \item $\norm{\vu-\vv}$ is a \h{norm}
         \item $\norm{\vu} = \bigdist{\vu}{\vnull}$
         \end{itemize}
-      \item<2-> Such a metric is always \h{translation-invariant}%
+      \item<2-> Any norm-induced metric is \h{translation-invariant}%
         \gap
       \item<3-> $\dist[p]{\vu}{\vv} = \norm[p]{\vu-\vv}$
       \end{itemize}
@@ -1249,9 +1270,9 @@ Compute distances between individual term pairs \ldots
         \vx' = \vx / \norm{\vx} = (\tfrac{x_1}{\norm{\vx}}, \tfrac{x_2}{\norm{\vx}}, \ldots)
         \)
         with $\norm{\vx'} = 1$
-      \item<3-> Norm must be compatible with distance measure!
-      \item<3-> Special case: scale to relative frequencies with 
-        $\norm[1]{\vx} = \abs{x_1} + \dots + \abs{x_n}$\\
+      \item<2-> Norm must be compatible with distance measure!
+      \item<3-> Special case: scale to relative frequencies with\\
+        \hspace{1em} $\norm[1]{\vx} = \abs{x_1} + \dots + \abs{x_n}$\\
         \so probabilistic interpretation
       \end{itemize}
     \end{column}
@@ -1290,7 +1311,7 @@ effect 1.161 1.113  0.860 0.502  0.198 0.224  0.000\end{Rout}
 
 
 \begin{frame}
-  \frametitle{Other distance measures}
+  \frametitle{Distance measures for non-negative vectors}
   % \framesubtitle{}
   
   \begin{itemize}
@@ -1308,7 +1329,7 @@ effect 1.161 1.113  0.860 0.502  0.198 0.224  0.000\end{Rout}
     \item[]
     \end{itemize}
     \pause
-  \item A symmetric distance measure \citep{Endres:Schindelin:03}
+  \item A symmetric distance metric \citep{Endres:Schindelin:03}
     \[
     D_{\vu\vv} = \KL{\vu}{\vz} + \KL{\vv}{\vz} \quad \text{with} \quad \vz = \frac{\vu + \vv}{2}
     \]
@@ -1335,13 +1356,72 @@ effect 1.161 1.113  0.860 0.502  0.198 0.224  0.000\end{Rout}
         \item $\cos \alpha = 1$ \so collinear
         \item $\cos \alpha = 0$ \so orthogonal
         \end{itemize}
-      \item<2-> Corresponding metric: angular distance $\alpha$
+      \item<2-> Corresponding metric: \h{angular distance} $\alpha$
       \end{itemize}
     \end{column}
     \begin{column}{6cm}
       \includegraphics[width=6cm]{img/hieroglyph_2d_4}
     \end{column}
   \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Euclidean distance or cosine similarity?}
+
+  \ungap[2]
+  \begin{align*}
+    \dist[2]{\vu}{\vv} 
+    &= \norm[2]{\vu - \vv}
+    = \sqrt{\sum_i (u_i - v_i)^2 }
+    \\
+    \visible<2->{
+    &= \sqrt{\sum_i u_i^2 + \sum_i v_i^2 - 2 \sum_i u_i v_i}}
+    \\
+    \visible<3->{
+    &= \sqrt{\norm[2]{\vu}^2 + \norm[2]{\vv}^2 - 2\, \vu^T \vv}}
+    \\
+    \visible<4->{
+    &= \sqrt{2 - 2 \cos \phi}}
+  \end{align*}
+  \ungap
+  \begin{itemize}
+  \item<4->[\hand] $\dist[2]{\vu}{\vv}$ is a monotonically increasing function of $\phi$
+  \end{itemize}
+
+  \onslide<5->
+  \begin{block}{}
+    Euclidean distance and cosine similarity are equivalent:
+    if vectors have been normalised ($\norm[2]{\vu} = \norm[2]{\vv} = 1$), both lead to the same neighbour ranking.
+\end{block}
+
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Similarity measures for non-negative vectors}
+  % \framesubtitle{}
+
+  \begin{itemize}
+  \item Generalized \h{Jaccard coefficient} = shared features
+    \[
+      J(\vu, \vv) = \frac{
+        \sum_{i=1}^n \min \set{u_i, v_i}
+      }{
+        \sum_{i=1}^n \max \set{u_i, v_i}
+      }
+    \]
+  \item $1 - J(\vu, \vv)$ is a distance \hh{metric} \citep{Kosub:16}
+  \item[]
+  \item<2-> An asymmetric measure of feature \h{overlap} \citep{Clarke:09}
+    \[
+      o(\vu, \vv) = \frac{
+        \sum_{i=1}^n \min \set{u_i, v_i}
+      }{
+        \sum_{i=1}^n u_i
+      }
+    \]
+  \end{itemize}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1366,7 +1446,8 @@ effect 1.161 1.113  0.860 0.502  0.198 0.224  0.000\end{Rout}
     \begin{itemize}
     \item measured by entropy, chi-squared test, nonzero count, \ldots
     \item may select similar dimensions and discard valuable information
-    \item joint selection of multiple features is useful but expensive
+    \item[]
+      %% \item joint selection of multiple features is useful but expensive
     \end{itemize}
     \pause
   \item \h{Projection} into (linear) subspace
@@ -1385,37 +1466,37 @@ effect 1.161 1.113  0.860 0.502  0.198 0.224  0.000\end{Rout}
 
   \citet{Landauer:Dumais:97} claim that LSA dimensionality reduction (and related PCA technique) uncovers \h{latent dimensions} by exploiting correlations between features.
 
-  \begin{columns}
+  \begin{columns}[c]
     \begin{column}{6.5cm}
       \begin{itemize}
       \item Example: term-term matrix
-      \item V-Obj cooc's extracted from BNC
+      \item V-Obj co-oc.\ extracted from BNC
         \begin{itemize}
         \item targets = noun lemmas\\
         \item features = verb lemmas
         \end{itemize}
-      \item feature scaling: association scores (modified $\log$ Dice
-        coefficient)
-      \item $k=111$ nouns with $f \geq 20$\\
-        (must have non-zero row vectors)
+      \item feature scaling: association scores (SketchEngine $\log$ Dice)
+      \item $k=186$ nouns with $f_{\text{buy}} + f_{\text{sell}} \geq 25$
       \item $n=2$ dimensions: \emph{buy} and \emph{sell}
       \end{itemize}
     \end{column}
     \begin{column}{4cm}
-      \begin{center}\footnotesize
+      \begin{center}
+        \footnotesize
         \begin{tabular}{l|rr}
           noun & \emph{buy} & \emph{sell} \\
           \hline
-          \emph{bond}      &  0.28 &  0.77\\
-          \emph{cigarette} & -0.52 &  0.44\\
-          \emph{dress}     &  0.51 & -1.30\\
-          \emph{freehold}  & -0.01 & -0.08\\
-          \emph{land}      &  1.13 &  1.54\\
-          \emph{number}    & -1.05 & -1.02\\
-          \emph{per}       & -0.35 & -0.16\\
-          \emph{pub}       & -0.08 & -1.30\\
-          \emph{share}     &  1.92 &  1.99\\
-          \emph{system}    & -1.63 & -0.70
+          \emph{antique}   & 5.12 & 5.50 \\ 
+          \emph{bread}     & 5.96 & 3.99 \\ 
+          \emph{computer}  & 6.75 & 6.83 \\ 
+          \emph{factory}   & 4.95 & 4.72 \\ 
+          \emph{group}     & 4.93 & 4.28 \\ 
+          \emph{jewellery} & 5.11 & 5.73 \\ 
+          \emph{mill}      & 5.14 & 5.41 \\ 
+          \emph{people}    & 3.00 & 4.26 \\ 
+          \emph{record}    & 6.81 & 6.68 \\ 
+          \emph{souvenir}  & 5.45 & 4.67 \\ 
+          \emph{ticket}    & 8.93 & 8.74 
         \end{tabular}
       \end{center}
     \end{column}
@@ -1427,7 +1508,7 @@ effect 1.161 1.113  0.860 0.502  0.198 0.224  0.000\end{Rout}
   %% \framesubtitle{}
   \begin{center}
     \ungap[1]
-    \includegraphics[width=8cm]{img/3_buy_sell_labels_only}
+    \includegraphics[width=8cm]{img/buy_sell_labels_only}
   \end{center}
 \end{frame}
 
@@ -1455,17 +1536,17 @@ effect 1.161 1.113  0.860 0.502  0.198 0.224  0.000\end{Rout}
 \end{frame}
 
 \begin{frame}[c]
-  \frametitle{Centering the data set}
+  \frametitle{Step 1: Centering the data set}
   %% \framesubtitle{}
 
   \begin{columns}[c]
-    \begin{column}{40mm}
+    \begin{column}{35mm}
       \begin{itemize}
       \item \h<beamer:1| handout:1>{Uncentered\\ data set}%
         \gap
       \item \h<beamer:2| handout:2>{Centered\\ data set}%
         \gap
-      \item \h<beamer:3| handout:3>{Variance of\\ centered data}%
+      \item Distance information\\= \h<beamer:3| handout:3>{variance}%
         \gap
       \end{itemize}
       \visible<beamer:3| handout:3>{%
@@ -1474,36 +1555,83 @@ effect 1.161 1.113  0.860 0.502  0.198 0.224  0.000\end{Rout}
         \]
       }
     \end{column}
-    \begin{column}{60mm}
-      \only<beamer:1| handout:1>{\includegraphics[width=6cm]{img/3_buy_sell_uncentered}}%
-      \only<beamer:2| handout:2>{\includegraphics[width=6cm]{img/3_buy_sell_centered}}%
-      \only<beamer:3| handout:3>{\includegraphics[width=6cm]{img/3_buy_sell_variance}}%
+    \begin{column}{65mm}
+      \only<beamer:1| handout:1>{\includegraphics[width=65mm]{img/buy_sell_0_uncentered}}%
+      \only<beamer:2| handout:2>{\includegraphics[width=65mm]{img/buy_sell_0_centered}}%
+      \only<beamer:3| handout:3>{\includegraphics[width=65mm]{img/buy_sell_1_variance}}%
     \end{column}
   \end{columns}
 \end{frame}
 
-\begin{frame}<beamer:1-6| handout:1-3>[c]
-  \frametitle{Projection and preserved variance: examples}
+\begin{frame}<beamer:1-8| handout:1-3>[c]
+  \frametitle{Step 2: Orthogonal projection into optimal subspace}
   %% \framesubtitle{}
 
   \begin{center}
-    \only<beamer:1| handout:0>{\includegraphics[width=7.5cm]{img/3_buy_sell_1_axis}}%
-    \only<beamer:2| handout:1>{\includegraphics[width=7.5cm]{img/3_buy_sell_1_projection}}%
-    \only<beamer:3| handout:0>{\includegraphics[width=7.5cm]{img/3_buy_sell_2_axis}}%
-    \only<beamer:4| handout:2>{\includegraphics[width=7.5cm]{img/3_buy_sell_2_projection}}%
-    \only<beamer:5| handout:0>{\includegraphics[width=7.5cm]{img/3_buy_sell_3_axis}}%
-    \only<beamer:6| handout:3>{\includegraphics[width=7.5cm]{img/3_buy_sell_3_projection}}%
+    \only<beamer:1| handout:0>{\includegraphics[width=7.5cm]{img/buy_sell_2_axis}}%
+    \only<beamer:2| handout:1>{\includegraphics[width=7.5cm]{img/buy_sell_2_projection}}%
+    \only<beamer:3| handout:0>{\includegraphics[width=7.5cm]{img/buy_sell_3_axis}}%
+    \only<beamer:4| handout:2>{\includegraphics[width=7.5cm]{img/buy_sell_3_projection}}%
+    \only<beamer:5| handout:0>{\includegraphics[width=7.5cm]{img/buy_sell_4_axis}}%
+    \only<beamer:6| handout:0>{\includegraphics[width=7.5cm]{img/buy_sell_4_projection}}%
+    \only<beamer:7| handout:0>{\includegraphics[width=7.5cm]{img/buy_sell_5_axis}}%
+    \only<beamer:8| handout:3>{\includegraphics[width=7.5cm]{img/buy_sell_5_projection}}%
   \end{center}
 \end{frame}
 
 
 \begin{frame}[c]
-  \frametitle{Orthogonal PCA dimensions}
+  \frametitle{Step 3: Further orthogonal dimensions}
   %% \framesubtitle{}
 
   \begin{center}
-    %% \only<beamer:1| handout:0>{\includegraphics[width=8cm]{img/3_buy_sell_pca}}
-    \only<beamer:1| handout:1>{\includegraphics[width=7.5cm]{img/3_buy_sell_pca_labels}}%
+    \only<beamer:1| handout:0>{\includegraphics[width=7.5cm]{img/buy_sell_6_pca}}
+    \only<beamer:2| handout:1>{\includegraphics[width=7.5cm]{img/buy_sell_6_pca_labels}}%
+  \end{center}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Dimensionality reduction by PCA}
+
+  \begin{itemize}
+  \item Principal component analysis (\h{PCA})
+    \begin{itemize}
+    \item orthogonal projection into orthogonal latent dimensions
+    \item finds optimal subspace of given dimensionality
+      (such that orthogonal projection preserves distance information)
+    \item but requires centered features \so no longer sparse
+    \item[]
+    \end{itemize}
+  \item<2-> Singular value decomposition (\h{SVD})
+    \begin{itemize}
+    \item the mathematical algorithm behind PCA
+    \item often applied without centering in distributional semantics
+    \item optimality of subspace not guaranteed (\hand{} part 5)
+    \item[]
+    \end{itemize}
+  \item<3-> NB: row vectors should be renormalised after PCA/SVD
+    \begin{itemize}
+    \item unless cosine similarity / angular distance is used
+    \item[\hand] also normalise vectors \primary{before} dimensionality reduction
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Dimensionality reduction by RI}
+
+  \begin{itemize}
+  \item Random indexing (\h{RI})
+    \begin{itemize}
+    \item project into random subspace \citep{Sahlgren:Karlgren:05}
+    \item reasonably good if there are many subspace dimensions
+    \item can be performed online w/o collecting full co-oc. matrix
+    \end{itemize}
+    \item[]
+  \end{itemize}
+
+  \begin{center}
+    \includegraphics[width=5cm]{img/buy_sell_3_projection}
   \end{center}
 \end{frame}
 
@@ -1512,7 +1640,7 @@ effect 1.161 1.113  0.860 0.502  0.198 0.224  0.000\end{Rout}
 
 \ungap[1.5]
 \begin{Rcode}
-\REM{it is customary to omit the centring: SVD dimensionality reduction}
+\REM{it is customary to omit the centering: SVD dimensionality reduction}
 > TT2 <- dsm.projection(TT, n=2, method="svd")
 > TT2\begin{Rout}
          svd1    svd2
@@ -1526,11 +1654,61 @@ effect -0.871  0.4794
 \end{Rout}
 > x <- TT2[, 1] \REM{first latent dimension}
 > y <- TT2[, 2] \REM{second latent dimension}
-> plot(TT2, pch=20, col="red", 
+> plot(x, y, pch=20, col="red", 
        xlim=extendrange(x), ylim=extendrange(y))
-> text(TT2, rownames(TT2), pos=3)    
+> text(x, y, rownames(TT2), pos=3)    
 \end{Rcode}
   
+\end{frame}
+
+\begin{frame}
+  \frametitle{Scaling latent dimensions}
+
+  \begin{itemize}
+  \item Capture different amounts of distance info (= variance)
+  \item Indicated by \h{singular values} $\sigma_i$ of PCA/SVD algorithm
+  \item<2-> Skip first $k$ dimensions, e.g.\ $k = 50$ \citep{Bullinaria:Levy:12}
+  \item<3-> Power-scaling of dimensions: $\sigma^P$ \citep{Caron:01}
+    \begin{itemize}
+    \item \citet{Bullinaria:Levy:12} report positive effect
+    \item<4-> esp.\ with $P = 0$ to equalize dimensions (\hh{whitening})
+    \end{itemize}
+  \end{itemize}
+
+  \only<beamer:1| handout:0>{\includegraphics[width=10.5cm]{img/singular_values_1}}%
+  \only<beamer:2| handout:0>{\includegraphics[width=10.5cm]{img/singular_values_2}}%
+  \only<beamer:3| handout:0>{\includegraphics[width=10.5cm]{img/singular_values_3}}%
+  \only<beamer:4| handout:0>{\includegraphics[width=10.5cm]{img/singular_values_4}}%
+  \only<beamer:0| handout:1>{%
+    \begin{tabular}{c@{\hspace{4mm}}c}
+      \includegraphics[width=5cm]{img/singular_values_1} &
+      \includegraphics[width=5cm]{img/singular_values_2} \\
+      \includegraphics[width=5cm]{img/singular_values_3} &
+      \includegraphics[width=5cm]{img/singular_values_4}
+    \end{tabular}}%
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Power-scaling in practice}
+
+\ungap[1.5]
+\begin{Rcode}
+> TT2 <- dsm.projection(TT, n=2, method="svd", power=0)
+> TT2\begin{Rout}
+         svd1    svd2
+cat    -0.322 -0.5110
+dog    -0.343 -0.4721
+animal -0.401 -0.2786
+time   -0.436  0.0233
+reason -0.390  0.3353
+cause  -0.359  0.4338
+effect -0.383  0.3704
+\end{Rout}
+\REM{power-scaling can also be applied post-hoc}
+> sigma <- attr(TT2, "sigma")       \REM{singular values}
+> scaleMargins(TT2, cols=sigma^0.5) \REM{\(P = 1/2\)}
+> scaleMargins(TT2, cols=sigma)     \REM{unscaled (\(P = 1\))}
+\end{Rcode}
 \end{frame}
 
 
@@ -1793,6 +1971,20 @@ effect -0.871  0.4794
 \end{Rcode}
 \end{frame}
 
+\begin{frame}
+  \frametitle{Practice}
+  \begin{itemize}
+  \item How many different models can you build from \code{\small DSM\_VerbNounTriples\_BNC}?
+  \item Apply different filters, scores, transformations and metrics
+    \begin{itemize}
+    \item[\hand] explore nearest neighbours of selected words
+    \end{itemize}
+  \item[]
+  \item Code examples for this part show additional options
+  \item Download practical exercise (\code{\small part2\_input\_formats.R})\\
+    \so different ways of loading your own co-occurrence data
+  \end{itemize}
+\end{frame}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
