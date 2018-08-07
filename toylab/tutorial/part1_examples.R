@@ -1,3 +1,7 @@
+##
+## Code examples from tutorial part 1
+##
+
 library(wordspace)
 
 DSM_HieroglyphsMatrix

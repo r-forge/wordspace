@@ -41,7 +41,7 @@ NV <- with(DSM_VerbNounTriples_BNC,
 ## externally and load it with read.dsm.triplet(), which does its best to load data efficiently.
 ## Note that the input file should (i) not contain a header row and (ii) list targets and features
 ## in the first two TAB-delimited columns, followed by the frequency count (or pre-computed score).
-## See ?read.dsm.triplet() for accepted file formats.
+## See ?read.dsm.triplet for accepted file formats.
 
 ## Download the file "verb_dep.txt.gz", which is a typical example of such an input table. Note
 ## that frequency counts are listed in the first column here, which may be easier to produce with 
@@ -54,14 +54,14 @@ VDep <- read.dsm.triplet("verb_dep.txt.gz", freq=TRUE, value.first=TRUE, verbose
 ## fileEncoding= in read.delim() and similar functions.
 
 ## NB: you probably want to discard some of the 285k dimensions before you do anything with this DSM
-## (cells with f=1 have already been discarded to make the download faster).
+## (cells with f=1 have already been dropped to make the download faster).
 
 ## read.dsm.triplet() expects targets in the first column and features in the second. If you want
 ## to build the "opposite" model (e.g. noun-verb instead of verb-noun), you can simply transpose
 ## the co-occurrence matrix:
 DepV <- t(VDep)
 NdepV <- subset(DepV, grepl("_N$", term)) # just nouns as targets
-
+## -> this is a good moment to read up on ?subset.dsm
 
 ## For relatively small data sets, it is also possible to read in a list of co-occurrence tokens
 ## and compute the frequency counts in R.  In this case, the input file has only two columns
@@ -96,14 +96,14 @@ library(tm)
 data(crude) # news messages on crude oil from Reuters corpus
 cat(as.character(crude[[1]]), "\n") # a text example
 
-corpus <- tm_map(crude, stripWhitespace) # some pre-processing
-corpus <- tm_map(corpus, content_transformer(tolower))
-corpus <- tm_map(corpus, removePunctuation)
-corpus <- tm_map(corpus, removeWords, stopwords("english"))
-cat(as.character(corpus[[1]]), "\n") # pre-processed text
+crude.corp <- tm_map(crude, stripWhitespace) # some pre-processing
+crude.corp <- tm_map(crude.corp, content_transformer(tolower))
+crude.corp <- tm_map(crude.corp, removePunctuation)
+crude.corp <- tm_map(crude.corp, removeWords, stopwords("english"))
+cat(as.character(crude.corp[[1]]), "\n") # pre-processed text
 
-dtm <- DocumentTermMatrix(corpus) # document-term matrix
-inspect(dtm[1:5, 90:99])   # rows = documents
+dtm <- DocumentTermMatrix(crude.corp) # document-term matrix
+inspect(dtm[1:5, 90:99])              # rows = documents
 
 wordspace_dtm <- as.dsm(dtm, verbose=TRUE) # convert to DSM
 print(wordspace_dtm$S[1:5, 90:99]) # same part of dtm as above
@@ -129,35 +129,50 @@ Potter <- read.dsm.triplet("potter_l2r2.txt.gz", freq=TRUE, sort=TRUE, verbose=T
 
 
 ## If you do not have suitable tools for corpus processing and the extraction of surface co-occurrence data,
-## you might be able to use the 'quanteda' package to do everything within R. Unfortunately, its companion
-## package 'readtext', which allows you to load corpus texts in many different format, does not seem to be
-## available on CRAN yet and has to be installed from https://github.com/kbenoit/readtext
+## you might be able to use the 'quanteda' package to do everything within R. Its companion package
+## 'readtext' makes it easy to load corpus texts in many different formats.
 library(quanteda)
 
 ## For this example, we will use a small data sample included in the 'quanteda' package itself:
-cat(substr(data_char_mobydick, 0, 384))
+crude.eda <- corpus(crude.cor  p)    # convert TM corpus from above into quanteda format
+texts(crude.eda)[[1]]                # the first text in the corpus
+kwic(crude.eda, "economy", window=3) # concordance search ("keyword in context")
+## -> see quanteda documentation and tutorials for more information: http://quanteda.io/ 
 
-## A character vector of text samples can easily be converted into a corpus.
-Moby <- corpus(data_char_mobydick)
-summary(Moby)
-kwic(Moby, "necessit*") # matches entire words
-
-## Clean up tokens and apply stemmer (see ?tokens for options)
-Moby.tok <- tokens(Moby, removePunct=TRUE, removeNumbers=TRUE)
-Moby.tok <- tokens_tolower(Moby.tok)
-Moby.tok <- removeFeatures(Moby.tok, stopwords("english"))
-Moby.tok <- tokens_wordstem(Moby.tok, language="english")
-head(Moby.tok[[1]], 20)
+## Split text on whitespace and apply stemmer
+crude.tok <- tokens(crude.eda, "fasterword")
+crude.tok <- tokens_wordstem(crude.tok, language="english")
+crude.tok[[1]]
 
 ## Surface co-occurrence counts are obtained with the fcm() function, which stands for "feature co-occurrence
 ## matrix". Be sure to specify tri=FALSE so the full symmetric matrix is returned.
-Moby.M <- fcm(Moby.tok, context="window", window=10, tri=FALSE)
+crude.M <- fcm(crude.tok, context="window", window=10, tri=FALSE)
+
+## fcm() also computes marginal frequencies, but they may be incompatible with the co-oc matrix
+## (unless the corpus has been converted to lowercase), so we need to obtain the marginals separately
+crude.tf <- colSums(dfm(crude.tok, tolower=FALSE))
+crude.cols <- data.frame(term=names(crude.tf), f=crude.tf) # marginal frequency table
+crude.rows <- transform(crude.cols, f = 20 * f) # adjust row marginals for span size
+crude.N <- sum(crude.tf) # sample size
 
 ## The 'fcm' object is an extension of a sparse matrix; after conversion to a suitable sparseMatrix format,
-## it can be passed to the dsm() constructor. Note that this will compute marginal frequencies by summing
-## over the rows and columns of the contingency table, leading to inflated sample size but correct E.
-MobyDSM <- dsm(as(Moby.M, "sparseMatrix"), verbose=TRUE)
-head(MobyDSM, 8)
+## it can be passed to the dsm() constructor together with the marginal frequencies. 
+crudeDSM <- dsm(as(crude.M, "sparseMatrix"), verbose=TRUE,
+                rowinfo=crude.rows, colinfo=crude.cols, N=crude.N)
+crudeDSM
+head(crudeDSM, 15)
+
+## Corpus preprocessing can also be carried out with "quanteda" rather than "tm"
+Immi <- data_char_ukimmig2010 # texts from UK party manifestos
+cat(substr(Immi[[2]], 1, 710))
+
+Immi.tok <- tokens(Immi, remove_punct=TRUE)
+Immi.tok <- tokens_tolower(Immi.tok)
+Immi.tok <- tokens_remove(Immi.tok, stopwords("english"))
+Immi.tok <- tokens_wordstem(Immi.tok, language="english")
+head(Immi.tok[[2]], 50)
+
+## Practice: build a wordspace DSM from Immi.tok (as shown above), using a L5/R5 surface span
 
 
 ## Exercise:
