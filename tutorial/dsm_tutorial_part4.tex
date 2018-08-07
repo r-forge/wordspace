@@ -596,12 +596,12 @@
   \onslide<2->
   \begin{align*}
     \dist[2]{\vu}{\vv} 
-    &= \sqrt{\norm[2]{\vu - \vv}}
+    &= \norm[2]{\vu - \vv}
     = \sqrt{(\vu - \vv)^T (\vu - \vv)}
     \\
     &= \sqrt{\vu^T \vu + \vv^T \vv - 2\, \vu^T \vv}
     \\
-    &= \sqrt{\norm[2]{\vu} + \norm[2]{\vv} - 2\, \vu^T \vv}
+    &= \sqrt{\norm[2]{\vu}^2 + \norm[2]{\vv}^2 - 2\, \vu^T \vv}
     \\
     &= \sqrt{2 - 2 \cos \phi}
   \end{align*}
@@ -649,8 +649,9 @@
     \end{align*}
   \item Corresponding basis matrix $\mathbf{V}$ is (column)-\hh{orthogonal}
     \[
-    \mathbf{V}^T \mathbf{V} = \mathbf{I}_r
+      \mathbf{V}^T \mathbf{V} = \mathbf{I}_r
     \]
+    and defines a \primary{Cartesian coordinate system} in the subspace
   \end{itemize}
 \end{frame}
 
@@ -665,7 +666,9 @@
         $\norm[2]{\vb} = 1$
       \item For any point $\vu$, we have
         \[
-          \cos \varphi = \frac{\vb^T \vu}{\norm[2]{\vb}\cdot \norm[2]{\vu}}
+          \cos \varphi
+          = \frac{\vb^T \vu}{\norm[2]{\vb}\cdot \norm[2]{\vu}}
+          = \frac{\vb^T \vu}{\norm[2]{\vu}}          
         \]
       \item<2-> Trigonometry: coordinate of point on the line is
         $x = \norm[2]{\vu}\cdot \cos\varphi = \vb^T \vu$
@@ -694,10 +697,10 @@
     $\vb_1, \ldots, \vb_r$, the projection into the rank-$r$ subspace $B$ is
     given by
     \[
-      \mathbf{P}\vu = \left(\sum_{i=1}^r \vb \vb^T\right) \vu
+      \mathbf{P}\vu = \left(\sum_{i=1}^r \vb_i \vb_i^T\right) \vu
       = \mathbf{V} \mathbf{V}^T \vu
     \]
-    and its subspace coordinates are $\vx = \mathbf{V} \mathbf{u}$
+    and its subspace coordinates are $\vx = \mathbf{V}^T \mathbf{u}$
   \item<2-> Projection can be seen as decomposition into the projected vector
     and its orthogonal complement
     \[
@@ -705,7 +708,8 @@
       = \mathbf{P} \vu + (\mathbf{I} - \mathbf{P}) \vu
       = \mathbf{P} \vu + \mathbf{Q} \vu
     \]
-  \item<3-> Because of orthogonality, we have
+  \item<3-> Because of orthogonality, this also applies to the squared
+    Euclidean norm (according to Pythagoras' theorem)
     \[
       \norm{\vu}^2 = \norm{\mathbf{P} \vu}^2 + \norm{\mathbf{Q} \vu}^2
     \]

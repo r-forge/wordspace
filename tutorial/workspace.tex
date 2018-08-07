@@ -20,6 +20,59 @@
 % \input{pages/new} % -- input only slide set you're currently working on
 % \input{pages/naacl_3_use_evaluation}
 
+\begin{frame}[fragile]
+  \frametitle{Experiments with TikZ matrices}
+  
+  \begin{tikzpicture}[xscale=0.5]
+    \matrix [fixed matrix=6mm, row sep=1cm, bmatrix, cell matrix=5mm, draw=blue, cells={boxnodes=secondary}] at (0, 0)
+    {
+      \node {x} ; & \node {y} ; \\
+       & \node {z}; \\
+    } ;
+    \node at (5, 0) {Hello} ;
+    \draw [thick] (4, -1) -- (6, 1) ;
+    \matrix [fixed matrix=4mm, bmatrix=2pt, font={\scriptsize}, debug matrix] at (9, 0)
+    {
+      \node {$x_1$} ; \\
+      \node {$x_2$} ; \\
+      \node {$\scaleVdots[.7]$} ; \\
+      \node {$x_n$} ; \\
+    } ;    
+  \end{tikzpicture}
+
+  \begin{tikzpicture}[every matrix/.style={fixed matrix=6mm, cell matrix=5mm, debug matrix, matrix of nodes}]
+    \matrix [bmatrix, anchor=north west] 
+    (r) at (0, 0) {
+      $r_1$ \\
+      $\scaleVdots$ \\
+      $r_k$ \\
+    } ;
+    \matrix [nmatrix, below right={0mm and 2mm of r.north east}] 
+    (dot) {
+      $\cdot$ \\
+    } ;
+    \matrix [bmatrix, below right={0mm and 2mm of dot.north east}] 
+    (c) {
+      $c_1$ & $c_2$ & $\scaleCdots$ & $c_n$ \\
+    } ;
+    \matrix [nmatrix, below right={0mm and 2mm of c.north east}] 
+    (eq) {
+      {} \\
+      $=$ \\
+    } ;
+%%    \tikzset{every matrix/.append style={fixed matrix=1cm}}
+    \begin{scope}[every matrix/.append style={column sep={8mm,between origins}}]
+    \matrix [bmatrix, column sep=1cm, below right={0mm and 2mm of eq.north east}] 
+    (cross) {
+      $r_1 c_1$ & $r_1 c_2$ & $\scaleCdots$ & $r_1 c_n$ \\
+      $\scaleVdots$ & $\scaleVdots$ & & $\scaleVdots$ \\
+      $r_k c_1$ & $r_k c_2$ & $\scaleCdots$ & $r_k c_n$ \\
+    } ;
+    \end{scope}
+  \end{tikzpicture}
+
+\end{frame}
+
 \begin{frame}
   \frametitle{Building a distributional model}
   % \framesubtitle{}
