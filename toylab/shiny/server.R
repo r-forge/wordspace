@@ -42,6 +42,7 @@ shinyServer(function(input, output, session) {
         if (length(candidates) > max.cand) candidates <- candidates[1:max.cand]
       }
       updateSelectInput(session, "candidates", choices=candidates, selected=character(0))
+      if (length(candidates) == 0) ENV$target <- target # not in DSM
     } 
   })
 
