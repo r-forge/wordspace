@@ -1,5 +1,7 @@
-## Exercise for part 4:
+##
+## Extended exercise for part 3:
 ## Explore and evaluate DSM parameters
+##
 
 library(wordspace)
 ## evaluation tasks:
@@ -19,7 +21,7 @@ library(wordspaceEval)
 ## Co-occurrence data for several DSMs based on the English Wikipedia (WP500 corpus)
 ## using different co-occurrence contexts are available for download from 
 ##
-##     http://www.collocations.de/data/#dsm
+##    http://wordspace.collocations.de/doku.php/course:material#pre-compiled_dsms
 ##
 ## The following contexts are available:
 ##   TermDoc  ...   term-document matrix
@@ -38,8 +40,6 @@ library(wordspaceEval)
 ## read it into R.  We will use the Win30 context below, but you may want to choose
 ## a smaller model depending on how powerful your computer is.
 
-## It is easiest to store the model in your working directory (i.e. the same 
-## directory as this script), so you don't have to specify the directory path.  
 load("WP500_Win30_Lemma.rda", verbose=TRUE)
 
 ## Most models have a co-occurrence matrix of approx. 50,000 x 50,000 rows and columns
