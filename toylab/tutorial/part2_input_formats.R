@@ -1,5 +1,7 @@
+##
 ## Practice session for part 2:
 ## How to read your own co-occurrence data into 'wordspace'
+##
 
 library(wordspace)
 
