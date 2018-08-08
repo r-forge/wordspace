@@ -113,6 +113,10 @@ WP100.P1 <- scaleMargins(WP100, cols=(sigma ^ 1)) # because we started with P = 
 ## You can use matrix indexing to skip latent dimensions
 WP100.P1.skip <- WP100.P1[, 21:100] # skips first 20 latent dims
 
+## Don't forget to re-normalize the vectors appropriately (unless you're using cosine/angle)
+WP100.P1.skip <- normalize.rows(WP100.P1.skip, method="manhattan")
+nearest.neighbours(WP100.P1.skip, words, n=10, method="manhattan", skip.missing=TRUE)
+
 
 ## Your task:
 ##  - experiment with all the parameters you have learned in the tutorial

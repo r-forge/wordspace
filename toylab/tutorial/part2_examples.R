@@ -94,5 +94,5 @@ VObj50 <- dsm.projection(VObj, n=50, method="svd")
 nearest.neighbours(VObj50, "dog", method="euclidean") 
 
 ## should re-normalise latent vectors for Euclidean distance
-VObj50 <- normalize.rows(VObj50, method="euclidean")
+VObj50 <- normalize.rows(VObj50, method="euclidean") # applies to matrix, not DSM object
 nearest.neighbours(VObj50, "dog", method="euclidean") 
