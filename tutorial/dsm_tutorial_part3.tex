@@ -53,32 +53,26 @@
 \subsection{Semantic similarity and relatedness}
 
 \begin{frame}
-\frametitle{Distributional similarity as semantic similarity}
+  \frametitle{Distributional similarity as semantic similarity}
 
-\begin{itemize}
-\item DSMs interpret semantic similarity as a \primary{quantitative notion}
-\begin{itemize}
-\item if $\va$ is closer to $\vb$ than to $\Vector{c}$ in the distributional
-vector space, then $a$ is more semantically similar to $b$ than to $c$
-\end{itemize}
-\end{itemize}
-
-\begin{center}\small
-  \begin{tabular}{l|l|l}
-      \primary{rhino} & \primary{fall} & \primary{rock}\\
-      \hline
-      woodpecker&    rise&         lava\\
-      rhinoceros&    increase&     sand\\
-      swan&          fluctuation&  boulder\\
-      whale&         drop&         ice\\
-      ivory&         decrease&     jazz\\
-      plover&        reduction&    slab\\
-      elephant&      logarithm&    cliff\\
-      bear&          decline&      pop\\
-      satin&         cut&          basalt\\
-      sweatshirt&    hike&         crevice\\
-    \end{tabular}
-  \end{center}
+  \begin{itemize}
+  \item DSMs interpret semantic similarity as a \primary{quantitative notion}
+    \begin{itemize}
+    \item if $\va$ is closer to $\vb$ than to $\Vector{c}$ in the distributional
+      vector space, then $a$ is more semantically similar to $b$ than to $c$
+    \item[]
+    \end{itemize}
+  \item Different from \secondary{categorical} nature of most theoretical accounts
+    \begin{itemize}
+    \item often expressed in terms of semantic classes and relations
+    \item[]
+    \end{itemize}
+  \item But it is not clear a priori what exactly makes two words or concepts
+    ``semantically similar'' according to a DSM
+    \begin{itemize}
+    \item may also depend on parameter settings
+    \end{itemize}
+  \end{itemize}
 \end{frame}
 
 
@@ -159,7 +153,7 @@ vector space, then $a$ is more semantically similar to $b$ than to $c$
   \end{columns}
 
   \footnotesize\gap[1]
-  Distribution of semantic relations among DSM neighbours (\primary{SVD}), pattern collocations (\primary{StruDEL}) and human-generated properties (\primary{NORMS}).
+  Distribution of semantic relations for top-10 L5/R5 DSM neighbours (\primary{SVD}), pattern collocations (\primary{StruDEL}) and human-generated properties (\primary{NORMS}).
 \end{frame}
 
 \begin{frame}
@@ -218,27 +212,33 @@ vector space, then $a$ is more semantically similar to $b$ than to $c$
 
 \begin{frame}
   \frametitle{Evaluation of attributional similarity}
-  
+
+  \ungap[1]
   \begin{itemize}
-  \item \primary{Synonym identification}
+  \item<1-> \primary{Synonym identification}
     \begin{itemize}
-    \item TOEFL test
+    \item TOEFL test \citep{Landauer:Dumais:97}
     \end{itemize}
-  \item \primary{Modeling semantic similarity} judgments
+  \item<2-> \primary{Modeling semantic similarity} judgments
     \begin{itemize}
-    \item Rubenstein/Goodenough norms
-    \item WordSim-353
+    \item RG norms \citep{Rubenstein:Goodenough:65}
+    \item WordSim-353 \citep{Finkelstein:etc:02}
+    \item MEN \citep{Bruni:Tran:Baroni:14}, SimLex-999 \citep{Hill:Reichart:Korhonen:15}
     \end{itemize}
-  \item \primary{Noun categorization}
+  \item<3-> \primary{Noun categorization}
     \begin{itemize}
     \item ESSLLI 2008 dataset
-    \item Almuhareb \& Poesio dataset (AP)
-    \item \ldots
+    \item Almuhareb \& Poesio \citep[AP,][]{Almuhareb:06}
     \end{itemize}
-  \item \primary{Semantic priming}
+  \item<4-> \primary{Semantic priming}
     \begin{itemize}
-    \item Hodgson dataset
-    \item Semantic Priming Project 
+    \item Hodgson dataset \citep{Pado:Lapata:07}
+    \item Semantic Priming Project \citep{Hutchinson:etc:13}
+    \end{itemize}
+  \item<5-> \primary{Analogies} \& \primary{semantic relations} (similarity \vs relatedness)
+    \begin{itemize}\small
+    \item Google \citep{Mikolov:etc:13}, BATS \citep{Gladkova:Drozd:Matsuoka:16}
+    \item BLESS \citep{Baroni:Lenci:11}, CogALex \citep{Santus:etc:16}
     \end{itemize}
   \end{itemize}
 \end{frame}
@@ -574,6 +574,143 @@ artifacts) and 2-way (natural and artificial entities) clusterings
   \item given target and two primes, identify related prime\\ (\so multiple choice like TOEFL)
   \end{itemize}
   \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Analogy tasks}
+  \framesubtitle{\citet{Mikolov:etc:13,Mikolov:etc:13b,Gladkova:Drozd:Matsuoka:16}}
+
+  \begin{itemize}
+  \item Task: solve analogy problems such as
+    \begin{itemize}
+    \item \emph{man}$\,:\,$\emph{woman} $\;::\;$ \emph{king}$\,:\,$\only<beamer:1| handout:0>{\h{???}}\only<beamer:2-| handout:1>{\primary{\emph{queen}}}
+    \item<2-> \emph{France}$\,:\,$\emph{Paris} $\;::\;$ \emph{Bulgaria}$\,:\,$\only<beamer:2| handout:0>{\h{???}}\only<beamer:3-| handout:1>{\primary{\emph{Sofia}}}
+    \item<3-> \emph{learn}$\,:\,$\emph{learned} $\;::\;$ \emph{go}$\,:\,$\only<beamer:3| handout:0>{\h{???}}\only<beamer:4-| handout:1>{\primary{\emph{went}}}
+    \item<4-> \emph{dog}$\,:\,$\emph{animal} $\;::\;$ \emph{strawberry}$\,:\,$\only<beamer:4| handout:0>{\h{???}}\only<beamer:5-| handout:1>{\primary{\emph{fruit}}}
+    \item[]
+    \end{itemize}
+  \item<6-> Approach 1: build DSM on word pairs as targets
+    \[
+      \min_{x}\, \dist{\vv_{\text{man:woman}}}{\vv_{\text{king:$x$}}}
+    \]
+  \item<7-> Approach 2: use vector operations in single-word DSM
+    \begin{tikzpicture}
+      \useasboundingbox (.8, 1.5) rectangle (1, 1.7) ;
+      \node (king) at (0, 1) {\hh{\small king}} ;
+      \node (man) at (1, 0) {\hh{\small man}} ;
+      \node (woman) at (2, 1.5) {\hh{\small woman}} ;
+      \node (queen) at (1, 2.5) {\hh{\small queen}} ;
+      \draw[diagram arrow=primary] (man) -- (king) ;
+      \draw[diagram arrow=primary] (woman) -- (queen) ;
+      \draw[diagram arrow=counterpoint] (man) -- (woman) ;
+    \end{tikzpicture}
+    \[
+      \vv_{\text{queen}} \approx \vv_{\text{king}} - \vv_{\text{man}} + \vv_{\text{woman}}
+    \]
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{The Google analogy task}
+  \framesubtitle{\citet{Mikolov:etc:13,Mikolov:etc:13b}}
+
+  \begin{columns}[c]
+    \begin{column}{5cm}
+      \begin{itemize}
+      \item \citet{Mikolov:etc:13,Mikolov:etc:13b} claim that their neural
+        embeddings are good at solving analogy tasks
+      \item[\So] Semantic features encoded in linear subdimensions
+      \end{itemize}
+    \end{column}
+    \begin{column}{55mm}
+      \includegraphics[width=55mm]{img/MikolovSutskeverEtc2013_Fig2}\\
+      \tiny\hfill\secondary{\citep[Fig.~2]{Mikolov:etc:13b}}
+    \end{column}
+  \end{columns}
+
+  \onslide<2->
+  \begin{center}
+    \begin{tabular}{>{\secondary}lccl}
+      model & syntactic & semantic & \\
+      \toprule
+      word2vec & 64\% & 55\% & \citep{Mikolov:etc:13} \\
+      DSM & 43\% & 60\% & \citep{Baroni:Dinu:Kruszewski:14} \\
+      FastText & 82\% & 87\% & \citep{Mikolov:etc:18}
+    \end{tabular}
+  \end{center}
+\end{frame}
+
+\begin{frame}
+  \frametitle{The Google analogy task}
+  \framesubtitle{\citet{Mikolov:etc:13,Mikolov:etc:13b}}
+
+  \h{But what is the task here?}
+
+  \begin{center}
+    \begin{tabular}{r}
+      \includegraphics[width=9cm]{img/MikolovChenEtc2013_Tab1}\\
+      \secondary{\tiny\citep[Tab.~1]{Mikolov:etc:13}}
+    \end{tabular}
+  \end{center}
+\end{frame}
+
+\begin{frame}
+  \frametitle{The CogALex-V shared task}
+  \framesubtitle{\citet{Santus:etc:16}}
+
+  \ungap[1]
+  \begin{center}
+    \begin{tabular}{r}
+      \includegraphics[width=9cm]{img/SantusEtc2016_Tab1}\\[-1ex]
+      \secondary{\tiny\citep[Tab.~1]{Santus:etc:16}}
+    \end{tabular}
+  \end{center}
+
+  \ungap[1]
+  \begin{itemize}
+  \item<2-> Task A: categorize pair as \textsc{random} \vs related (all other)
+    \begin{itemize}
+    \item best system: $F_1 = 79.0\%$ (GHHH)
+    \item best DSM: $F_1 = 77.8\%$ (Mach5)
+    \end{itemize}
+  \item<3-> Task B: categorize as \textsc{syn}, \textsc{ant}, \textsc{hyper}, \textsc{part} or \textsc{random}
+    \begin{itemize}
+    \item best system: $F_1 = 44.5\%$ (LexNet)
+    \item best DSM: $F_1 = 29.5\%$ (Mach5 + SVM classifier)
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Mach5: A cautionary tale}
+  \framesubtitle{\citet{Evert:16a}}
+
+  \begin{itemize}
+  \item DSM optimization for Task A was highly successful,
+    but yielded counter-intuitive parameter settings
+  \item[\hand] Only feature ranks 20k--70k (DepFilt) / 50k--100k (DepStruct)
+  \item[]
+  \end{itemize}
+  
+  \begin{center}
+    \includegraphics[width=10cm]{img/Mach5_eval_features}
+  \end{center}  
+\end{frame}
+
+\begin{frame}
+  \frametitle{Mach5: A cautionary tale}
+  \framesubtitle{\citet{Evert:16a}}
+
+  \begin{itemize}
+  \item Nearest neighbours are unsatisfactory, e.g.\ for \primary{\emph{play}}:\\ \small
+    \emph{playing} ($54.1^{\circ}$), \emph{star} ($62.8^{\circ}$), \emph{reunite} ($62.9^{\circ}$), \emph{co-star} ($64.3^{\circ}$), \emph{reprise} ($64.4^{\circ}$), \emph{player} ($66.7^{\circ}$), \emph{score} ($68.5^{\circ}$), \emph{audition} ($69.2^{\circ}$), \emph{sing} ($69.4^{\circ}$), \emph{actor} (69.5), \emph{understudy} (69.6), \emph{game} (70.3), \ldots
+  \item[]
+  \end{itemize}
+
+  \onslide<2->\ungap[1]
+  \begin{center}
+    \includegraphics[width=10cm]{img/Mach5_boxplot_test_compare}
+  \end{center}
 \end{frame}
 
 
@@ -1866,7 +2003,10 @@ artifacts) and 2-way (natural and artificial entities) clusterings
     \begin{itemize}
     \item Perhaps some tasks/datasets are less asymmetric than others? 
     \item may need to exploit directionality in a more granular way
+    \item[]
     \end{itemize}
+  \item But remember the Mach5 lession:\\
+    good evaluation results \primary{$\not\implies$} accurate semantic representation
   \end{itemize}
 \end{frame}
 
