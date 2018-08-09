@@ -1,5 +1,8 @@
+##
+## Code examples from tutorial part 3
+##
+
 library(wordspace)
-options(width=60) # so output fits on slides
 
 M <- DSM_Vectors
 nearest.neighbours(M, "walk_V")
