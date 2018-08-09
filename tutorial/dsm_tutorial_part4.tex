@@ -398,6 +398,10 @@
     s_{k1} & \cdots & s_{kn}
   \end{bmatrix}
   \]
+
+  \begin{itemize}
+  \item[\hand] What about multiplication with diagonal matrix on the right?
+  \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -589,11 +593,11 @@
   \frametitle{Euclidean distance or cosine similarity?}
 
   \begin{itemize}
-  \item We can now prove that Euclidean distance and cosine similarity are equivalent: 
-    if vectors are normalised ($\norm[2]{\vu} = \norm[2]{\vv} = 1$), both lead to the same neighbour ranking
+  \item Proof that Euclidean distance and cosine similarity are equivalent looks much simpler in matrix algebra
+  \item Assuming that $\norm[2]{\vu} = \norm[2]{\vv} = 1$, we have:
   \end{itemize}
 
-  \onslide<2->
+  \onslide<2->\ungap[1]
   \begin{align*}
     \dist[2]{\vu}{\vv} 
     &= \norm[2]{\vu - \vv}
@@ -631,11 +635,50 @@
     \vu = x_1 \vb_1 + \ldots + x_r \vb_r
     \]
     with coordinate vector $\vx\in \setR^r$
-  \item<3-> Basis matrix $\mathbf{V}$ with column vectors $\vb_i$:
+  \item<3-> Basis matrix $\mathbf{V} \in \setR^{n\times r}$ with column vectors $\vb_i$:
     \[
-    \vu = \mathbf{V} \vx
+    \vu = \mathbf{V} \vx 
     \]
   \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Linear subspace \& basis}
+  
+  \begin{itemize}
+  \item Basis matrix $\mathbf{V} \in \setR^{n\times r}$ with column vectors $\vb_i$:
+    \[
+    \vu = x_1 \vb_1 + \ldots + x_r \vb_r = \mathbf{V} \vx
+    \]
+  \end{itemize}
+
+  \[
+  \begin{array}{ccccc}
+    \begin{bmatrix}
+      x_1 b_{11} + \ldots + x_r b_{1r} \\
+      x_1 b_{21} + \ldots + x_r b_{2r} \\
+      \vdots\\
+      x_1 b_{n1} + \ldots + x_r b_{nr}
+    \end{bmatrix}
+    & = &
+    \begin{bmatrix}
+      b_{11} & \cdots & b_{1r} \\
+      b_{21} & \cdots & b_{2r} \\
+      \vdots & & \vdots \\
+      b_{n1} & \cdots & b_{nr}
+    \end{bmatrix}
+    & \cdot &
+    \begin{bmatrix}
+      x_1 \\
+      \vdots \\
+      x_r
+    \end{bmatrix} \\
+    \\
+    \mathbf{u} & = & \mathbf{V} & \cdot & \mathbf{x} \\
+    (n\times 1) & & (n\times \primary{r}) & & (\primary{r}\times 1)
+  \end{array}
+  \]
+
 \end{frame}
 
 \begin{frame}
@@ -688,6 +731,7 @@
   \end{itemize}
 \end{frame}
 
+
 \begin{frame}
   \frametitle{The mathematics of projections}
   %% \framesubtitle{}
@@ -709,31 +753,121 @@
       = \mathbf{P} \vu + \mathbf{Q} \vu
     \]
   \item<3-> Because of orthogonality, this also applies to the squared
-    Euclidean norm (according to Pythagoras' theorem)
+    Euclidean norm (according to the Pythagorean theorem)
     \[
       \norm{\vu}^2 = \norm{\mathbf{P} \vu}^2 + \norm{\mathbf{Q} \vu}^2
     \]
   \end{itemize}
 \end{frame}
 
+\begin{frame}[fragile]
+  \frametitle{Aside: the matrix cross-product}
+
+  \begin{itemize}
+  \item We already know that the (transpose) cross-product $\mathbf{M} \mathbf{M}^T$
+    computes all inner products between the row vectors of $\mathbf{M}$
+    \begin{itemize}
+    \item[]
+    \end{itemize}
+  \item But $\mathbf{V} \mathbf{V}^T$ it can also be unterstood as a \primary{superposition}
+    of the \primary{outer products} of the columns of $\mathbf{V}$ with themselves
+  \end{itemize}
+
+  \gap[1]
+  \begin{center}
+    \begin{tikzpicture}[every matrix/.style={fixed matrix=6mm, cell matrix=5mm, matrix of nodes}]
+      \matrix [nmatrix, anchor=north west]
+      (vvt) at (0, 0) {
+        {} \\
+        $\mathbf{V} \mathbf{V}^T \; =$ \\
+      } ;
+      \matrix [bmatrix, below right={0mm and 4mm of vvt.north east}]
+      (b1) {
+        $b_{11}$ \\
+        $\scaleVdots$ \\
+        $b_{1n}$ \\
+      } ;
+      \matrix [nmatrix, below right={0mm and 0mm of b1.north east}] 
+      (d1) {
+        $\cdot$ \\
+      } ;
+      \matrix [bmatrix, below right={0mm and 0mm of d1.north east}] 
+      (b1t) {
+        $b_{11}$ & $\scaleCdots$ & $b_{1n}$ \\
+      } ;
+      \matrix [nmatrix, below right={0mm and 2mm of b1t.north east}] 
+      (sum) {
+        {} \\
+        $+ \; \ldots \; +$ \\
+      } ;
+      \matrix [bmatrix, below right=(0mm and 4mm of sum.north east)]
+      (br) {
+        $b_{r1}$ \\
+        $\scaleVdots$ \\
+        $b_{rn}$ \\
+      } ;
+      \matrix [nmatrix, below right={0mm and 0mm of br.north east}] 
+      (dr) {
+        $\cdot$ \\
+      } ;
+      \matrix [bmatrix, below right={0mm and 0mm of dr.north east}] 
+      (drt) {
+        $b_{r1}$ & $\scaleCdots$ & $b_{rn}$ \\
+      } ;
+    \end{tikzpicture}
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Projections in R}
+
+  \begin{Rcode}
+\REM{column basis vector for ``animal'' subspace}
+> b <- t(t(c(1, 1, 1, 1, .5, 0, 0)))
+> b <- normalize.cols(b) \REM{basis vectors must be normalized}
+
+> (x <- M %*% b) \REM{projection of data points into subspace coordinates}
+> x %*% t(b)     \REM{projected points in original space}
+> tcrossprod(x, b) \REM{outer() only works for plain vectors}
+
+> P <- b %*% t(b)  \REM{projection operator}
+> P - t(P)         \REM{note that P is symmetric}
+> M %*% P          \REM{projected points in original space}
+\end{Rcode}
+
+\end{frame}
+
 \begin{frame}
-  \frametitle{The mathematics of projections}
+  \frametitle{Optimal projections and subspaces}
   %% \framesubtitle{}
 
   \begin{itemize}
-  \item Decomposition also applies to squared Euclidean distances:
+  \item Orthogonal decomposition of squared distances btw vectors
     \[
       \norm{\vu - \vv}^2 = \norm{\mathbf{P} \vu - \mathbf{P} \vv}^2 + \norm{\mathbf{Q} \vu - \mathbf{Q} \vv}^2
     \]
-  \item<2-> $\norm{\mathbf{Q}\vu}^2$ as measure for ``loss'' resulting from projection:
-    \[
-      \frac{\norm{\mathbf{Q}\vu}^2}{\norm{\vu}^2}
-      = 1 - \frac{\norm{\mathbf{P}\vu}^2}{\norm{\vu}^2}
-      = 1 - R^2
-    \]
-    where $R^2$ is the proportion of vector length ``preserved'' by
-    $\mathbf{P}$, similar to the explained variance $R^2$ in linear regression
-  \end{itemize}  
+  \end{itemize}
+
+  \begin{columns}[c]
+    \begin{column}{60mm}
+      \begin{itemize}
+      \item<2-> Define projection \hh{loss} as difference btw squared distances
+        \begin{align*}
+          & \bigabs{\,\norm{\mathbf{P}(\vu - \vv)}^2 - \norm{\vu - \vv}^2\,} \\
+          =\;& \norm{\vu - \vv}^2 - \norm{\mathbf{P}(\vu - \vv)}^2 \\
+          =\;& \norm{\mathbf{Q}(\vu - \vv)}^2
+        \end{align*}
+      \item<3-> Projection quality measure:
+        \[
+          R^2 = \frac{\norm{\mathbf{P}(\vu - \vv)}^2}{\norm{\vu - \vv}^2}
+        \]
+      \end{itemize}
+    \end{column}
+    \begin{column}{40mm}
+      \hspace*{-5mm}%
+      \includegraphics[width=45mm]{img/3_projection_loss}      
+    \end{column}
+  \end{columns}
 \end{frame}
 
 \begin{frame}
@@ -748,7 +882,7 @@
       \mathbf{X} &= \mathbf{M} \mathbf{V}
       & \mathbf{M} \mathbf{P} &= \mathbf{M} \mathbf{V} \mathbf{V}^T
     \end{align*}
-  \item<2-> Our ``faithfulness'' measure is thus given by
+  \item<2-> We will now show that the overall projection quality is
     \[
       R^2 = \frac{\sum_{i=1}^k \norm{\vm_i^T \mathbf{P}}^2}{\sum_{i=1}^k \norm{\vm_i^T}^2}
       = \frac{\norm[F]{\mathbf{M} \mathbf{P}}^2}{\norm[F]{\mathbf{M}}^2}
@@ -765,8 +899,8 @@
   \frametitle{Optimal projections and subspaces}
 
   \begin{itemize}
-  \item For a \primary{centered} data set with $\sum_i \vm_i = \vnull$, the Frobenius
-    norm corresponds to the average (squared) distance between points
+  \item For a \primary{centered} data set with $\sum_i \vm_i = \vnull$, the Frobenius norm
+    corresponds to the average (squared) distance between points
   \end{itemize}
 
   \ungap[1.5]
@@ -785,8 +919,20 @@
   \end{align*}
 
   \begin{itemize}
-  \item<6-> ``loss'' of distances: $\sumij \norm{(\vm_i - \vm_j)\mathbf{Q}}^2 = 2k\cdot \norm[F]{\mathbf{M} \mathbf{Q}}^2$
-  \item<6->[\hand] $R^2$ is a measure of how well distances are preserved
+  \item<6-> Similarly for the projection loss:
+    \[
+      \frac{
+        \sumij \norm{(\vm_i - \vm_j)\mathbf{Q}}^2
+      }{
+        \sumij \norm{\vm_i - \vm_j}^2
+      }
+      = \frac{
+        2k \cdot \norm[F]{\mathbf{M} \mathbf{Q}}^2
+      }{
+        2k \cdot \norm[F]{\mathbf{M}}^2
+      }
+      = 1 - R^2
+    \]
   \end{itemize}
 \end{frame}
 
@@ -852,11 +998,11 @@
   \item $m \leq \min \set{k, n}$ is the inherent dimensionality (\hh{rank}) of $\mathbf{M}$
   \item Columns $\va_i$ of $\mathbf{U}$ are called left singular vectors,\\
     columns $\vb_i$ of $\mathbf{V}$ (= rows of $\mathbf{V}^T$) are right singular vectors
-  \item Recall the ``outer product'' view of matrix multiplication:
+  \item<2-> Recall the ``outer product'' view of matrix multiplication:
     \[
       \mathbf{U} \mathbf{V}^T = \sum_{i=1}^m \va_i \vb_i^T
     \]
-  \item Hence the SVD corresponds to a sum of rank-1 components
+  \item<3-> Hence the SVD corresponds to a sum of rank-1 components
     \[
       \mathbf{M} = \mathbf{U} \Msigma \mathbf{V}^T = \sum_{i=1}^m \sigma_i \va_i \vb_i^T
     \]
@@ -890,7 +1036,7 @@
   \frametitle{SVD dimensionality reduction}
 
   \begin{itemize}
-  \item Columns of $\mathbf{V}_r$ form an orthogonormal basis of the optimal rank-$r$ subspace because
+  \item Columns of $\mathbf{V}_r$ form an orthogonal basis of the optimal rank-$r$ subspace because
     \[
       \mathbf{M} \mathbf{P} = \mathbf{M} \mathbf{V}_r \mathbf{V}_r^T
       = \mathbf{U} \Msigma \secondary{\underbrace{\mathbf{V}^T \mathbf{V}_r}_{= \mathbf{I}_r}} \mathbf{V}_r^T
@@ -904,8 +1050,8 @@
     preservation of pairwise distances \so \primary{principal component analysis}
     (\hh{PCA})
     \begin{itemize}
-    \item[\hand] but centering is usally omitted in order to preserve sparseness,
-      so SVD captures vector lengths rather than distances
+    \item[\hand] but centering is usally omitted in order to maintain sparseness,
+      so SVD preserves vector lengths rather than distances
     \end{itemize}
   \end{itemize}
 \end{frame}
@@ -919,7 +1065,7 @@
     \[
       \norm[F]{\mathbf{M} \mathbf{V}_r} = \sigma_1^2 + \ldots + \sigma_r^2
     \]
-  \item Weighting can be adjusted by \h{power scaling} of the singular values:
+  \item<2-> Weighting adjusted by \h{power scaling} of the singular values:
     \[
       \mathbf{U}_r \Msigma_r^p
       = \begin{bmatrix}
@@ -934,22 +1080,52 @@
     \item $p = 0$: dimension weights equalized
     \item $p = 2$: more weight given to first latent dimensions
     \end{itemize}
-  \item Other weighting schemes possible (e.g.\ skip first dimensions)
+  \item<2-> Other weighting schemes possible (e.g.\ skip first dimensions)
   \end{itemize}
 \end{frame}
 
+\newcommand{\Szero}{\ensuremath{\mathbf{S}_0}}
+\newcommand{\sigmaSeven}{\ensuremath{\sigma_7}}
+\newcommand{\Rsquared}{\ensuremath{R^2}}
+\begin{frame}[fragile]
+  \frametitle{SVD projection in R}
 
-% \begin{frame}[fragile]
-%   \frametitle{}
+\begin{Rcode}
+> fact <- svd(S0)     \REM{SVD decomposition of \Szero}
+> round(fact$u, 3)    \REM{left singular vectors (columns) = \(\mathbf{U}\)}
+> round(fact$v, 3)    \REM{right singular vectors (columns) = \(\mathbf{V}\)}
+> round(fact$d, 3)    \REM{singular values = diagonal of \(\Msigma\)}
+\REM{note that \Szero{} has effective rank 6 because \(\sigmaSeven \approx 0\)}
+> barplot(fact$d ^ 2) \REM{\Rsquared{} contributions}
+
+> r <- 2              \REM{truncated rank-2 SVD}
+> (U.r <- fact$u[, 1:r])
+> (Sigma.r <- diag(fact$d[1:r], nrow=r))
+> (V.r <- fact$v[, 1:r])
+\end{Rcode}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{SVD projection in R}
   
-%   \begin{itemize}
-%   \item 
-%   \end{itemize}
-  
-% \begin{Rcode}
-    
-% \end{Rcode}
-% \end{frame}
+\begin{Rcode}
+> (X.r <- S0 %*% V.r) \REM{project into latent coordinates}
+> U.r %*% Sigma.r     \REM{same result}
+> scaleMargins(U.r, cols=fact$d[1:r]) \REM{the \texttt{wordspace} way}
+
+> rownames(X.r) <- rownames(S0)       \REM{NB: keep row labels}
+
+> S0r <- U.r %*% Sigma.r %*% t(V.r)   \REM{rank-2 matrix approx.}
+> round(S0r, 3)
+\REM{compare with \Szero: where are the differences?}
+
+> round(X.r %*% t(V.r), 3)            \REM{same result}
+\end{Rcode}
+
+\begin{itemize}
+\item[\hand] see example code for comparison against PCA with centering
+\end{itemize}
+\end{frame}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
