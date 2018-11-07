@@ -1,7 +1,7 @@
 dist.matrix <- function (M, M2=NULL, method="cosine", p=2, normalized=FALSE, byrow=TRUE, convert=TRUE, as.dist=FALSE, terms=NULL, terms2=terms, skip.missing=FALSE) {
   method <- match.arg(method, c("cosine", "euclidean", "maximum", "manhattan", "minkowski", "canberra", "jaccard", "overlap"))
   similarity <- (method %in% c("cosine")) && !convert
-  symmetric <- !(method %in% c("fwd_jaccard")) # FALSE if distance/similarity measure is asymmetric
+  symmetric <- !(method %in% c("overlap")) # FALSE if distance/similarity measure is asymmetric
   cross.distance <- !is.null(M2)  # TRUE if calculating (rectangular) cross-distance matrix
   need.nonneg <- method %in% c("jaccard", "overlap")
   

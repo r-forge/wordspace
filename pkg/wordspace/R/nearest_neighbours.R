@@ -80,11 +80,13 @@ nearest.neighbours <- function (M, term, n=10, M2=NULL, byrow=TRUE, drop=TRUE, s
     } else {
       M.term <- if (byrow) M[term, , drop=FALSE] else M[, term, drop=FALSE]
     }
-    DM <- dist.matrix(M=M2, M2=M.term, byrow=byrow, ...) # items correspond to columns, regardless of <byrow>
+    ## it's more efficient to have the smaller matrix M.term first because it will be the inner loop
+    ## when computin a general distance matrix (resulting in better cache coherence)
+    DM <- t(dist.matrix(M=M.term, M2=M2, byrow=byrow, ...)) # items correspond to columns, regardless of <byrow>
   }
   similarity <- isTRUE(attr(DM, "similarity"))
   sparse <- dsm.is.canonical(DM)$sparse # may only happen for pre-computed similarity matrix
-  if(sparse && !similarity) stop("only non-negative similarity matrix supported in sparse format")
+  if (sparse && !similarity) stop("only non-negative similarity matrix supported in sparse format")
   
   result <- lapply(items, function (.t) {
     if (sparse) {

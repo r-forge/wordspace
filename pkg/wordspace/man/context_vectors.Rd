@@ -22,7 +22,7 @@ context.vectors(M, contexts, split = "\\\\s+",
   }
 
   \item{contexts}{
-    the contexts for which bag-of-words representations are to be computed.  Either a character vector, for which each item is split into a bag of terms, or a list of vectors that can be used as row indices into \code{M}.  Vector representations for all terms in a bag are then looked up in \code{M} and averaged.
+    the contexts for which bag-of-words representations are to be computed.  Must be a character vector, a list of character vectors, or a list of labelled numeric vectors (see Details below).
   }
 
   \item{split}{
@@ -39,12 +39,24 @@ context.vectors(M, contexts, split = "\\\\s+",
 }
 \details{
 
-  Bag-of-words context vectors are computed by taking the centroid of the term vectors of all known terms in each context.  Neither word order nor any other structural properties of the contexts are taken into account.
-
+  The \code{contexts} argument can be specified in several different ways:
+  \itemize{
+    \item A character vector: each element represents a context given as a string, which will be split on the Perl regular expression \code{split} and then looked up in \code{M}. Repetitions are allowed and will be weighted accordingly in the centroid.
+    \item A list of character vectors: each item represents a pre-tokenized context given as a sequence of terms to be looked up in \code{M}. Repetitions are allowed and will be weighted accordingly in the centroid.
+    \item A list of labelled numeric vectors: each item represents a bag-of-words representation of a context, where labels are terms to be looked up in \code{M} and the corresponding values their frequency counts or (possibly non-integer) weights.
+    \item \emph{(deprecated)} A logical vector corresponding to the rows of \code{M}, which will be used directly as an index into \code{M}.
+    \item \emph{(deprecated)} An unlabelled integer vector, which will be used as an index into the rows of \code{M}.
+  }
+  
+  For each context, terms not found in the matrix \code{M} are silently computed.  Then a context vector is computed as the centroid of the remaining term vectors.  If the context contains multiple occurrences of the same term, its vector will be weighted accordingly.  If the context is specified as a bag-of-words representations, the terms are weighted according to the corresponding numerical values.
+  
+  Neither word order nor any other structural properties of the contexts are taken into account.
 }
 \value{
 
   A numeric matrix with the same number of columns as \code{M} and one row for each context (excluding contexts without known terms if \code{drop.missing=TRUE}).  If the vector \code{contexts} has names or \code{row.names} is specified, the matrix rows will be labelled accordingly.  Otherwise the row labels correspond to the indices of the respective entries in \code{contexts}, so matrix rows can always be identified unambiguously if \code{drop.missing=TRUE}.
+
+  If \code{drop.missing=FALSE}, a context without any known terms (including an empty context) is represented by an all-zero vector.
   
 }
 \references{
@@ -58,6 +70,11 @@ context.vectors(M, contexts, split = "\\\\s+",
   
 }
 \examples{
+# different ways of specifying contexts
+M <- DSM_TermTermMatrix
+context.vectors(M, c("dog cat cat", "cause effect")) # contexts as strings
+context.vectors(M, list(c("dog", "cat", "cat"), c("cause", "effect"))) # pre-tokenized
+context.vectors(M, list(c(dog=1, cat=2), c(cause=1, effect=1))) # bag of words
 
 # illustration of WSD algorithm: 6 sentences each for two senses of "vessel"
 VesselWSD <- subset(SemCorWSD, target == "vessel")
