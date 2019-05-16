@@ -177,6 +177,17 @@ head(Immi.tok[[2]], 50)
 ## Practice: build a wordspace DSM from Immi.tok (as shown above), using a L5/R5 surface span
 
 
+## Further packages you might want to take into consideration:
+##  - corpustools (for working with tokenized corpus data)
+##  - polmineR    (analysis of CWB-indexed corpora, see cwb.sf.net)
+## 
+## NLP annotation pipelines (parameter files for various languages can be downloaded):
+##  - spacyR
+##  - udpipe
+##  - openNLP
+##  - coreNLP
+
+
 ## Exercise:
 ##  - Import your own co-occurrence data set (or term-document matrix) into R.
 ##  - Pick your own corpus, then extract syntactic co-occurrence tokens (or frequencies),
