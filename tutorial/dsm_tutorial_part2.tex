@@ -1787,6 +1787,24 @@ effect -0.383  0.3704
   \end{block}
 \end{frame}
 
+\begin{frame}
+  \frametitle{\ldots\ and an unexpected application}
+
+  \begin{block}{Authorship attribution \citep{Burrows:02}}
+    \begin{itemize}
+    \item Burrows's Delta method is very popular in modern literary stylometry and authorship attribution \citep{Evert:etc:17}
+    \item document-term matrix with word forms as features 
+    \item weighting: relative frequency of word form in document
+    \item feature selection: 200--5,000 most frequent words (mfw)
+    \item columns are standardized ($\mu = 0$, $\sigma^2 = 1$) \so z-scores
+    \item clustering of documents based on various distance metrics\\
+      (or nearest-neighbour classifier for known authors)
+    \item dimensionality reduction: none
+    \item main result: angle/cosine $\succ$ Manhattan $\succ$ Euclidean
+    \end{itemize}
+  \end{block}
+\end{frame}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Building a DSM}
 

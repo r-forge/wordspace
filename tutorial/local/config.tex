@@ -84,7 +84,7 @@ nodes={cellbox=#1}]
 
 %% ----- general copyright message (authors may change between versions of the tutorial)
 \newcommand{\dsmcopyright}{%
-  Copyright \textcopyright\ 2009--2018 Evert, Lenci, Baroni \& Lapesa | 
+  Copyright \textcopyright\ 2009--2019 Evert, Lenci, Baroni \& Lapesa | 
   Licensed under CC-by-sa version 3.0}
 
 
@@ -124,3 +124,5 @@ nodes={cellbox=#1}]
 %% rotated column labels for table (to fit long text into narrow columns
 \newcommand{\rotLabel}[2][60]{\begin{rotate}{#1}#2\end{rotate}}
 
+%% allow very long matrices for row vectors
+\setcounter{MaxMatrixCols}{20}
