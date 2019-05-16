@@ -127,7 +127,7 @@ print(wordspace_tdm)
 Potter <- read.dsm.triplet("potter_l2r2.txt.gz", freq=TRUE, sort=TRUE, verbose=TRUE, 
                            rowinfo="potter_lemmas.txt.gz", rowinfo.header=c("term", "f"),
                            colinfo="potter_lemmas.txt.gz", colinfo.header=c("term", "f"),
-                           N=63515435, encoding="UTF-8")
+                           span.size=4, N=63515435, encoding="UTF-8")
 
 
 ## If you do not have suitable tools for corpus processing and the extraction of surface co-occurrence data,
@@ -136,7 +136,7 @@ Potter <- read.dsm.triplet("potter_l2r2.txt.gz", freq=TRUE, sort=TRUE, verbose=T
 library(quanteda)
 
 ## For this example, we will use a small data sample included in the 'quanteda' package itself:
-crude.eda <- corpus(crude.cor  p)    # convert TM corpus from above into quanteda format
+crude.eda <- corpus(crude.corp)      # convert TM corpus from above into quanteda format
 texts(crude.eda)[[1]]                # the first text in the corpus
 kwic(crude.eda, "economy", window=3) # concordance search ("keyword in context")
 ## -> see quanteda documentation and tutorials for more information: http://quanteda.io/ 
