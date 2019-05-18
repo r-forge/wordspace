@@ -655,17 +655,17 @@
   \[
   \begin{array}{ccccc}
     \begin{bmatrix}
-      x_1 b_{11} + \ldots + x_r b_{1r} \\
-      x_1 b_{21} + \ldots + x_r b_{2r} \\
+      x_1 b_{11} + \ldots + x_r b_{r1} \\
+      x_1 b_{12} + \ldots + x_r b_{r2} \\
       \vdots\\
-      x_1 b_{n1} + \ldots + x_r b_{nr}
+      x_1 b_{1n} + \ldots + x_r b_{rn}
     \end{bmatrix}
     & = &
     \begin{bmatrix}
-      b_{11} & \cdots & b_{1r} \\
-      b_{21} & \cdots & b_{2r} \\
+      b_{11} & \cdots & b_{r1} \\
+      b_{12} & \cdots & b_{r2} \\
       \vdots & & \vdots \\
-      b_{n1} & \cdots & b_{nr}
+      b_{1n} & \cdots & b_{rn}
     \end{bmatrix}
     & \cdot &
     \begin{bmatrix}
@@ -919,19 +919,19 @@
   \end{align*}
 
   \begin{itemize}
-  \item<6-> Similarly for the projection loss:
+  \item<6-> Similarly for the overall projection loss and quality $R^2$:
     \[
+      R^2 = 
       \frac{
-        \sumij \norm{(\vm_i - \vm_j)\mathbf{Q}}^2
+        \sumij \norm{\mathbf{P}(\vm_i - \vm_j)}^2
       }{
         \sumij \norm{\vm_i - \vm_j}^2
       }
       = \frac{
-        2k \cdot \norm[F]{\mathbf{M} \mathbf{Q}}^2
+        2k \cdot \norm[F]{\mathbf{M} \mathbf{P}}^2
       }{
         2k \cdot \norm[F]{\mathbf{M}}^2
       }
-      = 1 - R^2
     \]
   \end{itemize}
 \end{frame}
