@@ -1187,9 +1187,8 @@ effect  0.00 0.00 0.00 0.00     0.791  1.6312  0.922
         \item $\vu = (u_1, \ldots, u_n)$
         \item $\vv = (v_1, \ldots, v_n)$
         \end{itemize}
-      \item \h{Euclidean} distance $\dist[2]{\vu}{\vv}$
-      \item ``City block'' \h{Manhattan} distance $\dist[1]{\vu}{\vv}$
-      \item Extension of $p$-distance  $\dist[p]{\vu}{\vv}$ (for $0\leq p\leq 1$)
+      \item \h{Hamming} distance $\dist[0]{\vu}{\vv}$ not very useful for DSM
+      \item Extension of the Minkowski \h{$p$-distance} $\dist[p]{\vu}{\vv}$\\ (for $0\leq p\leq 1$)
       \end{itemize}
     \end{column}
     \begin{column}{45mm}
@@ -1229,6 +1228,7 @@ Compute distances between individual term pairs \ldots
   \frametitle{Distance and vector length = norm}
   %% \framesubtitle{}
 
+  \ungap[1]
   \begin{columns}[T]
     \begin{column}{50mm}
       \begin{itemize}
@@ -1240,8 +1240,8 @@ Compute distances between individual term pairs \ldots
         \item $\norm{\vu} = \bigdist{\vu}{\vnull}$
         \end{itemize}
       \item<2-> Any norm-induced metric is \h{translation-invariant}%
-        \gap
-      \item<3-> $\dist[p]{\vu}{\vv} = \norm[p]{\vu-\vv}$
+      \item<3-> \h{Minkowski $p$-norm} with\\
+        $\dist[p]{\vu}{\vv} = \norm[p]{\vu-\vv}$
       \end{itemize}
     \end{column}
     \begin{column}{50mm}
@@ -1249,12 +1249,12 @@ Compute distances between individual term pairs \ldots
     \end{column}
   \end{columns}
 
-  \begin{itemize}
-  \item<3-> \h{Minkowski $p$-norm} for $p\in [1,\infty]$ (not $p < 1$):
-    \[
-    \norm[p]{\vu} \coloneq \bigl(\abs{u_1}^p + \dots + \abs{u_n}^p\bigr)^{1/p}
-    \]
-  \end{itemize}
+  \onslide<3->
+  \begin{align*}
+    \norm[p]{\vu} &\coloneq \bigl(\abs{u_1}^p + \dots + \abs{u_n}^p\bigr)^{1/p} && \text{ for } 1\leq p \\
+    \norm[p]{\vu} &\coloneq \abs{u_1}^p + \dots + \abs{u_n}^p && \text{ for } 0\leq p < 1 \\
+    \norm[0]{\vu} &= \# \bigsetdef{i}{u_i \neq 0} & \norm[\infty]{\vu} &= \max \bigset{\abs{u_1}, \ldots, \abs{u_n}}
+  \end{align*}
 \end{frame}
 
 \begin{frame}[c]
