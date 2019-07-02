@@ -1,10 +1,12 @@
-## Validate C code in dsm_score() against pure R implementation
+## Validate C++ code in dsm_score() against pure R implementation
 ## based on small "hieroglyphs" example matrix
 
 library(wordspace)
 library(Matrix)
 
-vec.equal <- function(x, y, tol=1e-12, verbose=TRUE) {
+## accept relatively large differences because C++ code might use different floating-point
+## arithmetic than R code (depending on platform and optimizations)
+vec.equal <- function(x, y, tol=1e-6, verbose=TRUE) {
   x <- as.numeric(x); y <- as.numeric(y)
   if (length(x) == length(y)) {
     noteq <- x != y # abs(x-y) undefined if both are +Inf or -Inf

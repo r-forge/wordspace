@@ -1,7 +1,7 @@
 ---
 title: "TODO sheet for `wordspace` package development"
 author: "Stefan Evert"
-date: "30 Jun 2019"
+date: "2 July 2019"
 output: 
   html_document:
     toc: true
@@ -18,12 +18,6 @@ output:
 *  implement `write.dsm.matrix()` for various output formats for dense/sparse matrices?
     - can't be called `write.matrix()`, which already exists in MASS (but doesn't look very optimal)
     - should have options to save row/column names and dense/sparse matrices in various text formats
-*  convenience methods for `rownames` and `colnames` of DSM object
-    - achieved by providing `dimnames.dsm` method
-    - preferably also `dimnames<-` method, which sets `rows$term` and `cols$term` as well as dimnames of `$M` and `$S`
-*  `as.matrix.dsm()` method should extract the raw (`$M`) or scored (`$S`) cooccurrence matrix, as appropriate
-    - might also update dimnames of the matrix in case someone has messed with `$rows$term` or `$cols$term` directly
-    - but explain in manpage that it will often return a sparse matrix
 *  `[` accessor method for subsetting with row/column numbers or target/feature terms
 *  implement `signcount` in Rcpp for vector / dense matrix (or is `as.vector` sufficient?)
     - counts numbers of negative, zero and positive entries --> efficient `nnzero` and non-negative check for canonical matrices

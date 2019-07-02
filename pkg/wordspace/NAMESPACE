@@ -31,6 +31,9 @@ S3method(print, dsm)
 S3method(head, dsm)
 S3method(dim, dsm)
 S3method(t, dsm)
+S3method(dimnames, dsm)
+S3method(`dimnames<-`, dsm)
+S3method(as.matrix, dsm)
 
 S3method(subset, dsm)
 
