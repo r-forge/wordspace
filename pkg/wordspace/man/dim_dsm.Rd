@@ -33,9 +33,10 @@
 }
 \seealso{
 
-  \code{\link{dsm}}, \code{\link{check.dsm}}, \code{\link{print.dsm}}
+  \code{\link{dsm}}, \code{\link{check.dsm}}, \code{\link{print.dsm}}, \code{\link{dimnames.dsm}}
   
 }
-%% \examples{
-%% }
+\examples{
+dim(DSM_TermTerm)
+}
 \author{Stefan Evert (\url{http://purl.org/stefan.evert})}

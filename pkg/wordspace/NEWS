@@ -1,3 +1,8 @@
+Version 0.2-4:
+
+  - provide dimnames() getter and setter methods for DSM objects
+  - provide as.matrix() method for DSM objects (which extracts either M or S)
+
 Version 0.2-3:
 
   - context.vectors() now also accepts weighted bag-of-words representations as context specification; direct indexing into M has been deprecated
