@@ -1,11 +1,17 @@
 dist.matrix <- function (M, M2=NULL, method="cosine", p=2, normalized=FALSE, byrow=TRUE, convert=TRUE, as.dist=FALSE, terms=NULL, terms2=terms, skip.missing=FALSE) {
   method <- match.arg(method, c("cosine", "euclidean", "maximum", "manhattan", "minkowski", "canberra", "jaccard", "overlap"))
-  similarity <- (method %in% c("cosine")) && !convert
+  similarity <- (method %in% c("cosine", "jaccard", "overlap")) && !convert
   symmetric <- !(method %in% c("overlap")) # FALSE if distance/similarity measure is asymmetric
   cross.distance <- !is.null(M2)  # TRUE if calculating (rectangular) cross-distance matrix
   need.nonneg <- method %in% c("jaccard", "overlap")
   
-  if (method == "minkowski" && (p < 0 || !is.finite(p))) stop("Minkowski p-distance can only be computed for 0 <= p < Inf")
+  if (method == "minkowski") {
+    if (p == Inf) {
+      method <- "maximum" # same as in rowNorms()
+    } else if (p < 0 || !is.finite(p)) {
+      stop("Minkowski p-distance can only be computed for 0 <= p < Inf")
+    }
+  }
   if (as.dist && similarity) stop("cannot create 'dist' object from similarity matrix")
   if (as.dist && cross.distance) stop("cannot create 'dist' object from cross-distance matrix")
   if (as.dist && !symmetric) stop("cannot create 'dist' object for asymmetric distance measure")

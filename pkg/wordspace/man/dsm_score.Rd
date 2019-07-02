@@ -17,7 +17,7 @@ dsm.score(model, score = "frequency",
           sparse = TRUE, negative.ok = NA,
           transform = c("none", "log", "root", "sigmoid"),
           scale = c("none", "standardize", "center", "scale"),
-          normalize = FALSE, method = "euclidean", p = 2,
+          normalize = FALSE, method = "euclidean", p = 2, tol = 1e-6,
           matrix.only = FALSE, update.nnzero = FALSE,
           batchsize = 1e6, gc.iter = Inf)
 
@@ -45,6 +45,8 @@ dsm.score(model, score = "frequency",
   \item{method, p}{norm to be used with \code{normalize=TRUE}.
     See \code{\link{rowNorms}} for admissible values and details on the corresponding norms
   }
+  
+  \item{tol}{if \code{normalize=TRUE}, row vectors with norm below \code{tol} are explicitly set to all zeroes instead of attempting to normalize them (see \code{\link{normalize.rows}} for more information)}
   
   \item{matrix.only}{whether to return updated DSM model (default) or only the matrix of scores (\code{matrix.only=TRUE})}
   
@@ -234,6 +236,14 @@ round(model$S, 3) # additional sigmoid transformation
 my.CP <- function (O11, R1, ...) 100 * O11 / R1  # "..." is mandatory
 model <- dsm.score(model, score=my.CP)
 round(model$S, 3)
+
+## shifted PPMI (with k = 2) creates all-zero rows and columns
+model <- dsm.score(model, score=function (O, E, ...) log2(O / E) - 2,
+                   normalize=TRUE, update.nnzero=TRUE)
+round(model$S, 3) # normalization preserves all-zero rows
+## use subset to remove such rows and columns
+m2 <- subset(model, nnzero > 0, nnzero > 0) # must have updated nnzero counts
+round(m2$S, 3)
 
 \dontrun{
 # visualization of the scale transformations implemented by dsm.score

@@ -84,7 +84,7 @@ dist.matrix(M, M2 = NULL, method = "cosine", p = 2,
         d_p(x, y) = \sum_i | x_i - y_i |^p}{ d_p(x, y) = SUM(i) |x_i - y_i|^p }
       for \eqn{0 \le p < 1}.  In the latter case, it is not homogeneous and cannot be derived from a corresponding mathematical norm (cf. \code{\link{rowNorms}}).
 
-      Special cases include the Euclidean metric \eqn{d_2(x, y)} for \eqn{p = 2} and the Manhattan metric \eqn{d_1(x, y)} for \eqn{p = 1}, but the dedicated methods above provide more efficient implementations.  For \eqn{p \to \infty}{p -> Inf}, \eqn{d_p(x, y)} converges to the maximum distance \eqn{d_{\infty}(x, y)}, but \code{p=Inf} is not allowed.  For \eqn{p = 0}, \eqn{d_p(x, y)} corresponds to the Hamming distance, i.e. the number of differences \deqn{
+      Special cases include the Euclidean metric \eqn{d_2(x, y)} for \eqn{p = 2} and the Manhattan metric \eqn{d_1(x, y)} for \eqn{p = 1}, but the dedicated methods above provide more efficient implementations.  For \eqn{p \to \infty}{p -> Inf}, \eqn{d_p(x, y)} converges to the maximum distance \eqn{d_{\infty}(x, y)}, which is also selected by setting \code{p=Inf}.  For \eqn{p = 0}, \eqn{d_p(x, y)} corresponds to the Hamming distance, i.e. the number of differences \deqn{
       d_0(x, y) = \#\{ i | x_i \ne y_i \}}{ #{i | x_i != y_i} }
     }
     \item{\code{canberra}}{The Canberra metric has been implemented for compatibility with the \code{\link{dist}} function, even though it is probably not very useful for DSM vectors.  It is given by \deqn{
@@ -124,7 +124,7 @@ dist.matrix(M, M2 = NULL, method = "cosine", p = 2,
 %% }
 \seealso{
   
-  \code{\link[=plot.dist.matrix]{plot}} and \code{\link[=head.dist.matrix]{head}} methods for distances matrices; \code{\link{nearest.neighbours}} and \code{\link{pair.distances}} also accept a precomputed \code{dist.matrix} object instead of a DSM matrix \code{M}
+  \code{\link[=plot.dist.matrix]{plot}} and \code{\link[=head.dist.matrix]{head}} methods for distance matrices; \code{\link{nearest.neighbours}} and \code{\link{pair.distances}} also accept a precomputed \code{dist.matrix} object instead of a DSM matrix \code{M}
   
   \code{\link{rowNorms}} for length normalization of DSM vectors, which is highly recommended for most distance metrics (and implicit in \code{cosine})
 

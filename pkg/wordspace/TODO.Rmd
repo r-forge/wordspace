@@ -1,7 +1,7 @@
 ---
 title: "TODO sheet for `wordspace` package development"
 author: "Stefan Evert"
-date: "23 Mar 2017"
+date: "30 Jun 2019"
 output: 
   html_document:
     toc: true
@@ -10,24 +10,26 @@ output:
 
 ## Bug fixes and improvements
 
-*  note that (dense) matrix should be saved to text format with `write.table()` rather than `write()` (inserts spurious line break every INT_MAX chars), either in examples or in a (new) vignette
-*  handle zero rows more gracefully in `normalize.rows()`
-    - perhaps leave untouched if row norm is below some `tol` parameter
-    - is normalization meaningful for Minkowski norm with $p < 1$, which doesn't scale linearly in our generalization?
-*  `normalize=TRUE` in `dsm.score()` might automatically filter out invalid rows (with $\|x\| = 0$) or keep them at 0 (rather than `NA`)
-    - perhaps as an option to `normalize.rows()`, but `dsm.score()` would need to handle this specially and drop deleted rows from entire model
-*  more efficient reading of triplet files
-    - `readr` package doesn't seem to help (faster, but even more memory overhead than scan)
-    - temporary triplet table requires at least 24 bytes / row, which cannot be avoided
-    - main issue is whether a copy of the table has to be made (e.g. because of reallocation while reading input file of unknown size)
-    - approach A: if input is file (rather than pipe), count lines first, then scan with `nmax` option; but doesn't seem to help much/systematically in some tests
-    - approach B: read input in chunks, then change dsm() constructor so it can work on the chunks and combine them as late as possible into the sparse matrix; it may be difficult to achieve substantial savings with this strategy
+*  note that (dense) matrix should be saved to text format with `write.table()` rather than `write()` 
+    - `write` calls `cat`, inserts a  spurious line break every INT_MAX chars)
+    - `write.table` is the proper function to save a matrix in text format anyway and enables us to include variable names
+    - options: mention this in examples; write a (new) vignette that shows how to save a file in word2vec format
+    - preferred: write simple wrapper function to save matrix in word2vec format (see below)
+*  implement `write.dsm.matrix()` for various output formats for dense/sparse matrices?
+    - can't be called `write.matrix()`, which already exists in MASS (but doesn't look very optimal)
+    - should have options to save row/column names and dense/sparse matrices in various text formats
 *  convenience methods for `rownames` and `colnames` of DSM object
     - achieved by providing `dimnames.dsm` method
     - preferably also `dimnames<-` method, which sets `rows$term` and `cols$term` as well as dimnames of `$M` and `$S`
 *  `as.matrix.dsm()` method should extract the raw (`$M`) or scored (`$S`) cooccurrence matrix, as appropriate
     - might also update dimnames of the matrix in case someone has messed with `$rows$term` or `$cols$term` directly
+    - but explain in manpage that it will often return a sparse matrix
 *  `[` accessor method for subsetting with row/column numbers or target/feature terms
+*  implement `signcount` in Rcpp for vector / dense matrix (or is `as.vector` sufficient?)
+    - counts numbers of negative, zero and positive entries --> efficient `nnzero` and non-negative check for canonical matrices
+    - possibly R wrapper function for sparse matrices (dgC, dgT, dgR)
+*  make sure there are tests for all important functions
+    - also test non-negativity check in `dsm.is.canonical` for sparse and dense matrices
 
 
 ## Combining DSM objects after internal redesign
@@ -43,32 +45,25 @@ output:
 *  efficient reimplementation of `rbind.dsm()` for sparse matrices (require all arguments to be sparse in normal form; use C code, work with triplet representation, or very clever code on `dgCMatrix` objects)
 
 
-## Non-negative matrices and projections
-
-*  Matrizen werden mit Attribut `non.negative` versehen; Frequenzmatrix M muss nonneg sein (wird von Konstruktor überprüft); S wird von `dsm.score()` markiert, falls sichergestellt ist, dass die Matrix keine negativen Elemente enthalten kann (`negative.ok=FALSE`)
-*  diverse Funktionen wie `dsm.score()`, `dsm.projection()`, `dist.matrix()`, ...  erlauben bestimmte Optionen / Algorithmen nur für nonneg-Matrizen; diese werden am Attribut `non.negative` erkannt; wenn Attribut fehlt, wird die Eingabematrix geprüft; evtl. expliziter Override mit `non.negative=TRUE` (aber sinnvoll?)
-*  dafür C-Funktion, um Vektor/Matrix speichereffizient auf nonneg zu testen; in Methode `is.nonnegative()` einbinden, mit Methoden für numeric, matrix, und Matrix (csr oder triplet)
-*  Ausgabe von dsm.projection mit NMF oder anderem nonnoeg-Algorithmus wird ebenfalls mit Attribut `non.negative=TRUE` markiert
-
-
 ## Support for evaluation experiments
 
-*  `as.distmat()` method for `dist` objects, which converts them to full symmetric matrix
-    - should be as simple as `as.distmat(as.matrix(x))`
 *  `pair.distances()` should also work with M2 (= M) for cross-distance computations
     - in `pair.distances()`, adjust ranks by one only in non-cross-distance case (`M2=NULL`)
     - currently, adjustment is disabled for pre-computed distance matrix not marked as symmetric
+    - **TODO** check whether this is still the case (shouldn't we explicitly check for same label, as `nearest.neighbours` does? but cross-distances are explicitly excluded from the adjustment)
 *  also see hand-written notes
 
 
 ## Additional metrics
 
-*  Dice and/or Jaccard coefficient (Lin 1998)
-    - is there a meaningful formulation for non-negative vectors?
+*  Dice coefficient (Lin 1998)
+    - Jaccard metric is already implemented (Dice is not metric), but only for non-negative input
+    - is there a meaningful generalization to vectors with negative values?
 *  KL divergence and Jensen-Shannon metric (Endres & Schindelin 2003) for non-negative vectors
     - input matrices have to be checked unless they're already marked
     - KL divergence --> skew divergence (Lee 2001)?
     - JS metric --> general Jensen-Shannon divergence with mix parameter \(\lambda\in (0,1)\)?
+    - now that we can test for non-negativity, these measures can easily be added
 *  generalizations of vector norms/metrics that share aspects of Dice / KL?
 
 
@@ -89,6 +84,7 @@ output:
 *  `dsm.projection()` could have an Option `non.negative=TRUE`
     - only valid if input matrix is non-negative
     - guarantees that projection is also non-negative (by using a non-negative basis with RI, and NNDSVD with SVD)
+    - **check status** -- do we have a non-negative version of random indexing?
 *  implement NMF (multiplicative updates, cf. Python code)
     - key element: C/C++ function to compute `crossprod()` only for nonzero entries of a given sparse matrix
     - possibly modified version of this function in order to compute approximation error of sparse matrix decomposition
@@ -96,6 +92,7 @@ output:
     - alternatively, carry out multiple runs with random initializations and select the best approximation
     - should also experiment with more sophisticated variants of NMF that include regularization terms (--> similar to sparse priors)
     - these might provide a fairly general and flexible projection framework
+    - don't forget to check for non-negativity and **mark output as non-negative**
 *  experiment with LDA and similar topic models
     - use implementation in `topicmodels` package
     - can this deal with arbitrary non-negative scores, or only (binary?) frequency counts?
@@ -119,6 +116,12 @@ output:
 
 ## Optimization
 
+*  more efficient reading of triplet files
+    - `readr` package doesn't seem to help (faster, but even more memory overhead than scan)
+    - temporary triplet table requires at least 24 bytes / row, which cannot be avoided
+    - main issue is whether a copy of the table has to be made (e.g. because of reallocation while reading input file of unknown size)
+    - approach A: if input is file (rather than pipe), count lines first, then scan with `nmax` option; but doesn't seem to help much/systematically in some tests
+    - approach B: read input in chunks, then change dsm() constructor so it can work on the chunks and combine them as late as possible into the sparse matrix; it may be difficult to achieve substantial savings with this strategy
 *  investigate memory overhead shown by benchmarks
     - cosine distance for dense (and possibly also sparse) matrix; very substantial overhead in "SVD-100 cosine distances" benchmark
         - key problem seems to be copy-on-write duplication of resulting matrix during post-processing, especially when setting attributes
@@ -141,6 +144,3 @@ output:
 *  include basic Shiny GUIs as functions in package?
     - so far: nearest neighbours explorer
     - should try to load shiny package and abort with error if not installed
-*  implement `write.dsm.matrix()` for various output formats for dense/sparse matrices?
-    - can't be called `write.matrix()`, which already exists in MASS (but doesn't look very optimal)
-    - should have options to save row/column names and dense/sparse matrices in various text formats

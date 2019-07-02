@@ -2,7 +2,7 @@ dsm.score <- function (model, score="frequency",
                        sparse=TRUE, negative.ok=NA,
                        transform=c("none", "log", "root", "sigmoid"),
                        scale=c("none", "standardize", "center", "scale"),
-                       normalize=FALSE, method="euclidean", p=2,
+                       normalize=FALSE, method="euclidean", p=2, tol=1e-6,
                        matrix.only=FALSE, update.nnzero=FALSE,
                        batchsize=1e6, gc.iter=Inf) {
   ## validate DSM object
@@ -196,8 +196,8 @@ dsm.score <- function (model, score="frequency",
   }
 
   if (normalize) {
-    ## carry out normalize.rows() operation in-place (because scores has been newly allocated above)
-    scores <- scaleMargins(scores, 1 / rowNorms(scores, method=method, p=p), duplicate=FALSE)
+    ## carry out row normalization in-place (because scores has been newly allocated above)
+    scores <- normalize.rows(scores, method=method, p=p, tol=tol, inplace=TRUE)
   }
 
   dimnames(scores) <- dimnames(cooc.matrix) # make sure that row and column names are preserved
