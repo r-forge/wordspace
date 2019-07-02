@@ -1,6 +1,8 @@
 Version 0.2-3:
 
   - context.vectors() now also accepts weighted bag-of-words representations as context specification; direct indexing into M has been deprecated
+  - normalize.rows() also supports Minkowski norms with p < 1 (which are known as k-norms, for k=p), but rejects p < .05 due to numerical instability
+  - normalize.rows() preserves all-zero row vectors; rows with very small norm are explicitly set to zero instead of attempting to normalize them 
 
 Version 0.2-2:
 

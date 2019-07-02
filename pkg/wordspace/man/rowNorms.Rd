@@ -46,9 +46,9 @@ colNorms(M, method = "euclidean", p = 2)
         \|x\|_p = \left( \sum_i |x_i|^p \right)^{1/p} }{ |x|_p = [ SUM(i) |x_i|^p ]^(1/p) }
       for \eqn{p \ge 1}.  The Euclidean (\eqn{p = 2}) and Manhattan (\eqn{p = 1}) norms are special cases, and the maximum norm corresponds to the limit for \eqn{p \to \infty}{p -> Inf}.
 
-      As an extension, values \eqn{0\le p < 1} compute the length measure \deqn{
+      As an extension, values in the range \eqn{0 \le p < 1} are also allowed and compute the length measure \deqn{
         \|x\|_p = \sum_i |x_i|^p }{ |x|_p = SUM(i) |x_i|^p }
-      This formula does not define a proper mathematical norm because it is not homogeneous (\eqn{\|r\cdot x\| \ne |r|\cdot \|x\|}{|r * x| != |r| * |x|} for a scalar factor \eqn{r}).  However, it does satisfy the triangle inequality and is thus still a sensible measure of vector length.  In the special case \eqn{p = 0}, the length \eqn{\|x\|_0}{|x|_0} corresponds to the number of nonzero elements in the vector \eqn{x}.
+      For \eqn{0 < p < 1} this formula defines a \eqn{p}-norm, which has the property \eqn{\|r\cdot x\| = |r|^p \cdot \|x\|}{|r * x| = |r|^p * |x|} for any scalar factor \eqn{r} instead of being homogeneous. For \eqn{p = 0}, it computes the Hamming length, i.e. the number of nonzero elements in the vector \eqn{x}.
     }
   }
 }
