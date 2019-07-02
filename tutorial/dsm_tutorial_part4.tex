@@ -450,18 +450,20 @@
   \item Metrics form a very broad class of distance measures, some of which do
     not fit in well with our geometric intuitions
   \item<2-> Useful: family of \hh{Minkowski} $p$-metrics
+    \begin{align*}
+      \dist[p]{\vu}{\vv} 
+      &\coloneq \bigl( \abs{u_1 - v_1}^p + \dots + \abs{u_n - v_n}^p \bigr)^{1/p}
+      && p \geq 1 \\
+      \dist[p]{\vu}{\vv} 
+      &\coloneq \abs{u_1 - v_1}^p + \dots + \abs{u_n - v_n}^p 
+      && 0 \leq p < 1
+    \end{align*}
+    with limiting cases
+    \begin{align*}
+      \dist[0]{\vu}{\vv} &= \# \bigsetdef{i}{u_i \neq v_i} \\
+      \dist[\infty]{\vu}{\vv} &= \max \bigset{\abs{u_1 - v_1}, \ldots, \abs{u_n - v_n}}
+    \end{align*}
   \end{itemize}
-
-  \onslide<2->\ungap[2]
-  \begin{align*}
-    \dist[p]{\vu}{\vv} 
-    &\coloneq \bigl( \abs{u_1 - v_1}^p + \dots + \abs{u_n - v_n}^p \bigr)^{1/p}
-    && p \geq 1 \\
-    \dist[p]{\vu}{\vv} 
-    &\coloneq \abs{u_1 - v_1}^p + \dots + \abs{u_n - v_n}^p 
-    && 0 \leq p < 1
-  \end{align*}
-  
 \end{frame}
 
 \begin{frame}
@@ -495,29 +497,61 @@
 \begin{frame}
   \frametitle{Norm: a measure of length}
 
-  \ungap[1]
-  \begin{columns}[T]
-    \begin{column}{55mm}
-      \includegraphics[width=55mm]{img/unit_circle_pnorms}%
-    \end{column}
-    \begin{column}{55mm}
-      \begin{itemize}
-       \item Visualisation of norms in $\setR^2$ by plotting \h{unit
-           circle}, i.e.\ points $\vu$ with $\norm{\vu}=1$
-       \item Here: $p$-norms $\norm[p]{\cdot}$ for different values of $p$%
-       \item<2-> Triangle inequality $\iff$ unit circle is \h{convex}
-       \item<2-> This shows that $p$-norms with $p < 1$ would violate the triangle
-         inequality
-      \end{itemize}
-    \end{column}
-  \end{columns}
-  
-  \gap[1]
   \begin{itemize}
-  \item<3->[\hand] Consequence for DSM: $p \ll 2$ sensitive to small differences in many
-    coordinates, $p \gg 2$ to larger differences in few coord.
+  \item A generalized \h{$p$-norm} $\norm{\vu}$ for the length of a vector $\vu$ 
+    satisfies the following relaxed axioms:
+    \begin{itemize}
+    \item $\norm{\vu} > 0$ for $\vu \neq \vnull$
+    \item $\norm{\lambda\vu} = \abs{\lambda}^p \cdot \norm{\vu}$ (for some $p > 0$)
+    \item $\norm{\vu + \vv} \leq \norm{\vu} + \norm{\vv}$
+      (\h{triangle inequality})
+    \end{itemize}
+  \item A $p$-norm \hh{induces} a metric
+    \( 
+    \dist{\vu}{\vv} \coloneq \norm{\vu - \vv} 
+    \)
+    that is not scale-invariant (unless $p = 1$), but has properties
+    \begin{itemize}
+    \item \h{translation-invariant}: $\dist{\vu+\vx}{\vv+\vx} = \dist{\vu}{\vv}$
+    \item \hh{scaling behaviour}: $\dist{\lambda\vu}{\lambda\vv} = \abs{\lambda}^p\cdot \dist{\vu}{\vv}$
+    \end{itemize}
+  \item $\dist[p]{\vu}{\vv}$ is induced by the \hh{Minkowski $p$-norm} for $0 < p < 1$:
+    \[
+      \norm[p]{\vu} \coloneq \abs{u_1}^p + \dots + \abs{u_n}^p
+    \]
+    \begin{itemize}\ungap[1]
+    \item[\hand] the Hamming metric $d_0$ is not norm-induced because $\norm[0]{\cdot}$ is not a $p$-norm (note that $\norm[0]{\lambda \vu} = \norm[0]{\vu}$ for $\lambda \neq 0$)
+    \end{itemize}
   \end{itemize}
 \end{frame}
+
+
+%% \begin{frame}
+%%   \frametitle{Norm: a measure of length}
+%%  
+%%   \ungap[1]
+%%   \begin{columns}[T]
+%%     \begin{column}{55mm}
+%%       \includegraphics[width=55mm]{img/unit_circle_pnorms}%
+%%     \end{column}
+%%     \begin{column}{55mm}
+%%       \begin{itemize}
+%%        \item Visualisation of norms in $\setR^2$ by plotting \h{unit
+%%            circle}, i.e.\ points $\vu$ with $\norm{\vu}=1$
+%%        \item Here: $p$-norms $\norm[p]{\cdot}$ for different values of $p$%
+%%        \item<2-> Triangle inequality $\iff$ unit circle is \h{convex}
+%%        \item<2-> This shows that $p$-norms with $p < 1$ would violate the triangle
+%%          inequality
+%%       \end{itemize}
+%%     \end{column}
+%%   \end{columns}
+%%   
+%%   \gap[1]
+%%   \begin{itemize}
+%%   \item<3->[\hand] Consequence for DSM: $p \ll 2$ sensitive to small differences in many
+%%     coordinates, $p \gg 2$ to larger differences in few coord.
+%%   \end{itemize}
+%% \end{frame}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
