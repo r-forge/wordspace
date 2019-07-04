@@ -2,6 +2,7 @@ Version 0.2-4:
 
   - provide dimnames() getter and setter methods for DSM objects
   - provide as.matrix() method for DSM objects (which extracts either M or S)
+  - write.dsm.matrix() to save dense DSM matrix or word embeddings in word2vec text format (so far)
 
 Version 0.2-3:
 

@@ -1,7 +1,7 @@
 ---
 title: "TODO sheet for `wordspace` package development"
 author: "Stefan Evert"
-date: "2 July 2019"
+date: "4 July 2019"
 output: 
   html_document:
     toc: true
@@ -10,20 +10,17 @@ output:
 
 ## Bug fixes and improvements
 
-*  note that (dense) matrix should be saved to text format with `write.table()` rather than `write()` 
-    - `write` calls `cat`, inserts a  spurious line break every INT_MAX chars)
-    - `write.table` is the proper function to save a matrix in text format anyway and enables us to include variable names
-    - options: mention this in examples; write a (new) vignette that shows how to save a file in word2vec format
-    - preferred: write simple wrapper function to save matrix in word2vec format (see below)
-*  implement `write.dsm.matrix()` for various output formats for dense/sparse matrices?
-    - can't be called `write.matrix()`, which already exists in MASS (but doesn't look very optimal)
-    - should have options to save row/column names and dense/sparse matrices in various text formats
 *  `[` accessor method for subsetting with row/column numbers or target/feature terms
 *  implement `signcount` in Rcpp for vector / dense matrix (or is `as.vector` sufficient?)
     - counts numbers of negative, zero and positive entries --> efficient `nnzero` and non-negative check for canonical matrices
     - possibly R wrapper function for sparse matrices (dgC, dgT, dgR)
+*  add (manual) deprecation warnings for `rbind`, `cbind` and `merge`
+    - functions will be re-designed in a future release or removed completely (`merge`)
+    - `cbind` hasn't been implemented yet anyway
 *  make sure there are tests for all important functions
     - also test non-negativity check in `dsm.is.canonical` for sparse and dense matrices
+*  function `read.dsm.matrix` for reading in a pre-compiled DSM matrix in various formats
+    - in particular, try to find efficient way to read word2vec format (and possibly GloVE, which is word2vec without the header)
 
 
 ## Combining DSM objects after internal redesign
@@ -34,9 +31,9 @@ output:
     - `merge` is used to pool counts from multiple corpora for the same targets and features
 *  `rbind.dsm()` and `merge.dsm()` need to be updated and documented properly
 *  implement `cbind.dsm()`
-*  implement `all=TRUE` option for `merge.dsm()` ("expanding merge")
-*  implement column merge (`rows=FALSE`) for `merge.dsm()`
-*  efficient reimplementation of `rbind.dsm()` for sparse matrices (require all arguments to be sparse in normal form; use C code, work with triplet representation, or very clever code on `dgCMatrix` objects)
+*  `rbind` and `cbind` should support _intersecting_ and _expanding_ combinariona (for which `merge` was designed, but only supports partially yet)
+*  efficient reimplementation of `rbind.dsm()` for sparse matrices (require all arguments to be sparse in normal form; use C code, needs very clever code to operate on `dgCMatrix` objects directly)
+* `merge` should be rewritten to _add_ DSMs from different corpora with the same targets and features (also as _intersecting_ or _expanding_ merge)
 
 
 ## Support for evaluation experiments
