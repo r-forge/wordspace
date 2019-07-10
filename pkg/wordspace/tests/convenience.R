@@ -49,3 +49,44 @@ stopifnot(nrow(dsm2t) == ncol(dsm2))
 stopifnot(ncol(dsm2t) == nrow(dsm2))
 stopifnot(all.equal(dsm2t$M, t(dsm2$M)))
 stopifnot(all.equal(dsm2t$S, t(dsm2$S)))
+
+
+## efficient checks for non-negativity asnd nonzero count
+R.signcount <- function (x) {
+  if (is(x, "Matrix")) x <- as.matrix(x) # just test on small sparse matrix examples
+  c(pos=sum(x > 0), zero=sum(x == 0), neg=sum(x < 0))
+}
+R.nonneg <- function (x) {
+  if (is(x, "Matrix")) x <- as.matrix(x)
+  !any(x < 0)
+}
+R.nnzero <- function (x) {
+  if (is(x, "Matrix")) x <- as.matrix(x)
+  sum(x != 0)
+}
+
+x <- round(rnorm(1e6), .1) # test on a large numeric vector
+y <- as.integer(round(x))  # and integer counterpart
+stopifnot(all.equal(signcount(x), R.signcount(x)))
+stopifnot(sum(signcount(x)) == length(x))
+stopifnot(all.equal(signcount(y), R.signcount(y)))
+stopifnot(sum(signcount(y)) == length(y))
+stopifnot(all.equal(signcount(x, "nonneg"), R.nonneg(x)))
+stopifnot(all.equal(signcount(y, "nonneg"), R.nonneg(y)))
+stopifnot(all.equal(signcount(x, "nnzero"), R.nnzero(x)))
+stopifnot(all.equal(signcount(y, "nnzero"), R.nnzero(y)))
+
+stopifnot(all.equal(signcount(DSM_TermTermMatrix), R.signcount(DSM_TermTermMatrix))) # dense numeric matrix
+M <- Matrix(DSM_HieroglyphsMatrix) # and a dense Matrix object
+stopifnot(all.equal(signcount(M), R.signcount(M)))
+stopifnot(sum(signcount(M)) == prod(dim(M)))
+stopifnot(all.equal(signcount(M, "nonneg"), R.nonneg(M)))
+stopifnot(all.equal(signcount(M, "nnzero"), R.nnzero(M)))
+
+stopifnot(all.equal(signcount(DSM_TermContextMatrix), R.signcount(DSM_TermContextMatrix))) # sparse matrix (dgCMatrix)
+M <- as(DSM_TermContextMatrix, "dgTMatrix") # triplet representation is not supported
+stopifnot(is(try(signcount(M), silent=TRUE), "try-error"))
+M <- as(as.matrix(M), "dgRMatrix") # sparse matrix (dgRMatrix), has only minimal support in Matrix package
+stopifnot(all.equal(signcount(M), R.signcount(M)))
+stopifnot(all.equal(signcount(M, "nonneg"), R.nonneg(M)))
+stopifnot(all.equal(signcount(M, "nnzero"), R.nnzero(M)))

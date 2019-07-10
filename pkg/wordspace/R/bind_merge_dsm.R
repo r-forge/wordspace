@@ -1,4 +1,6 @@
 rbind.dsm <- function (..., term.suffix=NULL, deparse.level=1) {
+  .Deprecated(msg="The 'rbind' method for DSM objects is experimental. It may be removed or modified in a future release of the 'wordspace' package.")
+  
   models <- list(...) # should be one or more objects of class "dsm" if rbind() dispatches here
   if (!is.null(term.suffix) && length(term.suffix) != length(models)) stop("term.suffix must provide as many strings as there are DSMs")
 
@@ -55,10 +57,12 @@ rbind.dsm <- function (..., term.suffix=NULL, deparse.level=1) {
 }
 
 cbind.dsm <- function (..., term.suffix=NULL, deparse.level=1) {
+  .Deprecated(msg="The 'cbind' method for DSM objects is experimental. It may be removed or modified in a future release of the 'wordspace' package.")
   stop("not yet implemented")
 }
 
 merge.dsm <- function (x, y, ..., rows=TRUE, all=FALSE, term.suffix=NULL) {
+  .Deprecated(msg="The 'merge' method for DSM objects is deprecated. It will be removed in the next release of the 'wordspace' package and may be re-introduced later with different semantics.")
   models <- list(x, y, ...)
   n.models <- length(models)
   if (!is.null(term.suffix) && length(term.suffix) != n.models) stop("term.suffix must provide as many strings as there are DSMs")

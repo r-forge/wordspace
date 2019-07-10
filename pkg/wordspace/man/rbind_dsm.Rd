@@ -10,7 +10,7 @@
   Additional information in the DSM objects (such as marginal frequencies)
   is checked for consistency and updated automatically.
 
-  \bold{Warning: these functions will be revised in the next release of \code{wordspace}}
+  \bold{Warning: these functions are experimental and may be removed or modified in a future release of \code{wordspace}}
   
 }
 \usage{

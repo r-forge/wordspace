@@ -62,4 +62,4 @@ plot(eval.similarity.correlation(WordSim353, DSM_Vectors, details=TRUE))
 }
 }
 \author{Stefan Evert (\url{http://purl.org/stefan.evert})}
-\keyword{TODO}
+\keyword{hplot}

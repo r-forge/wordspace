@@ -69,7 +69,7 @@ dsm <- function (M = NULL, target = NULL, feature = NULL, score = NULL, rowinfo 
 
   if (raw.freq) {
     if (verbose) cat(" - checking non-negative frequency counts\n")
-    if (any(M < 0)) stop("raw frequency counts must be non-negative")
+    if (!signcount(M, "nonneg")) stop("raw frequency counts must be non-negative")
     attr(M, "nonneg") <- TRUE
   }
 
@@ -105,7 +105,7 @@ dsm <- function (M = NULL, target = NULL, feature = NULL, score = NULL, rowinfo 
   }
 
   if (flags$sparse) {
-    n.nzero <- nnzero(M)
+    n.nzero <- signcount(M, "nnzero")
     if (verbose) cat(sprintf("%d x %d matrix with %d nonzero entries (= %.1f%%)\n", nrow(M), ncol(M), n.nzero, 100 * n.nzero / prod(dim(M))))
   } else {
     if (verbose) cat(sprintf("%d x %d matrix with %.2fM cells\n", nrow(M), ncol(M), prod(dim(M)) / 1e6))

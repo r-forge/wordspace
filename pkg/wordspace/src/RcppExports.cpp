@@ -219,6 +219,28 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// CPP_signcount
+NumericVector CPP_signcount(NumericVector x);
+RcppExport SEXP _wordspace_CPP_signcount(SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
+    rcpp_result_gen = Rcpp::wrap(CPP_signcount(x));
+    return rcpp_result_gen;
+END_RCPP
+}
+// CPP_signcount_int
+NumericVector CPP_signcount_int(IntegerVector x);
+RcppExport SEXP _wordspace_CPP_signcount_int(SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< IntegerVector >::type x(xSEXP);
+    rcpp_result_gen = Rcpp::wrap(CPP_signcount_int(x));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_wordspace_CPP_col_dist_dense", (DL_FUNC) &_wordspace_CPP_col_dist_dense, 5},
@@ -235,6 +257,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_wordspace_CPP_dsm_score_dense", (DL_FUNC) &_wordspace_CPP_dsm_score_dense, 7},
     {"_wordspace_CPP_dsm_score_sparse", (DL_FUNC) &_wordspace_CPP_dsm_score_sparse, 11},
     {"_wordspace_CPP_similarity_to_distance", (DL_FUNC) &_wordspace_CPP_similarity_to_distance, 4},
+    {"_wordspace_CPP_signcount", (DL_FUNC) &_wordspace_CPP_signcount, 1},
+    {"_wordspace_CPP_signcount_int", (DL_FUNC) &_wordspace_CPP_signcount_int, 1},
     {NULL, NULL, 0}
 };
 
