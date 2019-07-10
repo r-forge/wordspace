@@ -81,7 +81,7 @@ nearest.neighbours <- function (M, term, n=10, M2=NULL, byrow=TRUE, drop=TRUE, s
       M.term <- if (byrow) M[term, , drop=FALSE] else M[, term, drop=FALSE]
     }
     ## it's more efficient to have the smaller matrix M.term first because it will be the inner loop
-    ## when computin a general distance matrix (resulting in better cache coherence)
+    ## when computing a general distance matrix (resulting in better cache coherence)
     DM <- t(dist.matrix(M=M.term, M2=M2, byrow=byrow, ...)) # items correspond to columns, regardless of <byrow>
   }
   similarity <- isTRUE(attr(DM, "similarity"))

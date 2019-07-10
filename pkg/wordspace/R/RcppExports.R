@@ -57,3 +57,11 @@ CPP_similarity_to_distance <- function(M, opcode, tol, duplicate = TRUE) {
     .Call(`_wordspace_CPP_similarity_to_distance`, M, opcode, tol, duplicate)
 }
 
+CPP_signcount <- function(x) {
+    .Call(`_wordspace_CPP_signcount`, x)
+}
+
+CPP_signcount_int <- function(x) {
+    .Call(`_wordspace_CPP_signcount_int`, x)
+}
+

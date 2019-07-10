@@ -1,27 +1,13 @@
 ---
-title: "TODO sheet for `wordspace` package development"
+title: "TODO sheet for `wordspace` package"
+subtitle: "package version 0.2-4"
 author: "Stefan Evert"
-date: "4 July 2019"
+date: "9 July 2019"
 output: 
   html_document:
     toc: true
     toc_float: true
 ---
-
-## Bug fixes and improvements
-
-*  `[` accessor method for subsetting with row/column numbers or target/feature terms
-*  implement `signcount` in Rcpp for vector / dense matrix (or is `as.vector` sufficient?)
-    - counts numbers of negative, zero and positive entries --> efficient `nnzero` and non-negative check for canonical matrices
-    - possibly R wrapper function for sparse matrices (dgC, dgT, dgR)
-*  add (manual) deprecation warnings for `rbind`, `cbind` and `merge`
-    - functions will be re-designed in a future release or removed completely (`merge`)
-    - `cbind` hasn't been implemented yet anyway
-*  make sure there are tests for all important functions
-    - also test non-negativity check in `dsm.is.canonical` for sparse and dense matrices
-*  function `read.dsm.matrix` for reading in a pre-compiled DSM matrix in various formats
-    - in particular, try to find efficient way to read word2vec format (and possibly GloVE, which is word2vec without the header)
-
 
 ## Combining DSM objects after internal redesign
 

@@ -11,7 +11,7 @@
 \usage{
 
 write.dsm.matrix(x, file, format = c("word2vec"), round=FALSE,
-                 encoding = "UTF-8", batchsize = 1e6)
+                 encoding = "UTF-8", batchsize = 1e6, verbose=FALSE)
 
 }
 \arguments{
@@ -39,6 +39,10 @@ write.dsm.matrix(x, file, format = c("word2vec"), round=FALSE,
   \item{batchsize}{
     for certain output formats, the matrix is written in batches of \code{batchsize} cells each in order to limit memory overhead
   }
+  
+  \item{verbose}{
+    if \code{TRUE}, show progress bar when writing in batches
+  }
 }
 \details{
 
@@ -60,8 +64,9 @@ write.dsm.matrix(x, file, format = c("word2vec"), round=FALSE,
   }
 
 }
-%%\seealso{
-%%}
+\seealso{
+  \code{\link{read.dsm.matrix}}
+}
 \examples{
 model <- dsm.score(DSM_TermTerm, score="MI", normalize=TRUE) # a typical DSM
 

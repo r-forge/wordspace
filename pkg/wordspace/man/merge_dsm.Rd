@@ -5,8 +5,8 @@
 }
 \description{
 
-  \bold{Warning: this function will be revised in the next release of the \code{wordspace} package}
-
+  \bold{Warning: this function is deprecated and will be removed in a future release of \code{wordspace}. It may be re-introduced later with different semantics.}
+  
 }
 \usage{
 

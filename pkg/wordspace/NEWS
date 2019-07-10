@@ -3,6 +3,9 @@ Version 0.2-4:
   - provide dimnames() getter and setter methods for DSM objects
   - provide as.matrix() method for DSM objects (which extracts either M or S)
   - write.dsm.matrix() to save dense DSM matrix or word embeddings in word2vec text format (so far)
+  - read.dsm.matrix() to load word embeddings in word2vec text format (not optimized for speed yet)
+  - rbind(), cbind() and merge() for DSM objects are deprecated for the time being
+  - efficiently check nonzero counts and non-negativity using the signcount() function
 
 Version 0.2-3:
 
