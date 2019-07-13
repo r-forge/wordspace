@@ -1,8 +1,8 @@
 ---
 title: "TODO sheet for `wordspace` package"
-subtitle: "package version 0.2-4"
+subtitle: "package version 0.2-5"
 author: "Stefan Evert"
-date: "9 July 2019"
+date: "10 July 2019"
 output: 
   html_document:
     toc: true
