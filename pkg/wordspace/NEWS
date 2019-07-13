@@ -1,3 +1,7 @@
+Version 0.2-5:
+
+  - second public release with miscellaneous extensions and improvements (see items below for details)
+
 Version 0.2-4:
 
   - provide dimnames() getter and setter methods for DSM objects
