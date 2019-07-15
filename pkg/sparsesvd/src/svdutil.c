@@ -609,14 +609,22 @@ void svd_opa(SMat A, double *x, double *y) {
    random  a double precision random number between (0,1)
 
  ***********************************************************************/
-double svd_random2(long *iy) {
-   static long m2 = 0;
-   static long ia, ic, mic;
+/* BUGFIX -- 14 July 2019 (Stefan Evert):
+ * This random number generator was designed for signed integers with wrap-around on overflow
+ * but applied to long ints, which are 64-bit on modern platforms. This resulted in very large
+ * positive and negative values instead of the inteded random numbers in the range (0, 1).
+ * Moreover, singed integer overflow is undefined behaviour in C, and wrap-around is not guaranteed.
+ * The bugfix changes the RNG to unsigned long computation, using the full range mapped to (0, 1).
+ */
+double svd_random2(unsigned long *iy) {
+   static unsigned long m2 = 0;
+   static unsigned long ia, ic, mic;
    static double halfm, s;
 
-   /* If first entry, compute (max int) / 2 */
+   /* If first entry, compute (max unsigned long) / 2 = m2 = halfm */
    if (!m2) {
-      m2 = 1 << (8 * (int)sizeof(int) - 2); 
+      m2 = 1; /* make sure that shift below is performed on a long int */
+      m2 <<= (8 * sizeof(long) - 1);
       halfm = m2;
 
       /* compute multiplier and increment for linear congruential 
@@ -633,16 +641,16 @@ double svd_random2(long *iy) {
    *iy = *iy * ia;
 
    /* for computers which do not allow integer overflow on addition */
-   if (*iy > mic) *iy = (*iy - m2) - m2;
+   /* if (*iy > mic) *iy = (*iy - m2) - m2; */
 
    *iy = *iy + ic;
 
    /* for computers whose word length for addition is greater than
     * for multiplication */
-   if (*iy / 2 > m2) *iy = (*iy - m2) - m2;
+   /* if (*iy / 2 > m2) *iy = (*iy - m2) - m2; */
   
    /* for computers whose integer overflow affects the sign bit */
-   if (*iy < 0) *iy = (*iy + m2) + m2;
+   /* if (*iy < 0) *iy = (*iy + m2) + m2; */
 
    return((double)(*iy) * s);
 }

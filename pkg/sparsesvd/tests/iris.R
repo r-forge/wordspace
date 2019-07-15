@@ -16,7 +16,7 @@ stopifnot(all.equal(res1$d, res2$d, tolerance=1e-12))
 ## these should be diagonal unit matrices
 UtU <- abs(crossprod(res2$u, res1$u)) # diagonal entries may be 1 or -1
 VtV <- abs(crossprod(res2$v, res1$v)) # (because sign of eigenvectors is arbitrary)
-I1 <- diag(rep(1, length(res1$d)))
+I1 <- diag(1, length(res1$d))
 
 print(round(UtU, 12))
 stopifnot(all.equal(UtU, I1, tolerance=1e-12))
@@ -24,3 +24,9 @@ stopifnot(all.equal(UtU, I1, tolerance=1e-12))
 print(round(VtV, 12))
 stopifnot(all.equal(VtV, I1, tolerance=1e-12))
 
+## check that SVD is reproducible
+## (this is guaranteed by a deterministic RNG built into the SVDLIBC code)
+for (i in 1:20) {
+  res <- sparsesvd(Ms)
+  if (!isTRUE(all.equal(res, res2))) stop("SVD not reproducible on iteration #", i)
+}

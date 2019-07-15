@@ -736,7 +736,11 @@ int lanso(SMat A, long iterations, long dimensions, double endl,
   
   /* take the first step */
   stpone(A, wptr, &rnm, &tol, n);
-  if (!rnm || ierr) return 0;
+  /* BUGFIX -- 14 July 2019 (Stefan Evert):
+   * rnm == 0.0 is valid if the starting vector hits an invariant subspace,
+   * so we must only abort if an error is signaled.
+   */
+  if (/* !rnm || */ ierr) return 0;
   eta[0] = eps1;
   oldeta[0] = eps1;
   ll = 0;
@@ -757,7 +761,14 @@ int lanso(SMat A, long iterations, long dimensions, double endl,
     
     /* analyze T */
     l = 0;
-    for (id2 = 0; id2 < j; id2++) {
+    /* BUGFIX -- 14 July 2019 (Stefan Evert):
+     * There is a one-off bug for j in the loop below, presumably due to the transition
+     * from 1-based indexing in Fortran to 0-based indexing in C, which has been implemented
+     * in an inconsistent way. Allowing the loop to run for one extra iteration seems to
+     * solve the issue. */
+     
+    /* for (id2 = 0; id2 < j; id2++) { */
+    for (id2 = 0; id2 <= j; id2++) {
       if (l > j) break;
       for (i = l; i <= j; i++) if (!bet[i+1]) break;
       if (i > j) i = j;
@@ -1037,7 +1048,15 @@ void purge(long n, long ll, double *r, double *q, double *ra,
   if (step < ll+2) return; 
   
   k = svd_idamax(step - (ll+1), &eta[ll], 1) + ll;
-  if (fabs(eta[k]) > reps) {
+  
+  /* BUGFIX -- 14 July 2019 (Stefan Evert):
+   * Orthogonality seems to be lost much faster than the estimates in eta[] suggest,
+   * therefore force re-orthogonalization after each Lanczos step. Despite quadratic
+   * complexity in the number of Lanczos vectors, this shouldn't cost too much performance
+   * unless the vectors are stored in external memory (cf. original mainframe implementation).
+   */
+  /* if (fabs(eta[k]) > reps) { */
+  if (TRUE) {
     reps1 = eps1 / reps;
     iteration = 0;
     flag = TRUE;
@@ -1183,38 +1202,72 @@ void stpone(SMat A, double *wrkptr[], double *rnmp, double *tolp, long n) {
  ***********************************************************************/
 
 double startv(SMat A, double *wptr[], long step, long n) {
-   double rnm2, *r, t;
-   long irand;
-   long id, i;
-
-   /* get initial vector; default is random */
-   rnm2 = svd_ddot(n, wptr[0], 1, wptr[0], 1);
-   irand = 918273 + step;
-   r = wptr[0];
-   for (id = 0; id < 3; id++) {
-      if (id > 0 || step > 0 || rnm2 == 0) 
-	 for (i = 0; i < n; i++) r[i] = svd_random2(&irand);
+  double rnm2, *r, t;
+  unsigned long irand;
+  long id, i;
+  
+  /* BUGFIX -- 14 July 2019 (Stefan Evert):
+   * This function is designed to either take a user-supplied starting vector in wptr[0]
+   * (only in the first Lanczos step and if wptr[0] != 0) or to generate a random vector 
+   * and orthogonalize it wrt. previous Lanczos vectors.  If the vector isn't usable,
+   * several up to 2 additional random vectors are tried (in the <id> loop).
+   * 
+   * The original code fails to re-try if the start vector doesn't have a sufficiently
+   * large orthogonal component to the previous Lanczos vectors.  It will then incorrectly
+   * assume that all non-zero eigenvalues have been found.
+   * 
+   * The bug fix is to include the orthogonalization in the retry loop (with <id2>),
+   * making sure to also re-try the initial random generation separately. If this first
+   * phase fails, an error is signalled and the algorithm is terminated immediately; if
+   * only the orthogonalization fails, we have found all non-zero eigenvalues.
+   * We also allow more re-tries (up to 5) to be on the safe side.
+   * 
+   * It would be desirable to replace the customRNG svd_random2(), which generates very
+   * large values and is more likely to trigger boundary cases, with R's built-in Gaussian RNG.
+   * However, this means that repeated runs of the same SVD might give different results
+   * (signs, and rotations for singular values with mutliplicity > 1), whereas the built-in
+   * svd_random2() is fully deterministic.
+   */
+  
+  /* get initial vector; default is random */
+  rnm2 = svd_ddot(n, wptr[0], 1, wptr[0], 1);
+  irand = 918273 + step;
+  r = wptr[0];
+  id = 0;
+  while (id < 5) {
+    while (id < 5) {
+      if (id > 0 || step > 0 || rnm2 == 0) {
+        /* -- switch to this code when we know how to deal with non-determinism
+         GetRNGstate();
+         for (i = 0; i < n; i++) r[i] = norm_rand();
+         PutRNGstate();
+         */  
+        for (i = 0; i < n; i++) r[i] = svd_random2(&irand);        
+      }
       svd_dcopy(n, wptr[0], 1, wptr[3], 1);
-
+      
       /* apply operator to put r in range (essential if m singular) */
       svd_opb(A, wptr[3], wptr[0], OPBTemp);
       svd_dcopy(n, wptr[0], 1, wptr[3], 1);
       rnm2 = svd_ddot(n, wptr[0], 1, wptr[3], 1);
-      if (rnm2 > 0.0) break;
-   }
-
-   /* fatal error */
-   if (rnm2 <= 0.0) {
+      if (rnm2 >= eps) break; /* otherwise try another random start vector */
+      id++;
+    }
+    
+    /* fatal error: this means that the matrix A is close to zero */
+    if (rnm2 < eps) {
       ierr = 8192;
       return(-1);
-   }
-   if (step > 0) {
+    }
+    
+    /* if this isn't the first Lanczos step, orthogonalize wrt. previous vectors */
+    if (step > 0) {
       for (i = 0; i < step; i++) {
-         store_vec(n, RETRQ, i, wptr[5]);
-	 t = -svd_ddot(n, wptr[3], 1, wptr[5], 1);
-	 svd_daxpy(n, t, wptr[5], 1, wptr[0], 1);
+        store_vec(n, RETRQ, i, wptr[5]);
+        t = -svd_ddot(n, wptr[3], 1, wptr[5], 1);
+        svd_daxpy(n, t, wptr[5], 1, wptr[0], 1);
       }
-
+      
       /* make sure q[step] is orthogonal to q[step-1] */
       t = svd_ddot(n, wptr[4], 1, wptr[0], 1);
       svd_daxpy(n, -t, wptr[2], 1, wptr[0], 1);
@@ -1222,10 +1275,57 @@ double startv(SMat A, double *wptr[], long step, long n) {
       t = svd_ddot(n, wptr[3], 1, wptr[0], 1);
       if (t <= eps * rnm2) t = 0.0;
       rnm2 = t;
-   }
-   return(sqrt(rnm2));
+    }
+    if (rnm2 > 0.0) break; /* this means we have found a suitable starting vector */
+    id++;
+  }
+  return(sqrt(rnm2));
 }
 
+/* this is the buggy original version, which is no longer used */
+double startv_orig(SMat A, double *wptr[], long step, long n) {
+  double rnm2, *r, t;
+  unsigned long irand; /* added unsigned to avoid spurious warning with modified svd_random2() */
+  long id, i;
+
+  /* get initial vector; default is random */
+  rnm2 = svd_ddot(n, wptr[0], 1, wptr[0], 1);
+  irand = 918273 + step;
+  r = wptr[0];
+  for (id = 0; id < 5; id++) {
+    if (id > 0 || step > 0 || rnm2 == 0) 
+      for (i = 0; i < n; i++) r[i] = svd_random2(&irand);
+    svd_dcopy(n, wptr[0], 1, wptr[3], 1);
+    
+    /* apply operator to put r in range (essential if m singular) */
+    svd_opb(A, wptr[3], wptr[0], OPBTemp);
+    svd_dcopy(n, wptr[0], 1, wptr[3], 1);
+    rnm2 = svd_ddot(n, wptr[0], 1, wptr[3], 1);
+    if (rnm2 > eps) break; /* try another random vector */
+  }
+  /* fatal error */
+  if (rnm2 <= 0.0) {
+    ierr = 8192;
+    return(-1);
+  }
+  if (step > 0) {
+    for (i = 0; i < step; i++) {
+      store_vec(n, RETRQ, i, wptr[5]);
+      t = -svd_ddot(n, wptr[3], 1, wptr[5], 1);
+      svd_daxpy(n, t, wptr[5], 1, wptr[0], 1);
+    }
+    
+    /* make sure q[step] is orthogonal to q[step-1] */
+    t = svd_ddot(n, wptr[4], 1, wptr[0], 1);
+    svd_daxpy(n, -t, wptr[2], 1, wptr[0], 1);
+    svd_dcopy(n, wptr[0], 1, wptr[3], 1);
+    t = svd_ddot(n, wptr[3], 1, wptr[0], 1);
+    if (t <= eps * rnm2) t = 0.0;
+    rnm2 = t;
+  }
+  return(sqrt(rnm2));
+}
+   
 /***********************************************************************
  *                                                                     *
  *			error_bound()                                  *

@@ -1,3 +1,8 @@
+Version 0.2:
+  - this release fixes several bugs in the underlying 3rd-party SVDLIBC code, which produce incorrect results or get stuck in infinite loops for highly sparse matrices that require multiple restarts of the Lanczos iteration; various corner cases including small diagonal matrices were also affected
+  - a faulty RNG implementation in SVDLIBC contributed to triggering these bugs (but was not the root cause); the RNG has also been fixed
+  - original bug report from Abdelmoneim Desouki <desouki@hhu.de>
+
 Version 0.1-4:
   - for some inexplicable reason, R on Oracle Solaris 10 (i386) doesn't like C functions named "store", leading to a segmentation fault and test failures on CRAN
   - function store() has been renamed store_vec() in the 3rd-party C code included in the package
