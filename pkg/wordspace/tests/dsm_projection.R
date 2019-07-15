@@ -1,8 +1,8 @@
 ## Validate SVD and other latent subspace projections
 ## based on small "hieroglyphs" example matrix
 
-library(wordspace)
 library(Matrix)
+library(wordspace)
 
 matrix.equal <- function(x, y, name="matrix comparison", tol=1e-12, ignore.sign=FALSE, verbose=TRUE) {
   if (nrow(x) == nrow(y) && ncol(x) == ncol(y)) {
@@ -87,8 +87,8 @@ stopifnot(matrix.equal(proj.ws.p2, svd.R$u %*% diag(svd.R$d[1:3]^2), tol=1e-6, i
 proj.ws.sparse.p2 <- dsm.projection(M2, method="svd", n=3, power=2) # sparse
 stopifnot(matrix.equal(proj.ws.sparse.p2, proj.ws.p2, tol=1e-6, ignore.sign=TRUE))
 
-stopifnot(matrix.equal(proj.ws.p2, scaleMargins(proj.ws, cols=attr(proj.ws, "sigma")), tol=1e-6)) # post-hoc power scaling
-stopifnot(matrix.equal(proj.ws.sparse.p2, scaleMargins(proj.ws.sparse, cols=attr(proj.ws, "sigma")), tol=1e-6))
+stopifnot(matrix.equal(proj.ws.p2, scaleMargins(proj.ws, cols=attr(proj.ws, "sigma")), tol=1e-6, ignore.sign=TRUE)) # post-hoc power scaling
+stopifnot(matrix.equal(proj.ws.sparse.p2, scaleMargins(proj.ws.sparse, cols=attr(proj.ws.sparse, "sigma")), tol=1e-6, ignore.sign=TRUE))
 
 proj.ws.p0 <- dsm.projection(M1, method="svd", n=3, power=0)       # whitening
 stopifnot(matrix.equal(proj.ws.p0, svd.R$u, tol=1e-6, ignore.sign=TRUE))
