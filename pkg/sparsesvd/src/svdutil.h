@@ -144,7 +144,7 @@ extern void svd_opa(SMat A, double *x, double *y);
  *				random2()                              *
  *                        (double precision)                           *
  ***********************************************************************/
-extern double svd_random2(long *iy);
+extern double svd_random2(unsigned long *iy);
 
 /************************************************************** 
  *							      *
