@@ -1,8 +1,8 @@
 Package: wordspace
 Type: Package
 Title: Distributional Semantic Models in R
-Version: 0.2-5
-Date: 2019-07-10
+Version: 0.2-6
+Date: 2019-12-26
 Author: Stefan Evert [http://www.stefan-evert.de/]
 Maintainer: Stefan Evert <stefan.evert@fau.de>
 Depends: R (>= 3.0.0), Matrix
@@ -15,5 +15,6 @@ License: GPL-3
 URL: http://wordspace.r-forge.r-project.org/
 LazyData: yes
 LazyDataCompression: xz
-Suggests: knitr, rmarkdown, tm
+Suggests: knitr, rmarkdown, tm,
+          testthat
 VignetteBuilder: knitr

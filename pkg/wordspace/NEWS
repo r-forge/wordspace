@@ -1,3 +1,10 @@
+Version 0.2-6:
+
+  - bugfix release to keep package available on CRAN
+  - incorrect use of abs() instead of fabs() in C++ code (chi-squared formula)
+  - test of word2vec export format used to depend on rounding conventions, which were changed to accurate "round half to even" in R 4.0.0
+  - all tests rewritten in 'testthat' framework for better diagnostics
+
 Version 0.2-5:
 
   - second public release with miscellaneous extensions and improvements (see items below for details)

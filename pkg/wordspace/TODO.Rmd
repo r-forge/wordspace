@@ -1,8 +1,8 @@
 ---
 title: "TODO sheet for `wordspace` package"
-subtitle: "package version 0.2-5"
+subtitle: "package version 0.2-6"
 author: "Stefan Evert"
-date: "10 July 2019"
+date: "29 December 2019"
 output: 
   html_document:
     toc: true
@@ -24,6 +24,8 @@ output:
 
 ## Support for evaluation experiments
 
+*  add further tests of evaluation functions in `tests/testthat/test_evaluation.R`
+    - possibly with extra tests run if `wordspaceEval` package happens to be installed
 *  `pair.distances()` should also work with M2 (= M) for cross-distance computations
     - in `pair.distances()`, adjust ranks by one only in non-cross-distance case (`M2=NULL`)
     - currently, adjustment is disabled for pre-computed distance matrix not marked as symmetric
