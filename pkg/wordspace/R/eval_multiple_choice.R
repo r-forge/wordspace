@@ -7,7 +7,8 @@ function (task, M, dist.fnc=pair.distances, ..., details=FALSE, format=NA, taskn
   if (!any(idx.distract)) stop(sprintf("no distractors matching /%s/ found in gold standard", distractor.name))
 
   targets <- as.character(task[, target.name])
-  choices <- cbind(task[, correct.name], as.matrix(task[, idx.distract, drop=FALSE]))
+  choices <- cbind(as.character(task[, correct.name]),
+                   as.matrix(task[, idx.distract, drop=FALSE]))
   mode(choices) <- "character" # first column contains correct choice, further columns are distractors
   n.choices <- ncol(choices)
   n.items <- nrow(task)
@@ -32,7 +33,7 @@ function (task, M, dist.fnc=pair.distances, ..., details=FALSE, format=NA, taskn
       target=targets[i], correct=correct,
       best.choice=choices[i, best], best.dist=d[best],
       correct.choice=choices[i, 1], correct.rank=ranks[1], correct.dist=d[1],
-      row.names=NULL
+      row.names=NULL, stringsAsFactors=FALSE
     )
   })
   res <- do.call("rbind", res.list)

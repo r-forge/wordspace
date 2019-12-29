@@ -67,7 +67,7 @@ double am_chi_squared(double f, double f1, double f2, double N, int sparse) {
   double R1 = f1, R2 = N - f1, C1 = f2, C2 = N - f2;
   double O11 = f, O12 = R1 - f, O21 = C1 - f, O22 = C2 - O12;
   double E11 = R1 * C1 / N;
-  double yates = abs(O11 * O22 - O12 * O21) - N / 2;
+  double yates = fabs(O11 * O22 - O12 * O21) - N / 2;
   double X2 = N * yates * yates / (R1 * R2 * C1 * C2);
   if (sparse)
     return (O11 > E11) ? X2 : 0;
