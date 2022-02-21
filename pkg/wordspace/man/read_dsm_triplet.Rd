@@ -206,5 +206,5 @@ TC3 <- read.dsm.triplet(triplet.file, freq=TRUE,
                         colinfo=no.hdr, colinfo.header=hdr.names, N=108771103)
 all.equal(TC2, TC3, check.attributes=FALSE) # same result
 }
-\author{Stefan Evert (\url{http://purl.org/stefan.evert})}
+\author{Stephanie Evert (\url{https://purl.org/stephanie.evert})}
 \keyword{file}

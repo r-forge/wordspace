@@ -41,4 +41,4 @@ dtm <- t(tdm) # document-term model
 dtm$M
 
 }
-\author{Stefan Evert (\url{http://purl.org/stefan.evert})}
+\author{Stephanie Evert (\url{https://purl.org/stephanie.evert})}

@@ -100,4 +100,4 @@ convert.lemma(RG65$word1, "DM")  # as in Distributional Memory
 convert.lemma(RG65$word1, "HW")  # just the headword
 
 }
-\author{Stefan Evert (\url{http://purl.org/stefan.evert})}
+\author{Stephanie Evert (\url{https://purl.org/stephanie.evert})}

@@ -5,6 +5,11 @@
 
 using namespace Rcpp;
 
+#ifdef RCPP_USE_GLOBAL_ROSTREAM
+Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
+Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
+#endif
+
 // CPP_col_dist_dense
 NumericMatrix CPP_col_dist_dense(NumericMatrix x, NumericMatrix y, int metric_code, double param1, bool symmetric);
 RcppExport SEXP _wordspace_CPP_col_dist_dense(SEXP xSEXP, SEXP ySEXP, SEXP metric_codeSEXP, SEXP param1SEXP, SEXP symmetricSEXP) {

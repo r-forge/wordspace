@@ -79,4 +79,4 @@ subset(model, nchar(term) <= 4, nnzero >= 2)$M # still three columns with nnzero
 subset(model, nchar(term) <= 4, nnzero >= 2, recursive=TRUE)$M
 
 }
-\author{Stefan Evert (\url{http://purl.org/stefan.evert})}
+\author{Stephanie Evert (\url{https://purl.org/stephanie.evert})}

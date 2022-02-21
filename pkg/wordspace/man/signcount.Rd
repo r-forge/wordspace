@@ -52,4 +52,4 @@ signcount(DSM_TermContextMatrix)  # sparse dgCMatrix
 signcount(DSM_TermContextMatrix, "nonneg") # confirm that it is non-negative
 }
 \keyword{utilities}
-\author{Stefan Evert (\url{http://purl.org/stefan.evert})}
+\author{Stephanie Evert (\url{https://purl.org/stephanie.evert})}

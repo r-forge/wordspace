@@ -80,4 +80,4 @@
 plot(nearest.neighbours(DSM_Vectors, "walk_V", n=20, dist.matrix=TRUE))
 }
 }
-\author{Stefan Evert (\url{http://purl.org/stefan.evert})}
+\author{Stephanie Evert (\url{https://purl.org/stephanie.evert})}

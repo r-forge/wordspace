@@ -5,7 +5,7 @@
 }
 \description{
 
-  This function exports a DSM matrix to a disk file in the specified format (see section sQuote(Formats) for details).
+  This function exports a DSM matrix to a disk file in the specified format (see section \sQuote{Formats} for details).
 
 }
 \usage{
@@ -25,7 +25,7 @@ write.dsm.matrix(x, file, format = c("word2vec"), round=FALSE,
   }
 
   \item{format}{
-    desired output file format. See section sQuote(Formats) for a list of available formats and their limitations.
+    desired output file format. See section \sQuote{Formats} for a list of available formats and their limitations.
   }
   
   \item{round}{
@@ -82,5 +82,5 @@ write.dsm.matrix(model, fh, format="word2vec", round=3)
 # write.dsm.matrix() automatically opens and closes the connection
 cat(readLines(gzfile(fn)), sep="\n")
 }
-\author{Stefan Evert (\url{http://purl.org/stefan.evert})}
+\author{Stephanie Evert (\url{https://purl.org/stephanie.evert})}
 \keyword{file}

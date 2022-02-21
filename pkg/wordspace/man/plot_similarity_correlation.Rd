@@ -61,5 +61,5 @@
 plot(eval.similarity.correlation(WordSim353, DSM_Vectors, details=TRUE))
 }
 }
-\author{Stefan Evert (\url{http://purl.org/stefan.evert})}
+\author{Stephanie Evert (\url{https://purl.org/stephanie.evert})}
 \keyword{hplot}

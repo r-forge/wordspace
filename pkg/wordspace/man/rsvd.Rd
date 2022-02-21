@@ -71,4 +71,4 @@ rsvd(M, n, q = 2, oversampling = 2, transpose = FALSE, verbose = FALSE)
 }
 %% \examples{
 %% }
-\author{Stefan Evert (\url{http://purl.org/stefan.evert})}
+\author{Stephanie Evert (\url{https://purl.org/stephanie.evert})}

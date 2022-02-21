@@ -97,4 +97,4 @@ nearest.neighbours(DSM_Vectors, "apple_N", n=10, method="maximum")
 as.dist(nearest.neighbours(DSM_Vectors, "apple_N", n=10, dist.matrix=TRUE))
 
 }
-\author{Stefan Evert (\url{http://purl.org/stefan.evert})}
+\author{Stephanie Evert (\url{https://purl.org/stephanie.evert})}

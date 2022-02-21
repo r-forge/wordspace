@@ -73,4 +73,4 @@ rowNorms(DSM_TermContextMatrix, "minkowski", p=0)
 colNorms(DSM_TermContextMatrix, "minkowski", p=0)
 sum(colNorms(DSM_TermContextMatrix, "minkowski", p=0)) # = nnzero(DSM_TermContextMatrix)
 }
-\author{Stefan Evert (\url{http://purl.org/stefan.evert})}
+\author{Stephanie Evert (\url{https://purl.org/stephanie.evert})}

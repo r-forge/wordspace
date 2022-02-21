@@ -55,4 +55,4 @@ dm <- dist.matrix(DSM_Vectors[1:100, ])
 print(head(dm, 8, 5), digits=3)
 
 }
-\author{Stefan Evert (\url{http://purl.org/stefan.evert})}
+\author{Stephanie Evert (\url{https://purl.org/stephanie.evert})}

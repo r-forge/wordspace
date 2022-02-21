@@ -116,10 +116,9 @@ nearest.neighbours <- function (M, term, n=10, M2=NULL, byrow=TRUE, drop=TRUE, s
         nn.matrix <- if (byrow) M2[nn.terms, , drop=FALSE] else t(M2[, nn.terms, drop=FALSE]) # matrix of row vectors for all neighbours
         nn.terms <- c(.t, nn.terms) # add target term
         if (nn.of.vector) {
-          nn.matrix <- rbind2(term[.t, , drop=FALSE], nn.matrix) # add specified target vector
-          ## NB: rbind() doesn't dispatch to Matrix package; need rbind2() or rBind()
+          nn.matrix <- rbind(term[.t, , drop=FALSE], nn.matrix) # add specified target vector
         } else {
-          nn.matrix <- rbind2(if (byrow) M[.t, , drop=FALSE] else t(M[, .t, drop=FALSE]), nn.matrix) # add target vector from M
+          nn.matrix <- rbind(if (byrow) M[.t, , drop=FALSE] else t(M[, .t, drop=FALSE]), nn.matrix) # add target vector from M
         }
         rownames(nn.matrix) <- nn.terms
         nn.dist <- dist.matrix(nn.matrix, byrow=TRUE, ...)

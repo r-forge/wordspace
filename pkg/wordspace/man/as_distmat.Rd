@@ -66,5 +66,5 @@ as.distmat(x, \dots)
   nearest.neighbours(M, "hear", byrow=FALSE)
 
 }
-\author{Stefan Evert (\url{http://purl.org/stefan.evert})}
+\author{Stephanie Evert (\url{https://purl.org/stephanie.evert})}
 \keyword{ methods }

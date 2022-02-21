@@ -81,4 +81,4 @@ pair.distances(w1, w2, M, \dots, transform = NULL,
 transform(RG65, angle=pair.distances(word1, word2, DSM_Vectors))
 
 }
-\author{Stefan Evert (\url{http://purl.org/stefan.evert})}
+\author{Stephanie Evert (\url{https://purl.org/stephanie.evert})}

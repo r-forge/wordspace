@@ -1,8 +1,8 @@
 ---
 title: "TODO sheet for `wordspace` package"
-subtitle: "package version 0.2-6"
-author: "Stefan Evert"
-date: "29 December 2019"
+subtitle: "package version 0.2-7"
+author: "Stephanie Evert"
+date: "22 February 2022"
 output: 
   html_document:
     toc: true
@@ -17,7 +17,7 @@ output:
     - `merge` is used to pool counts from multiple corpora for the same targets and features
 *  `rbind.dsm()` and `merge.dsm()` need to be updated and documented properly
 *  implement `cbind.dsm()`
-*  `rbind` and `cbind` should support _intersecting_ and _expanding_ combinariona (for which `merge` was designed, but only supports partially yet)
+*  `rbind` and `cbind` should support _intersecting_ and _expanding_ combinations (which `merge` was designed for, but only supports partially yet)
 *  efficient reimplementation of `rbind.dsm()` for sparse matrices (require all arguments to be sparse in normal form; use C code, needs very clever code to operate on `dgCMatrix` objects directly)
 * `merge` should be rewritten to _add_ DSMs from different corpora with the same targets and features (also as _intersecting_ or _expanding_ merge)
 

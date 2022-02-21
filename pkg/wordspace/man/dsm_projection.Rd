@@ -114,4 +114,4 @@ plot(S[idx, ], pch=20, col="red", xlab="commodity", ylab="own vs. buy/sell")
 text(S[idx, ], rownames(S)[idx], pos=3)
 }
 }
-\author{Stefan Evert (\url{http://purl.org/stefan.evert})}
+\author{Stephanie Evert (\url{https://purl.org/stephanie.evert})}

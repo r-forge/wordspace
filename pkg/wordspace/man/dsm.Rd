@@ -142,5 +142,5 @@ print(MyDSM$rows) # row information
 print(MyDSM$cols) # column information
 
 }
-\author{Stefan Evert (\url{http://purl.org/stefan.evert})}
+\author{Stephanie Evert (\url{https://purl.org/stephanie.evert})}
 \keyword{classes}

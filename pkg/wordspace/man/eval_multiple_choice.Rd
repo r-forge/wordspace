@@ -98,4 +98,4 @@ eval.multiple.choice(task, M, dist.fnc = pair.distances, \dots,
 \examples{
 ## TODO
 }
-\author{Stefan Evert (\url{http://purl.org/stefan.evert})}
+\author{Stephanie Evert (\url{https://purl.org/stephanie.evert})}

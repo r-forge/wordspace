@@ -257,4 +257,4 @@ legend("topleft", inset=.05, bg="white", lwd=3, col=1:4,
        legend=c("none", "log", "root", "sigmoid"))
 }
 }
-\author{Stefan Evert (\url{http://purl.org/stefan.evert})}
+\author{Stephanie Evert (\url{https://purl.org/stephanie.evert})}

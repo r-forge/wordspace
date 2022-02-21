@@ -144,4 +144,4 @@ dist.matrix(M, method="minkowski", p=0, as.dist=TRUE)  # Hamming distance
 round(dist.matrix(M, method="cosine", convert=FALSE), 3) # cosine similarity
 
 }
-\author{Stefan Evert (\url{http://purl.org/stefan.evert})}
+\author{Stephanie Evert (\url{https://purl.org/stephanie.evert})}

@@ -53,5 +53,5 @@ M <- matrix(1, 5, 3)
 scaleMargins(M, rows=1:5, cols=c(1, 10, 100))
 
 }
-\author{Stefan Evert (\url{http://purl.org/stefan.evert})}
+\author{Stephanie Evert (\url{https://purl.org/stephanie.evert})}
 

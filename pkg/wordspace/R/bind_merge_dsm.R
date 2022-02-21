@@ -31,9 +31,9 @@ rbind.dsm <- function (..., term.suffix=NULL, deparse.level=1) {
 
   rows.merged <- .bind.marginals(lapply(models, function (m) m$rows), margin="row", term.suffix=term.suffix)
   
-  ## TODO: rBind is memory-inefficient because it recursively combines two matrices at a time
+  ## TODO: rbind is memory-inefficient for sparse matrices because it recursively combines two matrices at a time (via dispatch to rbind2())
   ##  - replace by custom implementation (using triplet representation?), which need not preserve row/col names
-  ##  - standard rbind() for matrices seems compact and fast
+  ##  - rbind() for dense matrices seems compact and fast
   res <- list(
     rows = rows.merged,
     cols = cols.merged,
@@ -42,13 +42,11 @@ rbind.dsm <- function (..., term.suffix=NULL, deparse.level=1) {
   )
   if (have.M) {
     res$globals$N <- N
-    any.sparse <- any(sapply(models.info, function (i) i$M$sparse)) # are there any sparse matrices?
-    res$M <- do.call(if (any.sparse) rBind else rbind, lapply(models, function (m) m$M))
+    res$M <- do.call(rbind, lapply(models, function (m) m$M))
     dimnames(res$M) <- list(res$rows$term, res$cols$term)
   }
   if (have.S) {
-    any.sparse <- any(sapply(models.info, function (i) i$S$sparse)) # are there any sparse matrices?
-    res$S <- do.call(if (any.sparse) rBind else rbind, lapply(models, function (m) m$S))
+    res$S <- do.call(rbind, lapply(models, function (m) m$S))
     dimnames(res$S) <- list(res$rows$term, res$cols$term)
   }
 
