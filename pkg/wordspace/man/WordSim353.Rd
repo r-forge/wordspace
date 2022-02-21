@@ -48,7 +48,7 @@ WordSim353
 }
 \source{
 
-  Similarity ratings (Finkelstein \emph{et al.} 2002): \url{http://www.cs.technion.ac.il/~gabr/resources/data/wordsim353/}
+  Similarity ratings (Finkelstein \emph{et al.} 2002): \url{https://gabrilovich.com/resources/data/wordsim353/wordsim353.html}
 
   Semantic relations (Agirre \emph{et al.} 2009): \url{http://alfonseca.org/eng/research/wordsim353.html}
   

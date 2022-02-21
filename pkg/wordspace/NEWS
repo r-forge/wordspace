@@ -1,3 +1,8 @@
+Version 0.2-7:
+
+  - bugfix release to comply with maintainer information required by CRAN
+  - fix incorrect gender of package author and maintainer
+
 Version 0.2-6:
 
   - bugfix release to keep package available on CRAN

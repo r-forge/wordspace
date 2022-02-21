@@ -50,4 +50,4 @@
 as.matrix(DSM_TermTerm)
 as.matrix(DSM_TermContext)
 }
-\author{Stefan Evert (\url{http://purl.org/stefan.evert})}
+\author{Stephanie Evert (\url{https://purl.org/stephanie.evert})}

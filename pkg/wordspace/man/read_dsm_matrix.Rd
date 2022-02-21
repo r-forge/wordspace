@@ -63,5 +63,5 @@ read.dsm.matrix(file, format = c("word2vec"),
 fn <- system.file("extdata", "word2vec_hiero.txt", package="wordspace")
 read.dsm.matrix(fn, format="word2vec")
 }
-\author{Stefan Evert (\url{http://purl.org/stefan.evert})}
+\author{Stephanie Evert (\url{https://purl.org/stephanie.evert})}
 \keyword{file}

@@ -51,4 +51,4 @@ tmp <- DSM_TermContext
 rownames(tmp)[3] <- "pet"
 head(tmp, 4, 6)
 }
-\author{Stefan Evert (\url{http://purl.org/stefan.evert})}
+\author{Stephanie Evert (\url{https://purl.org/stephanie.evert})}

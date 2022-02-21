@@ -80,4 +80,4 @@ check.dsm(model, validate = FALSE, nonneg.check = FALSE)
 check.dsm(DSM_TermTerm)
 
 }
-\author{Stefan Evert (\url{http://purl.org/stefan.evert})}
+\author{Stephanie Evert (\url{https://purl.org/stephanie.evert})}

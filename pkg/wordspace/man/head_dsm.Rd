@@ -55,4 +55,4 @@ head(DSM_TermTerm, Inf, Inf) # show full co-occurrence matrix
 head(DSM_TermTerm, 3, 4)
 
 }
-\author{Stefan Evert (\url{http://purl.org/stefan.evert})}
+\author{Stephanie Evert (\url{https://purl.org/stephanie.evert})}
