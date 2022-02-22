@@ -26,7 +26,7 @@ default:
 .PHONY:	build_sparsesvd check_sparsesvd install_sparsesvd release_sparsesvd clean_sparsesvd
 
 
-build:	build_wordspace build_sparsesvd
+build:	build_sparsesvd build_wordspace
 
 build_wordspace:
 	cat wordspace/src/parts/HEADER wordspace/src/parts/*.h wordspace/src/parts/*.cpp > wordspace/src/wordspace.cpp
@@ -37,7 +37,7 @@ build_sparsesvd:
 	R CMD build sparsesvd
 
 
-check:	check_wordspace check_sparsesvd
+check:	check_sparsesvd check_wordspace
 
 check_wordspace:	clean_wordspace build_wordspace $(PKG)
 	R CMD check --multiarch $(PKG)
@@ -46,7 +46,7 @@ check_sparsesvd:	clean_sparsesvd build_sparsesvd $(SSVD)
 	R CMD check --multiarch $(SSVD)
 
 
-install:	install_wordspace install_sparsesvd
+install:	install_sparsesvd install_wordspace
 
 install_wordspace:	clean_wordspace build_wordspace $(PKG)
 	R CMD INSTALL $(INSTALL_FLAGS) $(PKG)
@@ -55,7 +55,7 @@ install_sparsesvd:	clean_sparsesvd build_sparsesvd $(SSVD)
 	R CMD INSTALL $(INSTALL_FLAGS) $(SSVD)
 
 
-release:	release_wordspace release_sparsesvd
+release:	release_sparsesvd release_wordspace
 
 release_wordspace:	clean_wordspace
 	R CMD build --resave-data wordspace
@@ -68,7 +68,7 @@ release_sparsesvd:	clean_sparsesvd
 	@echo "$(SSVD) is ready for release to CRAN"
 
 
-binary:	binary_wordspace binary_sparsesvd
+binary:	binary_sparsesvd binary_wordspace
 
 binary_wordspace:	build_wordspace $(PKG)
 	R CMD INSTALL --build $(PKG)
