@@ -38,7 +38,8 @@
   This function is a shallow wrapper around the SVDLIBC implementation of Berry's (1992) single Lanczos algorithm.
 }
 \references{
-  \url{http://tedlab.mit.edu/~dr/SVDLIBC/}
+  The SVDLIBC homepage \code{http://tedlab.mit.edu/~dr/SVDLIBC/} seems to be no longer available.
+  A copy of the source code can be obtained from \url{https://github.com/lucasmaystre/svdlibc}.
 
   Berry, Michael~W. (1992). Large scale sparse singular value computations.
   \emph{International Journal of Supercomputer Applications}, \bold{6}, 13--49.
