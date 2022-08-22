@@ -1,6 +1,5 @@
 ## Validate scaleMargins() implementation against pure R code
 ## based on small "hieroglyphs" example matrix
-context("Row and column scaling")
 library(wordspace)
 library(Matrix)
 
@@ -12,14 +11,15 @@ expect_matrix_equal <- function(x, y, tol=1e-6, note="", note1=note, note2=note)
                expected.label=sprintf("dim(%s)%s", name.y, note2))
   x <- as.matrix(x) # expect_equivalent doesn't compare sparse matrices
   y <- as.matrix(y) # (because all data items are stored in attributes)
-  expect_equivalent(x, y, tolerance=tol,
-                    label=paste0(name.x, note1), 
-                    expected.label=paste0(name.y, note2))
+  expect_equal(x, y, tolerance=tol, ignore_attr=TRUE,
+               label=paste0(name.x, note1), 
+               expected.label=paste0(name.y, note2))
 }
 
 ## test data: sparse and dense co-occurrence matrix
 M1 <- DSM_HieroglyphsMatrix  # dense matrix
-M2 <- as(M1, "dgCMatrix")    # canonical sparse matrix
+M2 <- Matrix(M1, sparse=TRUE)# should be a canonical sparse matrix
+expect_s4_class(M2, "dgCMatrix")
 
 row.weights <- (1:nrow(M1)) - 1
 col.weights <- (1:ncol(M1)) * 10

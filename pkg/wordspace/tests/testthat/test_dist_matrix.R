@@ -1,6 +1,5 @@
 ## Validate dist.matrix() implementation against pure R code using dist() and matrix operations
 ## based on small "hieroglyphs" example matrix
-context("Distance matrices")
 library(wordspace)
 library(Matrix)
 
@@ -12,9 +11,9 @@ expect_matrix_equal <- function(x, y, tol=1e-10, note="", note1=note, note2=note
                expected.label=sprintf("dim(%s)%s", name.y, note2))
   x <- as.matrix(x) # expect_equivalent doesn't compare sparse matrices
   y <- as.matrix(y) # (because all data items are stored in attributes)
-  expect_equivalent(x, y, tolerance=tol,
-                    label=paste0(name.x, note1), 
-                    expected.label=paste0(name.y, note2))
+  expect_equal(x, y, tolerance=tol, ignore_attr=TRUE,
+               label=paste0(name.x, note1), 
+               expected.label=paste0(name.y, note2))
 }
 
 ## compute distance matrix in R as reference
@@ -117,7 +116,8 @@ test_that("Minkowski distance is computed correctly for different p", {
 M1a <- abs(M1)  # so all entries are positive
 M2a <- M2 + 1   # ensure that no two row vectors have matching zeroes
 diag(M2a) <- 0
-M2a <- as(M2a, "dgCMatrix") # convert back to sparse matrix
+M2a <- as(M2a, "CsparseMatrix") # convert back to sparse matrix
+expect_s4_class(M2a, "dgCMatrix")
 
 test_that("Canberra distance is computed correctly", {
   M1a.cb.ws <- dist.matrix(M1a, method="canberra")

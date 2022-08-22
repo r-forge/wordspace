@@ -1,5 +1,4 @@
 ## Test various convenience methods for DSM objects and related functionality
-context("Convenience features")
 library(wordspace)
 
 dsm1 <- DSM_TermContext
@@ -99,9 +98,10 @@ test_that("signcount() works for dense matrices", {
 
 test_that("signcount() works for sparse matrices", {
   expect_equal(signcount(DSM_TermContextMatrix), R.signcount(DSM_TermContextMatrix)) # sparse matrix (dgCMatrix)
-  M <- as(DSM_TermContextMatrix, "dgTMatrix") # triplet representation is not supported
+  M <- as(DSM_TermContextMatrix, "TsparseMatrix") # triplet representation is not supported
   expect_error(signcount(M), "must be.*vector")
-  M <- as(as.matrix(M), "dgRMatrix") # sparse matrix (dgRMatrix), has only minimal support in Matrix package
+  M <- as(DSM_TermContextMatrix, "RsparseMatrix") # row-compressed format (dgRMatrix) has only minimal support in Matrix package
+  expect_s4_class(M, "dgRMatrix")
   expect_equal(signcount(M), R.signcount(M))
   expect_equal(signcount(M, "nonneg"), R.nonneg(M))
   expect_equal(signcount(M, "nnzero"), R.nnzero(M))

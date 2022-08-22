@@ -1,6 +1,5 @@
 ## Validate C++ code in dsm_score() against pure R implementation
 ## based on small "hieroglyphs" example matrix
-context("Scoring a DSM object")
 library(wordspace)
 library(Matrix)
 
@@ -14,9 +13,9 @@ expect_matrix_equal <- function(x, y, tol=1e-6, note="", note1=note, note2=note)
                expected.label=sprintf("dim(%s)%s", name.y, note2))
   x <- as.matrix(x) # expect_equivalent doesn't compare sparse matrices
   y <- as.matrix(y) # (because all data items are stored in attributes)
-  expect_equivalent(x, y, tolerance=tol,
-                    label=paste0(name.x, note1), 
-                    expected.label=paste0(name.y, note2))
+  expect_equal(x, y, tolerance=tol, ignore_attr=TRUE,
+               label=paste0(name.x, note1), 
+               expected.label=paste0(name.y, note2))
 }
 
 ## test data: co-occurrence matrix and corresponding DSM object
@@ -31,8 +30,8 @@ N <- sum(M)
 M.exp <- outer(f1, f2) / N
 
 test_that("marginal and expected frequencies are correct", {
-  expect_equivalent(f1, M.dsm$rows$f)
-  expect_equivalent(f2, M.dsm$cols$f)
+  expect_equal(f1, M.dsm$rows$f, ignore_attr=TRUE)
+  expect_equal(f2, M.dsm$cols$f, ignore_attr=TRUE)
   expect_matrix_equal(N, M.dsm$globals$N)
 })
 
@@ -110,19 +109,19 @@ G2.sparse.Sdsm <- dsm.score(S.dsm, score="log-likelihood", matrix.only=TRUE)
 X2.sparse.Sdsm <- dsm.score(S.dsm, score="chi-squared", matrix.only=TRUE)
 
 test_that("sparse AMs are identical on sparse matrix", {
-  expect_is(f.sparse, "sparseMatrix")
+  expect_s4_class(f.sparse, "sparseMatrix")
   expect_matrix_equal(as.matrix(f.sparse), f.dsm)
-  expect_is(MI.sparse, "sparseMatrix")
+  expect_s4_class(MI.sparse, "sparseMatrix")
   expect_matrix_equal(as.matrix(MI.sparse), MI.dsm)
-  expect_is(t.sparse, "sparseMatrix")
+  expect_s4_class(t.sparse, "sparseMatrix")
   expect_matrix_equal(as.matrix(t.sparse), t.dsm)
-  expect_is(tsqrt.sparse, "sparseMatrix")
+  expect_s4_class(tsqrt.sparse, "sparseMatrix")
   expect_matrix_equal(as.matrix(tsqrt.sparse), tsqrt.dsm)
-  expect_is(tlog.sparse, "sparseMatrix")
+  expect_s4_class(tlog.sparse, "sparseMatrix")
   expect_matrix_equal(as.matrix(tlog.sparse), tlog.dsm)
-  expect_is(G2.sparse.Sdsm, "sparseMatrix")
+  expect_s4_class(G2.sparse.Sdsm, "sparseMatrix")
   expect_matrix_equal(as.matrix(G2.sparse.Sdsm), G2.sparse)
-  expect_is(X2.sparse.Sdsm, "sparseMatrix")
+  expect_s4_class(X2.sparse.Sdsm, "sparseMatrix")
   expect_matrix_equal(as.matrix(X2.sparse.Sdsm), X2.sparse)
 })
 
@@ -148,8 +147,8 @@ tsqrt.std <- scale(sqrt(t)) # standardization
 tsqrt.std.dsm <- dsm.score(M.dsm, score="t-score", transform="root", scale="standardize", matrix.only=TRUE) 
 
 test_that("column standardization works", {
-  expect_equivalent(apply(tsqrt.std.dsm, 2, mean), rep(0, ncol(M)))
-  expect_equivalent(apply(tsqrt.std.dsm, 2, sd), rep(1, ncol(M)))
+  expect_equal(apply(tsqrt.std.dsm, 2, mean), rep(0, ncol(M)), ignore_attr=TRUE)
+  expect_equal(apply(tsqrt.std.dsm, 2, sd), rep(1, ncol(M)), ignore_attr=TRUE)
   expect_matrix_equal(tsqrt.std.dsm, tsqrt.std)
 })
 
@@ -158,7 +157,7 @@ tsqrt.scale.dsm <- dsm.score(M.dsm, score="t-score", transform="root", scale="sc
 rms <- function (x) sqrt(sum(x * x) / (length(x) - 1)) # root mean square (cf. ?scale)
 
 test_that("column scaling works", {
-  expect_equivalent(apply(tsqrt.scale.dsm, 2, rms), rep(1, ncol(M)))
+  expect_equal(apply(tsqrt.scale.dsm, 2, rms), rep(1, ncol(M)), ignore_attr=TRUE)
   expect_matrix_equal(tsqrt.scale.dsm, tsqrt.scale)
 })
   
@@ -166,7 +165,7 @@ test_that("column scaling works", {
 tsqrt.scale.sparse <- dsm.score(S.dsm, score="t-score", transform="root", scale="scale", matrix.only=TRUE) # scale to unit variance without centering
 
 test_that("column scaling works for sparse matrix, too", {
-  expect_equivalent(apply(tsqrt.scale.sparse, 2, rms), rep(1, ncol(M)))
+  expect_equal(apply(tsqrt.scale.sparse, 2, rms), rep(1, ncol(M)), ignore_attr=TRUE)
   expect_matrix_equal(as.matrix(tsqrt.scale.sparse), tsqrt.scale)
 })
 

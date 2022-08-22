@@ -1,5 +1,4 @@
 ## Validate nearest.neighbours() implementation
-context("Nearest neighbours")
 library(wordspace)
 
 ## example data from tutorial: hieroglyphs matrix
@@ -9,9 +8,9 @@ M <- log(DSM_HieroglyphsMatrix + 1) # similarity measure in tutorial is cosine o
 nn <- nearest.neighbours(M, "dog", convert=FALSE)
 test_that("nearest neighbours of 'dog' correspond to tutorial", {
   expect_equal(names(nn), c("cat", "pig", "cup", "boat", "banana", "knife"))
-  expect_equivalent(round(nn["cat"], 3), 0.961) # verify similarity values in tutorial slides
-  expect_equivalent(round(nn["pig"], 3), 0.939)
-  expect_equivalent(round(nn["knife"], 3), 0.770)
+  expect_equal(round(nn["cat"], 3), 0.961, ignore_attr=TRUE) # verify similarity values in tutorial slides
+  expect_equal(round(nn["pig"], 3), 0.939, ignore_attr=TRUE)
+  expect_equal(round(nn["knife"], 3), 0.770, ignore_attr=TRUE)
 })
 
 ## extract same nearest neighbours with vector as target
@@ -40,7 +39,7 @@ test_that("NN can be computed for column vectors", {
   cM <- t(M)
   nn <- nearest.neighbours(cM, "dog", byrow=FALSE, convert=FALSE)
   expect_equal(names(nn), c("cat", "pig", "cup", "boat", "banana", "knife"))
-  expect_equivalent(round(nn["cat"], 3), 0.961)
+  expect_equal(round(nn["cat"], 3), 0.961, ignore_attr=TRUE)
   cDM1 <- nearest.neighbours(cM, "dog", n=3, byrow=FALSE, dist.matrix=TRUE)
   attr(cDM1, "selected") <- NULL
   expect_equal(cDM1, DM2)

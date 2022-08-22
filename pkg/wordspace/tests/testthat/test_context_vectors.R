@@ -1,5 +1,4 @@
 ## Test computation of centroids as context vectors
-context("Context vectors")
 library(wordspace)
 
 vec.compare <- function (x, y, name="vector comparison", normalize=TRUE, tol=1e-10, verbose=TRUE) {
@@ -36,21 +35,21 @@ x.ref <- (2 * M["cat", ] + M["dog", ] + 2 * M["cause", ]) / 5
 test_that("context.vectors() works with different context representations", {
   doc1 <- "cat cat dog cause cause" # centroid of document as string
   x1 <- context.vectors(M, doc1)
-  expect_equivalent(x1, x.ref, tolerance=1e-12)
+  expect_equal(x1[1,], x.ref, tolerance=1e-12)
   doc2 <- c("cat", "cat", "dog", "cause", "cause") # centroid of document as list of tokens
   x2 <- context.vectors(M, list(doc2))
-  expect_equivalent(x2, x.ref, tolerance=1e-12)
+  expect_equal(x2[1,], x.ref, tolerance=1e-12)
   doc3 <- c("cat", "cause", "cause", "dog", "cat") # should be independent of ordering
   x3 <- context.vectors(M, list(doc3))
-  expect_equivalent(x3, x.ref, tolerance=1e-12)
+  expect_equal(x3[1,], x.ref, tolerance=1e-12)
   doc4 <- c(cat=1, cat=1, dog=1, cause=1, cause=1) # centroid of document as bag of words
   x4 <- context.vectors(M, list(doc4))
-  expect_equivalent(x4, x.ref, tolerance=1e-12)
+  expect_equal(x4[1,], x.ref, tolerance=1e-12)
   doc5 <- c(cat=2, dog=1, cause=2) # with aggregated frequency counts
   x5 <- context.vectors(M, list(doc5))
-  expect_equivalent(x5, x.ref, tolerance=1e-12)
+  expect_equal(x5[1,], x.ref, tolerance=1e-12)
   doc6 <- c(cat=.2, dog=.1, cause=.2) # check that non-integer values work correctly
   x6 <- context.vectors(M, list(doc6))
-  expect_equivalent(x6, x.ref, tolerance=1e-12) # centroid should be independent of scaling of weights
-  expect_equivalent(x5, x6, tolerance=1e-12) 
+  expect_equal(x6[1,], x.ref, tolerance=1e-12) # centroid should be independent of scaling of weights
+  expect_equal(x5, x6, tolerance=1e-12) 
 })
