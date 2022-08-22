@@ -20,8 +20,10 @@ check.svd <- function (M, tol=1e-2) {
   }
 }
 
-Zero <- as(matrix(0, 3, 5), "dgCMatrix") # all-zero matrix
-check.svd(Zero)
+## regression tests with repro cases serialised via dput()
+Zero <- new("dgCMatrix", i = integer(0), p = c(0L, 0L, 0L, 0L, 0L, 0L), 
+    Dim = c(3L, 5L), Dimnames = list(NULL, NULL), x = numeric(0), factors = list())
+check.svd(Zero) # all-zero matrix
 
 D1 <-
 new("dgCMatrix", i = 0:1, p = c(0L, 2L), Dim = 2:1, Dimnames = list(

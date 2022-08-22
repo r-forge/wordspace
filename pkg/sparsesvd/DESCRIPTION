@@ -1,7 +1,7 @@
 Package: sparsesvd
 Title: Sparse Truncated Singular Value Decomposition (from 'SVDLIBC')
-Version: 0.2
-Date: 2019-07-15
+Version: 0.2-1
+Date: 2022-08-22
 Authors@R: c(person("Doug", "Rohde", email="dr+svd@tedlab.mit.edu", role="aut"),
              person("Michael", "Berry", role="aut"),
              person("Theresa", "Do", role="aut"),
@@ -9,12 +9,12 @@ Authors@R: c(person("Doug", "Rohde", email="dr+svd@tedlab.mit.edu", role="aut"),
              person("Vijay", "Krishna", role="aut"),
              person("Sowmini", "Varadhan", role="aut"),
              person("University of Tennessee Research Foundation", role = "cph", comment = "files src/las2.c, src/svdlib.[ch], src/svdutil.[ch]"),
-             person("Stefan", "Evert", email="stefan.evert@fau.de", role=c("cre", "aut", "cph"), comment="copyright holder for files src/main.c, R/*, man/*, tests/*"))
+             person("Stephanie", "Evert", email="stephanie.evert@fau.de", role=c("cre", "aut", "cph"), comment="copyright holder for files src/main.c, R/*, man/*, tests/*"))
 Description: Wrapper around the 'SVDLIBC' library for (truncated) singular value decomposition of a sparse matrix.
              Currently, only sparse real matrices in Matrix package format are supported.
 Depends: R (>= 3.0)
-Imports: Matrix, methods
+Imports: Matrix (>= 1.3), methods
 License: BSD_3_clause + file LICENSE
 URL: http://tedlab.mit.edu/~dr/SVDLIBC/, http://wordspace.r-forge.r-project.org/
 NeedsCompilation: yes
-LazyData: true
+LazyData: false
