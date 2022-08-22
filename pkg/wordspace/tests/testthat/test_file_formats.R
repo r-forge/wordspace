@@ -1,5 +1,4 @@
 ## Test reading data sets in different file formats, based on the example DSM_TermContext matrix
-context("Input file formats")
 library(wordspace)
 
 ## example data: DSM_TermContext
@@ -15,7 +14,7 @@ expect_matrix_equal <- function(x, y, tol=1e-10, label="A", expected.label="B") 
   expect_equal(dim(x), dim(y), label=label, expected.label=expected.label)
   x <- as.matrix(x) # expect_equivalent doesn't compare sparse matrices
   y <- as.matrix(y) # and expect_equal doesn't seem to work because of method dispatch for compare()
-  expect_equivalent(x, y, tolerance=tol, label=label, expected.label=expected.label)
+  expect_equal(x, y, tolerance=tol, label=label, expected.label=expected.label)
 }
 
 ## helper function: compare all relevant information from two DSM objects

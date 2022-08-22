@@ -1,5 +1,4 @@
 ## Validate subset() methods for DSM objects
-context("Subsetting DSMs")
 library(wordspace)
 
 ## example from ?subset.dsm

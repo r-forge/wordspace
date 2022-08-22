@@ -1,5 +1,4 @@
 ## Test evaluation functions on real and toy tasks
-context("Evaluation functions")
 library(wordspace)
 
 qw <- function (x) unlist(strsplit(x, "\\s+", perl=TRUE)) # Perl's qw()

@@ -1,5 +1,4 @@
 ## Test whether DSM object has expected structure
-context("DSM object structure")
 library(wordspace)
 
 ## Re-construct built-in DSM objects to verify they have the expected structure and attributes

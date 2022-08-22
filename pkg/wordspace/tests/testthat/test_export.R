@@ -1,5 +1,4 @@
 ## Test exporting and importing a DSM matrix in different file formats
-context("Export/import functions")
 library(wordspace)
 
 

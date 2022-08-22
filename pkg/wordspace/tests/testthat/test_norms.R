@@ -1,5 +1,4 @@
 ## Validate various matrix norms and normalization functions.
-context("Vector norms")
 library(wordspace)
 library(Matrix)
 
@@ -76,17 +75,17 @@ test_that("rows and columns can be normalized", {
   nR2 <- nrow(M2); nC2 <- ncol(M2)
   
   for (norm in c("euclidean", "manhattan", "maximum")) {
-    expect_equivalent(rowNorms(normalize.rows(M1, method=!!norm), method=!!norm), rep(1, nR1))
-    expect_equivalent(colNorms(normalize.cols(M1, method=!!norm), method=!!norm), rep(1, nC1))
-    expect_equivalent(rowNorms(normalize.rows(M2, method=!!norm), method=!!norm), rep(1, nR2))
-    expect_equivalent(colNorms(normalize.cols(M2, method=!!norm), method=!!norm), rep(1, nC2))
+    expect_equal(rowNorms(normalize.rows(M1, method=!!norm), method=!!norm), rep(1, nR1), ignore_attr=TRUE)
+    expect_equal(colNorms(normalize.cols(M1, method=!!norm), method=!!norm), rep(1, nC1), ignore_attr=TRUE)
+    expect_equal(rowNorms(normalize.rows(M2, method=!!norm), method=!!norm), rep(1, nR2), ignore_attr=TRUE)
+    expect_equal(colNorms(normalize.cols(M2, method=!!norm), method=!!norm), rep(1, nC2), ignore_attr=TRUE)
   }
 
   for (p in c(.1, .2, .5, 1, 1.5, 2, 3, 5, 10)) {
-    expect_equivalent(colNorms(normalize.cols(M1, method="minkowski", p=!!p), method="minkowski", p=!!p), rep(1, nR1)) 
-    expect_equivalent(rowNorms(normalize.rows(M1, method="minkowski", p=!!p), method="minkowski", p=!!p), rep(1, nC1))
-    expect_equivalent(rowNorms(normalize.rows(M2, method="minkowski", p=!!p), method="minkowski", p=!!p), rep(1, nR2))
-    expect_equivalent(colNorms(normalize.cols(M2, method="minkowski", p=!!p), method="minkowski", p=!!p), rep(1, nC2))
+    expect_equal(colNorms(normalize.cols(M1, method="minkowski", p=!!p), method="minkowski", p=!!p), rep(1, nR1), ignore_attr=TRUE) 
+    expect_equal(rowNorms(normalize.rows(M1, method="minkowski", p=!!p), method="minkowski", p=!!p), rep(1, nC1), ignore_attr=TRUE)
+    expect_equal(rowNorms(normalize.rows(M2, method="minkowski", p=!!p), method="minkowski", p=!!p), rep(1, nR2), ignore_attr=TRUE)
+    expect_equal(colNorms(normalize.cols(M2, method="minkowski", p=!!p), method="minkowski", p=!!p), rep(1, nC2), ignore_attr=TRUE)
   }
 })
 
@@ -115,9 +114,9 @@ test_that("near-zero rows and columns are not normalized",{
     M2b.norm <- normalize.cols(M2b, method="minkowski", p=p, tol=tol)
    
     
-    expect_equivalent(rowNorms(M1a.norm, method="minkowski", p=!!p), gold)
-    expect_equivalent(colNorms(M1b.norm, method="minkowski", p=!!p), gold)
-    expect_equivalent(rowNorms(M2a.norm, method="minkowski", p=!!p), gold)
-    expect_equivalent(colNorms(M2b.norm, method="minkowski", p=!!p), gold)
+    expect_equal(rowNorms(M1a.norm, method="minkowski", p=!!p), gold, ignore_attr=TRUE)
+    expect_equal(colNorms(M1b.norm, method="minkowski", p=!!p), gold, ignore_attr=TRUE)
+    expect_equal(rowNorms(M2a.norm, method="minkowski", p=!!p), gold, ignore_attr=TRUE)
+    expect_equal(colNorms(M2b.norm, method="minkowski", p=!!p), gold, ignore_attr=TRUE)
   }
 })

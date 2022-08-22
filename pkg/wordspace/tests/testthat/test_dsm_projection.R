@@ -1,6 +1,5 @@
 ## Validate SVD and other latent subspace projections
 ## based on small "hieroglyphs" example matrix
-context("Dimensionality reduction")
 library(Matrix)
 library(wordspace)
 
@@ -19,9 +18,9 @@ expect_matrix_equal <- function(x, y, tol=1e-10, ignore.sign=FALSE, note="", not
     })
     x <- scaleMargins(x, cols=sign.vec)
   }
-  expect_equivalent(x, y, tolerance=tol,
-                    label=paste0(name.x, note1), 
-                    expected.label=paste0(name.y, note2))
+  expect_equal(x, y, tolerance=tol, ignore_attr=TRUE,
+               label=paste0(name.x, note1), 
+               expected.label=paste0(name.y, note2))
 }
 
 ## compare distances between row vectors (for M1 and M2 in different subspaces)
@@ -49,7 +48,8 @@ dist.compare <- function (M1, M2, method="euclidean", tol=.001,
 O <- DSM_HieroglyphsMatrix
 E <- outer(rowSums(O), colSums(O)) / sum(O)
 M1 <- scale((O - E) / sqrt(E), center=TRUE, scale=FALSE)  # z-score (signed), centered (so SVD projection == PCA)
-M2 <- as(M1, "dgCMatrix") # force sparse matrix representation to test sparse algorithms
+M2 <- Matrix(M1, sparse=TRUE) # force sparse matrix representation to test sparse algorithms
+expect_s4_class(M2, "dgCMatrix")
 
 
 ## full-rank SVD decomposition
