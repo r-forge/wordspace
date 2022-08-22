@@ -62,7 +62,9 @@ read.dsm.ucs <- function (filename, encoding=getOption("encoding"), verbose=FALS
   if (have.sparse.M) {
     if (verbose) cat(" - sparse co-occurrence matrix\n")
     fh <- .access.file(archive, "M.mtx", encoding)
-    M <- as(readMM(fh), "dgCMatrix") # make sure that the sparse matrix is in canonical DSM format
+    M <- as(readMM(fh), "CsparseMatrix") # make sure that the sparse matrix is in canonical DSM format
+    if (!is(M, "generalMatrix")) M <- as(M, "generalMatrix")
+    if (!is(M, "dgCMatrix")) stop(paste0("internal error: conversion to dgCMatrix failed, got '", class(M)[1], "' instead"))
     close(fh)
   } else {
     if (verbose) cat(" - dense co-occurrence matrix\n")

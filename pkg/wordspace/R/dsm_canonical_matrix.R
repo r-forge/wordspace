@@ -32,9 +32,19 @@ dsm.canonical.matrix <- function (x, triplet = FALSE, annotate = FALSE, nonneg.c
         flags$nonneg <- signcount(x, "nonneg") # efficient non-negativity check possible before conversion to triplet form
         nonneg.check <- FALSE
       }
-      if (!is(x, "dgTMatrix")) x <- as(x, "dgTMatrix")
+      if (!is(x, "dgTMatrix")) {
+        ## x must be a dMatrix and a sparseMatrix, so there are only two possible adjustments left to check
+        if (!is(x, "generalMatrix")) x <- as(x, "generalMatrix")
+        if (!is(x, "TsparseMatrix")) x <- as(x, "TsparseMatrix")
+        if (!is(x, "dgTMatrix")) stop(paste0("internal error: conversion to dgTMatrix failed, got '", class(x)[1], "' instead"))
+      }
     } else {
-      if (!flags$canonical) x <- as(x, "dgCMatrix")
+      if (!flags$canonical) {
+        ## x must be a dMatrix and a sparseMatrix, so there are only two possible adjustments left to check
+        if (!is(x, "CsparseMatrix")) x <- as(x, "CsparseMatrix")
+        if (!is(x, "generalMatrix")) x <- as(x, "generalMatrix")
+        if (!is(x, "dgCMatrix")) stop(paste0("internal error: conversion to dgCMatrix failed, got '", class(x)[1], "' instead"))
+      }
     }
   } else {
     if (!flags$canonical) x <- as.matrix(x)

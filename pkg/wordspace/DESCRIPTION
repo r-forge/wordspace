@@ -1,10 +1,10 @@
 Package: wordspace
 Type: Package
 Title: Distributional Semantic Models in R
-Version: 0.2-7
-Date: 2022-02-22
+Version: 0.2-8
+Date: 2022-08-22
 Authors@R: person("Stephanie", "Evert", email="stephanie.evert@fau.de", role=c("cre", "aut"), comment=c(ORCID="0000-0002-4192-2437"))
-Depends: R (>= 3.3.0), Matrix
+Depends: R (>= 3.3.0), Matrix (>= 1.3.0)
 Imports: Rcpp (>= 0.11.0), sparsesvd, iotools, 
          methods, stats, utils, graphics, grDevices, cluster, MASS
 LinkingTo: Rcpp
@@ -15,5 +15,6 @@ URL: http://wordspace.r-forge.r-project.org/
 LazyData: yes
 LazyDataCompression: xz
 Suggests: knitr, rmarkdown, tm,
-          testthat
+          testthat (>= 3.0)
 VignetteBuilder: knitr
+Config/testthat/edition: 3

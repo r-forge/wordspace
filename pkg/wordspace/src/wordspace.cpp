@@ -796,11 +796,3 @@ NumericVector CPP_signcount_int(IntegerVector x) {
   }
   return NumericVector::create(pos, zero, neg);
 }
-
-
-// TODO: implement integer version (to avoid conversion)
-// TODO: R wrapper function
-//  - is.integer
-//  - is.double
-//  - Matrix classes: dgeMatrix (dense), dgCMatrix, dgRMatrix, dgTMatrix (with adjusted zero count) -- all should have slot @x
-//  - Matrix doesn't seem to really support integer matrices yet, so we don't worry abpout those
