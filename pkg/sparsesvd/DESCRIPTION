@@ -1,7 +1,7 @@
 Package: sparsesvd
 Title: Sparse Truncated Singular Value Decomposition (from 'SVDLIBC')
-Version: 0.2-1
-Date: 2022-08-22
+Version: 0.2-2
+Date: 2023-01-14
 Authors@R: c(person("Doug", "Rohde", email="dr+svd@tedlab.mit.edu", role="aut"),
              person("Michael", "Berry", role="aut"),
              person("Theresa", "Do", role="aut"),

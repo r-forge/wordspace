@@ -51,7 +51,7 @@ eval.clustering(task, M, dist.fnc = pair.distances, \dots,
 }
 \details{
 
-  The test words are clustered using the \dQuote{partitioning around medoids} (PAM) algorithm (Kaufman \& Rousseeuw 1990, Ch. 2) based on their semantic distances.
+  The test words are clustered using the \dQuote{partitioning around medoids} (PAM) algorithm (Kaufman & Rousseeuw 1990, Ch. 2) based on their semantic distances.
   The PAM algorithm is used because it works with arbitrary distance measures (including neihbour rank), produces a stable solution (unlike most iterative algorithms)
   and has shown to be on par with state-of-the-art spherical k-means clustering (CLUTO) in evaluation studies.
 

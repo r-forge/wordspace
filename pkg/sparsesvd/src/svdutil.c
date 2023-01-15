@@ -47,6 +47,8 @@ POSSIBILITY OF SUCH DAMAGE.
 #include <R.h>
 #include <Rinternals.h>
 
+#ifndef OMIT_UNNEEDED
+
 #define BUNZIP2  "bzip2 -d"
 #define BZIP2    "bzip2 -1"
 #define UNZIP    "gzip -d"
@@ -57,6 +59,8 @@ POSSIBILITY OF SUCH DAMAGE.
 #define MAX_PIPES    64
 static FILE *Pipe[MAX_PIPES];
 static int numPipes = 0;
+
+#endif /* OMIT_UNNEEDED */
 
 long *svd_longArray(long size, char empty, char *name) {
   long *a;
@@ -114,6 +118,7 @@ void svd_fatalError(char *fmt, ...) {
   error("error in SVDLIBC code");
 }
 
+#ifndef OMIT_UNNEEDED
 static void registerPipe(FILE *p) {
   if (numPipes >= MAX_PIPES) svd_error("Too many pipes open");
   Pipe[numPipes++] = p;
@@ -136,7 +141,7 @@ static FILE *openPipe(char *pipeName, char *mode) {
 
 static FILE *readZippedFile(char *command, char *fileName) {
   char buf[MAX_FILENAME];
-  sprintf(buf, "%s < %s 2>/dev/null", command, fileName);
+  snprintf(buf, MAX_FILENAME, "%s < %s 2>/dev/null", command, fileName);
   return openPipe(buf, "r");
 }
 
@@ -184,19 +189,19 @@ FILE *svd_readFile(char *fileName) {
   if (!stat(fileName, &statbuf))
     return fopen(fileName, "r");
   /* Try adding .gz */
-  sprintf(fileBuf, "%s.gz", fileName);
+  snprintf(fileBuf, MAX_FILENAME, "%s.gz", fileName);
   if (!stat(fileBuf, &statbuf))
     return readZippedFile(UNZIP, fileBuf);
   /* Try adding .Z */
-  sprintf(fileBuf, "%s.Z", fileName);
+  snprintf(fileBuf, MAX_FILENAME, "%s.Z", fileName);
   if (!stat(fileBuf, &statbuf))
     return readZippedFile(UNZIP, fileBuf);
   /* Try adding .bz2 */
-  sprintf(fileBuf, "%s.bz2", fileName);
+  snprintf(fileBuf, MAX_FILENAME, "%s.bz2", fileName);
   if (!stat(fileBuf, &statbuf))
     return readZippedFile(BUNZIP2, fileBuf);
   /* Try adding .bz */
-  sprintf(fileBuf, "%s.bz", fileName);
+  snprintf(fileBuf, MAX_FILENAME, "%s.bz", fileName);
   if (!stat(fileBuf, &statbuf))
     return readZippedFile(BUNZIP2, fileBuf);
 
@@ -207,11 +212,11 @@ static FILE *writeZippedFile(char *fileName, char append) {
   char buf[MAX_FILENAME];
   const char *op = (append) ? ">>" : ">";
   if (stringEndsIn(fileName, ".bz2") || stringEndsIn(fileName, ".bz"))
-    sprintf(buf, "%s %s \"%s\"", BZIP2, op, fileName);
+    snprintf(buf, MAX_FILENAME, "%s %s \"%s\"", BZIP2, op, fileName);
   else if (stringEndsIn(fileName, ".Z"))
-    sprintf(buf, "%s %s \"%s\"", COMPRESS, op, fileName);
+    snprintf(buf, MAX_FILENAME, "%s %s \"%s\"", COMPRESS, op, fileName);
   else
-    sprintf(buf, "%s %s \"%s\"", ZIP, op, fileName);
+    snprintf(buf, MAX_FILENAME, "%s %s \"%s\"", ZIP, op, fileName);
   return openPipe(buf, "w");
 }
 
@@ -295,6 +300,7 @@ char svd_writeBinFloat(FILE *file, float r) {
 #endif
 }
 
+#endif /* OMIT_UNNEEDED */
 
 /************************************************************** 
  * returns |a| if b is positive; else fsign returns -|a|      *
@@ -618,7 +624,7 @@ void svd_opa(SMat A, double *x, double *y) {
  */
 double svd_random2(unsigned long *iy) {
    static unsigned long m2 = 0;
-   static unsigned long ia, ic, mic;
+   static unsigned long ia, ic;
    static double halfm, s;
 
    /* If first entry, compute (max unsigned long) / 2 = m2 = halfm */
@@ -631,7 +637,7 @@ double svd_random2(unsigned long *iy) {
        * method */
       ia = 8 * (long)(halfm * atan(1.0) / 8.0) + 5;
       ic = 2 * (long)(halfm * (0.5 - sqrt(3.0)/6.0)) + 1;
-      mic = (m2-ic) + m2;
+      /* mic = (m2-ic) + m2; */
 
       /* s is the scale factor for converting to floating point */
       s = 0.5 / halfm;

@@ -1,3 +1,8 @@
+Version 0.2-2:
+
+  - change unsafe sprintf() to snprintf() as demanded by CRAN (though entirely unjustified, as DRH would tell them in no uncertain terms)
+  - omit SVDLIBC file I/O functionality (where sprintf() occurred) entirely as it is not needed by R wrapper
+
 Version 0.2-1:
 
   - adapted to avoid deprecated format conversions in Matrix v1.4-2

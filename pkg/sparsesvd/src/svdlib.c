@@ -34,6 +34,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "svdlib.h"
 #include "svdutil.h"
 
+#include <R.h>
+#include <Rinternals.h>
+
 char *SVDVersion = "1.4";
 long SVDVerbosity = 1;
 long SVDCount[SVD_COUNTERS];
@@ -193,6 +196,7 @@ SMat svdTransposeS(SMat S) {
 
 
 /**************************** Input/Output ***********************************/
+#ifndef OMIT_UNNEEDED
 
 void svdWriteDenseArray(double *a, int n, char *filename, char binary) {
   int i;
@@ -315,7 +319,7 @@ static void svdWriteSparseTextHBFile(SMat S, FILE *file) {
   long total_lines = col_lines + 2 * row_lines;
   
   char title[32];
-  sprintf(title, "SVDLIBC v. %s", SVDVersion);
+  snprintf(title, 32, "SVDLIBC v. %s", SVDVersion);
   fprintf(file, "%-72s%-8s\n", title, "<key>");
   fprintf(file, "%14ld%14ld%14ld%14ld%14d\n", total_lines, col_lines,
           row_lines, row_lines, 0);
@@ -611,4 +615,22 @@ void svdWriteDenseMatrix(DMat D, char *filename, int format) {
   }
   svd_closeFile(file);
   if (S) svdFreeSMat(S);
+}
+
+#endif /* OMIT_UNNEEDED */
+
+/* print dense matrix / array for debugging purposes (using Rprintf) */
+void svdRPrintDenseMatrix(DMat D) {
+  int i, j;
+  Rprintf("%ld %ld\n", D->rows, D->cols);
+  for (i = 0; i < D->rows; i++)
+    for (j = 0; j < D->cols; j++) 
+      Rprintf("%g%c", D->value[i][j], (j == D->cols - 1) ? '\n' : ' ');
+}
+
+void svdRPrintDenseArray(double *a, int n) {
+  int i;
+  Rprintf("%d\n", n);
+  for (i = 0; i < n; i++)
+    Rprintf("%g\n", a[i]);
 }

@@ -44,6 +44,8 @@ extern double *svd_doubleArray(long size, char empty, char *name);
 extern void svd_debug(char *fmt, ...);
 extern void svd_error(char *fmt, ...);
 extern void svd_fatalError(char *fmt, ...);
+
+#ifndef OMIT_CRUFT
 extern FILE *svd_fatalReadFile(char *filename);
 extern FILE *svd_readFile(char *fileName);
 extern FILE *svd_writeFile(char *fileName, char append);
@@ -53,6 +55,7 @@ extern char svd_readBinInt(FILE *file, int *val);
 extern char svd_readBinFloat(FILE *file, float *val);
 extern char svd_writeBinInt(FILE *file, int x);
 extern char svd_writeBinFloat(FILE *file, float r);
+#endif
 
 /************************************************************** 
  * returns |a| if b is positive; else fsign returns -|a|      *

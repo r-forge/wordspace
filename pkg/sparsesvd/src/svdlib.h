@@ -39,6 +39,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #  define TRUE  1
 #endif
 
+/* omit functionality that isn't used by the R wrapper (e.g. file I/O) */
+#define OMIT_UNNEEDED 1
+
 /******************************** Structures *********************************/
 typedef struct smat *SMat;
 typedef struct dmat *DMat;
@@ -125,6 +128,8 @@ DMat svdTransposeD(DMat D);
 /* Transposes a sparse matrix (returning a new one) */
 SMat svdTransposeS(SMat S);
 
+#ifndef OMIT_UNNEEDED
+
 /* Writes an array to a file. */
 extern void svdWriteDenseArray(double *a, int n, char *filename, char binary);
 /* Reads an array from a file, storing its size in *np. */
@@ -140,6 +145,11 @@ extern void svdWriteDenseMatrix(DMat A, char *filename, int format);
 /* Writes a sparse matrix to a file in a given format. */
 extern void svdWriteSparseMatrix(SMat A, char *filename, int format);
 
+#endif /* OMIT_UNNEEDED */
+
+/* print dense matrix / array for debugging purposes (using Rprintf) */
+extern void svdRPrintDenseMatrix(DMat D);
+extern void svdRPrintDenseArray(double *a, int n);
 
 /* Performs the las2 SVD algorithm and returns the resulting Ut, S, and Vt. */
 extern SVDRec svdLAS2(SMat A, long dimensions, long iterations, double end[2], 
