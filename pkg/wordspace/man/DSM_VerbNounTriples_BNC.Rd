@@ -37,7 +37,7 @@ DSM_VerbNounTriples_BNC
 \references{
   Aston, Guy and Burnard, Lou (1998). \emph{The BNC Handbook}. Edinburgh University Press, Edinburgh. See also the BNC homepage at \url{http://www.natcorp.ox.ac.uk/}.
 
-  Curran, James; Clark, Stephen; Bos, Johan (2007). Linguistically motivated large-scale NLP with {C\&C} and Boxer. In \emph{Proceedings of the 45th Annual Meeting of the Association for Computational Linguistics, Posters and Demonstrations Sessions}, pages 33--36, Prague, Czech Republic.
+  Curran, James; Clark, Stephen; Bos, Johan (2007). Linguistically motivated large-scale NLP with {C&C} and Boxer. In \emph{Proceedings of the 45th Annual Meeting of the Association for Computational Linguistics, Posters and Demonstrations Sessions}, pages 33--36, Prague, Czech Republic.
 }
 \examples{
 

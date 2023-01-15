@@ -460,14 +460,14 @@ SVDRec svdLAS2(SMat A, long dimensions, long iterations, double end[2],
   
   if (SVDVerbosity > 1) {
     Rprintf("\nSINGULAR VALUES: ");
-    svdWriteDenseArray(R->S, R->d, "-", FALSE);
+    svdRPrintDenseArray(R->S, R->d);
 
     if (SVDVerbosity > 2) {
       Rprintf("\nLEFT SINGULAR VECTORS (transpose of U): ");
-      svdWriteDenseMatrix(R->Ut, "-", SVD_F_DT);
+      svdRPrintDenseMatrix(R->Ut);
 
       Rprintf("\nRIGHT SINGULAR VECTORS (transpose of V): ");
-      svdWriteDenseMatrix(R->Vt, "-", SVD_F_DT);
+      svdRPrintDenseMatrix(R->Vt);
     }
   }
   if (SVDVerbosity > 0) {
@@ -1043,11 +1043,10 @@ void purge(long n, long ll, double *r, double *q, double *ra,
 	   double *qa, double *wrk, double *eta, double *oldeta, long step, 
            double *rnmp, double tol) {
   double t, tq, tr, reps1, rnm = *rnmp;
-  long k, iteration, flag, i;
+  long iteration, flag, i;
   
   if (step < ll+2) return; 
   
-  k = svd_idamax(step - (ll+1), &eta[ll], 1) + ll;
   
   /* BUGFIX -- 14 July 2019 (Stefan Evert):
    * Orthogonality seems to be lost much faster than the estimates in eta[] suggest,
@@ -1055,6 +1054,7 @@ void purge(long n, long ll, double *r, double *q, double *ra,
    * complexity in the number of Lanczos vectors, this shouldn't cost too much performance
    * unless the vectors are stored in external memory (cf. original mainframe implementation).
    */
+  /* k = svd_idamax(step - (ll+1), &eta[ll], 1) + ll; */
   /* if (fabs(eta[k]) > reps) { */
   if (TRUE) {
     reps1 = eps1 / reps;
