@@ -3,13 +3,13 @@ title: "Distributional Semantics in R with the 'wordspace' Package"
 author: "Stefan Evert"
 date: "1 April 2016"
 output:
-  rmarkdown::html_vignette: 
+  markdown::html_vignette: 
     fig_width: 6
     fig_height: 4
   pdf_document: null
 vignette: >
   %\VignetteIndexEntry{Introduction to Wordspace}
-  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEngine{knitr::knitr}
   %\VignetteEncoding{UTF-8}
 ---
 
