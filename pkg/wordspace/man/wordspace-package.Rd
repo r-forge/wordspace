@@ -13,15 +13,6 @@
 }
 \details{
 
-  \tabular{ll}{
-    Package: \tab wordspace\cr
-    Type: \tab Package\cr
-    Version: \tab 0.2-7\cr
-    Date: \tab 2022-02-22\cr
-    License: \tab GPL-3\cr
-    LazyLoad: \tab yes\cr
-  }
-
 }
 \author{
 
@@ -41,7 +32,7 @@
 }
 \seealso{
 
-  If you are new to the \bold{wordspace} package, you should start by reading the package vignette and trying out the code examples show there.
+  If you are new to the \bold{wordspace} package, you should start by reading the package vignette and trying out the code examples shown there.
 
   Good starting points into the package documentation are \code{\link{dsm}}, \code{\link{read.dsm.triplet}}, \code{\link{dist.matrix}} and \code{\link{nearest.neighbours}}.
 
