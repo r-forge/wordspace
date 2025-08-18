@@ -66,7 +66,7 @@ rsvd(M, n, q = 2, oversampling = 2, transpose = FALSE, verbose = FALSE)
 }
 \seealso{
 
-  \code{\link{svd}}, \code{\link{dsm.projection}}, \code{\link{sparsesvd}}
+  \code{\link{svd}}, \code{\link{dsm.projection}}, \code{\link[sparsesvd:sparsesvd]{sparsesvd}}
   
 }
 %% \examples{

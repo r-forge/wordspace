@@ -1,3 +1,7 @@
+Version 0.2-9:
+
+  - minor documentation fix required by CRAN
+
 Version 0.2-8:
 
   - avoid direct Matrix format conversions to be deprecated in Matrix v1.4-2

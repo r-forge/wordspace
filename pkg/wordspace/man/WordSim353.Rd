@@ -50,7 +50,7 @@ WordSim353
 
   Similarity ratings (Finkelstein \emph{et al.} 2002): \url{https://gabrilovich.com/resources/data/wordsim353/wordsim353.html}
 
-  Semantic relations (Agirre \emph{et al.} 2009): \url{http://alfonseca.org/eng/research/wordsim353.html}
+  Semantic relations (Agirre \emph{et al.} 2009): \emph{download no longer available}
   
 }
 \references{

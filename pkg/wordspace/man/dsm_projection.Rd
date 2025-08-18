@@ -93,7 +93,7 @@ dsm.projection(model, n,
   Finding structure with randomness: Stochastic algorithms for constructing approximate matrix decompositions. Technical Report 2009-05, ACM, California Institute of Technology.
 }
 \seealso{
-  \code{\link{rsvd}} for the implementation of randomized SVD, and \code{\link{sparsesvd}} for the SVDLIBC wrapper
+  \code{\link{rsvd}} for the implementation of randomized SVD, and \code{\link[sparsesvd:sparsesvd]{sparsesvd}} for the SVDLIBC wrapper
 }
 \examples{
 

@@ -6,7 +6,7 @@
 \description{
 
   This function counts the number of positive, negative and zero elements in a numeric vector or matrix,
-  including some types of dense and sparse representations in the \code{\link{Matrix}} package.
+  including some types of dense and sparse representations in the \code{\link[Matrix:Matrix]{Matrix}} package.
   
   It can be used to test for non-negativity and compute nonzero counts efficiently, without any memory overhead.
   
@@ -19,7 +19,7 @@ signcount(x, what = c("counts", "nonneg", "nnzero"))
 \arguments{
 
   \item{x}{
-    a numeric vector or array, or a numeric \code{Matrix} (supported formats are \code{\link[=dgeMatrix-class]{dgeMatrix}},  \code{\link[=dgCMatrix-class]{dgCMatrix}} and  \code{\link[=dgRMatrix-class]{dgRMatrix}})
+    a numeric vector or array, or a numeric \code{Matrix} (supported formats are \code{\link[Matrix:dgeMatrix-class]{dgeMatrix}},  \code{\link[Matrix:dgCMatrix-class]{dgCMatrix}} and  \code{\link[Matrix:dgRMatrix-class]{dgRMatrix}})
   }
 
   \item{what}{

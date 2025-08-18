@@ -28,7 +28,7 @@ dsm.canonical.matrix(x, triplet = FALSE, annotate = FALSE, nonneg.check = FALSE)
   }
 
   \item{triplet}{
-    if \code{TRUE} and if \code{x} is sparse, return a matrix in triplet format (class \code{\link[=dgTMatrix-class]{dgTMatrix}}) rather than in column-compressed format (class \code{\link[=dgCMatrix-class]{dgCMatrix}}).  Note that this is \emph{not} a canonical DSM format.
+    if \code{TRUE} and if \code{x} is sparse, return a matrix in triplet format (class \code{\link[Matrix:dgTMatrix-class]{dgTMatrix}}) rather than in column-compressed format (class \code{\link[Matrix:dgCMatrix-class]{dgCMatrix}}).  Note that this is \emph{not} a canonical DSM format.
   }
 
   \item{annotate}{
@@ -60,10 +60,10 @@ dsm.canonical.matrix(x, triplet = FALSE, annotate = FALSE, nonneg.check = FALSE)
   
   \code{dsm.canonical.matrix()} returns a matrix in canonical DSM format, i.e.
   \itemize{
-    \item{of class \code{\link{matrix}} for a dense matrix (even if \code{x} is a \code{\link[=denseMatrix-class]{denseMatrix}} object);}
-    \item{of class \code{\link[=dgCMatrix-class]{dgCMatrix}} for a sparse matrix.}
+    \item{of class \code{\link{matrix}} for a dense matrix (even if \code{x} is a \code{\link[Matrix:denseMatrix-class]{denseMatrix}} object);}
+    \item{of class \code{\link[Matrix:dgCMatrix-class]{dgCMatrix}} for a sparse matrix.}
   }
-  If \code{triplet=TRUE} and \code{x} is sparse, it returns a matrix of class \code{\link[=dgTMatrix-class]{dgTMatrix}}, which is \emph{not} a canonical format.
+  If \code{triplet=TRUE} and \code{x} is sparse, it returns a matrix of class \code{\link[Matrix:dgTMatrix-class]{dgTMatrix}}, which is \emph{not} a canonical format.
 
   If \code{annotate=TRUE}, the returned matrix has attributes \code{sparse} and \code{nonneg} (possibly \code{NA}).
 }

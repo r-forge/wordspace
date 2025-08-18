@@ -11,9 +11,8 @@
   as well as a user-friendly environment for building and applying distributional semantic models (DSM) in R 
 
 }
-\details{
-
-}
+%\details{
+%}
 \author{
 
   Stephanie Evert (\url{https://purl.org/stephanie.evert})

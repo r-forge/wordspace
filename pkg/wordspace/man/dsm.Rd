@@ -21,7 +21,7 @@ dsm(M = NULL, target = NULL, feature = NULL, score = NULL,
 \arguments{
 
   \item{M}{
-    a dense or sparse co-occurrence matrix. A sparse matrix must be a subclass of \code{\link[=sparseMatrix-class]{sparseMatrix}} from the \code{Matrix} package. See "Details" below.
+    a dense or sparse co-occurrence matrix. A sparse matrix must be a subclass of \code{\link[Matrix:sparseMatrix-class]{sparseMatrix}} from the \code{Matrix} package. See "Details" below.
   }
 
   \item{target}{
@@ -71,7 +71,7 @@ dsm(M = NULL, target = NULL, feature = NULL, score = NULL,
 
   \enumerate{
     \item{
-      As a dense or sparse matrix in argument \code{M}.  A sparse matrix must be a subclass of \code{\link[=dMatrix-class]{dMatrix}} (from the \code{Matrix} package) and is automatically converted to the canonical storage mode used by the \code{wordspace} package.  Row and column labels may be specified with arguments \code{target} and \code{feature}, which must be character vectors of suitable length; otherwise \code{dimnames(M)} are used.
+      As a dense or sparse matrix in argument \code{M}.  A sparse matrix must be a subclass of \code{\link[Matrix:dMatrix-class]{dMatrix}} (from the \code{Matrix} package) and is automatically converted to the canonical storage mode used by the \code{wordspace} package.  Row and column labels may be specified with arguments \code{target} and \code{feature}, which must be character vectors of suitable length; otherwise \code{dimnames(M)} are used.
     }
     \item{
       As a triplet representation in arguments \code{target} (row label), \code{feature} (column label) and \code{score} (co-occurrence frequency or pre-computed score).  The three arguments must be vectors of the same length; each set of corresponding elements specifies a non-zero cell of the co-occurrence matrix.  If multiple entries for the same cell are given, their frequency or score values are added up.

@@ -8,7 +8,7 @@
 }
 \description{
 
-  Mark an arbitrary dense or sparse matrix as a pre-computed \code{\link{dist.matrix}} object, so it can be used with \code{\link{nearest.neighbours}} and \code{\link{pair.distances}}.  Default methods are provided for a regular dense \code{\link{matrix}}, any type of \code{\link{sparseMatrix}} from the \bold{Matrix} package, as well as a \code{dsm} object (from which the raw or scored co-occurrence matrix is extracted).
+  Mark an arbitrary dense or sparse matrix as a pre-computed \code{\link{dist.matrix}} object, so it can be used with \code{\link{nearest.neighbours}} and \code{\link{pair.distances}}.  Default methods are provided for a regular dense \code{\link{matrix}}, any type of \code{\link[Matrix:sparseMatrix]{sparseMatrix}} from the \bold{Matrix} package, as well as a \code{dsm} object (from which the raw or scored co-occurrence matrix is extracted).
 
 }
 \usage{
