@@ -5,9 +5,10 @@ benchmark <- function (expr, name, n.ops=NULL, silent=FALSE) {
   elapsed <- time.info[3]
   user <- time.info[1]
   mops <- if (missing(n.ops)) NA else (n.ops / 1e6) / elapsed
-  mb.tmp <- mem.info[2, 6] - mem.info[2, 2]
+  mb.tmp <- mem.info[2, ncol(mem.info)] - mem.info[2, 2]
   res <- data.frame(time=elapsed, MOPS=round(mops, 2), CPUTime=user, MB=mb.tmp, row.names=name)
   if (!silent) print(res)
+  gc(reset=TRUE)
   res
 }
 
