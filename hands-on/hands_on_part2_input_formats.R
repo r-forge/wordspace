@@ -1,5 +1,5 @@
-##
-## Bonus material for day 2:
+######################################################################
+## Another hands-on example and exercise for Part 2 of the tutorial:
 ## How to read your own co-occurrence data into 'wordspace'
 ##
 

@@ -1,5 +1,6 @@
 ######################################################################
-## Code examples from part 2 of the course (Taxonomy of DSM Parameters)
+## Code examples from Part 2 of the tutorial (Taxonomy of DSM Parameters),
+## including some hands-on exercises
 ##
 
 ## Try these code examples as you follow the lecture and modify them!
