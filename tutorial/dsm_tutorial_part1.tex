@@ -18,14 +18,14 @@
 
 \title[DSM Tutorial -- Part 1]{Distributional Semantic Models}
 \subtitle{Part 1: Introduction}
-\author[\textcopyright\ Evert/Lenci/Baroni/Lapesa]{%
-  Stefan Evert\inst{1}\\
-  {\footnotesize with  Alessandro Lenci\inst{2}, Marco Baroni\inst{3} and Gabriella Lapesa\inst{4}}}
+\author[\textcopyright\ Evert/Lapesa/Lenci/Baroni]{%
+  Stephanie Evert\inst{1}\\
+  {\small with  Gabriella Lapesa\inst{2}, Alessandro Lenci\inst{3}, and Marco Baroni\inst{4}}}
 \institute[CC-by-sa]{%
   \inst{1}Friedrich-Alexander-Universität Erlangen-Nürnberg, Germany\\
-  \inst{2}University of Pisa, Italy\\
-  \inst{3}University of Trento, Italy\\
-  \inst{4}University of Stuttgart, Germany
+  \inst{2}Heinrich-Heine-Universität Düsseldorf \& GESIS, Germany\\
+  \inst{3}University of Pisa, Italy\\
+  \inst{4}ICREA / Universitat Pompeu Fabra Barcelona, Italy
 }
 
 \date[wordspace.collocations.de]{
@@ -39,6 +39,57 @@
 \hideLogo
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}
+  \frametitle{What is distributional semantics?}
+
+\begin{itemize}
+\item A \primary{corpus-based} approach to the representation of meaning based on a very simple intuition:
+  \hh{distributional hypothesis}
+  \begin{itemize}
+  \itemhand similar context $\iff$ similar meaning
+  \end{itemize}
+  \gap
+\item<2-> An \primary{empirical method} that produces usage-based lexical entries for words, which to the computer look like this:
+  \begin{itemize}
+  \item $(10, 0, 0, 0, 0, 100, 40)$
+  \item $(-1.3, 1.4, 0.4, -0.2, 1.3, 2.7, -0.001)$
+  \end{itemize}
+  \gap
+\item<3-> Closely related to neuronal word embeddings
+  \gap
+\item<4-> Maths behind it can be complicated \ldots
+  \begin{itemize}
+  \item[\ldots] but you can apply DS to many research questions with existing software packages if you understand the basic concepts clearly
+  \item[\hand] Beware of the black box problem!
+  \end{itemize}
+\end{itemize}			
+\end{frame}
+
+\begin{frame}[c]
+  \frametitle{Goals of this course}
+
+  \begin{enumerate}
+  \item<1-> Introduce the basic concepts of \h{distributional semantics} (DS) and -- at the same time -- teach you to take your own steps into DS with the \secondary{\texttt{wordspace}} package for R
+    \smallskip
+  \item<2-> Show you \primary{what can be done} with DS in two domains of interdisciplinary application, including hands-on exercises
+    \begin{itemize}
+    \item Linguistic Theory
+      \begin{itemize}
+      \item Motivation: test theories, enlarge scope of investigation
+      \item Challenge: operationalization\\
+        (theoretical concepts $\to$ empirical properties)
+      \end{itemize}
+    \item Cognitive modeling 
+      \begin{itemize}
+      \item Motivation: corpus data are behavioural data after all
+      \item Challenge: continuous variables, large vocabularies 
+      \end{itemize}
+    \end{itemize}	
+        \smallskip
+  \item<3-> Equip you with the ``coordinates'' to navigate the current DS literature beyond the scope of this course
+  \end{enumerate}
+\end{frame}
 
 \section*{Outline}
 \frame{ 
@@ -102,7 +153,7 @@
 
 \begin{frame}[c]
   \frametitle{Word sketch of ``\textbf{cat}''}
-  \framesubtitle{Can we infer meaning from collocations?}
+  \framesubtitle{Can we infer meaning from collocations (as Firth suggests)?}
 
   \centering\ungap[.5]
   \begin{tikzpicture}
@@ -164,8 +215,8 @@
   \begin{center}
     \ungap[1]
     \setlength{\arrayrulewidth}{1pt}
-    \begin{tabular}{@{\rule{0mm}{1.2em} }l@{ }r*{6}{|c}|}
-      && get & see & use & hear & eat & kill \\
+    \begin{tabular}{@{\rule{0mm}{1.4em} }l@{ }r*{6}{|c}|}
+      && get & see & use & hear & eat & kill \\[-0.4em]
       && \hg{get} & \hg{sij} & \hg{ius} & \hg{hir} & \hg{iit} & \hg{kil} \\
       \hline
       knife & \hg{naif} &  51 & 20 & 84 &  0 &  3 &  0 \\
@@ -351,54 +402,6 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{Building a distributional model}
-  % \framesubtitle{}
-  
-  \footnotesize\centering
-  \begin{tikzpicture}
-    \node[diagram box=black] (corpus) at (0, 6.5) {pre-processed corpus with linguistic annotation} ;
-    \visible<2->{
-      \node[diagram box] (tt_terms) at (+3, 5) {define target \& feature terms} ;
-      \draw[diagram arrow=counterpoint] (corpus) -- node[right=1.5em] {term-term matrix} (tt_terms) ;
-    }
-    \visible<3->{
-      \node[diagram box] (tt_span) at (+3, 4) {type \& size of co-occurrence} ;
-      \draw[diagram arrow] (tt_terms) -- (tt_span) ;
-    }
-    \visible<4->{
-      \node[diagram box=black] (geom_prob) at (0, 3) {$\mathbf{M}$} ;
-      \draw[diagram arrow] (tt_span) -- (geom_prob) ;
-    }
-    \visible<5->{
-      \node[diagram box] (tc_terms) at (-3, 5) {define target terms} ; 
-      \draw[diagram arrow=counterpoint] (corpus) -- node[left=1.5em] {term-context matrix} (tc_terms) ;
-    }
-    \visible<6->{
-      \node[diagram box] (tc_context) at (-3, 4) {context tokens or types} ;
-      \draw[diagram arrow] (tc_terms) -- (tc_context) ;
-      \draw[diagram arrow] (tc_context) -- (geom_prob) ;
-    }
-    \visible<7->{
-      \node[diagram ghost] (prob) at (2, 2) {} ;
-      \draw[diagram arrow=counterpoint] (geom_prob) -- node[right=1.5em] (probanal) {probabilistic analysis} (prob) ;
-      \node[below=1mm of probanal, text width=30mm, align=center, color=counterpoint] {embedding learned by\\ neural network} ;
-    }
-    \visible<8->{
-      \node[diagram box] (scoring) at (-2, 2) {feature scaling} ;
-      \draw[diagram arrow=counterpoint] (geom_prob) -- node[left=1.5em] {geometric analysis} (scoring) ;
-    }
-    \visible<9->{
-      \node[diagram box] (metric) at (-2, 1) {similarity/distance measure + normalization} ;
-      \draw[diagram arrow] (scoring) -- (metric) ;
-    }
-    \visible<10->{
-      \node[diagram box] (dimred) at (-2, 0) {dimensionality reduction} ;
-      \draw[diagram arrow] (metric) -- (dimred) ;
-    }
-  \end{tikzpicture}
-\end{frame}
-
-\begin{frame}
   \frametitle{Nearest neighbours}
   \framesubtitle{DSM based on verb-object relations from BNC, reduced to 100 dim.\ with SVD}
   % \framesubtitle{}
@@ -477,11 +480,48 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{Word embeddings}
+  \frametitle{DSM vectors as word embeddings}
 
-  \gap
-  \begin{columns}[c]
+  \begin{columns}[T]
+    \begin{column}{60mm}
+      DSM vector as sub-symbolic meaning representation
+      \begin{itemize}
+      \item feature vector for machine learning algorithm
+      \item input for neural network
+      \item such \primary{distributed} representations are known as \hh{embeddings}
+      \itemhand embeddings $\not\Rightarrow$ distributional
+      \end{itemize}
+
+      \gap[1]
+      \onslide<2->
+      Computation in semantic space
+      \begin{itemize}
+      \item find meaningful subdimensions in DSM space (\so correlation)
+      \item linear operations on vectors
+      \end{itemize}
+    \end{column}
     \begin{column}{50mm}
+      \onslide<1->\ungap[2]
+      \begin{center}
+        \includegraphics[width=35mm]{img/Goldberg2017_Fig4_2}
+      \end{center}
+      \ungap[1]
+      {\tiny \hfill\citep[Fig.~4.2]{Goldberg:17}}
+      \onslide<2->
+      \begin{center}
+        \includegraphics[width=30mm, trim={14cm 0 0 0}, clip]{img/MikolovYihZweig2013_Fig2}
+      \end{center}
+      \ungap[1]
+      {\tiny \hfill\citep[Fig.~2]{Mikolov:Yih:Zweig:13}}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}
+  \frametitle{DSM vectors as word embeddings}
+
+  \begin{columns}[T]
+    \begin{column}{60mm}
       DSM vector as sub-symbolic meaning representation
       \begin{itemize}
       \item feature vector for machine learning algorithm
@@ -532,6 +572,325 @@
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{DSM and semantic similarity}
+
+\begin{frame}[c]
+\frametitle{Inverse distributional semantics}
+\framesubtitle{Which word occurs in similar contexts as the ones displayed in this graph?}
+\centering
+\includegraphics[width=\textwidth]{img/masked_neighbours_meaning}
+
+\raggedleft\gap
+\ldots{} look at the neighbours:\\
+is there one notion of similarity that explains all of them?
+\end{frame}
+
+\begin{frame}
+  \frametitle{Distributional similarity as semantic similarity}
+
+  \begin{itemize}
+  \item DSM similarity as a \primary{quantitative notion}
+    \begin{itemize}
+    \item if $\va$ is closer to $\vb$ than to $\Vector{c}$ in the distributional
+      vector space, then $a$ is more semantically similar to $b$ than to $c$
+    \end{itemize}
+    \bigskip
+  \item DSM similarity as a  \primary{graded notion}, differently from \secondary{categorical} nature of most theoretical accounts
+     \bigskip 
+  \item DSM similarity as the empirical correlate of a \primary{heterogeneous set of phenomena}\\
+  	\hfill ... which we may want to tease apart! 
+\bigskip
+  \item DSM similarity is \primary{symmetric} -- cognition is not \\
+  	\hfill ... can we fix this? 	
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Characterizing DSM similarity}
+  \begin{itemize}
+   \item DSMs are thought to represent \primary{taxonomic} similarity
+   \begin{itemize}
+    \item words that tend to occur in the same contexts
+    \item[]
+    \end{itemize}
+  \item Words that share many contexts share many properties (attributes) and are thus 
+    \secondary{taxonomically/ontologically similar}
+    \begin{itemize}
+    \item synonyms (\emph{rhino/rhinoceros})
+    \item antonyms and values on a scale (\emph{good/bad})
+    \item co-hyponyms (\emph{rock/jazz})
+    \item hyper- and hyponyms (\emph{rock/basalt})
+    \item[]
+    \end{itemize}
+  \item Taxonomic similarity is seen as the \primary{fundamental semantic relation} organising the vocabulary of a language, allowing categorization, generalization and inheritance...
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Is distributional similarity \textit{just} taxonomic?}
+
+  \ungap[.5]
+  Nearest DSM neighbors have different types of \primary{semantic relations}.
+
+  \ungap[.5]\footnotesize
+  \begin{columns}[t]
+    \column{5cm}
+    \begin{block}{\emph{car} {\small (BNC, L2/R2 span)}}
+      \begin{itemize}
+      \item van {\color{counterpoint} co-hyponym}
+      \item vehicle {\color{counterpoint} hyperonym}
+      \item truck {\color{counterpoint} co-hyponym}
+      \item motorcycle {\color{counterpoint} co-hyponym}
+      \item driver {\color{counterpoint} related entity}
+      \item motor {\color{counterpoint} part}
+      \item lorry {\color{counterpoint} co-hyponym}
+      \item motorist {\color{counterpoint} related entity}
+      \item cavalier {\color{counterpoint} hyponym}
+      \item bike {\color{counterpoint} co-hyponym}
+      \end{itemize}
+    \end{block}
+    \column{5cm}
+    \begin{block} {\emph{car} {\small (BNC, L30/R30 span)}}
+      \begin{itemize}
+      \item drive {\color{counterpoint} function}
+      \item park {\color{counterpoint} typical action}
+      \item bonnet {\color{counterpoint} part}
+      \item windscreen {\color{counterpoint} part}
+      \item hatchback {\color{counterpoint} part}
+      \item headlight {\color{counterpoint} part}
+      \item jaguar {\color{counterpoint} hyponym}
+      \item garage {\color{counterpoint} location}
+      \item cavalier {\color{counterpoint} hyponym}
+      \item tyre {\color{counterpoint} part}
+      \end{itemize}
+    \end{block}
+  \end{columns}
+
+  \hfill\light{\tiny \url{http://clic.cimec.unitn.it/infomap-query/}}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Is distributional similarity \textit{just} taxonomic?}
+  \framesubtitle{Manual annotation: what are the properties of \primary{\textit{car}}? Humans vs DSM}
+
+  \ungap[1]
+  \begin{columns}[c]
+    \begin{column}{6cm}
+      \hspace*{-1em}%
+      \includegraphics[width=7cm]{img/BaroniLenci2008_fig1_reduced}%
+    \end{column}
+    \begin{column}{4cm}
+
+      \footnotesize
+      Taxonomic category:
+      \begin{itemize}\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}\vspace{-\topsep}
+      \item[cc] (co-)hyponym \hfill \textit{truck}
+      \item[ch] hypernym  \hfill  \textit{vehicle}
+      \end{itemize}
+      Properties of entity:
+      \begin{itemize}\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}\vspace{-\topsep}
+      \item[eb] typical behaviour  \hfill 
+      \item[ece] ext. component  \hfill wheel
+      \item[ese] surf. property  \hfill smooth
+      \end{itemize}
+      Situationally associated:
+      \begin{itemize}\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}\vspace{-\topsep}
+      \item[sa] action  \hfill  \textit{park}
+      \item[se] other entity  \hfill  \textit{traffic light}
+      \item[sf] function \hfill  \textit{drive}
+      \item[sl] location  \hfill  \textit{garage}
+      \item[sp] participant  \hfill  \textit{driver}
+
+      \end{itemize}
+    \end{column}
+  \end{columns}
+
+\bigskip
+
+  \footnotesize\gap[1]
+Task: humans: given a word, generate properties; DSM), generate top 10 neighbors. Items: 44 concrete English nouns \citep{Baroni:Lenci:08}.
+
+\end{frame}
+
+%  (L5/R5  SVD
+
+
+
+
+
+
+
+\begin{frame}
+\frametitle{DSM similarities: terminological coordinates}
+\framesubtitle{Attributional similarity vs. Semantic relatedness}
+
+
+\begin{itemize}
+\item \primary{Attributional similarity} ($\leftarrow$ taxonomical) -- two words sharing a large number of salient features (attributes)
+\begin{itemize}
+\item synonymy (\emph{car/automobile})
+\item co-hyponymy (\emph{car/van/truck})
+\item hyperonymy (\emph{car/vehicle)}
+\begin{itemize}
+\item Problem: subset/superset, need ad-hoc measures (distributional inclusion cf. \citet{LenciBenotto:12})
+\end{itemize}
+\item antonymy (\emph{hot/cold})
+\begin{itemize}
+\item Problem: they are the opposite of similar, and yet...
+\end{itemize}
+\end{itemize}
+\bigskip
+\item \primary{Semantic relatedness} \citep{Budanitsky:Hirst:06} -- two words semantically associated without necessarily being similar
+\begin{itemize}
+\item function (\emph{car/drive})
+\item meronymy (\emph{car/tyre})
+\item location (\emph{car/road})
+\item attribute (\emph{car/fast})
+\end{itemize}
+\hfill Why similar in DSMs? They co-occur $\rightarrow$ share contexts 
+
+\end{itemize}
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{DSM similarities: terminological coordinates}
+\framesubtitle{Attributional vs. Relational Similarity}
+
+\begin{itemize}
+\item \primary{Attributional similarity} ($\leftarrow$ taxonomical) -- two words sharing a large number of salient features (attributes)
+\begin{itemize}
+\item synonymy (\emph{car/automobile})
+\item co-hyponymy (\emph{car/van/truck})
+\item hyperonymy (\emph{car/vehicle)}
+\end{itemize}
+
+\bigskip
+\item \primary{Relational similarity} \citep{Turney:06} -- similar relation between pairs of words (analogy)
+  \begin{itemize}
+  \item \emph{policeman}$\,:\,$\emph{gun} $\;::\;$ \emph{teacher}$\,:\,$\emph{book}
+  \item \emph{mason}$\,:\,$\emph{stone} $\;::\;$ \emph{carpenter}$\,:\,$\emph{wood}
+  \item \emph{traffic}$\,:\,$\emph{street} $\;::\;$ \emph{water}$\,:\,$\emph{riverbed}
+  \end{itemize}
+\end{itemize}
+   \hfill ... textbook example of neural embeddings application \\
+     \hfill     \includegraphics[width=50mm]{img/MikolovYihZweig2013_Fig2}
+
+
+\end{frame}
+
+
+   \begin{frame}
+ \frametitle{Problem: symmetry in DSM similarity}
+ \framesubtitle{The symmetry assumption does not fit all phenomena}
+ 
+ \centering
+ \textbf{Solution: neighbor rank can capture (potential) asymmetries}
+  
+ \begin{minipage}{1\textwidth}
+ \hspace{-18pt}
+ \begin{minipage}{0.38\textwidth}
+ \begin{tikzpicture}[scale=0.45, every node/.style={transform shape}]
+\draw [<->, thick] (0,5.5) -- (0,0) -- (5.5,0);
+\draw [->,red, solid] (0,0) -- (5,1);
+\draw [->,red, blue, solid] (0,0) -- (2,5);
+%\draw [->,blue, dashed] (0,0) -- (4,2);
+%\draw [->,red, dashed] (0,0) -- (2.2,3);
+%\draw [->,red, dashed] (0,0) -- (4.2, 2.3);
+\node [right,red] at (5,1) {\textbf{unhappy}};
+\node [right,blue] at (2,5) {\textbf{sad}};
+%\node [right,blue] at (4,2) {unhappy};
+%\node [right,blue] at (4.2, 2.3) {bla};
+%\node [right,blue] at (2.2,3) {unhappy};
+\node [left,black] at (0,5.5) {\textbf{d1}};
+\node [below,black] at (5.5,0) {\textbf{d2}};
+\end{tikzpicture}
+\tiny
+dist(sad, unhappy) = dist(unhappy, sad)
+ \end{minipage}
+ \begin{minipage}{0.35\textwidth}
+ \begin{tikzpicture}[scale=0.45, every node/.style={transform shape}]
+\draw [<->, thick] (0,5.5) -- (0,0) -- (5.5,0);
+
+\draw [->,red, solid] (0,0) -- (5,1);
+\draw [->,red, blue, solid] (0,0) -- (2,5);
+
+\draw [->,blue, dashed] (0,0) -- (2.2,3);
+%\draw [->,blue, dashed] (0,0) -- (4.2, 2.3);
+%\draw [->,blue, dashed] (0,0) -- (1, 5.5);
+
+\node [right,blue] at (3,4.8) {awful};
+\draw [->,blue, dashed] (0,0) -- (3,4.8);
+
+%\draw [->,blue, dashed] (0,0) -- (4,2);
+%\node [right,blue] at (4,2) {lonely};
+%\node [right,blue] at (1, 5.5) {tragic};
+
+\node [right,blue] at (2.2,3) {miserable};
+
+\node [right,red] at (5,1) {\textbf{unhappy}};
+\node [right,blue] at (2,5) {\textbf{sad}};
+\node [right,blue] at (3,4) {lonely};
+\draw [->,blue, dashed] (0,0) -- (3,4);
+
+
+\node [left,black] at (0,5.5) {\textbf{d1}};
+\node [below,black] at (5.5,0) {\textbf{d2}};
+\end{tikzpicture}
+\tiny
+rank(sad, unhappy) =  4
+ \end{minipage}
+ \begin{minipage}{0.25\textwidth}
+\begin{tikzpicture}[scale=0.45, every node/.style={transform shape}]
+\draw [<->, thick] (0,5.5) -- (0,0) -- (5.5,0);
+\draw [->,red, solid] (0,0) -- (5,1);
+\draw [->,red, blue, solid] (0,0) -- (2,5);
+
+\node [right,red] at (5,1) {\textbf{unhappy}};
+
+\node [right,red] at (5.5, 0.5) {unsatisfied};
+\draw [->,red, dashed] (0,0) -- (5.5, 0.5);
+%\draw [->,red, dashed] (0,0) -- (5.5,3);
+%\node [right,red] at (5.3,2) {uncomfortable};
+%\draw [->,red, dashed] (0,0) -- (5.3,2);
+\draw [->,red, dashed] (0,0) -- (2.2,3);
+\node [right,red] at (3,4) {lonely};
+\draw [->,red, dashed] (0,0) -- (3,4);
+\node [right,red] at (2.2,3) {miserable};
+
+\node [right,red] at (3,4.8) {awful};
+\draw [->,red, dashed] (0,0) -- (3,4.8);
+%\node [right,blue] at (4,2) {unhappy};
+%\node [right,blue] at (4.2, 2.3) {bla};
+%\node [right,blue] at (2.2,3) {unhappy};
+
+\node [right,blue] at (2,5) {\textbf{sad}};
+%\node [right,blue] at (4,2) {unhappy};
+%\node [right,blue] at (4.2, 2.3) {bla};
+%\node [right,blue] at (2.2,3) {unhappy};
+\node [left,black] at (0,5.5) {\textbf{d1}};
+\node [below,black] at (5.5,0) {\textbf{d2}};
+\end{tikzpicture}
+\tiny
+rank(unhappy, sad) =  5
+ \end{minipage}
+ \end{minipage}
+ 
+ \medskip
+ \smallskip
+ \begin{itemize}
+ \item Motivation: cognitive processes are notoriously asymmetric
+  \item Advantage: rank makes similarity predictions comparable across models and is applicable to different distance measures
+ \item Interpretation: rank controls for differences in density in the semantic space 
+ \end{itemize}
+  
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 \subsection{Three famous examples}
 
 \begin{frame}
@@ -651,6 +1010,91 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Getting practical}
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+\subsection{Course Outline}
+
+\begin{frame}
+\frametitle{Day 1: Introduction}
+\framesubtitle{Summing up what we learnt}
+\begin{itemize}
+	\item A DSM is a \textbf{matrix},  which contains
+	\begin{itemize}
+	\item ... targets: \textbf{rows}
+	\item ... contexts: \textbf{columns}
+	\item ... co-occurrence scores (or fancier versions of co-occurrence) for target/context pairs: \textbf{matrix cells}
+	\end{itemize}
+	\item The row corresponding to a target (\textbf{vector}) is the best \textit{approximation} we have for it its meaning
+		\begin{itemize}
+			\item \primary{Goal: make comparisons} (recall the hieroglyphs) 
+					\begin{itemize}
+						\item \secondary{Similarity} as context overlap
+					\end{itemize}
+				\end{itemize}		
+			\item Geometric interpretation: vectors as coordinates in space
+			\begin{itemize}
+					\item \secondary{Similarity} as distance 
+					\item Neighbors reveal the semantic nuances a DSM is capturing
+					\item Visualization: neighbor maps
+					\item Neighbor rank as a way to get asymmetric similarity predictions
+		
+		\end{itemize}
+\end{itemize}
+
+
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{frame}
+  \frametitle{Roadmap: First steps in distributional semantics}
+  
+  \begin{itemize}
+  \item \textbf{Day 2}: \textbf{Building a DSM, step by step}
+    \begin{itemize}
+    \item DSM parameters: formal definition \& taxonomy
+    \item Collecting co-occurrence data: what counts as a context?
+    \item Mathematical operations on the DSM vectors
+    \item Computing distances/similarities
+    \item \secondary{Practice:} building DSMs and exploring parameters
+    \end{itemize}
+    \gap
+  \item \textbf{Day 3}: \textbf{Which meaning is a DSM capturing (if any?)}
+    \begin{itemize}
+    \item Evaluation: conceptual coordinates 
+    \item Standard evaluation tasks:\\
+      multiple choice, prediction of similarity ratings, clustering
+    \item Narrowing down similarity: classifying semantic relations
+    \item \secondary{Practice:} evaluation of selected tasks
+    \end{itemize}	
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Roadmap: Interdisciplinary applications}
+  \begin{itemize}
+  \item \textbf{Day 4: DS beyond NLP -- Linguistic theory}
+    \begin{itemize}
+    \item Linguistic exploitation of distributional representations
+    \item A textbook challenge for DSMs: polysemy
+    \item Success stories: semantic compositionality (belown and above word level), morphological transparency, argument structure
+    \item Issues: not all words have a (straightforward) DS meaning
+    \item \secondary{Practice:} word sense disambiguation \& modeling of morphological derivation
+    \end{itemize}
+    \gap
+  \item \textbf{Day 5: DS beyond NLP -- Cognitive modelling}
+    \begin{itemize}
+    \item DSMs for cognitive modeling: general issues
+    \item Free association norms as a window into the organization of the mental lexicon 
+    \item Predicting free associations with DSMs
+    \item \secondary{Practice:} combine DSMs with first-order co-occurrence in the FAST free association task
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Software and further information}
 
@@ -676,43 +1120,44 @@
   \end{itemize}
 \end{frame}
 
-\begin{frame}
-  \frametitle{Recent workshops and tutorials}
-  % \framesubtitle{}
-
-  \ungap[1]
-  \begin{itemize}
-  \item \primary{2007}: \href{http://clic.cimec.unitn.it/marco/beyond_words/}{CoSMo Workshop} (at Context '07)
-  \item \primary{2008}: \href{http://wordspace.collocations.de/doku.php/workshop:esslli:start}{ESSLLI Wshp} \& \href{http://wordspace.collocations.de/doku.php/workshop:esslli:task}{Shared Task}, \href{http://linguistica.sns.it/RdL/2008.html}{Italian J of Linguistics}
-  \item \primary{2009}: \href{http://art.uniroma2.it/gems/}{GeMS Wshp} (EACL), \href{http://www.let.rug.nl/disco2009/}{DiSCo Wshp} (CogSci), \href{http://wordspace.collocations.de/doku.php/course:esslli2009:start}{ESSLLI}
-  \item \primary{2010}: \href{http://art.uniroma2.it/gems010/}{2nd GeMS} (ACL), \href{http://clic.cimec.unitn.it/roberto/ESSLLI10-dsm-workshop/}{ESSLLI Wshp}, \href{http://naaclhlt2010.isi.edu/tutorials/t4.html}{Tutorial} (NAACL),\\
-   \hide{2010:} \href{https://www.cambridge.org/core/journals/natural-language-engineering/issue/0C6E78AFDAB2AC263CDC331193B5E83A}{J Natural Language Engineering}
- \item \primary{2011}: \href{https://www.aclweb.org/anthology/W/W11/\#1300}{2nd DiSCo} (ACL), \href{https://sites.google.com/site/geometricalmodels/}{3rd GeMS} (EMNLP)
-   %% DiSCo website seems offline: http://disco2011.fzi.de
-  \item \primary{2012}: \href{http://didas.org}{DiDaS Wshp} (ICSC), \href{https://www.cl.cam.ac.uk/~ah433/esslli2012/coursecontent.html}{ESSLLI Course}
-  \item \primary{2013}: \href{https://sites.google.com/site/cvscworkshop/}{CVSC Wshp} (ACL), \href{http://clic.cimec.unitn.it/roberto/IWCS-TFDS2013/}{TFDS Wshp} (IWCS), \href{http://www.dagstuhl.de/en/program/calendar/semhp/?semnr=13462}{Dagstuhl}
-  \item \primary{2014}: \href{https://sites.google.com/site/cvscworkshop2014/}{2nd CVSC} (EACL), \href{https://sites.google.com/site/insightdistsemws/}{DSM Wshp} (Insight)
-  \item \primary{2015}: \href{https://aclanthology.coli.uni-saarland.de/volumes/proceedings-of-the-1st-workshop-on-vector-space-modeling-for-natural-language-processing}{VSM4NLP} (NAACL), \href{https://staff.fnwi.uva.nl/w.zuidema/teaching/compositional-and-vectorial-semantics-esslli-2015/}{ESSLLI Course}, \href{https://hal.archives-ouvertes.fr/hal-01259695/}{TAL Journal}
-  \item \primary{2016}: \href{http://esslli2016.unibz.it/?page_id=256}{DSALT Wshp} (ESSLLI), \href{http://coling2016.anlp.jp/tutorials/T1/}{Tutorial} (COLING), \href{https://sites.google.com/site/konvens2016jobimtexttutorial/}{Tutorial}\\
-    \hide{2016:} (Konvens), \href{http://esslli2016.unibz.it/?page_id=242}{ESSLLI Course}, \href{http://www.aclweb.org/anthology/J/J16/\#4000}{Computational Linguistics}
-  \item \primary{2017}: \href{https://www.irit.fr/esslli2017/courses/34}{ESSLLI Course}
-  \item \primary{2018}: \href{http://text-machine.cs.uml.edu/lrec2018_t4/}{Tutorial} (LREC), \href{http://wordspace.collocations.de/doku.php/course:esslli2018:start}{ESSLLI Course\textsubscript{1}} \& \href{http://esslli2018.folli.info/word-vector-space-specialisation/}{Course\textsubscript{2}}
-  \end{itemize}
-  \hfill\light{\small click on Workshop name to open Web page}
-  \addnote{CoSMo = \underline{Co}ntextual Information in \underline{S}emantic Space \underline{M}odels}%
-  \addnote{ESSLLI = European Summer School in Logic, Language and Information}%
-  \addnote{GeMS = \underline{Ge}ometrical \underline{M}odels of Natural Language \underline{S}emantics}%
-  \addnote{DiSCo = \underline{Di}stributional \underline{S}emantics beyond Concrete \underline{Co}ncepts}%
-  \addnote{JNLE = Journal of Natural Language Engineering}%
-  \addnote{DiSCo 2 = \underline{Di}stributional \underline{S}emantics and \underline{Co}mpositionality}%
-  \addnote{DiDaS = Workshop on \underline{Di}stributional \underline{Da}ta \underline{S}emantics}%
-  \addnote{CVSC = \underline{C}ontinuous \underline{V}ector \underline{S}pace Models and their \underline{C}ompositionality}%
-  \addnote{TFDS = Towards a Formal Distributional Semantics}%
-\end{frame}
+%\begin{frame}
+%  \frametitle{Recent workshops and tutorials}
+%  % \framesubtitle{}
+%
+%  \ungap[1]
+%  \begin{itemize}
+%  \item \primary{2007}: \href{http://clic.cimec.unitn.it/marco/beyond_words/}{CoSMo Workshop} (at Context '07)
+%  \item \primary{2008}: \href{http://wordspace.collocations.de/doku.php/workshop:esslli:start}{ESSLLI Wshp} \& \href{http://wordspace.collocations.de/doku.php/workshop:esslli:task}{Shared Task}, \href{http://linguistica.sns.it/RdL/2008.html}{Italian J of Linguistics}
+%  \item \primary{2009}: \href{http://art.uniroma2.it/gems/}{GeMS Wshp} (EACL), \href{http://www.let.rug.nl/disco2009/}{DiSCo Wshp} (CogSci), \href{http://wordspace.collocations.de/doku.php/course:esslli2009:start}{ESSLLI}
+%  \item \primary{2010}: \href{http://art.uniroma2.it/gems010/}{2nd GeMS} (ACL), \href{http://clic.cimec.unitn.it/roberto/ESSLLI10-dsm-workshop/}{ESSLLI Wshp}, \href{http://naaclhlt2010.isi.edu/tutorials/t4.html}{Tutorial} (NAACL),\\
+%   \hide{2010:} \href{https://www.cambridge.org/core/journals/natural-language-engineering/issue/0C6E78AFDAB2AC263CDC331193B5E83A}{J Natural Language Engineering}
+% \item \primary{2011}: \href{https://www.aclweb.org/anthology/W/W11/\#1300}{2nd DiSCo} (ACL), \href{https://sites.google.com/site/geometricalmodels/}{3rd GeMS} (EMNLP)
+%   %% DiSCo website seems offline: http://disco2011.fzi.de
+%  \item \primary{2012}: \href{http://didas.org}{DiDaS Wshp} (ICSC), \href{https://www.cl.cam.ac.uk/~ah433/esslli2012/coursecontent.html}{ESSLLI Course}
+%  \item \primary{2013}: \href{https://sites.google.com/site/cvscworkshop/}{CVSC Wshp} (ACL), \href{http://clic.cimec.unitn.it/roberto/IWCS-TFDS2013/}{TFDS Wshp} (IWCS), \href{http://www.dagstuhl.de/en/program/calendar/semhp/?semnr=13462}{Dagstuhl}
+%  \item \primary{2014}: \href{https://sites.google.com/site/cvscworkshop2014/}{2nd CVSC} (EACL), \href{https://sites.google.com/site/insightdistsemws/}{DSM Wshp} (Insight)
+%  \item \primary{2015}: \href{https://aclanthology.coli.uni-saarland.de/volumes/proceedings-of-the-1st-workshop-on-vector-space-modeling-for-natural-language-processing}{VSM4NLP} (NAACL), \href{https://staff.fnwi.uva.nl/w.zuidema/teaching/compositional-and-vectorial-semantics-esslli-2015/}{ESSLLI Course}, \href{https://hal.archives-ouvertes.fr/hal-01259695/}{TAL Journal}
+%  \item \primary{2016}: \href{http://esslli2016.unibz.it/?page_id=256}{DSALT Wshp} (ESSLLI), \href{http://coling2016.anlp.jp/tutorials/T1/}{Tutorial} (COLING), \href{https://sites.google.com/site/konvens2016jobimtexttutorial/}{Tutorial}\\
+%    \hide{2016:} (Konvens), \href{http://esslli2016.unibz.it/?page_id=242}{ESSLLI Course}, \href{http://www.aclweb.org/anthology/J/J16/\#4000}{Computational Linguistics}
+%  \item \primary{2017}: \href{https://www.irit.fr/esslli2017/courses/34}{ESSLLI Course}
+%  \item \primary{2018}: \href{http://text-machine.cs.uml.edu/lrec2018_t4/}{Tutorial} (LREC), \href{http://wordspace.collocations.de/doku.php/course:esslli2018:start}{ESSLLI Course\textsubscript{1}} \& \href{http://esslli2018.folli.info/word-vector-space-specialisation/}{Course\textsubscript{2}}
+%  \end{itemize}
+%  \hfill\light{\small click on Workshop name to open Web page}
+%  \addnote{CoSMo = \underline{Co}ntextual Information in \underline{S}emantic Space \underline{M}odels}%
+%  \addnote{ESSLLI = European Summer School in Logic, Language and Information}%
+%  \addnote{GeMS = \underline{Ge}ometrical \underline{M}odels of Natural Language \underline{S}emantics}%
+%  \addnote{DiSCo = \underline{Di}stributional \underline{S}emantics beyond Concrete \underline{Co}ncepts}%
+%  \addnote{JNLE = Journal of Natural Language Engineering}%
+%  \addnote{DiSCo 2 = \underline{Di}stributional \underline{S}emantics and \underline{Co}mpositionality}%
+%  \addnote{DiDaS = Workshop on \underline{Di}stributional \underline{Da}ta \underline{S}emantics}%
+%  \addnote{CVSC = \underline{C}ontinuous \underline{V}ector \underline{S}pace Models and their \underline{C}ompositionality}%
+%  \addnote{TFDS = Towards a Formal Distributional Semantics}%
+%\end{frame}
 
 \begin{frame}
   \frametitle{Software packages}
 
+  \ungap
   \begin{tabular}{>{\color{secondary}}ll>{\itshape}p{6cm}}
     \href{http://infomap-nlp.sourceforge.net/}{Infomap NLP} & C & classical LSA-style DSM \\
     \href{http://www.psych.ualberta.ca/~westburylab/downloads/HiDEx.download.html}{HiDEx} & C++ & re-implementation of the HAL model \citep{Lund:Burgess:96} \\
@@ -722,7 +1167,8 @@
     \href{http://radimrehurek.com/gensim/}{Gensim} & Python & complex framework, focus on parallelization and out-of-core algorithms \\
     \href{http://vecto.space/}{Vecto} & Python & framework for count \& predict models \\
     \href{http://clic.cimec.unitn.it/composes/toolkit/}{DISSECT} & Python & user-friendly, designed for research on compositional semantics \\
-    \href{http://wordspace.r-forge.r-project.org/}{\color{primary}\texttt{wordspace}} & R & interactive research laboratory, but scales to real-life data sets
+    \href{http://wordspace.r-forge.r-project.org/}{\color{primary}\texttt{wordspace}} & R & interactive research laboratory, but scales to real-life data sets\\
+    \href{http://text2vec.org/}{\texttt{text2vec}} & R & GloVe embeddings \& topic models
   \end{tabular}
 
   \gap[0.5]
@@ -745,17 +1191,41 @@
     \begin{center}\small
       \secondary{\url{http://r-forge.r-project.org/projects/wordspace/}}
     \end{center}
-    \gap[.5]
-  \item Review paper on distributional semantics:
+
+  \end{itemize}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Further information}
+  % \framesubtitle{}
+
+  \begin{itemize}
+
+  \item Review papers on distributional semantics
     \begin{itemize}
-    \item[] \small\nocite{Turney:Pantel:10}
+    \item\nocite{Turney:Pantel:10}
       Turney, Peter~D. and Pantel, Patrick (2010).
       \primary{From frequency to meaning: Vector space models of semantics.}
-      {\em Journal of Artificial Intelligence Research}, {\bf 37}, 141--188.%
-      \nocite{Turney:Pantel:10}
+      {\em Journal of Artificial Intelligence Research},  37, 141--188.%
+    \item\nocite{Erk:12}
+      Erk, Katrin (2012).
+      \primary{Vector Space Models of Word Meaning and Phrase Meaning: A Survey.}
+      {\em Language and Linguistics Compass},  6-1, 635--653.%      
+    \item\nocite{Boleda:20}
+      Boleda, Gemma (2020).
+      \primary{Distributional Semantics and Linguistic Theory.}
+      {\em Annual Review of Linguistics},  6-1, 213--234.%
+    \item[]
     \end{itemize}
-    \gap[.5]
-  \item I should be working on textbook \primary{\emph{Distributional Semantics}} for \secondary{\emph{Synthesis Lectures on HLT}} (Morgan \& Claypool)
+
+  \item Textbook on distributional semantics
+    \begin{itemize}
+    \item\nocite{Lenci:Sahlgren:23}
+      Lenci, Alessandro and Sahlgren, Magnus (2023).
+      \primary{\em Distributional Semantics.}
+      Studies in Natural Language Processing. Cambridge University Press, Cambridge.
+    \end{itemize}
   \end{itemize}
 
 \end{frame}
@@ -776,14 +1246,63 @@
 
   Software installation
   \begin{itemize}
-  \item \hh{R} version 3.5 or newer from \url{http://www.r-project.org/}
+  \item \hh{R} version 4.0 or newer from \url{http://www.r-project.org/}
   \item RStudio from \url{http://www.rstudio.com/}
-  \item R packages from CRAN (through RStudio menu):
-    \hh{\texttt{sparsesvd}}, \hh{\texttt{wordspace}} (optional: \secondary{\texttt{tm}}, \secondary{\texttt{quanteda}}, \secondary{\texttt{Rtsne}}, \secondary{\texttt{uwot}}, \secondary{\texttt{wordcloud}}, \secondary{\texttt{shiny}}, \secondary{\texttt{corpustools}}, \secondary{\texttt{spacyr}}, \secondary{\texttt{udpipe}})
+  \item R packages from CRAN (through RStudio menu)
     \begin{itemize}
-    \item if you are attending a course, you may also be asked to install the \hh{\texttt{wordspaceEval}} package with some non-public data sets
+    \item \hh{\texttt{sparsesvd}}, \hh{\texttt{wordspace}}
+    \item recommended: \hh{\texttt{e1071}}, \hh{\texttt{rsparse}}, \hh{\texttt{Rtsne}}, \hh{\texttt{uwot}}
+    \item optional: \secondary{\texttt{tm}}, \secondary{\texttt{quanteda}},  \secondary{\texttt{data.table}}, \secondary{\texttt{wordcloud}}, \secondary{\texttt{shiny}}, \secondary{\texttt{spacyr}}, \secondary{\texttt{udpipe}}, \secondary{\texttt{coreNLP}}
     \end{itemize}
-  \item Get data sets, precompiled DSMs and \secondary{\texttt{wordspaceEval}} from\\ \primary{\href{http://wordspace.collocations.de/doku.php/course:material}{http://wordspace.collocations.de/doku.php/course:material}}
+  \item Get data sets, precompiled DSMs and \hh{\texttt{wordspaceEval}} package
+    \only<beamer:1| handout:1>{(with some non-public data sets)}%
+    \only<beamer:2| handout:0>{(login: \textbf{\counterpoint{\texttt{wordspace}}}, password: \textbf{\counterpoint{\texttt{Harris1954}}})}
+    from\\ \primary{\href{http://wordspace.collocations.de/doku.php/course:material}{http://wordspace.collocations.de/doku.php/course:material}}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Prepare to get your hands dirty \ldots}
+  \framesubtitle{Installing \texttt{wordspace} and  \texttt{wordspaceEval} in RStudio}
+  \centering
+  \fbox{\includegraphics[height=3.5cm]{img/rstudio_install_packages}}  \\
+  \bigskip
+  \secondary{\scriptsize{\phantom{Eval}\texttt{wordspace}}}
+  \includegraphics[height=2.2cm]{img/rstudio_install_packages_step1}
+  $\;$
+  \includegraphics[height=2.2cm]{img/rstudio_install_packages_step2}
+  \secondary{\scriptsize{\texttt{wordspaceEval}}}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Prepare to get your hands dirty \ldots}
+  \framesubtitle{Setting up a working directory and RStudio project}
+
+  \begin{itemize}
+  \item Create a separate \h{directory} (folder) for this course
+    \begin{itemize}
+    \item subdirectory \hh{\texttt{models}} for pre-compiled DSMs (large files)
+    \item subdirectory \hh{\texttt{data}} for other data files
+    \end{itemize}
+    \gap
+  \item Recommended: set up \h{RStudio project} for the course
+    \begin{itemize}
+    \item click \emph{New Project} (top right corner), then \emph{Existing Directory}
+    \item choose the course directory you've just created
+    \item this will be set as your R working directory within the project!
+      \itemhand you can easily switch between different RStudio projects
+    \end{itemize}
+    \gap
+  \item Alternatively: set working directory at start of session
+    \begin{itemize}
+    \item e.g.\ \texttt{setwd("\textasciitilde{}gabriella/Desktop/ESSLLI22")}
+    \end{itemize}
+    \gap
+  \item Work with \h{R scripts} rather than in interactive console
+    \begin{itemize}
+    \item RStudio: add \emph{R Script} from drop-down menu in top left corner
+    \item we provide example scripts for each hands-on session (+extras)
+    \end{itemize}
   \end{itemize}
 \end{frame}
 
@@ -920,6 +1439,115 @@ banana  11   2   2    0  18    0
 \end{Rcode}
 
 \end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Playing with a larger model}
+
+  \h{Term-term matrix, dimensionality-reduced}, built from Web texts for
+  target words in the format \textit{lemma\_POS} (e.g.\ \texttt{banana\_N})
+\begin{Rcode}
+> DSM_Vectors
+> View(DSM_Vectors)
+\end{Rcode}
+
+\gap[1]
+Let's inspect some nearest neighbors:
+\begin{Rcode}
+> nearest.neighbours(DSM_Vectors, "banana_N", n=4)\begin{Rout}
+   coconut_N  pineapple_N watermelon_N      bean_N  
+    10.86118     12.60826     13.35160     13.79671  
+\end{Rout}
+\end{Rcode}
+
+\begin{Rcode}
+> nearest.neighbours(DSM_Vectors, "freedom_N", n=4)\begin{Rout}
+     peace_N   morality_N   equality_N conscience_N 
+    30.13420     34.18397     34.23418     34.23894
+\end{Rout}
+\end{Rcode}
+\end{frame}
+  
+\begin{frame}[fragile]
+  \frametitle{Playing with a larger model}
+
+  Or create a semantic map for a word we are interested in:
+\begin{Rcode}
+> plot(nearest.neighbours(DSM_Vectors, "freedom_N", n=20, 
+                          dist.matrix=TRUE))
+\end{Rcode}
+
+\begin{center}
+\includegraphics[height=55mm]{img/freedom_DepFilt} 
+\end{center}
+\end{frame}
+  
+\begin{frame}[fragile]
+  \frametitle{\ldots{} and with an even larger model}
+
+  You can download several \h{large pre-compiled DSMs} from the course wiki, which represent different parameters of the co-occurrence matrix (\so part 2).
+  \begin{itemize}
+  \item e.g.\ \href{http://corpora.linguistik.uni-erlangen.de/data/wordspace/WP500_DepFilter_Lemma.rda}{\texttt{WP500\_DepFilter\_Lemma.rda}}
+  \item download this file to subdirectory \texttt{models}
+  \end{itemize}
+
+\begin{Rcode}
+> load("models/WP500_DepFilter_Lemma.rda", verbose=TRUE)\begin{Rout}
+Loading objects:
+  WP500_DepFilter_Lemma
+\end{Rout}
+> model <- WP500_DepFilter_Lemma \REM{assign to a shorter name}
+\end{Rcode}
+  
+Now try the semantic map again:
+\begin{Rcode}
+> plot(nearest.neighbours(model, "freedom_N", n=20, 
+                          dist.matrix=TRUE))
+\end{Rcode}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{\textit{Freedom} in a neural embedding model: \texttt{word2vec}}
+
+  \ungap[1]
+\begin{Rcode}
+> load("GoogleNews300_wf200k.rda", verbose=TRUE)
+> embeddings <- GoogleNews300_wf200k.rda
+> plot(nearest.neighbours(embeddings, "freedom_N", n=20, 
+                          dist.matrix=TRUE))
+\end{Rcode}
+
+\begin{center}
+  \includegraphics[height=55mm]{img/freedom_w2v}
+\end{center}
+\end{frame}
+  
+
+
+\begin{frame}[fragile]
+  \frametitle{Bonus: Recreate the hieroglyphs example}
+
+  \ungap[.5]
+\begin{Rcode}
+\REM{apply log-transformation to de-skew co-occurrence frequencies}
+> M <- log2(DSM_HieroglyphsMatrix + 1) \REM{see part 2}
+> round(M, 3)
+
+\REM{compute semantic distance (cosine similarity)}
+> pair.distances("dog", "cat", M, convert=FALSE)\begin{Rout}
+  dog/cat 
+0.9610952\end{Rout}
+
+\REM{find nearest neighbours}
+> nearest.neighbours(M, "dog", n=3)\begin{Rout}
+     cat      pig      cup 
+16.03458 20.08826 31.77784\end{Rout}
+
+> plot(nearest.neighbours(M, "dog", n=5, dist.matrix=TRUE))
+\end{Rcode}
+
+\end{frame}
+
 
 \begin{frame}[c]
   \frametitle{Explorations}
