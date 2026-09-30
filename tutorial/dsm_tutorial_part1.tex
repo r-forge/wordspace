@@ -40,57 +40,6 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{frame}
-  \frametitle{What is distributional semantics?}
-
-\begin{itemize}
-\item A \primary{corpus-based} approach to the representation of meaning based on a very simple intuition:
-  \hh{distributional hypothesis}
-  \begin{itemize}
-  \itemhand similar context $\iff$ similar meaning
-  \end{itemize}
-  \gap
-\item<2-> An \primary{empirical method} that produces usage-based lexical entries for words, which to the computer look like this:
-  \begin{itemize}
-  \item $(10, 0, 0, 0, 0, 100, 40)$
-  \item $(-1.3, 1.4, 0.4, -0.2, 1.3, 2.7, -0.001)$
-  \end{itemize}
-  \gap
-\item<3-> Closely related to neuronal word embeddings
-  \gap
-\item<4-> Maths behind it can be complicated \ldots
-  \begin{itemize}
-  \item[\ldots] but you can apply DS to many research questions with existing software packages if you understand the basic concepts clearly
-  \item[\hand] Beware of the black box problem!
-  \end{itemize}
-\end{itemize}			
-\end{frame}
-
-\begin{frame}[c]
-  \frametitle{Goals of this course}
-
-  \begin{enumerate}
-  \item<1-> Introduce the basic concepts of \h{distributional semantics} (DS) and -- at the same time -- teach you to take your own steps into DS with the \secondary{\texttt{wordspace}} package for R
-    \smallskip
-  \item<2-> Show you \primary{what can be done} with DS in two domains of interdisciplinary application, including hands-on exercises
-    \begin{itemize}
-    \item Linguistic Theory
-      \begin{itemize}
-      \item Motivation: test theories, enlarge scope of investigation
-      \item Challenge: operationalization\\
-        (theoretical concepts $\to$ empirical properties)
-      \end{itemize}
-    \item Cognitive modeling 
-      \begin{itemize}
-      \item Motivation: corpus data are behavioural data after all
-      \item Challenge: continuous variables, large vocabularies 
-      \end{itemize}
-    \end{itemize}	
-        \smallskip
-  \item<3-> Equip you with the ``coordinates'' to navigate the current DS literature beyond the scope of this course
-  \end{enumerate}
-\end{frame}
-
 \section*{Outline}
 \frame{ 
   \frametitle{Outline}
@@ -129,25 +78,25 @@
   \end{itemize}
 \end{frame}
 
-\newcommand{\bardiwac}{\primary{\only<beamer:1-7| handout:1>{bardiwac}\only<beamer:8-| handout:0>{\makebox[\widthof{bardiwac}][c]{claret}}}}%
+\newcommand{\bardiwac}{\primary{\only<beamer:1-2| handout:1>{\raisebox{-.2ex}{\rule{3em}{2ex}}}\only<beamer:3-| handout:0>{\makebox[3em][c]{claret}}}}%
 \begin{frame}
-  \frametitle{What is the meaning of ``\textbf{bardiwac}''?}
+  \frametitle{What is the meaning of the mystery word?}
   \framesubtitle{Can we infer meaning from usage?}
 
   \ungap
   \begin{itemize}
-  \item<2-> He handed her her glass of \bardiwac{}.
-  \item<3-> Beef dishes are made to complement the \bardiwac{}s.
-  \item<4-> Nigel staggered to his feet, face flushed from too much \bardiwac{}.
-  \item<5-> Malbec, one of the lesser-known \bardiwac{} grapes, responds well to Australia's sunshine.
-  \item<6-> I dined off bread and cheese and this excellent \bardiwac{}.
-  \item<7-> The drinks were delicious: blood-red \bardiwac{} as well as light, sweet Rhenish.
-  \item[\hand]<8-> \bardiwac{} is a heavy red alcoholic beverage made from grapes
+  \item He handed her her glass of \bardiwac{}.
+  \item Beef dishes are made to complement the \bardiwac{}s.
+  \item Nigel staggered to his feet, face flushed from too much \bardiwac{}.
+  \item Malbec, one of the lesser-known \bardiwac{} grapes, responds well to Australia's sunshine.
+  \item I dined off bread and cheese and this excellent \bardiwac{}.
+  \item The drinks were delicious: blood-red \bardiwac{} as well as light, sweet Rhenish.
+  \item[\hand]<2-> \bardiwac{} is a heavy red alcoholic beverage made from grapes
   \end{itemize}
 
   \gap
   \begin{footnotesize}
-    \visible<8->{\light{All examples from British National Corpus (handpicked and slightly edited).}}
+    \visible<3->{\light{All examples from British National Corpus (handpicked and slightly edited).}}
   \end{footnotesize}
 \end{frame}
 
@@ -158,7 +107,7 @@
   \centering\ungap[.5]
   \begin{tikzpicture}
     \node[anchor=north west] at (0,0) {\includegraphics[width=10cm]{img/SE_cat}} ;
-    \node[anchor=north east] at (10,0) {\tiny\light{\url{https://the.sketchengine.co.uk/}}} ;
+    \node[anchor=north east] at (10,0) {\tiny\light{\url{https://sketchengine.eu/}}} ;
   \end{tikzpicture}
 \end{frame}
 
@@ -518,18 +467,10 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{DSM vectors as word embeddings}
+  \frametitle{DSM vectors as context representation}
 
   \begin{columns}[T]
     \begin{column}{60mm}
-      DSM vector as sub-symbolic meaning representation
-      \begin{itemize}
-      \item feature vector for machine learning algorithm
-      \item input for neural network
-      \item[]
-      \end{itemize}
-
-      \onslide<2->
       \h{Context vectors} for word tokens \citep{Schuetze:98} 
       \begin{itemize}
       \item \hh{bag-of-words} approach:
@@ -538,41 +479,14 @@
       \end{itemize}
     \end{column}
     \begin{column}{60mm}
-      \onslide<3->
       \includegraphics[width=60mm]{img/illustration_context_vectors_mouse}
     \end{column}
   \end{columns}
 \end{frame}
 
-\begin{frame}
-  \frametitle{An important distinction}
-
-  \begin{itemize}
-  \item<1-> \h{Distributional} \textbf{model}
-    \begin{itemize}
-    \item captures linguistic distribution of each word in the form of a high-dimensional numeric vector
-    \item typically (but not necessarily) based on co-occurrence counts
-    \item distributional hypothesis:\\
-      distributional similarity/distance $\sim$ semantic similarity/distance
-    \item[]
-    \end{itemize}
-  \item<2-> \h{Distributed} \textbf{representation}
-    \begin{itemize}
-    \item sub-symbolic representation of words as high-dimensional numeric vectors
-    \item similarity of vectors usually (but not necessarily) corresponds to semantic similarity of the words
-    \item need not be based on distributional information (alone)
-    \item hot topic: unsupervised neural \hh{word embeddings}
-    \item[]
-    \end{itemize}
-  \end{itemize}
-  
-  \onslide<3->
-  \hand\ Distributional model can be used as distributed representation
-
-\end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{DSM and semantic similarity}
+\subsection{DSMs and semantic similarity}
 
 \begin{frame}[c]
 \frametitle{Inverse distributional semantics}
@@ -589,7 +503,7 @@ is there one notion of similarity that explains all of them?
   \frametitle{Distributional similarity as semantic similarity}
 
   \begin{itemize}
-  \item DSM similarity as a \primary{quantitative notion}
+  \item DSM similarity as a \primary{quantitative notion} \citep{Harris:54}
     \begin{itemize}
     \item if $\va$ is closer to $\vb$ than to $\Vector{c}$ in the distributional
       vector space, then $a$ is more semantically similar to $b$ than to $c$
@@ -607,9 +521,9 @@ is there one notion of similarity that explains all of them?
 
 
 \begin{frame}
-  \frametitle{Characterizing DSM similarity}
+  \frametitle{Characterising DSM similarity}
   \begin{itemize}
-   \item DSMs are thought to represent \primary{taxonomic} similarity
+   \item DSMs are often thought to represent \primary{taxonomic} similarity
    \begin{itemize}
     \item words that tend to occur in the same contexts
     \item[]
@@ -623,7 +537,7 @@ is there one notion of similarity that explains all of them?
     \item hyper- and hyponyms (\emph{rock/basalt})
     \item[]
     \end{itemize}
-  \item Taxonomic similarity is seen as the \primary{fundamental semantic relation} organising the vocabulary of a language, allowing categorization, generalization and inheritance...
+  \item Taxonomic similarity is seen as the \primary{fundamental semantic relation} organising the vocabulary of a language, allowing categorisation, generalisation and inheritance...
   \end{itemize}
 \end{frame}
 
@@ -707,186 +621,146 @@ is there one notion of similarity that explains all of them?
     \end{column}
   \end{columns}
 
-\bigskip
-
-  \footnotesize\gap[1]
-Task: humans: given a word, generate properties; DSM), generate top 10 neighbors. Items: 44 concrete English nouns \citep{Baroni:Lenci:08}.
-
+  \footnotesize\gap[2]
+Task: humans: given a word, generate properties; DSM: generate top 10 neighbors. Items: 44 concrete English nouns \citep{Baroni:Lenci:08}.
 \end{frame}
 
-%  (L5/R5  SVD
-
-
-
-
-
-
-
 \begin{frame}
-\frametitle{DSM similarities: terminological coordinates}
-\framesubtitle{Attributional similarity vs. Semantic relatedness}
+  \frametitle{DSM similarity: concepts \& terminology}
+  \framesubtitle{Attributional similarity \vs semantic relatedness}
 
-
-\begin{itemize}
-\item \primary{Attributional similarity} ($\leftarrow$ taxonomical) -- two words sharing a large number of salient features (attributes)
-\begin{itemize}
-\item synonymy (\emph{car/automobile})
-\item co-hyponymy (\emph{car/van/truck})
-\item hyperonymy (\emph{car/vehicle)}
-\begin{itemize}
-\item Problem: subset/superset, need ad-hoc measures (distributional inclusion cf. \citet{LenciBenotto:12})
-\end{itemize}
-\item antonymy (\emph{hot/cold})
-\begin{itemize}
-\item Problem: they are the opposite of similar, and yet...
-\end{itemize}
-\end{itemize}
-\bigskip
-\item \primary{Semantic relatedness} \citep{Budanitsky:Hirst:06} -- two words semantically associated without necessarily being similar
-\begin{itemize}
-\item function (\emph{car/drive})
-\item meronymy (\emph{car/tyre})
-\item location (\emph{car/road})
-\item attribute (\emph{car/fast})
-\end{itemize}
-\hfill Why similar in DSMs? They co-occur $\rightarrow$ share contexts 
-
-\end{itemize}
-
-\end{frame}
-
-
-\begin{frame}
-\frametitle{DSM similarities: terminological coordinates}
-\framesubtitle{Attributional vs. Relational Similarity}
-
-\begin{itemize}
-\item \primary{Attributional similarity} ($\leftarrow$ taxonomical) -- two words sharing a large number of salient features (attributes)
-\begin{itemize}
-\item synonymy (\emph{car/automobile})
-\item co-hyponymy (\emph{car/van/truck})
-\item hyperonymy (\emph{car/vehicle)}
-\end{itemize}
-
-\bigskip
-\item \primary{Relational similarity} \citep{Turney:06} -- similar relation between pairs of words (analogy)
+  \ungap[1]
   \begin{itemize}
-  \item \emph{policeman}$\,:\,$\emph{gun} $\;::\;$ \emph{teacher}$\,:\,$\emph{book}
-  \item \emph{mason}$\,:\,$\emph{stone} $\;::\;$ \emph{carpenter}$\,:\,$\emph{wood}
-  \item \emph{traffic}$\,:\,$\emph{street} $\;::\;$ \emph{water}$\,:\,$\emph{riverbed}
+  \item \primary{Attributional similarity} ($\leftarrow$ taxonomic) -- two words sharing a large number of salient features (attributes)
+    \begin{itemize}
+    \item \secondary{synonymy} (\emph{car/automobile})
+    \item \secondary{co-hyponymy} (\emph{car/van/truck})
+    \item \secondary{hyperonymy} (\emph{car/vehicle)}\\
+      \hand{} subset \so distributional inclusion \citep{LenciBenotto:12}
+    \item \secondary{antonymy} (\emph{hot/cold})\\
+      \hand{} intuitively they are the opposite of similar, and yet \ldots
+    \item[]
+    \end{itemize}
+  \item<2-> \primary{Semantic relatedness} \citep{Budanitsky:Hirst:06} -- two words semantically associated without necessarily being similar
+    \begin{itemize}
+    \item \secondary{function} (\emph{car/drive})
+    \item \secondary{meronymy} (\emph{car/tyre})
+    \item \secondary{location} (\emph{car/road})
+    \item \secondary{attribute} (\emph{car/fast})
+    \end{itemize}
+  \item<2->[\hand] Why similar in DSMs? \visible<3->{co-occur \so overlapping context spans}
   \end{itemize}
-\end{itemize}
-   \hfill ... textbook example of neural embeddings application \\
-     \hfill     \includegraphics[width=50mm]{img/MikolovYihZweig2013_Fig2}
-
-
 \end{frame}
 
 
-   \begin{frame}
- \frametitle{Problem: symmetry in DSM similarity}
- \framesubtitle{The symmetry assumption does not fit all phenomena}
- 
- \centering
- \textbf{Solution: neighbor rank can capture (potential) asymmetries}
+\begin{frame}
+  \frametitle{DSM similarity: concepts \& terminology}
+  \framesubtitle{Attributional \vs relational similarity}
+
+  \begin{itemize}
+  \item \primary{Attributional similarity} ($\leftarrow$ taxonomic) -- two words sharing a large number of salient features (attributes)
+    \begin{itemize}
+    \item \secondary{synonymy} (\emph{car/automobile})
+    \item \secondary{co-hyponymy} (\emph{car/van/truck})
+    \item \secondary{hyperonymy} (\emph{car/vehicle)}
+    \item[]
+    \end{itemize}
+  \item \primary{Relational similarity} \citep{Turney:06} -- similar relation between pairs of words (analogy)
+    \begin{itemize}
+    \item \emph{policeman}$\,:\,$\emph{gun} $\;::\;$ \emph{teacher}$\,:\,$\emph{book}
+    \item \emph{mason}$\,:\,$\emph{stone} $\;::\;$ \emph{carpenter}$\,:\,$\emph{wood}
+    \item \emph{traffic}$\,:\,$\emph{street} $\;::\;$ \emph{water}$\,:\,$\emph{riverbed}
+    \end{itemize}
+  \end{itemize}
+  \onslide<2->
+  \begin{columns}[T]
+    \begin{column}{45mm}
+      \begin{itemize}
+      \item[\hand] Textbook example of neural embeddings application   
+      \end{itemize}
+    \end{column}
+    \begin{column}{50mm}
+      \hspace*{-1cm}%
+      \includegraphics[width=60mm]{img/MikolovYihZweig2013_Fig2}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Problem: symmetry in DSM similarity}
+  \framesubtitle{Symmetric similarity does not fit all phenomena}
   
- \begin{minipage}{1\textwidth}
- \hspace{-18pt}
- \begin{minipage}{0.38\textwidth}
- \begin{tikzpicture}[scale=0.45, every node/.style={transform shape}]
-\draw [<->, thick] (0,5.5) -- (0,0) -- (5.5,0);
-\draw [->,red, solid] (0,0) -- (5,1);
-\draw [->,red, blue, solid] (0,0) -- (2,5);
-%\draw [->,blue, dashed] (0,0) -- (4,2);
-%\draw [->,red, dashed] (0,0) -- (2.2,3);
-%\draw [->,red, dashed] (0,0) -- (4.2, 2.3);
-\node [right,red] at (5,1) {\textbf{unhappy}};
-\node [right,blue] at (2,5) {\textbf{sad}};
-%\node [right,blue] at (4,2) {unhappy};
-%\node [right,blue] at (4.2, 2.3) {bla};
-%\node [right,blue] at (2.2,3) {unhappy};
-\node [left,black] at (0,5.5) {\textbf{d1}};
-\node [below,black] at (5.5,0) {\textbf{d2}};
-\end{tikzpicture}
-\tiny
-dist(sad, unhappy) = dist(unhappy, sad)
- \end{minipage}
- \begin{minipage}{0.35\textwidth}
- \begin{tikzpicture}[scale=0.45, every node/.style={transform shape}]
-\draw [<->, thick] (0,5.5) -- (0,0) -- (5.5,0);
+  \begin{itemize}
+  \item Motivation: cognitive processes are notoriously asymmetric\\
+    (and so is human intuition about semantic similarity)
+  \item Solution: use asymmetric measure of distributional similarity
+  \item<2-> Solution: use neighbour rank instead of similarity score
+    \begin{itemize}
+    \item makes predictions comparable across models and measures
+    \item intuition: different density of semantic neighbourhood 
+    \item[]
+    \end{itemize}
+  \end{itemize}
 
-\draw [->,red, solid] (0,0) -- (5,1);
-\draw [->,red, blue, solid] (0,0) -- (2,5);
-
-\draw [->,blue, dashed] (0,0) -- (2.2,3);
-%\draw [->,blue, dashed] (0,0) -- (4.2, 2.3);
-%\draw [->,blue, dashed] (0,0) -- (1, 5.5);
-
-\node [right,blue] at (3,4.8) {awful};
-\draw [->,blue, dashed] (0,0) -- (3,4.8);
-
-%\draw [->,blue, dashed] (0,0) -- (4,2);
-%\node [right,blue] at (4,2) {lonely};
-%\node [right,blue] at (1, 5.5) {tragic};
-
-\node [right,blue] at (2.2,3) {miserable};
-
-\node [right,red] at (5,1) {\textbf{unhappy}};
-\node [right,blue] at (2,5) {\textbf{sad}};
-\node [right,blue] at (3,4) {lonely};
-\draw [->,blue, dashed] (0,0) -- (3,4);
-
-
-\node [left,black] at (0,5.5) {\textbf{d1}};
-\node [below,black] at (5.5,0) {\textbf{d2}};
-\end{tikzpicture}
-\tiny
-rank(sad, unhappy) =  4
- \end{minipage}
- \begin{minipage}{0.25\textwidth}
-\begin{tikzpicture}[scale=0.45, every node/.style={transform shape}]
-\draw [<->, thick] (0,5.5) -- (0,0) -- (5.5,0);
-\draw [->,red, solid] (0,0) -- (5,1);
-\draw [->,red, blue, solid] (0,0) -- (2,5);
-
-\node [right,red] at (5,1) {\textbf{unhappy}};
-
-\node [right,red] at (5.5, 0.5) {unsatisfied};
-\draw [->,red, dashed] (0,0) -- (5.5, 0.5);
-%\draw [->,red, dashed] (0,0) -- (5.5,3);
-%\node [right,red] at (5.3,2) {uncomfortable};
-%\draw [->,red, dashed] (0,0) -- (5.3,2);
-\draw [->,red, dashed] (0,0) -- (2.2,3);
-\node [right,red] at (3,4) {lonely};
-\draw [->,red, dashed] (0,0) -- (3,4);
-\node [right,red] at (2.2,3) {miserable};
-
-\node [right,red] at (3,4.8) {awful};
-\draw [->,red, dashed] (0,0) -- (3,4.8);
-%\node [right,blue] at (4,2) {unhappy};
-%\node [right,blue] at (4.2, 2.3) {bla};
-%\node [right,blue] at (2.2,3) {unhappy};
-
-\node [right,blue] at (2,5) {\textbf{sad}};
-%\node [right,blue] at (4,2) {unhappy};
-%\node [right,blue] at (4.2, 2.3) {bla};
-%\node [right,blue] at (2.2,3) {unhappy};
-\node [left,black] at (0,5.5) {\textbf{d1}};
-\node [below,black] at (5.5,0) {\textbf{d2}};
-\end{tikzpicture}
-\tiny
-rank(unhappy, sad) =  5
- \end{minipage}
- \end{minipage}
- 
- \medskip
- \smallskip
- \begin{itemize}
- \item Motivation: cognitive processes are notoriously asymmetric
-  \item Advantage: rank makes similarity predictions comparable across models and is applicable to different distance measures
- \item Interpretation: rank controls for differences in density in the semantic space 
- \end{itemize}
-  
+  \onslide<2->
+  \begin{minipage}{1\textwidth}
+    \hspace{-18pt}
+    \begin{minipage}{0.38\textwidth}
+      \begin{tikzpicture}[scale=0.45, every node/.style={transform shape}]
+        \draw [<->, thick] (0,5.5) -- (0,0) -- (5.5,0);
+        \draw [->,red, solid] (0,0) -- (5,1);
+        \draw [->,red, blue, solid] (0,0) -- (2,5);
+        \node [right,red] at (5,1) {\textbf{unhappy}};
+        \node [right,blue] at (2,5) {\textbf{sad}};
+        \node [left,black] at (0,5.5) {\textbf{d1}};
+        \node [below,black] at (5.5,0) {\textbf{d2}};
+      \end{tikzpicture}
+      \tiny
+      dist(sad, unhappy) = dist(unhappy, sad)
+    \end{minipage}
+    \onslide<3->
+    \begin{minipage}{0.35\textwidth}
+      \begin{tikzpicture}[scale=0.45, every node/.style={transform shape}]
+        \draw [<->, thick] (0,5.5) -- (0,0) -- (5.5,0);
+        \draw [->,red, solid] (0,0) -- (5,1);
+        \draw [->,red, blue, solid] (0,0) -- (2,5);
+        \draw [->,blue, dashed] (0,0) -- (2.2,3);
+        \node [right,blue] at (3,4.8) {awful};
+        \draw [->,blue, dashed] (0,0) -- (3,4.8);
+        \node [right,blue] at (2.2,3) {miserable};
+        \node [right,red] at (5,1) {\textbf{unhappy}};
+        \node [right,blue] at (2,5) {\textbf{sad}};
+        \node [right,blue] at (3,4) {lonely};
+        \draw [->,blue, dashed] (0,0) -- (3,4);xs
+        \node [left,black] at (0,5.5) {\textbf{d1}};
+        \node [below,black] at (5.5,0) {\textbf{d2}};
+      \end{tikzpicture}
+      \tiny
+      rank(sad, unhappy) =  4
+    \end{minipage}
+    \begin{minipage}{0.25\textwidth}
+      \begin{tikzpicture}[scale=0.45, every node/.style={transform shape}]
+        \draw [<->, thick] (0,5.5) -- (0,0) -- (5.5,0);
+        \draw [->,red, solid] (0,0) -- (5,1);
+        \draw [->,red, blue, solid] (0,0) -- (2,5);
+        \node [right,red] at (5,1) {\textbf{unhappy}};
+        \node [right,red] at (5.5, 0.5) {unsatisfied};
+        \draw [->,red, dashed] (0,0) -- (5.5, 0.5);
+        \draw [->,red, dashed] (0,0) -- (2.2,3);
+        \node [right,red] at (3,4) {lonely};
+        \draw [->,red, dashed] (0,0) -- (3,4);
+        \node [right,red] at (2.2,3) {miserable};
+        \node [right,red] at (3,4.8) {awful};
+        \draw [->,red, dashed] (0,0) -- (3,4.8);
+        \node [right,blue] at (2,5) {\textbf{sad}};
+        \node [left,black] at (0,5.5) {\textbf{d1}};
+        \node [below,black] at (5.5,0) {\textbf{d2}};
+      \end{tikzpicture}
+      \tiny
+      rank(unhappy, sad) =  5
+    \end{minipage}
+  \end{minipage}
 \end{frame}
 
 
@@ -987,113 +861,47 @@ rank(unhappy, sad) =  5
 \end{frame}
 
 \begin{frame}
+  \frametitle{word2vec embeddings \citep{Mikolov:etc:13b,Mikolov:etc:13}}
+
+  \begin{itemize}
+  \item Embeddings are learned by a (simple) neural model rather than obtained directly as distributional vectors
+    \begin{itemize}
+    \item known as \secondary{predict} rather than \secondary{count} models \citep{Baroni:Dinu:Kruszewski:14}
+    \end{itemize}
+  \item Corpus: Google News, 6 billion words
+  \item Learning objective of the skip-gram model (SGNS)
+    \begin{itemize}
+    \item predict conditional probability distribution $\pC{c}{t}$ for collocational profile of target word $t$
+    \item based on learned target embeddings $\vw_t$ and (ephemeral) collocate embeddings $\vv_c$
+    \item[\hand] can be understood as factorisation of co-occurrence matrix \citep{Levy:Goldberg:14,Pennington:Socher:Manning:14}
+    \end{itemize}
+  \item Evaluation focuses on syntactic and semantic analogy tasks
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
   \frametitle{Many parameters \ldots}
   % \framesubtitle{}
 
   \begin{itemize}
   \item Enormous range of DSM parameters and applications
-  \item Examples showed three entirely different models, each tuned to
-    its particular application
+  \item Examples showed four entirely different models, each tuned to its particular application
   \item[]
   \item<2->[\So] Need overview of DSM parameters \& understand their effects
     \begin{itemize}
     \item part 2: The parameters of a DSM
     \item part 3: Evaluating DSM representations
-    \item part 4: Matrix algebra \& SVD
-    \item part 5: Understanding distributional semantics
+    \item part 4: Understanding distributional semantics
+    \item part 5: Mathematical foundations (matrix algebra)
     \item[]
     \end{itemize}
   \item<3->[\So] Distributional semantics is an empirical science
   \end{itemize}
 \end{frame}
 
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Getting practical}
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
-\subsection{Course Outline}
-
-\begin{frame}
-\frametitle{Day 1: Introduction}
-\framesubtitle{Summing up what we learnt}
-\begin{itemize}
-	\item A DSM is a \textbf{matrix},  which contains
-	\begin{itemize}
-	\item ... targets: \textbf{rows}
-	\item ... contexts: \textbf{columns}
-	\item ... co-occurrence scores (or fancier versions of co-occurrence) for target/context pairs: \textbf{matrix cells}
-	\end{itemize}
-	\item The row corresponding to a target (\textbf{vector}) is the best \textit{approximation} we have for it its meaning
-		\begin{itemize}
-			\item \primary{Goal: make comparisons} (recall the hieroglyphs) 
-					\begin{itemize}
-						\item \secondary{Similarity} as context overlap
-					\end{itemize}
-				\end{itemize}		
-			\item Geometric interpretation: vectors as coordinates in space
-			\begin{itemize}
-					\item \secondary{Similarity} as distance 
-					\item Neighbors reveal the semantic nuances a DSM is capturing
-					\item Visualization: neighbor maps
-					\item Neighbor rank as a way to get asymmetric similarity predictions
-		
-		\end{itemize}
-\end{itemize}
-
-
-\end{frame}
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-\begin{frame}
-  \frametitle{Roadmap: First steps in distributional semantics}
-  
-  \begin{itemize}
-  \item \textbf{Day 2}: \textbf{Building a DSM, step by step}
-    \begin{itemize}
-    \item DSM parameters: formal definition \& taxonomy
-    \item Collecting co-occurrence data: what counts as a context?
-    \item Mathematical operations on the DSM vectors
-    \item Computing distances/similarities
-    \item \secondary{Practice:} building DSMs and exploring parameters
-    \end{itemize}
-    \gap
-  \item \textbf{Day 3}: \textbf{Which meaning is a DSM capturing (if any?)}
-    \begin{itemize}
-    \item Evaluation: conceptual coordinates 
-    \item Standard evaluation tasks:\\
-      multiple choice, prediction of similarity ratings, clustering
-    \item Narrowing down similarity: classifying semantic relations
-    \item \secondary{Practice:} evaluation of selected tasks
-    \end{itemize}	
-  \end{itemize}
-\end{frame}
-
-\begin{frame}
-  \frametitle{Roadmap: Interdisciplinary applications}
-  \begin{itemize}
-  \item \textbf{Day 4: DS beyond NLP -- Linguistic theory}
-    \begin{itemize}
-    \item Linguistic exploitation of distributional representations
-    \item A textbook challenge for DSMs: polysemy
-    \item Success stories: semantic compositionality (belown and above word level), morphological transparency, argument structure
-    \item Issues: not all words have a (straightforward) DS meaning
-    \item \secondary{Practice:} word sense disambiguation \& modeling of morphological derivation
-    \end{itemize}
-    \gap
-  \item \textbf{Day 5: DS beyond NLP -- Cognitive modelling}
-    \begin{itemize}
-    \item DSMs for cognitive modeling: general issues
-    \item Free association norms as a window into the organization of the mental lexicon 
-    \item Predicting free associations with DSMs
-    \item \secondary{Practice:} combine DSMs with first-order co-occurrence in the FAST free association task
-    \end{itemize}
-  \end{itemize}
-\end{frame}
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Software and further information}
@@ -1184,10 +992,8 @@ rank(unhappy, sad) =  5
     \begin{center}
       \secondary{\url{http://wordspace.collocations.de/}}
     \end{center}
-    \begin{itemize}
-    \item[\hand] based on joint work with Marco Baroni and Alessandro Lenci
-    \end{itemize}
-  \item Tutorial is open source (CC), and can be downloaded from
+  \item[]
+  \item Tutorial is open source (CC) and can be downloaded from
     \begin{center}\small
       \secondary{\url{http://r-forge.r-project.org/projects/wordspace/}}
     \end{center}
@@ -1246,18 +1052,15 @@ rank(unhappy, sad) =  5
 
   Software installation
   \begin{itemize}
-  \item \hh{R} version 4.0 or newer from \url{http://www.r-project.org/}
-  \item RStudio from \url{http://www.rstudio.com/}
+  \item \h{R} version 4.0 or newer from \url{http://www.r-project.org/}
+  \item \hh{RStudio} from \url{http://www.rstudio.com/}
   \item R packages from CRAN (through RStudio menu)
     \begin{itemize}
     \item \hh{\texttt{sparsesvd}}, \hh{\texttt{wordspace}}
     \item recommended: \hh{\texttt{e1071}}, \hh{\texttt{rsparse}}, \hh{\texttt{Rtsne}}, \hh{\texttt{uwot}}
     \item optional: \secondary{\texttt{tm}}, \secondary{\texttt{quanteda}},  \secondary{\texttt{data.table}}, \secondary{\texttt{wordcloud}}, \secondary{\texttt{shiny}}, \secondary{\texttt{spacyr}}, \secondary{\texttt{udpipe}}, \secondary{\texttt{coreNLP}}
     \end{itemize}
-  \item Get data sets, precompiled DSMs and \hh{\texttt{wordspaceEval}} package
-    \only<beamer:1| handout:1>{(with some non-public data sets)}%
-    \only<beamer:2| handout:0>{(login: \textbf{\counterpoint{\texttt{wordspace}}}, password: \textbf{\counterpoint{\texttt{Harris1954}}})}
-    from\\ \primary{\href{http://wordspace.collocations.de/doku.php/course:material}{http://wordspace.collocations.de/doku.php/course:material}}
+  \item Get data sets, precompiled DSMs and \hh{\texttt{wordspaceEval}} package (with some non-public data sets) from\\ \primary{\href{http://wordspace.collocations.de/doku.php/course:material}{http://wordspace.collocations.de/doku.php/course:material}}
   \end{itemize}
 \end{frame}
 
@@ -1295,13 +1098,13 @@ rank(unhappy, sad) =  5
     \gap
   \item Alternatively: set working directory at start of session
     \begin{itemize}
-    \item e.g.\ \texttt{setwd("\textasciitilde{}gabriella/Desktop/ESSLLI22")}
+    \item e.g.\ \texttt{setwd("\textasciitilde{}zellig/Desktop/dsm\_tutorial")}
     \end{itemize}
     \gap
   \item Work with \h{R scripts} rather than in interactive console
     \begin{itemize}
     \item RStudio: add \emph{R Script} from drop-down menu in top left corner
-    \item we provide example scripts for each hands-on session (+extras)
+    \item we provide example scripts for each part of the tutorial
     \end{itemize}
   \end{itemize}
 \end{frame}
@@ -1309,7 +1112,7 @@ rank(unhappy, sad) =  5
 \begin{frame}[fragile]
   \frametitle{First steps in R}
 
-Start each session by loading the wordspace package.
+  Start each session by loading the wordspace package.
 \begin{Rcode}
 > library(wordspace)
 \end{Rcode}
@@ -1425,12 +1228,12 @@ banana  11   2   2    0  18    0
 > M <- log2(DSM_HieroglyphsMatrix + 1) \REM{see part 2}
 > round(M, 3)
 
-\REM{compute semantic distance (cosine similarity)}
+\REM{compute distributional similarity (cosine measure)}
 > pair.distances("dog", "cat", M, convert=FALSE)\begin{Rout}
   dog/cat 
 0.9610952\end{Rout}
 
-\REM{find nearest neighbours}
+\REM{find nearest neighbours (defaults to angles)}
 > nearest.neighbours(M, "dog", n=3)\begin{Rout}
      cat      pig      cup 
 16.03458 20.08826 31.77784\end{Rout}
@@ -1513,7 +1316,7 @@ Now try the semantic map again:
 \begin{Rcode}
 > load("GoogleNews300_wf200k.rda", verbose=TRUE)
 > embeddings <- GoogleNews300_wf200k.rda
-> plot(nearest.neighbours(embeddings, "freedom_N", n=20, 
+> plot(nearest.neighbours(embeddings, "freedom", n=20, 
                           dist.matrix=TRUE))
 \end{Rcode}
 
@@ -1522,37 +1325,10 @@ Now try the semantic map again:
 \end{center}
 \end{frame}
   
-
-
-\begin{frame}[fragile]
-  \frametitle{Bonus: Recreate the hieroglyphs example}
-
-  \ungap[.5]
-\begin{Rcode}
-\REM{apply log-transformation to de-skew co-occurrence frequencies}
-> M <- log2(DSM_HieroglyphsMatrix + 1) \REM{see part 2}
-> round(M, 3)
-
-\REM{compute semantic distance (cosine similarity)}
-> pair.distances("dog", "cat", M, convert=FALSE)\begin{Rout}
-  dog/cat 
-0.9610952\end{Rout}
-
-\REM{find nearest neighbours}
-> nearest.neighbours(M, "dog", n=3)\begin{Rout}
-     cat      pig      cup 
-16.03458 20.08826 31.77784\end{Rout}
-
-> plot(nearest.neighbours(M, "dog", n=5, dist.matrix=TRUE))
-\end{Rcode}
-
-\end{frame}
-
-
 \begin{frame}[c]
   \frametitle{Explorations}
   
-  While you wait for part 2,\\ you can explore some DSM similarity networks online:
+  While you wait for Part 2 of the tutorial,\\ you can explore some DSM similarity networks online:
   \begin{itemize}
   \item \secondary{\href{https://corpora.linguistik.uni-erlangen.de/shiny/wordspace/}{https://corpora.linguistik.uni-erlangen.de/shiny/wordspace/}}
   \item built in R with \texttt{wordspace} and \texttt{shiny}
