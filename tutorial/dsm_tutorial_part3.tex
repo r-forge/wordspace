@@ -13,19 +13,26 @@
 
 \input{local/config} % local adjustments to configuration and macros
 
+\definecolor{nicegreen}{rgb}{0.00, 0.45, 0.15}
+\definecolor{niceblue}{rgb}{0.00, 0.35, 0.65}
+\definecolor{nicered}{rgb}{0.65, 0.25, 0.30}
+
+% \usepackage{caption}
+% \captionsetup[figure]{labelformat=empty}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 %% Titlepage
 
 \title[DSM Tutorial -- Part 3]{Distributional Semantic Models}
-\subtitle{Part 3: Evaluation of distributional similarity}
-\author[\textcopyright\ Evert/Lenci/Baroni/Lapesa]{%
-  Stefan Evert\inst{1}\\
-  {\footnotesize with  Alessandro Lenci\inst{2}, Marco Baroni\inst{3} and Gabriella Lapesa\inst{4}}}
+\subtitle{Part 3: Evaluation -- is my DSM ``good''?}
+\author[\textcopyright\ Evert/Lapesa/Lenci/Baroni]{%
+  Stephanie Evert\inst{1}\\
+  {\small with  Gabriella Lapesa\inst{2}, Alessandro Lenci\inst{3}, and Marco Baroni\inst{4}}}
 \institute[CC-by-sa]{%
   \inst{1}Friedrich-Alexander-Universität Erlangen-Nürnberg, Germany\\
-  \inst{2}University of Pisa, Italy\\
-  \inst{3}University of Trento, Italy\\
-  \inst{4}University of Stuttgart, Germany
+  \inst{2}Heinrich-Heine-Universität Düsseldorf \& GESIS, Germany\\
+  \inst{3}University of Pisa, Italy\\
+  \inst{4}ICREA / Universitat Pompeu Fabra Barcelona, Italy
 }
 
 \date[wordspace.collocations.de]{
@@ -47,192 +54,118 @@
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
-\section{What is semantic similarity?}
+\section{Introduction}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Semantic similarity and relatedness}
+\begin{frame}[c]
+  \frametitle{The problem}
+  ``The distributional hypothesis, as motivated by the works of Zellig Harris, is a strong methodological claim with a weak semantic foundation.  It states that differences of meaning correlate with differences of distribution,but it neither specifies \secondary{what kind of distributional information we should look for}, nor \primary{what kind of meaning differences it mediates}.''
+  \citep[37]{Sahlgren:08}
+\end{frame}
 
 \begin{frame}
-  \frametitle{Distributional similarity as semantic similarity}
+  \frametitle{The solution}
+  \framesubtitle{Which kind of meaning differences does my DSM capture (if any)?}
+  
+  \pause
+  \begin{enumerate}
+  \item Parameter manipulation
+    \begin{itemize}
+    \item \secondary{What kind of information should we look for?}
+    \item after Part 1, we are all experts and know how many different options we have! 
+    \item[]
+    \end{itemize}
+  \item<2-> \textbf{Evaluation} (task + datasets)
+    \begin{itemize}
+    \item \primary{What kind of meaning differences do we capture?}
+    \item for example, in an evaluation on a nearest neighbours task, our definition of ``what a good neighbor is'' is given by the dataset
+    \item[]
+    \end{itemize}
+  \item<3-> \textbf{Interpretation} of the evaluation results
+    \begin{itemize}
+    \item crucial issue, often disregarded or oversimplified
+    \end{itemize}		
+  \end{enumerate}	 
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Tasks \& datasets}
+
+\begin{frame}
+  \frametitle{Tasks \& datasets}
+  \begin{itemize} 
+  \item \hh{Tasks} are experimental setups to test DSM representations:
+    \begin{itemize} 
+    \item \textbf{classification (multiple choice)}: given a target word, pick the ``best'' from a set of candidates (whatever best means)
+    \item \textbf{correlation}: do DSM similarities match scores that quantify semantic simliarity/relatedness (ratings, reaction times)?   
+    \item \textbf{categorisation}: do DSM similarities  group words in a ``reasonable'' way?
+    \item []
+    \end{itemize}
+  \item<2-> \hh{Datasets} are the external ``ground truth'' and contribute the semantic ``nuance'' to the evaluation
+    \begin{itemize} 
+    \item collected ad-hoc for DSM evaluation or already existing,\\
+      e.g.\ TOEFL, similarity ratings, experimental items from psycholinguistic experiments
+    \item[]
+    \end{itemize}
+  \end{itemize}
+  \onslide<2->
+    \h{\{Task + Dataset\} as operationalisation of a hypothesis}, e.g.\\
+    DSM similarity as synonymy $\rightarrow$  multiple choice task + TOEFL
+\end{frame}
+
+\begin{frame}
+  \frametitle{Tasks}
+  \framesubtitle{Instrinsic \vs extrinsic tasks}
+  \bigskip	
 
   \begin{itemize}
-  \item DSMs interpret semantic similarity as a \primary{quantitative notion}
+  \item \hh{Intrinsic evaluation}: the semantic representations
+    produced by the DSM are evaluated \textit{directly} 
     \begin{itemize}
-    \item if $\va$ is closer to $\vb$ than to $\Vector{c}$ in the distributional
-      vector space, then $a$ is more semantically similar to $b$ than to $c$
+    \item The DSM is the \textit{only factor} responsible for the performance
     \item[]
     \end{itemize}
-  \item Different from \secondary{categorical} nature of most theoretical accounts
+  \item \hh{Extrinsic evaluation}: the DSM representations are input to further tasks whose performance is then evaluated, e.g.
     \begin{itemize}
-    \item often expressed in terms of semantic classes and relations
-    \item[]
-    \end{itemize}
-  \item But it is not clear a priori what exactly makes two words or concepts
-    ``semantically similar'' according to a DSM
-    \begin{itemize}
-    \item may also depend on parameter settings
+    \item DSM vectors as input of a machine learning classifier\\ \so accuracy of the classifier
+    \item DSM vectors to improve a machine translation system\\ \so BLEU score of the MT
     \end{itemize}
   \end{itemize}
 \end{frame}
 
-
 \begin{frame}
-  \frametitle{Types of semantic relations in DSMs}
-
-  \ungap[.5]
-  Nearest DSM neighbors have different types of \primary{semantic relations}.
-
-  \ungap[.5]\footnotesize
-  \begin{columns}[t]
-    \column{5cm}
-    \begin{block}{\emph{car} {\small (BNC, L2/R2 span)}}
-      \begin{itemize}
-      \item van {\color{counterpoint} co-hyponym}
-      \item vehicle {\color{counterpoint} hyperonym}
-      \item truck {\color{counterpoint} co-hyponym}
-      \item motorcycle {\color{counterpoint} co-hyponym}
-      \item driver {\color{counterpoint} related entity}
-      \item motor {\color{counterpoint} part}
-      \item lorry {\color{counterpoint} co-hyponym}
-      \item motorist {\color{counterpoint} related entity}
-      \item cavalier {\color{counterpoint} hyponym}
-      \item bike {\color{counterpoint} co-hyponym}
-      \end{itemize}
-    \end{block}
-    \column{5cm}
-    \begin{block} {\emph{car} {\small (BNC, L30/R30 span)}}
-      \begin{itemize}
-      \item drive {\color{counterpoint} function}
-      \item park {\color{counterpoint} typical action}
-      \item bonnet {\color{counterpoint} part}
-      \item windscreen {\color{counterpoint} part}
-      \item hatchback {\color{counterpoint} part}
-      \item headlight {\color{counterpoint} part}
-      \item jaguar {\color{counterpoint} hyponym}
-      \item garage {\color{counterpoint} location}
-      \item cavalier {\color{counterpoint} hyponym}
-      \item tyre {\color{counterpoint} part}
-      \end{itemize}
-    \end{block}
-  \end{columns}
-
-  \hfill\light{\tiny \url{http://clic.cimec.unitn.it/infomap-query/}}
-\end{frame}
-
-
-\begin{frame}
-  \frametitle{Manual analysis of semantic relations}
-  \framesubtitle{for 44 concrete English nouns \citep{Baroni:Lenci:08}}
+  \frametitle{Datasets}
+  \framesubtitle{Reminder: the many facets of DSM similarity}
 
   \ungap[1]
-  \begin{columns}[c]
-    \begin{column}{6cm}
-      \includegraphics[width=5.5cm]{img/BaroniLenci2008_fig1}%
-    \end{column}
-    \begin{column}{4cm}
-      \footnotesize
-      Taxonomic category:
-      \begin{itemize}\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}\vspace{-\topsep}
-      \item[cc] (co-)hyponym
-      \item[ch] hypernym 
-      \end{itemize}
-      Properties of entity:
-      \begin{itemize}\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}\vspace{-\topsep}
-      \item[eb] typical behaviour
-      \item[ece] external component
-      \item[ese] surface property
-      \end{itemize}
-      Situationally associated:
-      \begin{itemize}\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}\vspace{-\topsep}
-      \item[sa] action
-      \item[se] other entity
-      \item[sf] function
-      \item[sl] location
-      \end{itemize}
-    \end{column}
-  \end{columns}
-
-  \footnotesize\gap[1]
-  Distribution of semantic relations for top-10 L5/R5 DSM neighbours (\primary{SVD}), pattern collocations (\primary{StruDEL}) and human-generated properties (\primary{NORMS}).
-\end{frame}
-
-\begin{frame}
-  \frametitle{Scaling up: Linguistic Diagnostics}
-
-  \begin{columns}[c]
-    \begin{column}{45mm}
-      \primary{Linguistic Diagnostics} \citep{Rogers:Hosur:Rumshisky:18} automates classification of nearest neighbours based on various on-line dictionaries and semantic networks
-      \begin{itemize}
-      \item[\hand] correlation analysis between various groups of diagnostics and evaluation tasks
-      \item[\hand] only for English so far
-      \end{itemize}
-      \vspace{1em}%
-      \secondary{\small \url{http://ldtoolkit.space/}}
-    \end{column}
-    \begin{column}{65mm}
-      \includegraphics[width=65mm]{img/RogersEtc2018_Fig2}%
-    \end{column}
-  \end{columns}
-\end{frame}
-
-
-\begin{frame}
-\frametitle{Semantic similarity and relatedness}
-
-\ungap[1]
-\begin{itemize}
-\item \primary{Attributional similarity} -- two words sharing a large number of salient features (attributes)
-\begin{itemize}
-\item synonymy (\emph{car/automobile})
-\item hyperonymy (\emph{car/vehicle)}
-\item co-hyponymy (\emph{car/van/truck})
-\end{itemize}
-
-\item<2-> \primary{Semantic relatedness} \citep{Budanitsky:Hirst:06} -- two words semantically associated without necessarily being similar
-\begin{itemize}
-\item function (\emph{car/drive})
-\item meronymy (\emph{car/tyre})
-\item location (\emph{car/road})
-\item attribute (\emph{car/fast})
-\end{itemize}
-
-\item<3-> \primary{Relational similarity} \citep{Turney:06} -- similar relation between pairs of words (analogy)
   \begin{itemize}
-  \item \emph{policeman}$\,:\,$\emph{gun} $\;::\;$ \emph{teacher}$\,:\,$\emph{book}
-  \item \emph{mason}$\,:\,$\emph{stone} $\;::\;$ \emph{carpenter}$\,:\,$\emph{wood}
-  \item \emph{traffic}$\,:\,$\emph{street} $\;::\;$ \emph{water}$\,:\,$\emph{riverbed}
-  \end{itemize}
-\end{itemize}
-\end{frame}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Attributional similarity \& quantitative evaluation}
-
-\begin{frame}
-  \frametitle{DSMs and semantic similarity}
-  \begin{itemize}
-   \item DSMs are thought to represent \primary{paradigmatic} similarity
-   \begin{itemize}
-    \item words that tend to occur in the same contexts
-    \item[]
-    \end{itemize}
-  \item Words that share many contexts will correspond to concepts
-    that share many attributes (\primary{attributional similarity}),
-    i.e. concepts that are \secondary{taxonomically/ontologically similar}
+  \item \primary{Attributional similarity} -- two words sharing a large number of salient features (attributes)
     \begin{itemize}
-    \item synonyms (\emph{rhino/rhinoceros})
-    \item antonyms and values on a scale (\emph{good/bad})
-    \item co-hyponyms (\emph{rock/jazz})
-    \item hyper- and hyponyms (\emph{rock/basalt})
-    \item[]
+    \item synonymy (\emph{car/automobile})
+    \item hyperonymy (\emph{car/vehicle)}
+    \item co-hyponymy (\emph{car/van/truck})
     \end{itemize}
-  \item Taxonomic similarity is seen as the \primary{fundamental semantic relation} organising the vocabulary of a language, allowing categorization, generalization and inheritance
+
+  \item \primary{Semantic relatedness} \citep{Budanitsky:Hirst:06} -- two words semantically associated without necessarily being similar
+    \begin{itemize}
+    \item function (\emph{car/drive})
+    \item meronymy (\emph{car/tyre})
+    \item location (\emph{car/road})
+    \item attribute (\emph{car/fast})
+    \end{itemize}
+
+  \item \primary{Relational similarity} \citep{Turney:06} -- similar relation between pairs of words (analogy)
+    \begin{itemize}
+    \item \emph{policeman}$\,:\,$\emph{gun} $\;::\;$ \emph{teacher}$\,:\,$\emph{book}
+    \item \emph{mason}$\,:\,$\emph{stone} $\;::\;$ \emph{carpenter}$\,:\,$\emph{wood}
+    \item \emph{traffic}$\,:\,$\emph{street} $\;::\;$ \emph{water}$\,:\,$\emph{riverbed}
+    \end{itemize}
   \end{itemize}
 \end{frame}
 
 \begin{frame}
-  \frametitle{Evaluation of attributional similarity}
-
+  \frametitle{Datasets for intrinsic evaluation of attributional similarity/relatedness}
+  
   \ungap[1]
   \begin{itemize}
   \item<1-> \primary{Synonym identification}
@@ -245,7 +178,7 @@
     \item WordSim-353 \citep{Finkelstein:etc:02}
     \item MEN \citep{Bruni:Tran:Baroni:14}, SimLex-999 \citep{Hill:Reichart:Korhonen:15}
     \end{itemize}
-  \item<3-> \primary{Noun categorization}
+  \item<3-> \primary{Noun categorisation}
     \begin{itemize}
     \item ESSLLI 2008 dataset
     \item Almuhareb \& Poesio \citep[AP,][]{Almuhareb:06}
@@ -255,7 +188,7 @@
     \item Hodgson dataset \citep{Pado:Lapata:07}
     \item Semantic Priming Project \citep{Hutchinson:etc:13}
     \end{itemize}
-  \item<5-> \primary{Analogies} \& \primary{semantic relations} (similarity \vs relatedness)
+  \item<5-> \primary{Analogies} \& \primary{semantic relations} (intrinsic \& extrinsic, ML)
     \begin{itemize}\small
     \item Google \citep{Mikolov:etc:13}, BATS \citep{Gladkova:Drozd:Matsuoka:16}
     \item BLESS \citep{Baroni:Lenci:11}, CogALex \citep{Santus:etc:16}
@@ -289,19 +222,26 @@ nearest.neighbours(M, "walk_V")\begin{Rout}
 \end{Rcode}
 \end{frame}
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+\section{Evaluation of attributional similarity}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Multiple choice}
+
 \begin{frame}[fragile]
   \frametitle{The TOEFL synonym task}
 
   \begin{itemize}
   \item The TOEFL dataset (80 items)
     \begin{itemize}
-    \item Target: \emph{levied}\\
-      Candidates: \emph{believed, correlated, \alert<2->{imposed}, requested}
-    \item<3-> Target \emph{fashion}\\
-      Candidates: \emph{craze, fathom, \alert<4->{manner}, ration}
-    \end{itemize}
-  \item[]
-  \item<5-> DSMs and TOEFL
+    \item Target: \emph{show}\\
+      Candidates: \emph{\alert<2->{demonstrate}, publish, repeat,  postpone}
+    \item<2-> Target \emph{costly}\\
+      Candidates: \emph{beautiful, complicated, \alert<3->{expensive}, popular}
+    \item[]
+    \end{itemize}   
+  \item<3-> DSMs and TOEFL
     \begin{enumerate}
     \item take vectors of the target ($\Vector{t}$) and of the candidates
       ($\Vector{c}_1 \dots \Vector{c}_n$)
@@ -311,6 +251,7 @@ nearest.neighbours(M, "walk_V")\begin{Rout}
     \end{enumerate}
   \end{itemize}
 
+  \vfill
 \begin{Rcode}
  \REM{ask your course instructor for non-public data package}
 > library(wordspaceEval)
@@ -330,44 +271,60 @@ nearest.neighbours(M, "walk_V")\begin{Rout}
     \item Average of 5 non-natives: 86.75\%
     \item Average of 5 natives: \primary{97.75\%}
     \end{itemize}
-  \item<3-> Distributional semantics
+  \item<3-> Distributional semantic models (\href{https://aclweb.org/aclwiki/Similarity_(State_of_the_art)}{ACL wiki}) 
     \begin{itemize}
-    \item Classic LSA \citep{Landauer:Dumais:97}: 64.4\%
-    \item Padó and Lapata's (\citeyear{Pado:Lapata:07}) dependency-based model: 73.0\%
-    \item Distributional memory \citep{Baroni:Lenci:10}: 76.9\%
-    \item Rapp's (\citeyear{Rapp:04a}) SVD-based model, lemmatized BNC: 92.5\%
-    \item \citet{Bullinaria:Levy:12} carry out aggressive parameter optimization: \primary{100.0\%}
+    \item Term-Document: LSA \citep{Landauer:Dumais:97}: 64.4\%
+    \item Dependency-filtered \citep{Pado:Lapata:07}: 73.0\%
+    \item Depedency-typed \citep{Baroni:Lenci:10}: 76.9\%
+    %\item Rapp's (\citeyear{Rapp:04a}) SVD-based model, lemmatized BNC: 92.5\%
+    \item Term-term \citet{Bullinaria:Levy:12}: \primary{100.0\%}\\
+      (after aggressive parameter optimisation)
     \end{itemize}
   \end{itemize}
 
+  \vfill
 \begin{Rcode}[And you?]
 > eval.multiple.choice(TOEFL80, M)
 \end{Rcode}
 \end{frame}
 
+
+\subsection{Prediction of similarity ratings}
+
 \begin{frame}[fragile]
-\frametitle{Semantic similarity judgments}
-
-\ungap[1]
-\begin{itemize}
-\item \citet{Rubenstein:Goodenough:65} collected similarity ratings for 65 noun pairs from 51 subjects on a 0--4 scale
-  \begin{center}
-    \begin{tabular}{llr}
-      $w_1$ & $w_2$ & avg.\ rating\\
-      \toprule
-      \emph{car} & \emph{automobile} & \secondary{3.9}\\
-      \emph{food} &  \emph{fruit}  & \secondary{2.7}\\
-      \emph{cord} & \emph{smile} & \secondary{0.0}\\
-    \end{tabular}
-  \end{center}
-\item<2-> DSMs \vs\ Rubenstein \& Goodenough
-  \begin{enumerate}
-  \item for each test pair $(w_1, w_2)$, take vectors $\Vector{w}_1$ and $\Vector{w}_2$
-  \item measure the distance (e.g.\ cosine) between $\Vector{w}_1$ and $\Vector{w}_2$
-  \item measure (Pearson) correlation between vector distances and R\&G average judgments \citep{Pado:Lapata:07}
-  \end{enumerate}
-\end{itemize}
-
+  \frametitle{Semantic similarity judgments}
+  \ungap[1.5]
+  \begin{columns}
+    \begin{column}{0.5\textwidth}
+      \begin{exampleblock}{RG65}
+        \textbf{65 pairs, rated from 0 to 4}
+        \textit{gem -- jewel}: 3.94 \\
+        \textit{grin -- smile}:  3.46 \\
+        \textit{fruit -- furnace}: 0.05 \\
+      \end{exampleblock}
+    \end{column}
+    % 
+    \begin{column}{0.5\textwidth}         
+      \begin{exampleblock}  {WordSim353}
+        \textbf{353 pairs, rated from 1 to 10}
+        \textit{announcement -- news}: 7.56 \\
+        \textit{weapon -- secret}:  6.06 \\
+        \textit{travel -- activity}: 5.00 \\
+      \end{exampleblock}
+    \end{column}
+    % 
+  \end{columns}
+  \smallskip
+  \begin{itemize}
+  \item DSMs \vs\ Ratings: operationalisation
+    \begin{enumerate}
+    \item for each test pair $(w_1, w_2)$, take vectors $\Vector{w}_1$ and $\Vector{w}_2$
+    \item measure the distance (e.g.\ cosine) between $\Vector{w}_1$ and $\Vector{w}_2$
+    \item measure (Pearson) correlation between vector distances and average similarity judgments \citep{Pado:Lapata:07}
+    \end{enumerate}
+  \end{itemize}
+  
+  \vfill
 \begin{Rcode}
 > RG65[seq(0,65,5), ]
 > head(WordSim353) \REM{extension of Rubenstein-Goodenough}
@@ -383,21 +340,21 @@ nearest.neighbours(M, "walk_V")\begin{Rout}
 \end{frame}
 
 \begin{frame}[fragile]
-\frametitle{Semantic similarity judgments: results}
+  \frametitle{Semantic similarity judgments: results}
 
-Results on RG65 task:
-\begin{itemize}
-\item Padó and Lapata's (\citeyear{Pado:Lapata:07}) dependency-based model: 0.62
-\item Dependency-based on Web corpus \citep{Herdagdelen:Erk:Baroni:09}
+  Results on RG65 task (Pearson):
   \begin{itemize}
-  \item without SVD reduction: 0.69
-  \item with SVD reduction: 0.80
+  \item Dependency-filtered, BNC: Padó and Lapata (\citeyear{Pado:Lapata:07}): 0.62
+  \item Dependency-filtered, Web data \citep{Herdagdelen:Erk:Baroni:09}
+    \begin{itemize}
+    \item without SVD reduction: 0.69
+    \item with SVD reduction: 0.80
+    \end{itemize}
+  \item Dependency typed \citep{Baroni:Lenci:10}: 0.82
+  \item Term-term + some magic \citep{Hassan:Mihalcea:11}: 0.86
   \end{itemize}
-\item Distributional memory \citep{Baroni:Lenci:10}: 0.82
-\item Salient Semantic Analysis \citep{Hassan:Mihalcea:11}: 0.86
-\end{itemize}
 
-
+  \vfill
 \begin{Rcode}[And you?]
 > eval.similarity.correlation(RG65, M, convert=FALSE)\begin{Rout}
        rho  p.value missing     r r.lower r.upper
@@ -408,32 +365,74 @@ RG65 0.687 2.61e-10       0 0.678    0.52   0.791\end{Rout}
 \end{frame}
 
 
-\begin{frame}
-\frametitle{Noun categorization}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Noun categorisation}
 
-\begin{itemize}
-\item In \primary{categorization tasks}, subjects are typically asked to assign experimental items -- objects, images, words -- to a given category or group items belonging to the same category
-\begin{itemize}
-\item categorization requires an understanding of the relationship between the items in a category
-\end {itemize}
-\item Categorization is a basic cognitive operation presupposed by further semantic tasks
-\begin{itemize}
-\item \primary{inference}
-\begin{itemize}
-\item if X is a CAR then X is a VEHICLE
-\end{itemize}
-\item \primary{compositionality}
-\begin{itemize}
-\item $\lambda y: \text{FOOD}\; \lambda x:\text{ANIMATE} \; \bigl[ eat(x,y) \bigr]$
-\end{itemize}
-\end{itemize}
-\item ``Chicken-and-egg'' problem for relationship of categorization and similarity (cf.\ Goodman 1972, Medin et al.\ 1993)
-\end{itemize}
+\begin{frame}
+  \frametitle{Noun categorisation}
+
+  \begin{itemize}
+  \item In \primary{categorisation tasks}, subjects are typically asked to assign experimental items -- objects, images, words -- to a given category or group items belonging to the same category
+    \begin{itemize}
+    \item categorisation requires an understanding of the relationship between the items in a category
+    \end {itemize}
+  \item Categorisation is a basic cognitive operation and a precondition of many further semantic tasks
+    \begin{itemize}
+    \item \primary{inference}
+      \begin{itemize}
+      \item if X is a CAR then X is a VEHICLE
+      \end{itemize}
+    \item \primary{compositionality}
+      \begin{itemize}
+      \item $\lambda y: \text{FOOD}\; \lambda x:\text{ANIMATE} \; \bigl[ eat(x,y) \bigr]$
+      \end{itemize}
+    \end{itemize}
+  \item ``Chicken-and-egg'' problem for relationship of categorisation and similarity (cf.\ Goodman 1972, Medin et al.\ 1993)
+  \end{itemize}
 \end{frame}
 
+\begin{frame}
+  \frametitle{Noun categorisation: datasets}
+
+  \ungap[1.5]
+  \begin{columns}
+    \begin{column}{0.5 \textwidth}
+      \begin{exampleblock}{ESSLLI08 (on focus today)}
+        \textbf{44 nouns, 6 classes} \\
+        \textit{potato} $\Longrightarrow$ \textsc{green}  \\
+        \textit{hammer} $\Longrightarrow$ \textsc{tool}  \\
+        \textit{car} $\Longrightarrow$ \textsc{vehicle} \\
+        \textit{peacock} $\Longrightarrow$ \textsc{bird}     
+      \end{exampleblock}
+      \begin{exampleblock}{Almuhareb \& Poesio}
+        \textbf{402 nouns, 21 classes} \\
+        \textit{day} $\Longrightarrow$ \textsc{time}   \\
+        \textit{kiwi} $\Longrightarrow$ \textsc{fruit}  \\
+        \textit{kitten} $\Longrightarrow$ \textsc{animal} \\
+        \textit{volleyball} $\Longrightarrow$ \textsc{game}
+      \end{exampleblock}
+    \end{column}
+    \begin{column}{0.5 \textwidth}
+      \begin{exampleblock}{BATTIG set\phantom{p()} }
+        \textbf{82 nouns, 10 classes} \\
+        \textit{chicken} $\Longrightarrow$ \textsc{bird}   \\
+        \textit{bear} $\Longrightarrow$ \textsc{land\_mammal}  \\
+        \textit{pot} $\Longrightarrow$ \textsc{kitchenware} \\
+        \textit{oak} $\Longrightarrow$ \textsc{tree}\phantom{p} 
+      \end{exampleblock}
+      \begin{exampleblock}{MITCHELL set \phantom{ \&}}
+        \textbf{60 nouns, 12 classes} \\
+        \textit{ant} $\Longrightarrow$ \textsc{insect}   \\
+        \textit{carrot} $\Longrightarrow$ \textsc{vegetable}  \\
+        \textit{train} $\Longrightarrow$ \textsc{vehicle} \\
+        \textit{cat} $\Longrightarrow$ \textsc{animal}
+      \end{exampleblock}
+    \end{column}
+  \end{columns}
+\end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Noun categorization: the ESSLLI 2008 dataset}
+  \frametitle{Noun categorisation: the ESSLLI 2008 dataset}
 
   Dataset of 44 concrete nouns (ESSLLI 2008 Shared Task)
   \begin{itemize}
@@ -447,7 +446,7 @@ RG65 0.687 2.61e-10       0 0.678    0.52   0.791\end{Rout}
     \item 13 tools (\emph{hammer}), 7 vehicles (\emph{car})
     \item[]
     \end{itemize}
-  \item<2-> DSMs operationalize categorization as a \primary{clustering task}
+  \item<2-> DSMs operationalise categorisation as a \primary{clustering task}
     \begin{enumerate}
     \item for each noun $w_i$ in the dataset, take its vector $\vw_i$
     \item use a \primary{clustering method} to group similar vectors $\vw_i$
@@ -456,6 +455,7 @@ RG65 0.687 2.61e-10       0 0.678    0.52   0.791\end{Rout}
     \end{enumerate}
   \end{itemize}
 
+  \vfill
 \begin{Rcode}
 > ESSLLI08_Nouns[seq(1,40,5), ]
 \end{Rcode}
@@ -463,7 +463,7 @@ RG65 0.687 2.61e-10       0 0.678    0.52   0.791\end{Rout}
 
 
 \begin{frame}
-\frametitle{Noun categorization: example}
+\frametitle{Noun categorisation: example}
 \ungap[1]
 \begin{center}
   \only<beamer:1| handout:0>{\includegraphics[width=8cm]{img/vobj_clustering}}%
@@ -478,32 +478,31 @@ RG65 0.687 2.61e-10       0 0.678    0.52   0.791\end{Rout}
 \end{frame}
 
 \begin{frame}
-\frametitle{ESSLLI 2008 shared task}
-\begin{itemize}
-\item Clustering experiments with CLUTO (Karypis 2003)
-\begin{itemize}
-\item repeated bisection algorithm
-\item 6-way (birds, ground animals, fruits, greens,
-tools and vehicles), 3-way (animals, plants and
-artifacts) and 2-way (natural and artificial entities) clusterings
-\end{itemize}
-\pause
-\item Quantitative evaluation
-\begin{itemize}
-\item \primary{entropy} -- whether words from different classes are represented in the same cluster (\secondary{best = 0})
-\item \primary{purity} -- degree to which a cluster contains words from one class only (\secondary{best = 1})
-\item \primary{global score} across the three clustering experiments
-\begin{displaymath}
-\sum_{i=1}^3 \text{Purity}_i -  \sum_{i=1}^3 \text{Entropy}_i
-\end{displaymath}
-\end{itemize}
-\end{itemize}
+  \frametitle{ESSLLI 2008 shared task}
+  \begin{itemize}
+  \item Clustering experiments with CLUTO \citep{Karypis:03}
+  \item[]
+    \begin{itemize}
+    \item 6-way (birds, ground animals, fruits, greens,
+      tools and vehicles), 3-way (animals, plants and
+      artifacts) and 2-way (natural and artificial entities) clusterings
+    \end{itemize}
+    \pause
+  \item Evaluation scores:
+    \begin{itemize}
+    \item \h{purity} -- degree to which a cluster contains words from one class only (\secondary{best = 1})
+    \item \primary{entropy} -- whether words from different classes are represented in the same cluster (\secondary{best = 0})
+    \item \primary{global score} across the three clustering experiments
+      \begin{displaymath}
+        \sum_{i=1}^3 \text{Purity}_i -  \sum_{i=1}^3 \text{Entropy}_i
+      \end{displaymath}
+    \end{itemize}
+  \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]
   \frametitle{ESSLLI 2008 shared task}
 
-  \ungap[1]
   \begin{center}\small
     \begin{tabular}{|l|r|r||r|r||r|r||r|}
       \hline
@@ -512,92 +511,36 @@ artifacts) and 2-way (natural and artificial entities) clusterings
                    &   \emph{P} & \emph{E}  & \emph{P} & \emph{E}  & \emph{P} & \emph{E} &\\
       \hline
       \hline
-      Katrenko & 89 & 13 & 100 & 0 & 80 & 59 & 197\\ 
+      Pattern-based (Katrenko) & 89 & 13 & 100 & 0 & 80 & 59 & 197\\ 
       \hline
-      Peirsman+ & 82 & 23 & 84 & 34 & 86 & 55 & 140\\
+      Term-term (Peirsman) & 82 & 23 & 84 & 34 & 86 & 55 & 140\\
       \hline
       dep-typed (DM) & 77 & 24 & 79 & 38 & 59 & 97 & 56\\
       \hline
       dep-filtered (DM) & 80 &28 & 75& 51& 61& 95 & 42\\
       \hline
       window (DM) & 75& 27&  68& 51& 68& 89   &44\\
-      \hline
-      Peirsman$-$ & 73 & 28 & 71 & 54 & 61 & 96 & 27\\
-      \hline
-      Shaoul & 41& 77& 52& 84 & 55& 93& -106\\
+      %\hline
+      %Peirsman$-$ & 73 & 28 & 71 & 54 & 61 & 96 & 27\\
+      %\hline
+      %Shaoul & 41& 77& 52& 84 & 55& 93& -106\\
       \hline
     \end{tabular}
   \end{center}
 
   \begin{center}\footnotesize
-    {\tt Katrenko, Peirsman+/-, Shaoul}: ESSLLI 2008 Shared Task\\
+    {\tt Katrenko, Peirsman}: ESSLLI 2008 Shared Task\\
     {\tt DM}: Baroni \& Lenci (2009)
   \end{center}
 
+  \vfill
 \begin{Rcode}[And you?]
 > eval.clustering(ESSLLI08_Nouns, M) \REM{uses PAM clustering}
 \end{Rcode}
 \end{frame}
 
 \begin{frame}
-  \frametitle{Semantic priming}
-  \begin{itemize}
-  \item Hearing/reading a ``related'' prime facilitates access to a
-    target in various psycholing.\ tasks (naming, lexical decision,
-    reading)
-    \begin{itemize}
-  \item the word \emph{pear} is recognized faster if heard/read after \emph{apple}
-  \item[]
-    \end{itemize}
-  \item<2-> \citet{Hodgson:91} single word lexical decision task, 136
-    prime-target pairs \citep[cf.][]{Pado:Lapata:07}
-    \begin{itemize}
-  \item similar amounts of priming found for different  semantic relations between primes and targets ($\approx 23$ pairs
-    per relation)
-    \begin{itemize}
-    \item synonyms (synonym): \emph{to dread/to fear}
-    \item antonyms (antonym): \emph{short/tall}
-    \item coordinates (coord): \emph{train/truck}
-    \item super- and subordinate pairs (supersub): \emph{container/bottle}
-    \item free association pairs (freeass): \emph{dove/peace}
-    \item phrasal associates (phrasacc): \emph{vacant/building}
-    \end{itemize}
-  \end{itemize}
-\end{itemize}
-\end{frame}
-
-
-
-\begin{frame}
-  \frametitle{Simulating semantic priming}
-  \framesubtitle{\citet{McDonald:Brew:04,Pado:Lapata:07}}
- \begin{itemize}
- \item DSMs and semantic priming
-  \begin{enumerate}
-  \item for each related prime-target pair, 
-  measure cosine-based similarity between items (e.g.,
-    \emph{to dread / to fear})
-    \pause
-  \item to estimate \primary{unrelated primes}, take average of cosine-based similarity of target with other primes from same semantic relation (e.g., \emph{to value / to fear})
-    \pause
-  \item similarity between related items should be significantly higher
-    than average similarity between unrelated items
-    \item[]
-  \end{enumerate}
-\item<4-> Significant effects ($p < .01$) for all semantic relations 
-  \begin{itemize}
-  \item strongest effects for synonyms, antonyms \& coordinates
-  \item[]
-  \end{itemize}
-\item<5-> Alternative: \primary{classification} task
-  \begin{itemize}
-  \item given target and two primes, identify related prime\\ (\so multiple choice like TOEFL)
-  \end{itemize}
-  \end{itemize}
-\end{frame}
-
-\begin{frame}
-  \frametitle{Analogy tasks}
+  \frametitle{Intrinsic evaluation on word pairs: Analogy}
   \framesubtitle{\citet{Mikolov:etc:13,Mikolov:etc:13b,Gladkova:Drozd:Matsuoka:16}}
 
   \begin{itemize}
@@ -634,6 +577,19 @@ artifacts) and 2-way (natural and artificial entities) clusterings
   \frametitle{The Google analogy task}
   \framesubtitle{\citet{Mikolov:etc:13,Mikolov:etc:13b}}
 
+  \begin{center}
+    \ungap[1]
+    \begin{tabular}{r}
+      \includegraphics[width=10cm]{img/MikolovChenEtc2013_Tab1}\\
+      \secondary{\tiny\citep[Tab.~1]{Mikolov:etc:13}}
+    \end{tabular}
+  \end{center}
+\end{frame}
+
+\begin{frame}
+  \frametitle{The Google analogy task}
+  \framesubtitle{\citet{Mikolov:etc:13,Mikolov:etc:13b}}
+
   \begin{columns}[c]
     \begin{column}{5cm}
       \begin{itemize}
@@ -661,84 +617,30 @@ artifacts) and 2-way (natural and artificial entities) clusterings
 \end{frame}
 
 \begin{frame}
-  \frametitle{The Google analogy task}
-  \framesubtitle{\citet{Mikolov:etc:13,Mikolov:etc:13b}}
+  \frametitle{Scaling up: Linguistic Diagnostics}
 
-  \h{But what is the task here?}
-
-  \begin{center}
-    \begin{tabular}{r}
-      \includegraphics[width=9cm]{img/MikolovChenEtc2013_Tab1}\\
-      \secondary{\tiny\citep[Tab.~1]{Mikolov:etc:13}}
-    \end{tabular}
-  \end{center}
-\end{frame}
-
-\begin{frame}
-  \frametitle{The CogALex-V shared task}
-  \framesubtitle{\citet{Santus:etc:16}}
-
-  \ungap[1]
-  \begin{center}
-    \begin{tabular}{r}
-      \includegraphics[width=9cm]{img/SantusEtc2016_Tab1}\\[-1ex]
-      \secondary{\tiny\citep[Tab.~1]{Santus:etc:16}}
-    \end{tabular}
-  \end{center}
-
-  \ungap[1]
-  \begin{itemize}
-  \item<2-> Task A: categorize pair as \textsc{random} \vs related (all other)
-    \begin{itemize}
-    \item best system: $F_1 = 79.0\%$ (GHHH)
-    \item best DSM: $F_1 = 77.8\%$ (Mach5)
-    \end{itemize}
-  \item<3-> Task B: categorize as \textsc{syn}, \textsc{ant}, \textsc{hyper}, \textsc{part} or \textsc{random}
-    \begin{itemize}
-    \item best system: $F_1 = 44.5\%$ (LexNet)
-    \item best DSM: $F_1 = 29.5\%$ (Mach5 + SVM classifier)
-    \end{itemize}
-  \end{itemize}
-\end{frame}
-
-\begin{frame}
-  \frametitle{Mach5: A cautionary tale}
-  \framesubtitle{\citet{Evert:16a}}
-
-  \begin{itemize}
-  \item DSM optimization for Task A was highly successful,
-    but yielded counter-intuitive parameter settings
-  \item[\hand] Only feature ranks 20k--70k (DepFilt) / 50k--100k (DepStruct)
-  \item[]
-  \end{itemize}
-  
-  \begin{center}
-    \includegraphics[width=10cm]{img/Mach5_eval_features}
-  \end{center}  
-\end{frame}
-
-\begin{frame}
-  \frametitle{Mach5: A cautionary tale}
-  \framesubtitle{\citet{Evert:16a}}
-
-  \begin{itemize}
-  \item Nearest neighbours are unsatisfactory, e.g.\ for \primary{\emph{play}}:\\ \small
-    \emph{playing} ($54.1^{\circ}$), \emph{star} ($62.8^{\circ}$), \emph{reunite} ($62.9^{\circ}$), \emph{co-star} ($64.3^{\circ}$), \emph{reprise} ($64.4^{\circ}$), \emph{player} ($66.7^{\circ}$), \emph{score} ($68.5^{\circ}$), \emph{audition} ($69.2^{\circ}$), \emph{sing} ($69.4^{\circ}$), \emph{actor} (69.5), \emph{understudy} (69.6), \emph{game} (70.3), \ldots
-  \item[]
-  \end{itemize}
-
-  \onslide<2->\ungap[1]
-  \begin{center}
-    \includegraphics[width=10cm]{img/Mach5_boxplot_test_compare}
-  \end{center}
+  \begin{columns}[T]
+    \begin{column}{45mm}
+      \primary{Linguistic Diagnostics} \citep{Rogers:Hosur:Rumshisky:18} automates classification of nearest neighbours based on various on-line dictionaries and semantic networks
+      \begin{itemize}
+      \item[\hand] correlation analysis between various groups of diagnostics and evaluation tasks
+      \item[\hand] only for English so far
+      \end{itemize}
+    \end{column}
+    \begin{column}{65mm}
+      \includegraphics[width=65mm]{img/RogersEtc2018_Fig2}%
+    \end{column}
+  \end{columns}
+  \gap[.5]
+  \hspace*{-3mm}\secondary{\small\url{https://github.com/annargrs/ldt}}
 \end{frame}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
-\section{Parameter evaluation}
+\section{Methodology for evaluation of DSM parameters}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Evaluation strategies}
+\subsection{An example (Bullinaria \& Levy 2007, 2012)}
 
 \begin{frame}
   \frametitle{DSM evaluation in published studies}
@@ -759,18 +661,12 @@ artifacts) and 2-way (natural and artificial entities) clusterings
     \item One parameter (sometimes two) varied at a time, with all other parameters set to fixed values or optimized for each setting
     \item Optimal parameter values are determined sequentially
     \end{itemize}
-
   \end{itemize}
 \end{frame}
 
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{An example (Bullinaria \& Levy 2007, 2012)}
-
 \begin{frame}
-  \frametitle{Bullinaria \& Levy (2007, 2012)}
-
+  \frametitle{\citet{Bullinaria:Levy:07,Bullinaria:Levy:12}}
+  
   \ungap[1]
   \begin{itemize}
   \item One of the first systematic evaluation studies
@@ -781,12 +677,12 @@ artifacts) and 2-way (natural and artificial entities) clusterings
     \item corpus type \& size, number of feature dimensions
     \item dimensionality reduction (SVD), number of latent dimension
     \end{itemize}
-  \item<2-> In four different evaluation tasks
+  \item<2-> In five different evaluation tasks
     \begin{itemize}
     \item TOEFL
     \item distance comparison: related word \vs 10 random words
-    \item semantic categorization: nearest-centroid classifier
-    \item syntactic categorization (2007)
+    \item semantic categorisation: nearest-centroid classifier
+    \item syntactic categorisation (2007)
     \item semantic clustering of nouns (2012)
     \end{itemize}
   \item<3-> Novel parameters
@@ -884,7 +780,7 @@ artifacts) and 2-way (natural and artificial entities) clusterings
 \end{frame}
 
 \begin{frame}
-  \frametitle{Semantic categorization: dimensionality reduction}
+  \frametitle{Semantic categorisation: dimensionality reduction}
   \framesubtitle{\citep[p.~898, Fig.~5]{Bullinaria:Levy:12}}
 
   \ungap[1]
@@ -934,13 +830,286 @@ artifacts) and 2-way (natural and artificial entities) clusterings
 \end{frame}
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Interpreting DSM performance with linear regression}
+
+\begin{frame}
+  \frametitle{Making sense of evaluation results}
+  \framesubtitle{Interpreting performance \vs picking the best run}
+  
+  \begin{enumerate}
+  \item \hh{One model, many tasks} \citep{Pado:Lapata:07,Baroni:Lenci:10,Pennington:Socher:Manning:14}
+    \begin{itemize}
+    \item Novel DSM, one (or very few) settings tested on many tasks
+    \item Problem: not suitable for the exploration of a large parameter set, very limited coverage of interactions
+    \item[]
+    \end{itemize}
+  \item \hh{Incremental tuning} \citep{Bullinaria:Levy:07,Bullinaria:Levy:12,Kiela:Clark:14,Polajnar:Clark:14}
+    \begin{itemize}
+    \item Set parameter $a$, then $b$, then $c$
+    \item Problem: order dependent, little coverage of interactions
+    \item[]
+    \end{itemize}
+  \item \h{Test all combinations} \citep{Baroni:Dinu:Kruszewski:14,Levy:Goldberg:Dagan:15,Lapesa:Evert:14a}
+    \begin{itemize}
+    \item Many tasks, many parameters, all combinations
+    \item Problem: many runs, \primary{interpreting results is a challenge}
+    \end{itemize}
+  \end{enumerate}	
+\end{frame}
+
+\begin{frame}
+  \frametitle{Lots of variation to make sense of... }
+  \framesubtitle{TOEFL: 504,000 (!!!) runs \citep{Lapesa:Evert:14a}}
+
+  \ungap[1]
+  \begin{center}
+    \includegraphics[scale=0.30]{img/lapesa_hist_toefl_reduced}
+  \end{center}
+  
+  \begin{exampleblock}{We need an interpretation methodology that:}
+    \begin{itemize}
+    \item \ldots{} is able to identify robust trends, avoiding overfitting
+    \item \ldots{} is able to capture parameter interactions
+    \end{itemize}	
+  \end{exampleblock}	
+\end{frame}
+
+\begin{frame}
+  \frametitle{Linear regression to the rescue}
+
+  \begin{itemize}
+  \item Attempts to predict the values of a ``dependent'' variable from one or more ``independent'' variables and their combinations
+  \item Is used to understand \secondary{which independent variables are closely related to the dependent variable}, and to \secondary{explore the forms of these relationships}
+  \item[]
+  \end{itemize}
+
+  \begin{block}{Example}
+    \textbf{Dependent variable}: income \\
+    \textbf{Independent variables}: gender, age, ethnicity, education level, first letter of the surname \light{(hopefully not significant)}
+  \end{block}
+\end{frame}
+ 
+\begin{frame}
+  \frametitle{How to interpret the evaluation results?}
+  \framesubtitle{Our proposal: linear regression}
+
+  We use linear models to analyze the influence of different DSM parameters and their combinations on DSM performance
+  \begin{itemize}
+  \item dependent variable = \primary{performance}\\
+    (accuracy, correlation coefficient, purity)
+  \item independent variables = model \primary{parameters}\\
+    (e.g.\ source corpus, window size, association score)
+  \item[]
+  \end{itemize}
+  
+  \begin{block}{Motivation}
+    We want to understand which of the parameters are related to the dependent variable, i.e.\ we want to find the parameters whose manipulation has the strongest effect on DSM performance.
+  \end{block}
+\end{frame}
+ 
+\begin{frame}
+  \frametitle{\Large{How to interpret the evaluation results?}}
+  \framesubtitle{Our proposal: linear regression}
+
+  \begin{center}
+    \fbox{
+      model performance = 
+      $\beta_{0} + \beta_1(p_1) + \beta_2(p_2) + \beta_3(p_1, p_2) + \ldots  + \epsilon$
+    }
+  \end{center} 
+
+  \gap
+  \begin{enumerate}
+  \item<2-> \primary{Adjusted $R^2$}: proportion of variance explained by the model
+    \begin{itemize}
+    \item[$\leadsto$] How well do we predict performance?
+    \item[]
+    \end{itemize}
+  \item<3-> \primary{Feature ablation}: proportion of variance explained by a parameter together with all its interactions 
+    \begin{itemize}
+    \item[$\leadsto$] Which parameters affect performance the most?
+    \item[]
+    \end{itemize}
+  \item<4-> \primary{Model predictions}: visualisation of predicted performance  
+    \begin{itemize}
+    \item[$\leadsto$] What are the best parameter values?
+    \end{itemize}
+  \end{enumerate}
+\end{frame}   
+
+\begin{frame}<beamer:1| handout:0>
+ \frametitle{How well do we predict performance?}
+ \framesubtitle{A concrete example: TOEFL, SVD (504k data points)}
+
+ {\small
+   \texttt{\textcolor{nicegreen}{accuracy }$\sim$ \ldots{} \phantom{pus + window + score + transformation  \phantom{accuracy $\sim$} + metric + rel.index}}}
+
+ \gap[2]
+ \begin{minipage}{1\linewidth}
+   \begin{minipage}[c]{0.762\textwidth}
+     \includegraphics[scale=0.325]{img/dataframeTop123_1}
+   \end{minipage}
+   \begin{minipage}[c]{0.23\textwidth}
+     {\footnotesize\textbf{Model fit: Adj.R$^2$}\\%
+       \textcolor{white}{basic \hfill 43\%}\\
+       \textcolor{white}{\& SVD \hfill +24\%}\\
+       \textcolor{white}{\& 2-way \hfill+22\%}\\
+       \textcolor{white}{\& \textit{3-way\hfill+3\%}}}
+   \end{minipage}
+ \end{minipage} 
+
+ \gap[4]
+ \hh{Assumption:} a good linear model acts as a ``smoothing'' algorithm which filters away random noise \& captures robust trends. 
+\end{frame}
+
+\begin{frame}<beamer:1| handout:0>
+  \frametitle{How well do we predict performance?}
+  \framesubtitle{A concrete example: TOEFL, SVD (504k data points)}
+
+  {\small
+    \texttt{\textcolor{nicegreen}{accuracy }$\sim$ \textcolor{niceblue}{corpus + window + score + transformation  \phantom{accuracy $\sim$} + metric + rel.index}}}
+  
+  \gap[2]
+  \begin{minipage}{1\linewidth}
+    \begin{minipage}[c]{0.762\textwidth}
+      \includegraphics[scale=0.325]{img/dataframeTop123_2}
+    \end{minipage}
+    \begin{minipage}[c]{0.23\textwidth}
+      {\footnotesize\textbf{Model fit: Adj.R$^2$}\\%
+        \textcolor{niceblue}{basic} \hfill 43\%\\
+        \textcolor{white}{\& SVD \hfill +24\%}\\
+        \textcolor{white}{\& 2-way \hfill+22\%}\\
+        \textcolor{white}{\& \textit{3-way\hfill+3\%}}}
+    \end{minipage}
+  \end{minipage} 
+
+  \gap[4]
+  \hh{Assumption:} a good linear model acts as a ``smoothing'' algorithm which filters away random noise \& captures robust trends.
+\end{frame}
+ 
+\begin{frame}<beamer:1| handout:0>
+  \frametitle{How well do we predict performance?}
+  \framesubtitle{A concrete example: TOEFL, SVD (504k data points)}
+
+  {\small
+    \texttt{\textcolor{nicegreen}{accuracy }$\sim$ \textcolor{niceblue}{corpus + window + score + transformation  \phantom{accuracy $\sim$} + metric + rel.index} \textcolor{nicered}{+ n.dim + dim.skip}}}
+
+  \gap[2]
+  \begin{minipage}{1\linewidth}
+    \begin{minipage}[c]{0.762\textwidth}
+      \includegraphics[scale=0.325]{img/dataframeTop123_3}
+    \end{minipage}
+    \begin{minipage}[c]{0.23\textwidth}
+      {\footnotesize\textbf{Model fit: Adj.R$^2$}\\%
+        \textcolor{niceblue}{basic} \hfill 43\%\\
+        \textcolor{nicered}{\& SVD} \hfill +24\%\\
+        \textcolor{white}{\& 2-way \hfill+22\%}\\
+        \textcolor{white}{\& \textit{3-way\hfill+3\%}}}
+    \end{minipage}
+  \end{minipage} 
+
+  \gap[4]  
+  \hh{Assumption:} a good linear model acts as a ``smoothing'' algorithm which filters away random noise \& captures robust trends.
+\end{frame}
+ 
+
+\begin{frame}<beamer:1| handout:1>
+  \frametitle{How well do we predict performance?}
+  \framesubtitle{A concrete example: TOEFL, SVD (504k data points)}
+
+  {\small
+    \texttt{\textcolor{nicegreen}{accuracy }$\sim$ \textcolor{niceblue}{corpus * window * score * transformation  \phantom{accuracy $\sim$} * metric * rel.index} \textcolor{nicered}{* n.dim * dim.skip}}}
+
+  \gap[2]
+  \begin{minipage}{1\linewidth}
+    \begin{minipage}[c]{0.762\textwidth}
+      \includegraphics[scale=0.325]{img/dataframeTop123_3}
+    \end{minipage}
+    \begin{minipage}[c]{0.23\textwidth}
+      {\footnotesize\textbf{Model fit: Adj.R$^2$}\\%
+        \textcolor{niceblue}{basic} \hfill 43\%\\
+        \textcolor{nicered}{\& SVD} \hfill +24\%\\
+        \& 2-way \hfill+22\%\\
+        \textbf{Total:  \hfill 87\%}}
+    \end{minipage}
+  \end{minipage} 
+
+  \gap[4]
+  \hh{Assumption:} a good linear model acts as a ``smoothing'' algorithm which filters away random noise \& captures robust trends.
+\end{frame}
+ 
+\begin{frame}
+  \frametitle{Which parameters affect performance the most?}
+  \framesubtitle{Feature ablation: parameters and interactions on TOEFL}
+  
+  \begin{columns}    
+    \begin{column}{0.5\textwidth}
+      \vspace*{-10pt}
+      \begin{figure} 
+        \includegraphics[scale=0.30]{img/toefl_reduced_main_r2_ann}
+        \vspace{-10pt}
+      \end{figure}
+    \end{column}     
+
+    \begin{column}{0.5\textwidth}
+      \begin{table}\footnotesize
+        \vspace*{18pt}
+        \begin{tabular}{lrrrr} 
+          \textbf{Effect} & \textbf{$R^2$}  \\ \hline
+          score & 10.53 \\
+          \hline
+          score:transformation & 7.42 \\   
+          score:metric & 1.77 \\ 
+          corpus:score & 0.84 \\  
+          score:context.dim & 0.64 \\  \hline
+          other int. $<$ 0.5  & 0.93  \\ \hline
+          \textbf{Feature ablation} & \h{22.13} \\
+        \end{tabular}
+        \vspace{5pt}
+      \end{table}
+    \end{column}
+  \end{columns}  
+ \end{frame}
+
+ \begin{frame}
+   \frametitle{Which parameters affect performance the most?}
+   \framesubtitle{Interaction of score and transformation: effect plot}
+   \centering
+   \includegraphics[scale=0.45]{img/toefl-bow_reduced_main_score_transformation}
+ \end{frame}
+
+ \begin{frame}
+   \frametitle{So, are there general trends? \citep{Lapesa:Evert:14a}}
+   \framesubtitle{Datasets: TOEFL, RG65, WordSim353, ESSLLI08 (and 3 other clust. datasets)}
+
+   \begin{itemize}
+   \item<2-> Most explanatory parameters: similar across tasks/datasets
+     \begin{itemize}
+     \item simple-ll + logarithmic transformation, cosine similarity
+     \item[]
+     \end{itemize}
+   \item<3-> Parameters that show variation: \primary{the amount and nature} of shared context
+     \begin{itemize}
+     \item Context window: 4 is a good compromise solution
+     \item SVD: always helps, and skipping the first dimensions (but not too many) generally helps 
+     \item[]
+     \end{itemize}
+   \item<4-> Neighbor rank (almost) always better than distance
+     \begin{itemize}
+     \item[]
+     \end{itemize}
+   \item<5-> Syntax (almost) never helps :( \citep{Lapesa:Evert:17}  
+   \end{itemize}
+ \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{A large scale evaluation study}
+\section{Appendix: A large-scale evaluation study}
 
 \begin{frame}[c]
   \centering
 
+  \textbf{Appendix}\\
   \hh{\large A (very) large-scale evaluation study}
   
   \gap[2]
@@ -1100,136 +1269,7 @@ artifacts) and 2-way (natural and artificial entities) clusterings
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Methodology for DSM Evaluation}
-
-\begin{frame}
-  \frametitle{How many models did we end up with?}
-  \framesubtitle{... and how do we make sense of all those results?}   
-
-  \begin{itemize}
-  \item We tested all the possible parameter combinations (we will see later that this is crucial for our evaluation methodology)
-  \item \primary{537600 model runs} (33600 in the unreduced setting, 504000 in the reduced setting)
-  \item The models were generated and evaluated on a large HPC cluster at FAU Erlangen-Nürnberg as well as servers at the University of Stuttgart, within approximately 5 weeks
-
-  \end{itemize}
-\end{frame}
-
-
-\begin{frame}
-  \frametitle{Evaluation methodology: linear regression}
-  \framesubtitle{Our proposal for a robust evaluation of DSM parameters}
-
-  \begin{itemize}
-  \item Attempts to predict the values of a ``dependent'' variable from one or more ``independent'' variables and their combinations
-  \item Is used to understand \secondary{which independent variables are closely related to the dependent variable}, and to \secondary{explore the forms of these relationships}
-  \end{itemize}
-
-  \begin{block}{Example}
-    \textbf{Dependent variable}: income \\
-    \textbf{Independent variables}: gender, age, ethnicity, education level, first letter of the surname \light{(hopefully not significant)}
-  \end{block}
-
-
-
-  
-\end{frame}
-
-\begin{frame}
-  \frametitle{Evaluation methodology: linear regression}
-  \framesubtitle{Our proposal for a robust evaluation of DSM parameters}
-
-  We use linear models to analyze the influence of different DSM parameters and their combinations on DSM performance
-  \begin{itemize}
-  \item dependent variable = \primary{performance}\\
-    (accuracy, correlation coefficient, purity)
-  \item independent variables = model \primary{parameters}\\
-    (e.g., source corpus, window size, window direction)
-  \end{itemize}
-  
-  \begin{block}{}
-    We want to understand which of the parameters are related to the dependent variable, i.e., we want to find the parameters whose manipulation has the strongest effect on DSM performance.
-  \end{block}
-
-\end{frame}
-
-
-\begin{frame}
-  \frametitle{DSM evaluation and linear regression}
-  \framesubtitle{Toy example: a $2 \times 2 \times 2$ design}
-  \centering
-  \footnotesize
-  \begin{tabular}{cccc}
-    \hline
-    Corpus & Window size &  Window direction &  Accuracy  \\  
-    \hline 
-    ukWaC & 1 & directed  &  88  \\  
-    ukWaC & 16 & undirected   & 92 \\
-    ukWaC & 1 & directed  &  91  \\  
-    ukWaC & 16 & undirected   & 93 \\    
-    BNC & 1  & undirected  &  80  \\  
-    BNC & 16  & undirected  & 53   \\ 
-    BNC & 1  & directed  &  72  \\  
-    BNC & 16  & directed  & 71 \\   
-    \hline
-  \end{tabular}
-
-  \begin{block}{}\small\ungap[2]
-    \begin{align*}
-      Accuracy &= \beta_{0} + \beta_1(\text{corpus})  + \beta_2(\text{window size}) +  \beta_3(\text{window direction}) \\
-      & + \beta_4(\text{corpus: window size}) + \beta_5(\text{corpus: window direction}) + \\
-      & + \beta_6(\text{window size: window direction})  + \epsilon
-    \end{align*}
-    \ungap[1.5]
-  \end{block}
-  
-  \raggedright
-  \light{\footnotesize *we're aware that this regression model is almost saturated \ldots}
-\end{frame}
-
-\begin{frame}
-  \frametitle{DSM evaluation and linear regression}
-  \framesubtitle{Analysis of variance}
-
-  \begin{block}{}\footnotesize
-    \primary{Goal}: quantify the impact of a specific parameter (or interaction) on DSM performance, in terms of the proportion of variance explained by the parameter
-  \end{block}
-
-  \footnotesize
-  Key notions:
-  \begin{itemize}
-  \item \primary{$R^2$} (R squared)
-    \begin{itemize}\footnotesize
-    \item proportion of explained variance, i.e.\
-      \[
-      1 - \frac{\text{residual variance of $\epsilon$}}{\text{variance of dependent variable}}
-      \]
-    \item calculated (i) for the full model (\so how well the model exlains the experimental results) as well as (ii) for specific parameters and interactions (quantifying how much they contribute to predictions)
-    \end{itemize}
-  \item  \primary{Feature ablation}
-
-  \end{itemize}
-\end{frame}
-
-\begin{frame}
-  \frametitle{DSM evaluation and linear regression}
-  \framesubtitle{Analysis of variance: feature ablation}
-
-  \begin{block}{Feature ablation}
-    Proportion of variance explained by a parameter together with all its interactions, corresponding to the reduction in  $R^2$ of the linear model fit if this parameter is left out. 
-  \end{block}
-
-  In our toy model with 3 parameters and all two-way interactions: 
-
-  \begin{itemize}\footnotesize
-  \item Ablation(corpus) $=$  $R^2$(corpus) +  $R^2$(corpus: window size) +  $R^2$(corpus: window direction)  
-  \item Ablation(window size) $=$  $R^2$(window size) +  $R^2$(corpus: window size) +  $R^2$(window size: window direction)
-  \item Ablation(window direction) $=$  $R^2$(window direction) +  $R^2$(corpus: window direction) +  $R^2$(window size: window direction) 
-  \end{itemize}
-
-\end{frame}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Evaluation on Standard Tasks}
+\subsection{Evaluation results}
 
 \begin{frame}
   \frametitle{TOEFL multiple-choice classification task}
@@ -1484,7 +1524,6 @@ artifacts) and 2-way (natural and artificial entities) clusterings
   \centering
   \hspace*{-10pt}
   \includegraphics[scale=0.45]{img/lapesa_ratings_main_r2_reduced}
-
 \end{frame}
 
 \begin{frame}
@@ -1676,7 +1715,6 @@ artifacts) and 2-way (natural and artificial entities) clusterings
   \end{itemize}
 \end{frame}
 
-
 \begin{frame}
   \frametitle{Semantic clustering: performance}
   \framesubtitle{Overview: unreduced versus reduced experiments}
@@ -1685,19 +1723,18 @@ artifacts) and 2-way (natural and artificial entities) clusterings
     \begin{tabular}{|l|c|c|c|c|c|c|}
       \hline
       \multirow{2}{*}{Dataset}  & \multicolumn{3}{c|}{Unreduced} &  \multicolumn{3}{c|}{Reduced} \\  \cline{2-7}
-      & Min & Max & Mean & Min & Max & Mean \\ \hline
-      
+      & Min & Max & Mean & Min & Max & Mean \\
+      \hline      
       AP & 0.15 & 0.73 & 0.56 & 0.13 & \primary{0.76} & 0.54 \\  
       BATTIG & 0.28 & \primary{0.99} & 0.77 & 0.23 & \primary{0.99} & 0.78  \\  
       ESSLLI & 0.32 & 0.93 & 0.72 & 0.32 & \primary{0.98} & 0.72  \\    
-      MITCHELL & 0.26 & \primary{0.97} & 0.68 & 0.27 & \primary{0.97} & 0.69 \\    \hline
-      
+      MITCHELL & 0.26 & \primary{0.97} & 0.68 & 0.27 & \primary{0.97} & 0.69 \\
+      \hline
     \end{tabular}
 
     \gap[1]
     \secondary{Semantic clustering: summary of performance (purity)} 
   \end{center}
-  
 \end{frame}
 
 \begin{frame}
@@ -1715,7 +1752,6 @@ artifacts) and 2-way (natural and artificial entities) clusterings
   
   \begin{center}\small
     \begin{tabular}{lrrrrr}
-      
       Interaction & Df & AP & BATTIG & ESSLLI & MITCHELL \\ \hline
       
       \primary{score:transformation} & 18 &  7.10  & 7.95 & 7.56  &  11.42   \\ 
@@ -1723,7 +1759,6 @@ artifacts) and 2-way (natural and artificial entities) clusterings
       \primary{metric:n.dim} & 4 &   3.29    & 3.16 &  2.03 &  0.58   \\   
       \primary{metric:dim.skip} & 2 &   2.25   & 1.54 & 2.77  & 	 0.86  \\   
       \primary{window:transformation} & 12 &  2.00  & 2.95 & 0.88  &   2.66 \\ 
-
 
       corpus:metric & 2 &  1.42  & 2.91 & 2.79   & 1.11      \\ 
       corpus:window & 8 &   2.36   & 1.18 & 1.49  &    1.23   \\ 
@@ -1736,7 +1771,6 @@ artifacts) and 2-way (natural and artificial entities) clusterings
     \gap[1]\normalsize
     \secondary{Clustering datasets: interactions, $R^2$} 
   \end{center}
-  
 \end{frame}
 
 \begin{frame}
@@ -1850,7 +1884,6 @@ artifacts) and 2-way (natural and artificial entities) clusterings
     \item Index of Distributional Relatedness: neighbor rank
     \end{itemize}
   \end{exampleblock}   
-  
 \end{frame}
 
 
@@ -1937,7 +1970,6 @@ artifacts) and 2-way (natural and artificial entities) clusterings
       w = window size, o.dim = number of feature dimensions, sc = scoring function, tr = transformation, m = metric, d.sk = number of skipped dimensions, best.s = performance of best setting for this dataset,\\ best.m = performance of best run for this dataset
     }
   \end{center}
-  
 \end{frame}
 
 
@@ -1983,51 +2015,6 @@ artifacts) and 2-way (natural and artificial entities) clusterings
     \gap[.5]
     \secondary{\normalsize General best settings -- Performance}
   \end{center}
-
-\end{frame}
-
-\begin{frame}
-  \frametitle{Conclusion}
-
-  \begin{itemize}
-  \item Our results show that it is possible to find a single DSM configuration that performs relatively well on every task
-    \begin{itemize}
-    \item[]
-    \end{itemize}
-  \item The most explanatory parameters show similar behavior across all tasks and datasets
-    \begin{itemize}
-    \item Simple-ll * Logarithmic Transformation 
-    \item Cosine Distance
-    \item[]
-    \end{itemize}
-  \item Parameters that show variation determine the amount and nature of the shared context
-    \begin{itemize}
-    \item Context window: 4 is a good compromise solution
-    \item Dimensionality reduction: skipping the first dimensions\\ (but not too many) generally helps 
-    \item Number of Feature Terms (to a lesser extent)
-    \end{itemize}
-  \end{itemize}
-\end{frame}
-
-
-\begin{frame}
-  \frametitle{Conclusion}
-  
-  \begin{itemize}
-  \item Among the source corpora, WaCkypedia appears to be a better option than UkWaC for all tasks but TOEFL
-    \begin{itemize}
-    \item A good trade-off between quantity and quality?
-    \item[]
-    \end{itemize}
-  \item As an index of distributional relatedness, neighbor rank is always better than distance, even if its contribution to model performance varies across tasks
-    \begin{itemize}
-    \item Perhaps some tasks/datasets are less asymmetric than others? 
-    \item may need to exploit directionality in a more granular way
-    \item[]
-    \end{itemize}
-  \item But remember the Mach5 lession:\\
-    good evaluation results \primary{$\not\implies$} accurate semantic representation
-  \end{itemize}
 \end{frame}
 
 
