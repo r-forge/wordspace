@@ -87,15 +87,31 @@ nodes={cellbox=#1}]
   Copyright \textcopyright\ 2009--2026 Evert, Lapesa, Lenci \& Baroni | 
   Licensed under CC-by-sa version 3.0}
 
-
 %% ----- automatically show TOC reminder at beginning of each subsection
-\AtBeginSubsection[]
-{
+\newcommand{\showSectionHeader}{%
+  \AtBeginSubsection[]
+  {
+    \begin{frame}
+      \frametitle{Outline}
+      \tableofcontents[current,currentsubsection]
+    \end{frame}
+  }}
+\newcommand{\hideSectionHeader}{%
+  \AtBeginSubsection[]{}}
+\showSectionHeader
+
+%% ----- need a bigger TODO slide for missing parts
+\newcommand{\TodoSlide}[2][TODO]{%
   \begin{frame}
-    \frametitle{Outline}
-    \tableofcontents[current,currentsubsection]
-  \end{frame}
-}
+    \frametitle{#1}
+    \begin{alertblock}{}
+      #2
+    \end{alertblock}
+    \vfill
+    \begin{center}
+      \Huge\h{TODO}
+    \end{center}
+  \end{frame}}
 
 %% ----- some useful macros for the SIGIL course
 

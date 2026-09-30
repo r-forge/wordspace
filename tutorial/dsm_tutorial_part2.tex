@@ -18,14 +18,14 @@
 
 \title[DSM Tutorial -- Part 2]{Distributional Semantic Models}
 \subtitle{Part 2: The parameters of a DSM}
-\author[\textcopyright\ Evert/Lenci/Baroni/Lapesa]{%
-  Stefan Evert\inst{1}\\
-  {\footnotesize with  Alessandro Lenci\inst{2}, Marco Baroni\inst{3} and Gabriella Lapesa\inst{4}}}
+\author[\textcopyright\ Evert/Lapesa/Lenci/Baroni]{%
+  Stephanie Evert\inst{1}\\
+  {\small with  Gabriella Lapesa\inst{2}, Alessandro Lenci\inst{3}, and Marco Baroni\inst{4}}}
 \institute[CC-by-sa]{%
   \inst{1}Friedrich-Alexander-Universität Erlangen-Nürnberg, Germany\\
-  \inst{2}University of Pisa, Italy\\
-  \inst{3}University of Trento, Italy\\
-  \inst{4}University of Stuttgart, Germany
+  \inst{2}Heinrich-Heine-Universität Düsseldorf \& GESIS, Germany\\
+  \inst{3}University of Pisa, Italy\\
+  \inst{4}ICREA / Universitat Pompeu Fabra Barcelona, Italy
 }
 
 \date[wordspace.collocations.de]{
@@ -96,7 +96,7 @@
   \item $k \times n$ co-occurrence matrix $\mathbf{M}\in \setR^{k\times n}$ (example: $7\times 6$)
     \begin{itemize}
     \item $k$ rows = \h{target} terms 
-    \item $n$ columns = \h{features} or \hh{dimensions}
+    \item $n$ columns = \h{features} or other \hh{dimensions}
     \end{itemize}
     \begin{small}
       \gap[.5]
@@ -117,132 +117,6 @@
       &= (m_{31}, m_{32}, m_{33}, m_{34}, m_{35}, m_{36})
     \end{align*}
   \end{itemize}
-
-\end{frame}
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{A taxonomy of DSM parameters}
-
-\begin{frame}<beamer:1| handout:1>[label=DSM_parameters]
-  \frametitle{Overview of DSM parameters}
-  
-  \footnotesize\centering
-  \begin{tikzpicture}
-    \node[diagram box=black] (corpus) at (0, 6.5) {pre-processed corpus with linguistic annotation} ;
-    \visible<beamer:1,3-| handout:1,3->{
-      \node[diagram box] (tt_terms) at (+3, 5) {define target \& feature terms} ;
-      \node[diagram box] (tc_terms) at (-3, 5) {define target terms} ; 
-    }
-    \visible<beamer:2| handout:2>{
-      \node[diagram dark box=primary] (tt_terms) at (+3, 5) {define target \& feature terms} ;
-      \node[diagram dark box=primary] (tc_terms) at (-3, 5) {define target terms} ; 
-    }
-    \visible<beamer:1-2,4-| handout:1-2,4->{
-      \node[diagram box] (tt_span) at (+3, 4) {type \& size of co-occurrence} ;
-    }
-    \visible<beamer:3| handout:3>{
-      \node[diagram dark box=primary] (tt_span) at (+3, 4) {type \& size of co-occurrence} ;
-    }
-    \visible<beamer:1-3,5-| handout:1-3,5->{
-      \node[diagram box] (tc_context) at (-3, 4) {context tokens or types} ;
-    }
-    \visible<beamer:4| handout:4>{
-      \node[diagram dark box=primary] (tc_context) at (-3, 4) {context tokens or types} ;
-    }
-    \visible<beamer:1-4,6-| handout:1-4,6->{
-      \node[diagram box=black] (geom_prob) at (0, 3) {$\mathbf{M}$} ;
-    }
-    \visible<beamer:5| handout:5>{
-      \node[diagram dark box=primary] (geom_prob) at (0, 3) {$\mathbf{M}$} ;
-    }
-    \node[diagram ghost] (prob) at (2, 2) {} ;
-    \visible<beamer:1-5,7-| handout:1-5,7->{
-      \node[diagram box] (scoring) at (-2, 2) {feature scaling} ;
-    }
-    \visible<beamer:6| handout:6>{
-      \node[diagram dark box=primary] (scoring) at (-2, 2) {feature scaling} ;
-    }
-    \visible<beamer:1-6,8-| handout:1-6,8->{
-      \node[diagram box] (metric) at (-2, 1) {similarity/distance measure + normalization} ;
-    }
-    \visible<beamer:7| handout:7>{
-      \node[diagram dark box=primary] (metric) at (-2, 1) {similarity/distance measure + normalization} ;
-    }
-    \visible<beamer:1-7,9-| handout:1-7,9->{
-      \node[diagram box] (dimred) at (-2, 0) {dimensionality reduction} ;
-    }
-    \visible<beamer:8| handout:8>{
-      \node[diagram dark box=primary] (dimred) at (-2, 0) {dimensionality reduction} ;
-    }
-    \draw[diagram arrow=counterpoint] (corpus) -- node[right=1.5em] {term-term matrix} (tt_terms) ;
-    \draw[diagram arrow] (tt_terms) -- (tt_span) ;
-    \draw[diagram arrow] (tt_span) -- (geom_prob) ;
-    \draw[diagram arrow=counterpoint] (corpus) -- node[left=1.5em] {term-context matrix} (tc_terms) ;
-    \draw[diagram arrow] (tc_terms) -- (tc_context) ;
-    \draw[diagram arrow] (tc_context) -- (geom_prob) ;
-    \draw[diagram arrow=counterpoint] (geom_prob) -- node[right=1.5em] (probanal) {probabilistic analysis} (prob) ;
-    \node[below=1mm of probanal, text width=30mm, align=center, color=counterpoint] {embedding learned by\\ neural network} ;
-    \draw[diagram arrow=counterpoint] (geom_prob) -- node[left=1.5em] {geometric analysis} (scoring) ;
-    \draw[diagram arrow] (scoring) -- (metric) ;
-    \draw[diagram arrow] (metric) -- (dimred) ;
-  \end{tikzpicture}
-\end{frame}
-
-
-\begin{frame}[fragile]
-  \frametitle{Term-context matrix}
-  % \framesubtitle{}
-
-  \h{Term-context matrix} records frequency of term in each individual context (e.g.\ sentence, document, Web page, encyclopaedia article)
-  
-  \gap[2]
-  \begin{center}
-  \(
-  \mathbf{F} = 
-  \begin{bmatrix}
-    \cdots & \vf_1 & \cdots \\
-    \cdots & \vf_2 & \cdots \\
-    & \vdots & \\
-    & \vdots & \\
-    \cdots & \vf_k & \cdots \\
-  \end{bmatrix}
-  \)
-  \hspace{5mm}
-  \begin{small}
-    \setlength{\arrayrulewidth}{1pt}
-    \begin{tabular}[c]{r*{7}{|c}|}
-      \multicolumn{1}{c}{}
-      & \multicolumn{1}{c}{\rotLabel{Felidae}}
-      & \multicolumn{1}{c}{\rotLabel{Pet}}
-      & \multicolumn{1}{c}{\rotLabel{Feral}}
-      & \multicolumn{1}{c}{\rotLabel{Bloat}}
-      & \multicolumn{1}{c}{\rotLabel{Philosophy}}
-      & \multicolumn{1}{c}{\rotLabel{Kant}}
-      & \multicolumn{1}{c}{\rotLabel{Back pain}} \\
-      \cline{2-8}
-      cat      &      10 &  10 &     7 &    -- &         -- &   -- &        -- \\
-      \cline{2-8}
-      dog      &      -- &  10 &     4 &    11 &         -- &   -- &        -- \\
-      \cline{2-8}
-      animal   &       2 &  15 &    10 &     2 &         -- &   -- &        -- \\
-      \cline{2-8}
-      time     &       1 &  -- &    -- &    -- &          2 &    1 &        -- \\
-      \cline{2-8}
-      reason   &      -- &   1 &    -- &    -- &          1 &    4 &         1 \\
-      \cline{2-8}
-      cause    &      -- &  -- &    -- &     2 &          1 &    2 &         6 \\
-      \cline{2-8}
-      effect   &      -- &  -- &    -- &     1 &         -- &    1 &        -- \\
-      \cline{2-8}
-    \end{tabular}
-  \end{small}
-  \end{center}
-
-\begin{Rcode}
-> TC <- DSM_TermContext
-> head(TC, Inf) \REM{extract full co-oc matrix from DSM object}
-\end{Rcode}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -250,8 +124,11 @@
   % \framesubtitle{}
 
   \h{Term-term matrix} records co-occurrence frequencies with feature terms for each target term 
+  \begin{itemize}
+    \itemhand $\vm_{\text{dog}}$ = collocational profile of \emph{dog} ($\approx$ word sketch)
+  \end{itemize}
 
-  \gap[2]
+  \gap[0.5]
   \begin{center}
   \(
   \mathbf{M} = 
@@ -296,35 +173,186 @@
 
 \begin{Rcode}
 > TT <- DSM_TermTerm
-> head(TT, Inf)
+> head(TT, Inf) \REM{extract full co-oc matrix from DSM object}
 \end{Rcode}
 \end{frame}
 
-\begin{frame}
-  \frametitle{Term-term matrix}
-  % \Framesubtitle{}
+\begin{frame}[fragile]
+  \frametitle{Term-context matrix}
+  % \framesubtitle{}
 
-  Some footnotes:
+  \h{Term-context matrix} records frequency of term in each individual context unit (e.g.\ document, tweet, encyclopaedia article)
   \begin{itemize}
-  \item Often target terms $\neq$ feature terms
-    \begin{itemize}
-    \item e.g.\ nouns described by co-occurrences with verbs as features
-    \item identical sets of target \& feature terms \so symmetric matrix
-    \end{itemize}
-  \item Different types of co-occurrence \citep{Evert:08}
-    \begin{itemize}
-    \item \hh{surface context} (word or character window)
-    \item \hh{textual context} (non-overlapping segments)
-    \item \hh{syntactic context} (dependency relation)
-    \end{itemize}
-  \item Can be seen as smoothing of term-context matrix
-    \begin{itemize}
-    \item average over similar contexts (with same context terms)
-    \item data sparseness reduced, except for small windows
-    \item we will take a closer look at the relation between term-context and term-term models in part 5 of this tutorial
-    \end{itemize}
+    \itemhand $\vf_{\text{dog}}$ = texts related to or mentioning dogs
   \end{itemize}
+  
+  \gap[0.5]
+  \begin{center}
+  \(
+  \mathbf{F} = 
+  \begin{bmatrix}
+    \cdots & \vf_1 & \cdots \\
+    \cdots & \vf_2 & \cdots \\
+    & \vdots & \\
+    & \vdots & \\
+    \cdots & \vf_k & \cdots \\
+  \end{bmatrix}
+  \)
+  \hspace{5mm}
+  \begin{small}
+    \setlength{\arrayrulewidth}{1pt}
+    \begin{tabular}[c]{r*{7}{|c}|}
+      \multicolumn{1}{c}{}
+      & \multicolumn{1}{c}{\rotLabel{Felidae}}
+      & \multicolumn{1}{c}{\rotLabel{Pet}}
+      & \multicolumn{1}{c}{\rotLabel{Feral}}
+      & \multicolumn{1}{c}{\rotLabel{Bloat}}
+      & \multicolumn{1}{c}{\rotLabel{Philosophy}}
+      & \multicolumn{1}{c}{\rotLabel{Kant}}
+      & \multicolumn{1}{c}{\rotLabel{Back pain}} \\
+      \cline{2-8}
+      cat      &      10 &  10 &     7 &    -- &         -- &   -- &        -- \\
+      \cline{2-8}
+      dog      &      -- &  10 &     4 &    11 &         -- &   -- &        -- \\
+      \cline{2-8}
+      animal   &       2 &  15 &    10 &     2 &         -- &   -- &        -- \\
+      \cline{2-8}
+      time     &       1 &  -- &    -- &    -- &          2 &    1 &        -- \\
+      \cline{2-8}
+      reason   &      -- &   1 &    -- &    -- &          1 &    4 &         1 \\
+      \cline{2-8}
+      cause    &      -- &  -- &    -- &     2 &          1 &    2 &         6 \\
+      \cline{2-8}
+      effect   &      -- &  -- &    -- &     1 &         -- &    1 &        -- \\
+      \cline{2-8}
+    \end{tabular}
+  \end{small}
+  \end{center}
 
+\begin{Rcode}
+> TC <- DSM_TermContext
+> head(TC, Inf)
+\end{Rcode}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{A taxonomy of DSM parameters}
+
+\hideSectionHeader
+
+%% version for slides: build pipeline step by step
+\begin{frame}<beamer:1-10| handout:0>
+  \frametitle{Building a distributional model}
+  % \framesubtitle{}
+  
+  \footnotesize\centering
+  \begin{tikzpicture}
+    \node[diagram box=black] (corpus) at (0, 6.5) {pre-processed corpus with linguistic annotation} ;
+    \visible<2->{
+      \node[diagram box] (tt_terms) at (+3, 5) {define target \& feature terms} ;
+      \draw[diagram arrow=counterpoint] (corpus) -- node[right=1.5em] {term-term matrix} (tt_terms) ;
+    }
+    \visible<3->{
+      \node[diagram box] (tt_span) at (+3, 4) {type \& size of co-occurrence} ;
+      \draw[diagram arrow] (tt_terms) -- (tt_span) ;
+    }
+    \visible<4->{
+      \node[diagram box=black] (geom_prob) at (0, 3) {$\mathbf{M}$} ;
+      \draw[diagram arrow] (tt_span) -- (geom_prob) ;
+    }
+    \visible<5->{
+      \node[diagram box] (tc_terms) at (-3, 5) {define target terms} ; 
+      \draw[diagram arrow=counterpoint] (corpus) -- node[left=1.5em] {term-context matrix} (tc_terms) ;
+    }
+    \visible<6->{
+      \node[diagram box] (tc_context) at (-3, 4) {context units or aggregates} ;
+      \draw[diagram arrow] (tc_terms) -- (tc_context) ;
+      \draw[diagram arrow] (tc_context) -- (geom_prob) ;
+    }
+    \visible<7->{
+      \node[diagram ghost] (prob) at (2, 2) {} ;
+      \draw[diagram arrow=counterpoint] (geom_prob) -- node[right=1.5em] (probanal) {probabilistic analysis} (prob) ;
+      \node[below=1mm of probanal, text width=30mm, align=center, color=counterpoint] {embedding learned by\\ neural network} ;
+    }
+    \visible<8->{
+      \node[diagram box] (scoring) at (-2, 2) {feature scaling} ;
+      \draw[diagram arrow=counterpoint] (geom_prob) -- node[left=1.5em] {geometric analysis} (scoring) ;
+    }
+    \visible<9->{
+      \node[diagram box] (metric) at (-2, 1) {similarity/distance measure + normalization} ;
+      \draw[diagram arrow] (scoring) -- (metric) ;
+    }
+    \visible<10->{
+      \node[diagram box] (dimred) at (-2, 0) {dimensionality reduction} ;
+      \draw[diagram arrow] (metric) -- (dimred) ;
+    }
+  \end{tikzpicture}
+\end{frame}
+
+\begin{frame}<beamer:0| handout:1>[label=DSM_parameters]
+  \frametitle{Building a distributional model}
+  
+  \footnotesize\centering
+  \begin{tikzpicture}
+    \node[diagram box=black] (corpus) at (0, 6.5) {pre-processed corpus with linguistic annotation} ;
+    \visible<beamer:1,3-| handout:1,3->{
+      \node[diagram box] (tt_terms) at (+3, 5) {define target \& feature terms} ;
+      \node[diagram box] (tc_terms) at (-3, 5) {define target terms} ; 
+    }
+    \visible<beamer:2| handout:2>{
+      \node[diagram dark box=primary] (tt_terms) at (+3, 5) {define target \& feature terms} ;
+      \node[diagram dark box=primary] (tc_terms) at (-3, 5) {define target terms} ; 
+    }
+    \visible<beamer:1-2,4-| handout:1-2,4->{
+      \node[diagram box] (tt_span) at (+3, 4) {type \& size of co-occurrence} ;
+    }
+    \visible<beamer:3| handout:3>{
+      \node[diagram dark box=primary] (tt_span) at (+3, 4) {type \& size of co-occurrence} ;
+    }
+    \visible<beamer:1-3,5-| handout:1-3,5->{
+      \node[diagram box] (tc_context) at (-3, 4) {context units or aggregates} ;
+    }
+    \visible<beamer:4| handout:4>{
+      \node[diagram dark box=primary] (tc_context) at (-3, 4) {context units or aggregates} ;
+    }
+    \visible<beamer:1-4,6-| handout:1-4,6->{
+      \node[diagram box=black] (geom_prob) at (0, 3) {$\mathbf{M}$} ;
+    }
+    \visible<beamer:5| handout:5>{
+      \node[diagram dark box=primary] (geom_prob) at (0, 3) {$\mathbf{M}$} ;
+    }
+    \node[diagram ghost] (prob) at (2, 2) {} ;
+    \visible<beamer:1-5,7-| handout:1-5,7->{
+      \node[diagram box] (scoring) at (-2, 2) {feature scaling} ;
+    }
+    \visible<beamer:6| handout:6>{
+      \node[diagram dark box=primary] (scoring) at (-2, 2) {feature scaling} ;
+    }
+    \visible<beamer:1-6,8-| handout:1-6,8->{
+      \node[diagram box] (metric) at (-2, 1) {similarity/distance measure + normalization} ;
+    }
+    \visible<beamer:7| handout:7>{
+      \node[diagram dark box=primary] (metric) at (-2, 1) {similarity/distance measure + normalization} ;
+    }
+    \visible<beamer:1-7,9-| handout:1-7,9->{
+      \node[diagram box] (dimred) at (-2, 0) {dimensionality reduction} ;
+    }
+    \visible<beamer:8| handout:8>{
+      \node[diagram dark box=primary] (dimred) at (-2, 0) {dimensionality reduction} ;
+    }
+    \draw[diagram arrow=counterpoint] (corpus) -- node[right=1.5em] {term-term matrix} (tt_terms) ;
+    \draw[diagram arrow] (tt_terms) -- (tt_span) ;
+    \draw[diagram arrow] (tt_span) -- (geom_prob) ;
+    \draw[diagram arrow=counterpoint] (corpus) -- node[left=1.5em] {term-context matrix} (tc_terms) ;
+    \draw[diagram arrow] (tc_terms) -- (tc_context) ;
+    \draw[diagram arrow] (tc_context) -- (geom_prob) ;
+    \draw[diagram arrow=counterpoint] (geom_prob) -- node[right=1.5em] (probanal) {probabilistic analysis} (prob) ;
+    \node[below=1mm of probanal, text width=30mm, align=center, color=counterpoint] {embedding learned by\\ neural network} ;
+    \draw[diagram arrow=counterpoint] (geom_prob) -- node[left=1.5em] {geometric analysis} (scoring) ;
+    \draw[diagram arrow] (scoring) -- (metric) ;
+    \draw[diagram arrow] (metric) -- (dimred) ;
+  \end{tikzpicture}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -335,33 +363,31 @@
 
   \ungap
   \begin{itemize}
-  \item Choice of linguistic unit
+  \item Choice of linguistic unit (targets $\neq$ features)
     \begin{itemize}
     \item words
     \item bigrams, trigrams, \ldots
     \item multiword units, named entities, phrases, \ldots
     \item morphemes
-    \item word pairs (\hand\ analogy tasks)
+    \item word pairs (\hand{} analogy tasks)
     \end{itemize}
-  \item<2-> Linguistic annotation
+    \gap
+  \item<2-> Mapping to target/feature terms (\so linguistic annotation)
     \begin{itemize}
     \item word forms (minimally requires tokenisation)
     \item often lemmatisation or stemming to reduce data sparseness:\\
-      \emph{go, goes, went, gone, going} \so \emph{go}
+      \emph{go, goes, went, gone, going} $\to$ \emph{go}
     \item POS disambiguation (\emph{light}/N \vs\ \emph{light}/A \vs\ \emph{light}/V)
     \item word sense disambiguation (\emph{bank}\tsub{river} \vs\ \emph{bank}\tsub{finance})
-    \item abstraction: POS tags (or bigrams) as feature terms
+    \item abstraction: POS tags (or $n$-grams of POS tags) as features
     \end{itemize}
-  \item<3-> Trade-off between deeper linguistic analysis and
-    \begin{itemize}
-    \item need for language-specific resources
-    \item possible errors introduced at each stage of the analysis
-    \end{itemize}
+    \gap
+  \item<3->[\hand] What is the effect of these choices?
   \end{itemize}
 \end{frame}
 
 \begin{frame}
-  \frametitle{Effects of linguistic annotation}
+  \frametitle{Effects of term mapping}
   \framesubtitle{}
 
   \centering
@@ -406,7 +432,7 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{Effects of linguistic annotation}
+  \frametitle{Effects of term mapping}
 
   \centering
   Nearest neighbours of \emph{arrivare} (Repubblica)
@@ -456,20 +482,19 @@
   \begin{itemize}
   \item Full-vocabulary models are often unmanageable
     \begin{itemize}
-    \item 762,424 distinct word forms in BNC, 605,910 lemmata
+    \item 762,424 distinct word forms in BNC / 605,910 lemmata
     \item large Web corpora have $>$ 10 million distinct word forms
     \item low-frequency targets (and features) are not reliable (``noisy'')
     \end{itemize}
   \item<2-> Frequency-based selection
     \begin{itemize}
-    \item minimum corpus frequency: $f \geq F_{\min}$
-    \item or accept $n_w$ most frequent terms
-    \item sometimes also upper threshold: $F_{\min}\leq f\leq F_{\max}$
+    \item corpus frequency $f \geq F_{\min}$ or $n_w$ most frequent terms
+    \item sometimes upper threshold for features: $F_{\min}\leq f\leq F_{\max}$
     \end{itemize}
-  \item<3-> Relevance-based selection
+  \item<3-> Relevance-based selection of features
     \begin{itemize}
-    \item criterion from IR: document frequency $df$
-    \item high $df$ \so uninformative / low $df$ \so too sparse to be useful
+    \item criterion from information retrieval: document frequency $df$\\
+      (high $df$ \so uninformative / low $df$ \so too sparse to be useful)
     \item alternatives: entropy $H$ or chi-squared statistic $X^2$
     \end{itemize}
   \item<4-> Other criteria
@@ -480,8 +505,70 @@
   \end{itemize}
 \end{frame}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Context type \& size}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+\againframe<beamer:4| handout:4>{DSM_parameters}
+
+\begin{frame}
+  \frametitle{Term-context matrix: choice of context unit}
+  % \Framesubtitle{}
+
+  \begin{itemize}
+  \item Features are usually \hh{tokens} of the selected context unit, i.e.\ individual instances of a
+    \begin{itemize}
+    \item document, novel, Wikipedia article, Web page, \ldots
+    \item paragraph, sentence, tweet, \ldots
+    \item [\So]``co-occurrence'' $f_{ij}$ = frequency of term $i$ in context token $j$
+    \item[]
+    \end{itemize}
+  \item<2-> Similar context tokens can be \hh{aggregated}, e.g.\
+    \begin{itemize}
+    \item feature = cluster of near-duplicate documents
+    \item feature = syntactic structure of sentence (ignoring content)
+    \item feature = all tweets from same author (``supertweet'')
+    \item[\So] $f_{ij}$ = pooled frequency count for aggregate $j$
+    \item[]
+    \end{itemize}
+  \item<3-> Generalization: context \hh{types}
+    \begin{itemize}
+    \item e.g.\ pattern of POS tags around target word
+    \item e.g.\ subcategorisation pattern of target verb
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \againframe<beamer:3| handout:3>{DSM_parameters}
+
+\begin{frame}
+  \frametitle{Term-term matrix: definition of co-occurrence context}
+  
+  \begin{itemize}
+  \item Different types of co-occurrence \citep{Evert:08}
+    \begin{itemize}
+    \item \hh{surface context} (word or character window)
+    \item \hh{textual context} (non-overlapping segments)
+    \item \hh{syntactic context} (dependency relations)
+    \itemhand from research into collocations
+    \end{itemize}
+    \gap
+  \item<2-> Context size
+    \begin{itemize}
+    \item small context (few words, syntactic relation) \so more specific
+    \item large context (many words, entire document) \so more general
+    \end{itemize}
+    \gap
+  \item<3-> Different roles of co-occurrence context
+    \begin{itemize}
+    \item unstructured context \so acts as a \hh{filter} for counts
+    \item \hh{structured} context \so subcategorizes feature terms
+    \end{itemize}
+    \gap
+  \item<4->[\hand] What effects do you expect from these choices?
+  \end{itemize}
+\end{frame}
 
 \begin{frame}
   \frametitle{Surface context}
@@ -564,7 +651,7 @@
   \gap
   Parameters:
   \begin{itemize}
-  \item type of linguistic unit
+  \item choice of linguistic unit
     \begin{itemize}
     \item sentence
     \item paragraph
@@ -572,6 +659,7 @@
     \item Web page
     \item tweet
     \end{itemize}
+  \itemhand similar to large surface spans, but more self-contained
   \end{itemize}
 \end{frame}
 
@@ -601,10 +689,9 @@
   \end{tikzpicture}
   \begin{itemize}
   \item types of syntactic dependency \citep{Pado:Lapata:07}
-  \item direct \vs\ indirect dependency paths
+  \item maximal length of dependency path (1 for direct relation)
   \item homogeneous data (e.g.\ only verb-object) \vs\\
     heterogeneous data (e.g.\ all children and parents of the verb)
-  \item maximal length of dependency path
   \end{itemize}
 \end{frame}
 
@@ -648,7 +735,7 @@
     \begin{tabular}{>{\color{secondary}}l@{\hspace{1cm}}c}
       & features are \\
       \toprule
-      textual / large span & from same general domain\\
+      textual / large span & from same topic domain\\
       \\\onslide<2->
       small span & collocations \\
       \\\onslide<3->
@@ -668,11 +755,10 @@
   \item In \h{unstructered} models, context specification acts as a \hh{filter}
     \begin{itemize}
     \item determines whether context token counts as co-occurrence
-    \item e.g.\ muste be linked by any syntactic dependency relation
-    \item[]
+    \item e.g.\ must be linked by any direct syntactic dependency relation
     \end{itemize}
-    \pause
-  \item In \h{structured} models, feature terms are \hh{subtyped}
+    \gap
+  \item<2-> In \h{structured} models, feature terms are \hh{subtyped}
     \begin{itemize}
     \item depending on their position in the context
     \item e.g.\ left \vs\ right context, type of syntactic relation, etc.
@@ -692,17 +778,23 @@
       man & 3 
     \end{tabular}
   \end{center}
+  \begin{itemize}
+  \item<3->[\So] data are less sparse (L/R context aggregated)
+  \end{itemize}
 
-  \gap[2]\pause
+  \gap[2]\onslide<2->
   A dog bites a man. The man's dog bites a dog.  A dog bites a man.
   
   \begin{center}
     \begin{tabular}{r|c|c}
-      \h{structured} &  bite-l & bite-r \\
-      dog & 3 & 1 \\
-      man & 1  & 2
+      \h{structured} &  bite-L & bite-R \\
+      dog & 1 & 3 \\
+      man & 2  & 1
     \end{tabular}
   \end{center}
+  \begin{itemize}
+  \item<3->[\So] more sensitive to semantic distinctions
+  \end{itemize}
 \end{frame}
 
 
@@ -718,8 +810,11 @@
       man & 2 
     \end{tabular}
   \end{center}
+  \begin{itemize}
+  \item[\So] data are less sparse (all syntactic relations aggregated)
+  \end{itemize}
 
-  \gap[2]\pause
+  \gap[2]
   A dog bites a man. The man's dog bites a dog.  A dog bites a man.
   
    \begin{center}
@@ -729,66 +824,15 @@
        man & 0  & 2
      \end{tabular}
    \end{center}
-\end{frame}
-
-
-\begin{frame}
-  \frametitle{Comparison}
-
   \begin{itemize}
-  \item Unstructured context
-    \begin{itemize}
-    \item data less sparse (e.g.\ \emph{man kills} and \emph{kills man} both
-      map to the \emph{kill} dimension of the vector $\vx_{\text{man}}$)
-    \item[]
-    \end{itemize}
-  \item Structured context
-    \begin{itemize}
-    \item more sensitive to semantic distinctions\\
-      (\emph{kill-subj} and \emph{kill-obj} are rather different
-      things!)
-    \item dependency relations provide a form of syntactic ``typing''
-      of the DSM dimensions (the ``subject'' dimensions, the
-      ``recipient'' dimensions, etc.)
-     \item important to account for word-order and compositionality 
-    \end{itemize}
+  \item[\So] more sensitive to semantic distinctions
   \end{itemize}
 \end{frame}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\againframe<beamer:4| handout:4>{DSM_parameters}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Feature scaling}
 
-\begin{frame}
-  \frametitle{Context tokens vs.\ context types}
-  % \Framesubtitle{}
-
-  \begin{itemize}
-  \item Features are usually context \hh{tokens}, i.e.\ individual instances
-    \begin{itemize}
-    \item document, Wikipedia article, Web page, \ldots
-    \item paragraph, sentence, tweet, \ldots
-    \item ``co-occurrence'' count = frequency of term in context token
-    \item[]
-    \end{itemize}
-  \item<2-> Can also be generalised to context \hh{types}, e.g.
-    \begin{itemize}
-    \item type = cluster of near-duplicate documents
-    \item type = syntactic structure of sentence (ignoring content)
-    \item type = tweets from same author
-    \item frequency counts from all instances of type are aggregated
-    \item[]
-    \end{itemize}
-  \item<3-> Context types may be anchored at individual tokens
-    \begin{itemize}
-    \item n-gram of words (or POS tags) around target
-    \item subcategorisation pattern of target verb
-    \item[\So] overlaps with (generalisation of) syntactic co-occurrence
-    \end{itemize}
-  \end{itemize}
-
-\end{frame}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 \againframe<beamer:5| handout:5>{DSM_parameters}
 
 \begin{frame}
@@ -815,7 +859,7 @@
     \item<2-> $C$ = overall frequency of feature = column marginal frequency
     \item<2-> $N$ = sample size $\approx$ size of corpus
     \end{itemize}
-  \item<3-> \h{Expected} co-occurrence \h{frequency}
+  \item<3-> \h{Expected} co-occurrence \h{frequency} \citep[cf.][]{Evert:08}
     \[
     E = \frac{R\cdot C}{N} \quad \longleftrightarrow \quad O
     \]
@@ -823,7 +867,7 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{Obtaining marginal frequencies}
+  \frametitle{Obtaining marginal frequencies \citep{Evert:08}}
 
   \begin{itemize}
   \item Term-document matrix
@@ -837,7 +881,7 @@
     \begin{itemize}
     \item \# of dependency instances in which target/feature participates
     \item $N$ = total number of dependency instances 
-    \item can be computed from full co-occurrence matrix $\mathbf{M}$
+    \item $N, R, C$ can be computed from full co-occurrence matrix $\mathbf{M}$
     \item[]
     \end{itemize}
   \item<3-> Textual co-occurrence
@@ -849,26 +893,26 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{Obtaining marginal frequencies}
+  \frametitle{Obtaining marginal frequencies \citep{Evert:08}}
 
   \begin{itemize}
   \item Surface co-occurrence
     \begin{itemize}
-    \item it is quite tricky to obtain fully consistent counts \citep{Evert:08}
-    \item at least correct $E$ for span size $k$ (= number of tokens in span)
+    \item it is quite tricky to obtain fully consistent counts \citep{Evert:04phd}
+    \item \primary{recommended:} correct $E$ for span size $k$ (= \# tokens in span)%
+      \footnote{NB: shifted PPMI \citep{Levy:Goldberg:14} corresponds to a post-hoc application of the span size adjustment. \light{It performs worse than PPMI, but paper suggests they already approximate correct $E$ by summing over matrix $M$.}}
       \[
       E = k\cdot \frac{R\cdot C}{N}
       \]
       with $R, C$ = individual corpus frequencies and $N$ = corpus size
-    \item can also be implemented by pre-multiplying $R' = k\cdot R$
-    \item[\hand] alternatively, compute marginals and sample size by summing
+    \item[]
+    \pause
+    \item can also be implemented by pre-multiplying $R' = k\cdot R$\\
+      (\hand{} all pre-compiled surface DSMs in the course)
+    \item[]
+    \item alternatively, compute marginals and sample size by summing
       over full co-occurrence matrix (\so $E$ as above, but inflated $N$)
     \item[]
-    \end{itemize}
-  \item<2-> NB: shifted PPMI \citep{Levy:Goldberg:14} corresponds to a post-hoc application of the span size adjustment
-    \begin{itemize}
-    \item performs worse than PPMI, but paper suggests they already
-      approximate correct $E$ by summing over co-occurrence matrix
     \end{itemize}
   \end{itemize}
 \end{frame}
@@ -897,58 +941,23 @@
 \end{Rcode} %$ de-confuse Emacs
 \end{frame}
 
-\begin{frame}
-  \frametitle{Geometric vs.\ probabilistic interpretation}
-  % \framesubtitle{}
-
-  \begin{itemize}
-  \item Geometric interpretation
-    \begin{itemize}
-    \item row vectors as points or arrows in $n$-dimensional space
-    \item very intuitive, good for visualisation
-    \item use techniques from geometry and matrix algebra
-    \item[]
-    \end{itemize}
-    \pause
-  \item Probabilistic interpretation
-    \begin{itemize}
-    \item co-occurrence matrix as observed sample statistic that is ``explained'' by a generative probabilistic model
-    \item e.g.\ probabilistic LSA \citep{Hoffmann:99}, Latent Semantic
-      Clustering \citep{Rooth:etc:99}, Latent Dirichlet Allocation
-      \citep{Blei:Ng:Jordan:03}, etc.
-    \item explicitly accounts for random variation of frequency counts
-    \item recent work: \primary{neural word embeddings}
-    \item[]
-    \end{itemize}
-    \pause
-  \item[\hand] focus on geometric interpretation in this tutorial
-  \end{itemize}
-\end{frame}
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \againframe<beamer:6| handout:6>{DSM_parameters}
 
 \begin{frame}
   \frametitle{Feature scaling}
 
-  Feature scaling is used to ``discount'' less important features:
   \begin{itemize}
-  \item<1-> Logarithmic scaling: $O' = \log (O + 1)$\\
+  \item<1-> $\mathbf{M}$ is often dominated by few very large entries\\
+    (\so highly skewed frequency distribution due to \hh{Zipf's law})
+    \gap
+  \item<2-> Logarithmic scaling: $O' = \log (O + 1)$\\
     (cf.\ Weber-Fechner law for human perception)
-  \item<2-> Relevance weighting, e.g.\ \secondary{tf.idf} (information retrieval)
-    \[
-    tf.idf = tf \cdot log(D / df)
-    \]
-    \ungap[1.5]
-    \begin{itemize}
-    \item $tf$ = co-occurrence frequency $O$
-    \item $df$ = document frequency of feature (or nonzero count)
-    \item $D$ = total number of documents (or row count of $\mathbf{M}$)
-    \end{itemize}
+    \gap
   \item<3-> Statistical \h{association measures} \citep{Evert:04phd,Evert:08}
     take frequency of target term and feature into account
     \begin{itemize}
-    \item often based on comparison of observed and expected co-occurrence frequency
+    \item usually based on comparison of observed and expected co-occurrence frequency
     \item measures differ in how they balance $O$ and $E$
     \end{itemize}
   \end{itemize}
@@ -994,12 +1003,12 @@
     with positive sign for $O > E$ and negative sign for $O < E$
   \item<2-> \counterpoint{Dice} coefficient
     \[
-    \text{Dice} = \frac{2 O}{R + C}
+      \text{Dice} = \frac{2 O}{R + C}
     \]
-  \item<3-> Many other simple association measures (AMs) available
-  \item<3-> Further AMs computed from full contingency tables, see
+    \gap
+  \item<3-> Many other association measures (AMs) available, often based on
+    full contingency tables \citep[see][]{Evert:08}
     \begin{itemize}
-    \item \citet{Evert:08}
     \item \secondary{\url{http://www.collocations.de/}}
     \item \secondary{\url{http://sigil.r-forge.r-project.org/}}
     \end{itemize}
@@ -1024,9 +1033,9 @@ effect  -Inf -2.116 -2.468 -2.459     0.791  1.6312  0.9221\end{Rout}
 \end{Rcode}
 
 \begin{itemize}
-\item<2->[\hand] sparseness of the matrix has been lost!
+\item<2->[\hand] sparseness of matrix representation is lost (try with \texttt{TC}!)
 \item<2->[\hand] cells with score $x = -\infty$ are inconvenient
-\item<2->[\hand] distribution of scores may be even more skewed than co-occurrence frequencies themselves (esp.\ for local-MI)
+\item<2->[\hand] distribution of scores may be even more skewed than co-occurrence frequencies themselves (esp.\ for $G^2$)
 \end{itemize}
 \end{frame}
 
@@ -1045,13 +1054,13 @@ effect  -Inf -2.116 -2.468 -2.459     0.791  1.6312  0.9221\end{Rout}
   \item Also known as ``positive'' scores
     \begin{itemize}
     \item \primary{PPMI} = positive pointwise MI \citep[e.g.][]{Bullinaria:Levy:07}
-    \item \texttt{wordspace} computes sparse AMs by default \so \texttt{"MI"} = PPMI
+    \item \texttt{wordspace} computes sparse AMs by default \so \code{"MI"} = PPMI
     \end{itemize}
   \item<2-> Preserves sparseness if $x \leq 0$ for all empty cells ($O = 0$)
     \begin{itemize}
-    \item combine with \secondary{signed} AM ($x > 0$ for $O > E$, $x < 0$ for $O < E$)
     \item sparseness may even increase: cells with $x < 0$ become empty
     \end{itemize}
+    \gap
   \item<3-> Further thinning may be beneficial \citep{Polajnar:Clark:14}
     \begin{itemize}
     \item apply shifted cutoff threshold $x > \theta$ \citep{Levy:Goldberg:Dagan:15}
@@ -1074,7 +1083,7 @@ effect  -Inf -2.116 -2.468 -2.459     0.791  1.6312  0.9221\end{Rout}
     \[
     f(x) = \tanh x
     \]
-  \item<4-> \counterpoint{sparse} AM as \only<5->{\counterpoint{(shifted)} }cutoff transformation
+  \item<4-> \counterpoint{sparse} AM as \only<5->{\counterpoint{(shifted)} }cutoff transformation (aka.\ ReLU)
   \end{itemize}
 
   \begin{center}
@@ -1112,30 +1121,10 @@ effect  0.00 0.00 0.00 0.00     0.791  1.6312  0.922
 \end{frame}
 
 
-\begin{frame}
-  \frametitle{Scaling of column vectors}
-  % \framesubtitle{}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Measuring distance}
 
-  \begin{itemize}
-  \item In statistical analysis and machine learning, features are
-    usually \primary{centered} and \primary{scaled} so that
-    \begin{align*}
-      \text{mean} & \quad \mu = 0 \\
-      \text{variance} & \quad \sigma^2 = 1
-    \end{align*}
-  \item<2-> In DSM research, this step is less common for columns of $\mathbf{M}$
-    \begin{itemize}
-    \item centering is a prerequisite for certain dimensionality
-      reduction and data analysis techniques (esp.\ PCA)
-    \item but co-occurrence matrix no longer sparse!
-    \item scaling may give too much weight to rare features
-    \end{itemize}
-  \item<3-> $\mathbf{M}$ cannot be row-normalised and column-scaled at the
-    same time (result depends on ordering of the two steps)
-  \end{itemize}
-\end{frame}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 \againframe<beamer:7| handout:7>{DSM_parameters}
 
 \begin{frame}
@@ -1239,8 +1228,8 @@ Compute distances between individual term pairs \ldots
         \item $\norm{\vu-\vv}$ is a \h{norm}
         \item $\norm{\vu} = \bigdist{\vu}{\vnull}$
         \end{itemize}
-      \item<2-> Any norm-induced metric is \h{translation-invariant}%
-      \item<3-> \h{Minkowski $p$-norm} with\\
+      \item Any norm-induced metric is \h{translation-invariant}%
+      \item<2-> \h{Minkowski $p$-norm} with\\
         $\dist[p]{\vu}{\vv} = \norm[p]{\vu-\vv}$
       \end{itemize}
     \end{column}
@@ -1249,11 +1238,11 @@ Compute distances between individual term pairs \ldots
     \end{column}
   \end{columns}
 
-  \onslide<3->
+  \onslide<2->
   \begin{align*}
-    \norm[p]{\vu} &\coloneq \bigl(\abs{u_1}^p + \dots + \abs{u_n}^p\bigr)^{1/p} && \text{ for } 1\leq p \\
-    \norm[p]{\vu} &\coloneq \abs{u_1}^p + \dots + \abs{u_n}^p && \text{ for } 0\leq p < 1 \\
-    \norm[0]{\vu} &= \# \bigsetdef{i}{u_i \neq 0} & \norm[\infty]{\vu} &= \max \bigset{\abs{u_1}, \ldots, \abs{u_n}}
+    \norm[p]{\vu} &\coloneq \bigl(\abs{u_1}^p + \dots + \abs{u_n}^p\bigr)^{1/p} && \text{for } 1\leq p \\
+    \norm[p]{\vu} &\coloneq \abs{u_1}^p + \dots + \abs{u_n}^p && \text{for } 0\leq p < 1 \; \text{\secondary{(an F-norm)}}\\
+    \norm[0]{\vu} &= \# \bigsetdef{i}{u_i \neq 0} && \norm[\infty]{\vu} = \max \bigset{\abs{u_1}, \ldots, \abs{u_n}}
   \end{align*}
 \end{frame}
 
@@ -1264,14 +1253,14 @@ Compute distances between individual term pairs \ldots
   \begin{columns}[c]
     \begin{column}{5.5cm}
       \begin{itemize}
-      \item Geometric distances only meaningful for vectors of the same length $\norm{\vx}$
-      \item<2-> Normalize by scalar division:\\
-        \(
-        \vx' = \vx / \norm{\vx} = (\tfrac{x_1}{\norm{\vx}}, \tfrac{x_2}{\norm{\vx}}, \ldots)
-        \)
+      \item Part 1: geometric distances only meaningful for vectors of the same length $\norm{\vx}$
+      \item<2-> Normalize by scalar division:
+        \[
+        \vx' = \tfrac1{\norm{\vx}}\cdot \vx = (\tfrac{x_1}{\norm{\vx}}, \tfrac{x_2}{\norm{\vx}}, \ldots)
+        \]
         with $\norm{\vx'} = 1$
       \item<2-> Norm must be compatible with distance measure!
-      \item<3-> Special case: scale to relative frequencies with\\
+      \item<3-> Special case: scale $\vx \geq 0$ to stochastic vector with\\
         \hspace{1em} $\norm[1]{\vx} = \abs{x_1} + \dots + \abs{x_n}$\\
         \so probabilistic interpretation
       \end{itemize}
@@ -1315,16 +1304,16 @@ effect 1.161 1.113  0.860 0.502  0.198 0.224  0.000\end{Rout}
   % \framesubtitle{}
   
   \begin{itemize}
-  \item Information theory: \h{Kullback-Leibler} (KL) \h{divergence} for probability vectors (\hand\ non-negative, $\norm[1]{\vx} = 1$)
+  \item Information theory: \h{Kullback-Leibler} (KL) \h{divergence} for stochastic vectors (non-negative $\vx \geq 0$ and $\norm[1]{\vx} = 1$)
     \[
     \KL{\vu}{\vv} = \sum_{i=1}^n u_i \cdot \log_2 \frac{u_i}{v_i}
     \]
     \pause
   \item Properties of KL divergence
     \begin{itemize}
-    \item most appropriate in a probabilistic interpretation of $\mathbf{M}$
+    \item most appropriate for a probabilistic interpretation of $\mathbf{M}$
     \item zeroes in $\vv$ without corresponding zeroes in $\vu$ are problematic
-    \item not symmetric, unlike geometric distance measures
+    \item \hh{not symmetric}, unlike geometric distance measures
     \item alternatives: skew divergence, Jensen-Shannon divergence
     \item[]
     \end{itemize}
@@ -1365,7 +1354,7 @@ effect 1.161 1.113  0.860 0.502  0.198 0.224  0.000\end{Rout}
   \end{columns}
 \end{frame}
 
-\begin{frame}[fragile]
+\begin{frame}<beamer:5| handout:1>[fragile]
   \frametitle{Euclidean distance or cosine similarity?}
 
   \ungap[2]
@@ -1392,9 +1381,7 @@ effect 1.161 1.113  0.860 0.502  0.198 0.224  0.000\end{Rout}
   \begin{block}{}
     Euclidean distance and cosine similarity are equivalent:
     if vectors have been normalised ($\norm[2]{\vu} = \norm[2]{\vv} = 1$), both lead to the same neighbour ranking.
-\end{block}
-
-
+  \end{block}
 \end{frame}
 
 
@@ -1424,7 +1411,10 @@ effect 1.161 1.113  0.860 0.502  0.198 0.224  0.000\end{Rout}
   \end{itemize}
 \end{frame}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Dimensionality reduction}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 \againframe<beamer:8| handout:8>{DSM_parameters}
 
 \begin{frame}
@@ -1447,7 +1437,6 @@ effect 1.161 1.113  0.860 0.502  0.198 0.224  0.000\end{Rout}
     \item measured by entropy, chi-squared test, nonzero count, \ldots
     \item may select similar dimensions and discard valuable information
     \item[]
-      %% \item joint selection of multiple features is useful but expensive
     \end{itemize}
     \pause
   \item \h{Projection} into (linear) subspace
@@ -1507,12 +1496,11 @@ effect 1.161 1.113  0.860 0.502  0.198 0.224  0.000\end{Rout}
   \frametitle{Dimensionality reduction \& latent dimensions}
   %% \framesubtitle{}
   \begin{center}
-    \ungap[1]
-    \includegraphics[width=8cm]{img/buy_sell_labels_only}
+    \includegraphics[width=7.5cm]{img/buy_sell_labels_only}
   \end{center}
 \end{frame}
 
-\begin{frame}
+\begin{frame}<beamer:0| handout:1>
   \frametitle{Motivating latent dimensions \& subspace projection}
   %% \framesubtitle{}
 
@@ -1535,53 +1523,26 @@ effect 1.161 1.113  0.860 0.502  0.198 0.224  0.000\end{Rout}
   \end{itemize}
 \end{frame}
 
-\begin{frame}[c]
-  \frametitle{Step 1: Centering the data set}
-  %% \framesubtitle{}
-
-  \begin{columns}[c]
-    \begin{column}{35mm}
-      \begin{itemize}
-      \item \h<beamer:1| handout:1>{Uncentered\\ data set}%
-        \gap
-      \item \h<beamer:2| handout:2>{Centered\\ data set}%
-        \gap
-      \item Distance information\\= \h<beamer:3| handout:3>{variance}%
-        \gap
-      \end{itemize}
-      \visible<beamer:3| handout:3>{%
-        \[
-        \sigma^2 = \tfrac{1}{k-1} \sum_{i=1}^k \norm{\vx[i]}^2
-        \]
-      }
-    \end{column}
-    \begin{column}{65mm}
-      \only<beamer:1| handout:1>{\includegraphics[width=65mm]{img/buy_sell_0_uncentered}}%
-      \only<beamer:2| handout:2>{\includegraphics[width=65mm]{img/buy_sell_0_centered}}%
-      \only<beamer:3| handout:3>{\includegraphics[width=65mm]{img/buy_sell_1_variance}}%
-    \end{column}
-  \end{columns}
-\end{frame}
-
-\begin{frame}<beamer:1-8| handout:1-3>[c]
-  \frametitle{Step 2: Orthogonal projection into optimal subspace}
+\begin{frame}<beamer:1-6| handout:1-3>[c]
+  \frametitle{PCA dimensionality reduction: orthogonal projection}
   %% \framesubtitle{}
 
   \begin{center}
-    \only<beamer:1| handout:0>{\includegraphics[width=7.5cm]{img/buy_sell_2_axis}}%
-    \only<beamer:2| handout:1>{\includegraphics[width=7.5cm]{img/buy_sell_2_projection}}%
-    \only<beamer:3| handout:0>{\includegraphics[width=7.5cm]{img/buy_sell_3_axis}}%
+    \only<beamer:1| handout:1>{\includegraphics[width=7.5cm]{img/buy_sell_1_variance}}%
+    \only<beamer:2| handout:0>{\includegraphics[width=7.5cm]{img/buy_sell_2_axis}}%
+    \only<beamer:3| handout:0>{\includegraphics[width=7.5cm]{img/buy_sell_2_projection}}%
+    \only<beamer:0| handout:0>{\includegraphics[width=7.5cm]{img/buy_sell_3_axis}}%
     \only<beamer:4| handout:2>{\includegraphics[width=7.5cm]{img/buy_sell_3_projection}}%
-    \only<beamer:5| handout:0>{\includegraphics[width=7.5cm]{img/buy_sell_4_axis}}%
-    \only<beamer:6| handout:0>{\includegraphics[width=7.5cm]{img/buy_sell_4_projection}}%
-    \only<beamer:7| handout:0>{\includegraphics[width=7.5cm]{img/buy_sell_5_axis}}%
-    \only<beamer:8| handout:3>{\includegraphics[width=7.5cm]{img/buy_sell_5_projection}}%
+    \only<beamer:0| handout:0>{\includegraphics[width=7.5cm]{img/buy_sell_4_axis}}%
+    \only<beamer:5| handout:0>{\includegraphics[width=7.5cm]{img/buy_sell_4_projection}}%
+    \only<beamer:0| handout:0>{\includegraphics[width=7.5cm]{img/buy_sell_5_axis}}%
+    \only<beamer:6| handout:3>{\includegraphics[width=7.5cm]{img/buy_sell_5_projection}}%
   \end{center}
 \end{frame}
 
 
-\begin{frame}[c]
-  \frametitle{Step 3: Further orthogonal dimensions}
+\begin{frame}<beamer:1-| handout:1>[c]
+  \frametitle{PCA dimensionality reduction: further dimensions}
   %% \framesubtitle{}
 
   \begin{center}
@@ -1590,8 +1551,8 @@ effect 1.161 1.113  0.860 0.502  0.198 0.224  0.000\end{Rout}
   \end{center}
 \end{frame}
 
-\begin{frame}
-  \frametitle{Dimensionality reduction by PCA}
+\begin{frame}<beamer:1-| handout:1>
+  \frametitle{PCA dimensionality reduction}
 
   \begin{itemize}
   \item Principal component analysis (\h{PCA})
@@ -1599,14 +1560,15 @@ effect 1.161 1.113  0.860 0.502  0.198 0.224  0.000\end{Rout}
     \item orthogonal projection into orthogonal latent dimensions
     \item finds optimal subspace of given dimensionality
       (such that orthogonal projection preserves distance information)
-    \item but requires centered features \so no longer sparse
+    \item but requires features centered at 0 \so no longer sparse
     \item[]
     \end{itemize}
   \item<2-> Singular value decomposition (\h{SVD})
     \begin{itemize}
     \item the mathematical algorithm behind PCA
     \item often applied without centering in distributional semantics
-    \item optimality of subspace not guaranteed (\hand{} part 5)
+    \item[\hand] optimality of subspace not guaranteed
+    \item[\hand] first dimension(s) uninteresting ($\leadsto$ non-negative quadrant)
     \item[]
     \end{itemize}
   \item<3-> NB: row vectors should be renormalised after PCA/SVD
@@ -1617,30 +1579,12 @@ effect 1.161 1.113  0.860 0.502  0.198 0.224  0.000\end{Rout}
   \end{itemize}
 \end{frame}
 
-\begin{frame}
-  \frametitle{Dimensionality reduction by RI}
-
-  \begin{itemize}
-  \item Random indexing (\h{RI})
-    \begin{itemize}
-    \item project into random subspace \citep{Sahlgren:Karlgren:05}
-    \item reasonably good if there are many subspace dimensions
-    \item can be performed online w/o collecting full co-oc. matrix
-    \end{itemize}
-    \item[]
-  \end{itemize}
-
-  \begin{center}
-    \includegraphics[width=5cm]{img/buy_sell_3_projection}
-  \end{center}
-\end{frame}
-
 \begin{frame}[fragile]
   \frametitle{Dimensionality reduction in practice}
 
 \ungap[1.5]
 \begin{Rcode}
-\REM{it is customary to omit the centering: SVD dimensionality reduction}
+\REM{SVD is the algorithm behind PCA dimensionality reduction}
 > TT2 <- dsm.projection(TT, n=2, method="svd")
 > TT2\begin{Rout}
          svd1    svd2
@@ -1658,15 +1602,13 @@ effect -0.871  0.4794
        xlim=extendrange(x), ylim=extendrange(y))
 > text(x, y, rownames(TT2), pos=3)    
 \end{Rcode}
-  
 \end{frame}
 
 \begin{frame}
   \frametitle{Scaling latent dimensions}
 
   \begin{itemize}
-  \item Capture different amounts of distance info (= variance)
-  \item Indicated by \h{singular values} $\sigma_i$ of PCA/SVD algorithm
+  \item Truncated SVD omits latent dimensions that capture relatively little distance information (here $r = 400$)
   \item<2-> Skip first $k$ dimensions, e.g.\ $k = 50$ \citep{Bullinaria:Levy:12}
   \item<3-> Power-scaling of dimensions: $\sigma^P$ \citep{Caron:01}
     \begin{itemize}
@@ -1711,8 +1653,26 @@ effect -0.383  0.3704
 \end{Rcode}
 \end{frame}
 
+\begin{frame}<beamer:1-| handout:1>
+  \frametitle{Dimensionality reduction by RI}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  \begin{itemize}
+  \item Random indexing (\h{RI})
+    \begin{itemize}
+    \item project into random subspace \citep{Sahlgren:Karlgren:05}
+    \item reasonably good if there are many subspace dimensions
+    \item can be performed online w/o collecting full co-oc. matrix
+    \end{itemize}
+    \item[]
+  \end{itemize}
+
+  \begin{center}
+    \includegraphics[width=5cm]{img/buy_sell_3_projection}
+  \end{center}
+\end{frame}
+
+\showSectionHeader
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 \subsection{Examples}
 
 \begin{frame}
@@ -1821,7 +1781,7 @@ effect -0.383  0.3704
     \begin{itemize}
     \item[]
     \end{itemize}
-  \item<2-> Example 1: window-based DSM on BNC content words
+  \item<2-> Example 1: span-based DSM on BNC content words
     \begin{itemize}
     \item 83,926 lemma types with $f\geq 10$
     \item term-term matrix with 83,926 $\cdot$ 83,926 = 7 billion entries
@@ -1898,6 +1858,9 @@ effect -0.383  0.3704
     \item[]
     \end{itemize}
   \item<2-> Other software: Matlab, Octave, Python + SciPy
+	\begin{itemize}
+    \item[\hand] TensorFlow, PyTorch, \ldots{} always use dense matrices!
+	\end{itemize}
   \end{itemize}
 \end{frame}
 
@@ -1992,23 +1955,25 @@ effect -0.383  0.3704
 \begin{frame}
   \frametitle{Practice}
   \begin{itemize}
-  \item How many different models can you build from \code{\small DSM\_VerbNounTriples\_BNC}?
-  \item Apply different filters, scores, transformations and metrics
+  \item Code examples and further explanations: \code{hands\_on\_part2.R}
+  \item How many different models can you build from \code{DSM\_VerbNounTriples\_BNC}?
     \begin{itemize}
-    \item[\hand] explore nearest neighbours of selected words
+    \item apply different filters, scores, transformations and metrics
+    \item[\hand] explore nearest neighbours of selected word
     \item[]
     \end{itemize}
-  \item Code examples for this part show additional options
-    \begin{itemize}
-    \item[]
-    \end{itemize}
-  \item Download practice session (\code{\small part2\_input\_formats.R})\\
-    \so different ways of loading your own co-occurrence data
   \item Build real-life DSMs from pre-compiled co-occurrence data
     \begin{itemize}
-    \item \primary{\href{http://wordspace.collocations.de/doku.php/course:material\#dsms_based_on_the_english_wikipedia}{http://wordspace.collocations.de/doku.php/course:material}}
-    \item also download R script with instructions (\code{part2\_exercise.R})
-\end{itemize}
+    \item \secondary{\href{http://wordspace.collocations.de/doku.php/course:material\#dsms_based_on_the_english_wikipedia}{http://wordspace.collocations.de/doku.php/course:material}}
+    \item load pre-compiled matrix and apply different parameters
+    \item[\hand] compare nearest neighbours or semantic maps
+    \item[]
+    \end{itemize}
+  \item Learn how to import your own co-occurrence data\\
+    \hand{} \code{hands\_on\_part2\_input\_formats.R}
+    \begin{itemize}
+    \item download example data sets to subdirectory \code{data/}
+    \end{itemize}
   \end{itemize}
 \end{frame}
 
