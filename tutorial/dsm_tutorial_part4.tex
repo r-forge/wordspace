@@ -245,11 +245,10 @@
   \begin{itemize}
   \item \primary{Problem}: DSM vectors conflate contexts from different senses
     \begin{itemize}
-    \item collocates of ``bank'': \emph{money}, \emph{river}, \emph{account}, \emph{swim}, \ldots
+    \item collocates of ``\emph{bank}'': \emph{money}, \emph{river}, \emph{account}, \emph{swim}, \ldots
     \item conflated DSM vector either fits neither meaning well or is dominated by most frequent sense
     \end{itemize}
   \end{itemize}
-  \pause
   % \begin{center}
   %   \includegraphics[scale=.6]{img/4_polysemy}
   % \end{center}
@@ -257,21 +256,21 @@
   \gap[1]
   \begin{center}
     \hspace*{-20pt}
-    \begin{tikzpicture}[scale=0.8, every node/.style={transform shape}]
+    \begin{tikzpicture}[scale=0.9, every node/.style={transform shape}]
       \draw [<->, thick] (0,5) -- (0,0) -- (5,0);
       \node [left] at (0,5) {};
       \node [left] at (5,-0.3) {};
-      \draw [->,thin, dashed,green] (0,0) -- (4,1);
-      \draw [->,thick,green] (0,0) -- (4,1.5);
-      \draw [->,thin, dashed,blue!60!black] (0,0) -- (2.8,2.5);
-      \draw [->,thin, dashed,red] (0,0) -- (1.5,3);
-      \draw [->,thick,red] (0,0) -- (1.5,3.5);
+      \draw [->,thin, dashed,puregreen] (0,0) -- (4,1);
+      \draw [->,thick,puregreen] (0,0) -- (4,1.5);
+      \draw [->,thin, dashed,pureblue] (0,0) -- (2.8,2.5);
+      \draw [->,thin, dashed,purered] (0,0) -- (1.5,3);
+      \draw [->,thick,purered] (0,0) -- (1.5,3.5);
 
-      \node [right,green] at (4,1) {river};
-      \node [right,green] at (4,1.5) {\textbf{bank$_{2}$}};
-      \node [right,red] at (1.5,3) {broker};
-      \node [right,red] at (1.5, 3.5) {\textbf{bank$_{1}$}};
-      \node [right,blue!60!black] at (2.75, 2.5) {\textbf{bank}};
+      \node [right,puregreen] at (4,1) {river};
+      \node [right,puregreen] at (4,1.5) {\textbf{bank$_{2}$}};
+      \node [right,purered] at (1.5,3) {broker};
+      \node [right,purered] at (1.5, 3.5) {\textbf{bank$_{1}$}};
+      \node [right,pureblue] at (2.75, 2.5) {\textbf{bank}};
     \end{tikzpicture}
   \end{center}
 \end{frame}
@@ -285,40 +284,41 @@
     \hfill \hand{} \primary{sentence vectors}
   \end{itemize}
 
+  \ungap[1]
   \begin{columns}
-    \hspace*{35pt}
-    \begin{column}{0.5\textwidth}
+    \begin{column}{5cm}
       \begin{block}{Target: bank} \footnotesize
         \textbf{bank$_{1}$}: \textit{The broker went to the bank to secure his cash} \\
         \textbf{bank$_{2}$}: \textit{The river bank was steep and dangerous}
       \end{block}
     \end{column} 
-    \begin{column}{0.5 \textwidth}
+    \begin{column}{4cm}
       \begin{center}
         \hspace*{-25pt}
         \begin{tikzpicture}[scale=0.65, every node/.style={transform shape}]
           \draw [<->, thick] (0,5) -- (0,0) -- (5,0);
           \node [left] at (0,5) {\textbf{money}};
           \node [left] at (5,-0.3) {\textbf{water}};
-          \draw [->,thin, dashed,green] (0,0) -- (4,1);
-          \draw [->,thin, dashed,green] (0,0) -- (3.5,0.5);
-          \draw [->,thin, dashed,green] (0,0) -- (3,1.8);
-          \draw [->,thick,green] (0,0) -- (4,1.5);
+          \draw [->,thin, dashed,puregreen] (0,0) -- (4,1);
+          \draw [->,thin, dashed,puregreen] (0,0) -- (3.5,0.5);
+          \draw [->,thin, dashed,puregreen] (0,0) -- (3,1.8);
+          \draw [->,thick,puregreen] (0,0) -- (4,1.5);
 
-          \draw [->,thin, dashed,red] (0,0) -- (0.5, 4);
-          \draw [->,thin, dashed,red] (0,0) -- (1.5,3);
-          \draw [->,thin, dashed,red] (0,0) -- (2, 2.7);
-          \draw [->,thick,red] (0,0) -- (1.5,3.5);
+          \draw [->,thin, dashed,purered] (0,0) -- (0.5, 4);
+          \draw [->,thin, dashed,purered] (0,0) -- (1.5,3);
+          \draw [->,thin, dashed,purered] (0,0) -- (2, 2.7);
+          \draw [->,thick,purered] (0,0) -- (1.5,3.5);
 
-          \node [right,green] at (4,1) {river};
-          \node [right,green] at (3.5,0.5) {steep};
-          \node [right,green] at (3,1.8) {dangerous};
-          \node [right,green] at (4,1.5) {\textbf{bank$_{2}$}};
-          \node [right,red] at (2,2.7) {secure};
-          \node [right,red] at (0.5,4) {cash};
-          \node [right,red] at (1.5,3) {broker};
-          \node [right,red] at (1.5, 3.5) {\textbf{bank$_{1}$}};
-        \end{tikzpicture}\end{center}
+          \node [right,puregreen] at (4,1) {river};
+          \node [right,puregreen] at (3.5,0.5) {steep};
+          \node [right,puregreen] at (3,1.8) {dangerous};
+          \node [right,puregreen] at (4,1.5) {\textbf{bank$_{2}$}};
+          \node [right,purered] at (2,2.7) {secure};
+          \node [right,purered] at (0.5,4) {cash};
+          \node [right,purered] at (1.5,3) {broker};
+          \node [right,purered] at (1.5, 3.5) {\textbf{bank$_{1}$}};
+        \end{tikzpicture}
+      \end{center}
     \end{column}
   \end{columns}
 
@@ -333,11 +333,11 @@
   \ungap[1]
 \begin{Rcode}
 library(wordspace)
-\REM{S1: ``Cats and dogs need their time'' }
+\REM{S1: ``Cats and dogs need their time''}
 s1 <- "cat and dog need their time" 
-\REM{S2: ``Time is the cause not the effect'' }
+\REM{S2: ``Time is the cause not the effect''}
 s2 <- "time is the cause not the effect"
-\REM{Ingredients: vectors for individual words }
+\REM{ingredients: vectors for individual words}
 >TT <- DSM_TermTermMatrix
 >TT\begin{Rout}
        breed tail feed kill important explain likely
@@ -360,9 +360,11 @@ effect     0    1    1    6        62      37     14
      breed tail feed     kill important explain likely
 1 227.3333   13   23 78.33333  31.66667      16     34\end{Rout}
 \REM{context.vectors() is taking the average of the values in each cell}
-> (TT['cat','breed']+TT['dog','breed']+TT['time','breed'])/3 \begin{Rout}
-227.3333\end{Rout}
+> (TT['cat', ] + TT['dog', ] + TT['time', ]) / 3 \begin{Rout}
+breed      tail      feed      kill important   explain    likely 
+227.3      13.0      23.0      78.3      31.7      16.0      34.0\end{Rout}
 \end{Rcode}
+\gap[1]
 \begin{Rcode}[``time is the cause not the effect'']
 round(context.vectors(TT, s2),3)\begin{Rout}
   breed  tail feed   kill important explain likely
@@ -376,9 +378,9 @@ round(context.vectors(TT, s2),3)\begin{Rout}
   \framesubtitle{Almost there \ldots}
   \ungap[1]
 \begin{Rcode}
-\REM{context.vectors() can also take a list as an input}
-contexts <- round(context.vectors(TT, c(s1, s2)),2)
-\REM{The output is a matrix, let's give it better rownames first}
+\REM{context.vectors() can also take multiple sentences as input}
+contexts <- context.vectors(TT, c(s1, s2))
+\REM{the output is a matrix, let's label the rows ``s1'' and ``s2''}
 rownames(contexts) <- c("s1", "s2") 
 \REM{\ldots{} and then append it to our original matrix}
 TT <- rbind(TT, contexts)
@@ -402,8 +404,9 @@ s2       6.33  3.33   10  47.67     70.33   38.67     55
   \framesubtitle{And what now?}
 
 \begin{Rcode}
-\REM{We can do all the cool things we are used to do with DSM matrices}
-\REM{Nearest neighbors...}
+\REM{we can do the same things now as with other DSM matrices}
+
+\REM{including nearest neighbors \ldots{}}
 nearest.neighbours(TT, c("s1", "s2"), n=6)\begin{Rout}
 $s1
      cat      dog   animal     time       s2    cause 
@@ -421,7 +424,7 @@ $s2
 
   \ungap[1]
 \begin{Rcode}
-\REM{And a semantic map!}
+\REM{\ldots{} and a semantic map!}
 plot(dist.matrix(TT))
 \end{Rcode}
 
@@ -532,7 +535,7 @@ plot(dist.matrix(TT))
   \item \hh{Qualitative inspection} of nearest neighbors of $\vu \oplus \vv$
     \begin{itemize}
     \item In which case look the neighbours intuitively more sensible?
-    \item \emph{problem} would be ``good'' neighbour of practical \primary{$\oplus$} difficulty
+    \item \textbf{problem} is a ``good'' neighbour of \textbf{practical} \primary{$\oplus$} \textbf{difficulty}
     \item[]
     \end{itemize}
     
@@ -744,7 +747,7 @@ plot(dist.matrix(TT))
   \item For an unreduced term-term DSM, each row vector $\vm_t$ corresponds to the collocational profile of a target term $t$
     \begin{itemize}
     \item e.g.\ dependency-structured DSM \so word sketches
-    \item[\hand] compare our own reading of sketch differences for nearest neighbours with distributional similarity
+    \item[\hand] compare our reading of sketch differences with distributional similarity for nearest neighbours, esp.\ surprising ones
     \item[]
     \end{itemize}
   \item<2-> Can dim.-reduced vectors be read as collocational profiles?
@@ -768,9 +771,9 @@ plot(dist.matrix(TT))
   \begin{itemize}
   \item Can we figure out which features account for semantic differences?
     \begin{itemize}
-    \item normalise vectors: $\norm{\vu} = \norm{\vv} = 1$
-    \item $(u_i - v_i)^2$ = contribution to (squared) Euclidean distance
-    \item for cosine similarity, contribution is $u_i v_i$
+    \item normalise vectors: $\norm[2]{\vu} = \norm[2]{\vv} = 1$
+    \item $(u_i - v_i)^2$ = contribution to (squared) Euclidean \secondary{distance}
+    \item $u_i v_i$ = contribution to cosine \secondary{similarity}
     \item[]
     \end{itemize}
   \item<2-> Collocations = \hh{first-order} association = \hh{syntagmatic}
@@ -782,6 +785,9 @@ plot(dist.matrix(TT))
     \item[]
     \end{itemize}
   \end{itemize}
+
+  \vfill
+  \primary{\small See \texttt{hands\_on\_part4.R} for some example code on how to interpret DSM vectors in terms of collocational profiles.}
 \end{frame}
 
 

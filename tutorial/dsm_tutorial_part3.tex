@@ -55,7 +55,7 @@
 
 \begin{frame}[c]
   \frametitle{The problem}
-  ``The distributional hypothesis, as motivated by the works of Zellig Harris, is a strong methodological claim with a weak semantic foundation.  It states that differences of meaning correlate with differences of distribution,but it neither specifies \secondary{what kind of distributional information we should look for}, nor \primary{what kind of meaning differences it mediates}.''
+  ``The distributional hypothesis, as motivated by the works of Zellig Harris, is a strong methodological claim with a weak semantic foundation. It states that differences of meaning correlate with differences of distribution, but it neither specifies \secondary{what kind of distributional information we should look for}, nor \primary{what kind of meaning differences it mediates}.''
   \citep[37]{Sahlgren:08}
 \end{frame}
 
@@ -68,7 +68,7 @@
   \item Parameter manipulation
     \begin{itemize}
     \item \secondary{What kind of information should we look for?}
-    \item after Part 1, we are all experts and know how many different options we have! 
+    \item after Part 2, we are all experts and know how many different options we have! 
     \item[]
     \end{itemize}
   \item<2-> \textbf{Evaluation} (task + datasets)
@@ -91,7 +91,7 @@
 \begin{frame}
   \frametitle{Tasks \& datasets}
   \begin{itemize} 
-  \item \hh{Tasks} are experimental setups to test DSM representations:
+  \item \hh{Tasks} are experimental setups to test DSM representations
     \begin{itemize} 
     \item \textbf{classification (multiple choice)}: given a target word, pick the ``best'' from a set of candidates (whatever best means)
     \item \textbf{correlation}: do DSM similarities match scores that quantify semantic simliarity/relatedness (ratings, reaction times)?   
@@ -161,7 +161,8 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{Datasets for intrinsic evaluation of attributional similarity/relatedness}
+  \frametitle{Datasets for intrinsic evaluation}
+  \framesubtitle{of attributional similarity and semantic relatedness}
   
   \ungap[1]
   \begin{itemize}
@@ -536,6 +537,10 @@ RG65 0.687 2.61e-10       0 0.678    0.52   0.791\end{Rout}
 \end{Rcode}
 \end{frame}
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Analogy}
+
 \begin{frame}
   \frametitle{Intrinsic evaluation on word pairs: Analogy}
   \framesubtitle{\citet{Mikolov:etc:13,Mikolov:etc:13b,Gladkova:Drozd:Matsuoka:16}}
@@ -556,13 +561,13 @@ RG65 0.687 2.61e-10       0 0.678    0.52   0.791\end{Rout}
   \item<7-> Approach 2: use vector operations in single-word DSM
     \begin{tikzpicture}
       \useasboundingbox (.8, 1.5) rectangle (1, 1.7) ;
-      \node (king) at (0, 1) {\hh{\small king}} ;
+      \node (woman) at (0, 1) {\hh{\small woman}} ;
       \node (man) at (1, 0) {\hh{\small man}} ;
-      \node (woman) at (2, 1.5) {\hh{\small woman}} ;
+      \node (king) at (2, 1.5) {\hh{\small king}} ;
       \node (queen) at (1, 2.5) {\hh{\small queen}} ;
-      \draw[diagram arrow=primary] (man) -- (king) ;
-      \draw[diagram arrow=primary] (woman) -- (queen) ;
-      \draw[diagram arrow=counterpoint] (man) -- (woman) ;
+      \draw[diagram arrow=primary] (man) -- (woman) ;
+      \draw[diagram arrow=primary] (king) -- (queen) ;
+      \draw[diagram arrow=counterpoint] (man) -- (king) ;
     \end{tikzpicture}
     \[
       \vv_{\text{queen}} \approx \vv_{\text{king}} - \vv_{\text{man}} + \vv_{\text{woman}}
