@@ -18,14 +18,11 @@ context.vectors(TT, s1)
 context.vectors(TT, s2)
 
 # Let's check we are really taking the average: 
-TT['cat', 'breed'] 
-TT['dog', 'breed'] 
-TT['time', 'breed'] 
-(TT['cat','breed'] + TT['dog','breed'] + TT['time','breed'] ) / 3
+(TT['cat', ] + TT['dog', ] + TT['time', ]) / 3
 # We are :) 
 
 # Context.vectors() can also take a list as an input. See ?context.vectors for more details
-contexts <- round(context.vectors(TT, c(s1, s2)), 2)
+contexts <- context.vectors(TT, c(s1, s2))
 contexts
 # Let's make rownames more meaningful
 rownames(contexts) <- c("s1", "s2")
@@ -75,6 +72,7 @@ nearest.neighbours(composed_dsm, c("parltom_add", "parltom_mult"), n=10, M2=DSM)
 
 # Try by yourself with different input models, and different examples of AN (e.g., red {blood, wine, square})
 # If you wanted to make the head of the compound count more in the output, which simple trick could you use? 
+
 
 ######################################################################
 ## BONUS example: disambiguating "bank", based on the two example sentences from the lecture slides

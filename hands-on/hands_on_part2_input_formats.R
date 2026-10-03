@@ -1,6 +1,6 @@
 ######################################################################
 ## Another hands-on example and exercise for Part 2 of the tutorial:
-## How to read your own co-occurrence data into 'wordspace'
+## How to read your own co-occurrence data into 'wordspace' and build a DSM
 ##
 
 library(wordspace)
@@ -130,11 +130,77 @@ print(wordspace_tdm)
 ## Since the file "potter_lemmas.txt.gz" does not start with a suitable header row, we will have to 
 ## specify its column labels with the [row,col]info.header option. Note that we use the lemma frequencies
 ## both as row and as column marginals for our symmetric matrix and set span.size=4 (for L2/R2 span) to 
-## obtain correct expected frequencies.
+## obtain correct expected frequencies as explained in the tutorial.
 Potter <- read.dsm.triplet("data/potter_l2r2.txt.gz", freq=TRUE, sort=TRUE, verbose=TRUE, 
                            rowinfo="data/potter_lemmas.txt.gz", rowinfo.header=c("term", "f"),
                            colinfo="data/potter_lemmas.txt.gz", colinfo.header=c("term", "f"),
                            span.size=4, N=63515435, encoding="UTF-8")
+
+
+################################################################################
+## A typical DSM compilation workflow consists of the following steps
+##   1) read co-occurrence data into a DSM object
+##   2) select target & feature terms with frequency thresholds and/or other filters
+##   3) save pre-compiled DSM object to .rda file for later use
+##   4) use dsm.score() to weight co-occurrence frequencies with AMs and transformations
+##   5) apply dimensionality reduction to obtain more efficient dense matrix
+##   6) unless you want to experiment with DSM parameters, save the dimensionality-reduced
+##      matrix to .rda file (often left uncompressed for faster loading)
+## We illustrate the steps of this workflow below.
+
+## Step 1
+## We use the Potter DSM that has just been loaded above as an example. It is a huge and sparse
+## cooccurrence matrix with more than 230k rows and columns and a fill rate of 0.02%
+Potter
+
+## Step 2
+## Select target and feature terms with frequency thresholds and possibly further criteria (such as
+## POS tags or a pre-defined wordlist). You can also select by the number of nonzero entries in each
+## row or column (nnzero) instead of frequency. Since nnzero will be changed by the filtering, the
+## subset operation has to be applied with recursive=TRUE so it is automatically repeated until the
+## specified constraints are satisfied.
+hist(log10(Potter$cols$f)) # look at frequency distribution (NB: rows are pre-multiplied with span.size)
+sum(Potter$cols$f >= 50) # f >= 50 leaves a reasonable 20k terms
+
+## We decide to keep the matrix symmetric and apply the same frequency threshold f >= 50 to rows and columns.
+## Keep in mind that row marginals are pre-multiplied with span.size=4 and we have to adapt the threshold.
+## Also keep in mind that subsetting a DSM matrix might introduce all-zero row vectors (if all nonzero entries
+## are in columns being dropped), which we won't be able to work with. Specify drop.zeroes=TRUE to avoid this!
+Potter <- subset(Potter, f >= 4 * 50, f >= 50, drop.zeroes=TRUE)
+Potter #confirm we're down to a 20k x 20k matrix now
+
+## Step 3
+## Save to .rda file for later use. It is recommended to use the same meaningful name for the DSM object
+## and for the .rda file.
+Potter_L2R2_lemma_20k <- Potter
+save(Potter_L2R2_lemma_20k, file="models/Potter_L2R2_lemma_20k.rda")
+
+## In future, you can load the model conveniently from the .rda file and then assign a shorter name if desired.
+load("models/Potter_L2R2_lemma_20k.rda", verbose=TRUE)
+Potter <- Potter_L2R2_lemma_20k
+
+## Step 4
+## Apply your favourite DSM parameters.
+Potter <- dsm.score(Potter, score="simple-ll", transform="log", normalize=TRUE)
+
+## You may want to check some nearest neighbours to see if parameters worked well.
+nearest.neighbours(Potter, "broom", n=20)
+
+## Step 5
+## Optionally apply dimensionality reduction (recommended for larger models as it makes computation of large
+## distance matrices considerably more efficient).
+Potter200 <- dsm.projection(Potter, n=200, method="svd")
+
+## Recheck nearest neighbours to see whether our 200 latent dimensions are sufficient.
+nearest.neighbours(Potter200, "broom", n=20)
+
+## Step 6
+## Assign a meaningful name and save as .rda file (since dimensionality reduction is usually the most expensive
+## and time-consuming step). This is your new "workhorse" model.
+## Compression isn't very effective for a dense numeric matrix, so it might sense to save the .rda file in 
+## uncompressed format for very fast loading.
+Potter_L2R2_lemma_20k_svd200 <- Potter200
+save(Potter_L2R2_lemma_20k_svd200, file="models/Potter_L2R2_lemma_20k_svd200.rda", compress=FALSE)
 
 
 ################################################################################
