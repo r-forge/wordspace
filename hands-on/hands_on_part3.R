@@ -104,6 +104,36 @@ eval.clustering(ESSLLI08_Nouns, M, class.name="class3")
 
 
 ######################################################################
+# DIGGING DOWN: ERROR ANALYSIS
+
+# **TODO** example code -> rework rough draft from workshop below
+# - see if we can do it with DSM_Vectors, but probably need to load WP500_Win5 as below
+# - always runs standard eval first, then with details=TRUE for error analysis
+# - add step-by-step explanations and interpretations
+# - work out error analysis for similarity correlation
+
+res <- eval.multiple.choice(TOEFL80, M, details=TRUE)
+head(res)
+summary(res$correct)
+err <- subset(res, !correct)
+err
+nearest.neighbours(M, "perseverance_N")
+nearest.neighbours(M, "endurance_N")
+nearest.neighbours(M, "advent_N")
+
+res <- eval.clustering(ESSLLI08_Nouns, M, details=TRUE)
+head(res)
+xtabs(~ paste(cluster, label) + gold, data=res)
+subset(res, cluster == 3)
+nearest.neighbours(M, "snail_N", 16)
+
+res <- eval.similarity.correlation(RG65, M, details=TRUE)
+res[seq(1, 65, 8), ]
+# need regression to work out what biggest errors are
+# try via smoother with loess() + predict()
+
+
+######################################################################
 ## Exercise for Part 3:
 ## Explore and evaluate distributional semantic models
 ##
