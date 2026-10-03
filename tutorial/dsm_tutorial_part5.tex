@@ -13,19 +13,22 @@
 
 \input{local/config} % local adjustments to configuration and macros
 
+\newcommand{\First}{1\textsuperscript{st}\xspace}
+\newcommand{\Second}{2\textsuperscript{nd}\xspace}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Titlepage
 
-\title[DSM Tutorial -- Part 4]{Distributional Semantic Models}
-\subtitle{Part 4: Elements of matrix algebra}
-\author[\textcopyright\ Evert/Lenci/Baroni/Lapesa]{%
-  Stefan Evert\inst{1}\\
-  {\footnotesize with  Alessandro Lenci\inst{2}, Marco Baroni\inst{3} and Gabriella Lapesa\inst{4}}}
+\title[DSM Tutorial -- Part 5]{Distributional Semantic Models}
+\subtitle{Part 5: The mathematics of distributional semantics}
+\author[\textcopyright\ Evert/Lapesa/Lenci/Baroni]{%
+  Stephanie Evert\inst{1}\\
+  {\small with  Gabriella Lapesa\inst{2}, Alessandro Lenci\inst{3}, and Marco Baroni\inst{4}}}
 \institute[CC-by-sa]{%
   \inst{1}Friedrich-Alexander-Universität Erlangen-Nürnberg, Germany\\
-  \inst{2}University of Pisa, Italy\\
-  \inst{3}University of Trento, Italy\\
-  \inst{4}University of Stuttgart, Germany
+  \inst{2}Heinrich-Heine-Universität Düsseldorf \& GESIS, Germany\\
+  \inst{3}University of Pisa, Italy\\
+  \inst{4}ICREA / Universitat Pompeu Fabra Barcelona, Italy
 }
 
 \date[wordspace.collocations.de]{
@@ -1164,6 +1167,513 @@
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Mathematical insights}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Matrix factorization}
+
+\begin{frame}
+  \frametitle{Dimensionality reduction as matrix factorization}
+
+    \begin{itemize}
+  \item PCA is based on \h{singular value decomposition} (\hh{SVD}), which factorises any matrix $\mathbf{M}$ into
+    \[
+    \mathbf{M} = \mathbf{U} \Msigma \mathbf{V}^T
+    \]
+    where $\mathbf{U}$ and $\mathbf{V}$ are orthogonal and $\Msigma$ is a diagonal matrix of
+    \hh{singular values} $\sigma_1\geq \sigma_2\geq \dots \geq \sigma_m > 0$
+  \end{itemize}
+
+  \begin{equation*}\small
+    \begin{bmatrix}
+      & & \primary{n} & & \\
+      & & & & \\
+      & & & & \\
+      \primary{k} & & \secondary{\mathbf{M}} & & \\
+      & & & & \\
+      & & & & \\
+      & & & & 
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+      & & & \primary{m} & & & \\
+      & & & & & & \\
+      & & & & & & \\
+      \primary{k} & & & \secondary{\mathbf{U}} & & & \\
+      & & & & & & \\
+      & & & & & & \\
+      & & & & & &
+    \end{bmatrix}
+    \cdot
+    \begin{bmatrix}
+      \sigma_1 & \primary{m} & \\
+      \primary{m} & \ddots & \\
+      & \secondary{\Msigma} & \sigma_m
+    \end{bmatrix}
+    \cdot
+    \begin{bmatrix}
+      & & \primary{n} & & \\
+      & & & & \\
+      \primary{m} & & \secondary{\mathbf{V}^T} & & \\
+      & & & & \\
+      & & & &
+    \end{bmatrix}
+  \end{equation*}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Dimensionality reduction as matrix factorization}
+
+  \begin{itemize}
+  \item Columns $\va_i$ of $\mathbf{U}$ and $\vb_i$ of $\mathbf{V}$ (\hh{singular vectors}) are orthogonal ($\va_i^T \va_j = 0$) and of unit length ($\norm{\va_i} = 1$)
+  \item Key property: \h{truncated SVD} gives best least-squares approximation in $r$-dimensional subspace
+  \end{itemize}
+
+  \gap[1]
+  \begin{equation*}
+    \mathbf{U}_r \Msigma_r \mathbf{V}_r^T =
+    \footnotesize
+    \begin{bmatrix}
+      \vdots &  & \vdots \\
+      \vdots &  & \vdots \\
+      \va_1 & \cdots & \va_r \\
+      \vdots &  & \vdots \\
+      \vdots & \secondary{\mathbf{U}_r} & \vdots 
+    \end{bmatrix}
+    \cdot
+    \begin{bmatrix}
+      \sigma_1 & & \\
+       & \ddots & \\
+      & \secondary{\Msigma_r} & \sigma_r
+    \end{bmatrix}
+    \cdot
+    \begin{bmatrix}
+      \cdots & \cdots & \vb_1  & \cdots & \cdots \\
+      \secondary{\mathbf{V}_r^T} &  & \vdots & & \\
+      \cdots & \cdots & \vb_r  & \cdots & \cdots
+    \end{bmatrix}
+  \end{equation*}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Dimensionality reduction as matrix factorization}
+
+  \begin{itemize}
+  \item Truncated SVD as orthogonal projection
+    \[
+      \mathbf{M} \mathbf{V}_r = \mathbf{U}_r \Msigma_r =
+      \footnotesize
+      \begin{bmatrix}
+        \vdots &  & \vdots \\
+        \sigma_1 \va_1 & \cdots & \sigma_r \va_r \\
+        \vdots &  & \vdots 
+      \end{bmatrix}
+    \]
+    $\so$ \code{method="svd"} in \code{dsm.projection()}
+    \gap
+  \item $\sigma_1^2\geq \sigma_2^2\geq \ldots $ = amount of distance information (i.e.\ variance of $\mathbf{M}$) captured by each \hh{latent dimension}
+  \item[]
+  \item[]
+  \item[\hand] Catch up on the mathematics with \citet{Deisenroth:Faisal:Ong:20}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Other matrix factorization techniques}
+
+  \begin{itemize}
+  \item \h{Non-negative matrix factorization} (\hh{NMF})
+    \begin{itemize}
+    \item $\mathbf{U}$ and $\mathbf{V}$ are stochastic matrices ($\va_i \geq 0$ and $\norm[1]{\va_i} = 1$)
+    \item but no orthogonality constraints
+    \item cross-entropy instead of least-squares approximation
+    \item iterative algorithm with random initialisation for optimal rank-$r$ approximation ($\neq$ sequence of ordered components)
+    \item see \citet{Lee:Seung:01} and \citet{Boutsidis:Gallopoulos:08}
+	\item[]
+    \end{itemize}
+  \item<2-> NMF of term-document matrix $\iff$ LDA \hh{topic model}
+    \[
+      \primary{\mathbf{U}} \Msigma \secondary{\mathbf{V}^T} =
+      \sigma_1 \primary{\va_1} \secondary{\vb_1^T} +
+      \sigma_2 \primary{\va_2} \secondary{\vb_2^T} +
+      \sigma_3 \primary{\va_3} \secondary{\vb_3^T} +
+      \ldots
+    \]
+    \ungap[1]
+    \begin{itemize}
+    \item $\va_i$ = probability distribution of words in $i$-th topic
+    \item $\vb_i$ = distribution of topic across documents
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Other matrix factorization techniques}
+
+  \begin{itemize}
+  \item NMF can be seen as \h{non-orthogonal} projection:\\
+  	$\mathbf{U} \Msigma$ = coordinates of projected points wrt.\ basis $\secondary{\mathbf{V}}$
+  \end{itemize}
+
+  \begin{center}
+	\gap
+	\includegraphics[width=7cm]{img/4_basis_grid}
+  \end{center}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Other matrix factorization techniques}
+
+  \begin{itemize}
+  \item \citet[213]{Levy:Goldberg:Dagan:15} show that \h{word2vec} embeddings implicitly factorize a shifted PPMI matrix
+    \begin{itemize}
+    \item sigmoid loss function, weighted towards high frequencies
+    \item similarly, \hh{GloVe} \citep{Pennington:Socher:Manning:14} factorizes matrix of~conditional probabilities with a frequency-weighted least-squares approximation 
+    \end{itemize}
+  \item[]
+  \item[]
+  \item<2-> Explore matrix factorization techniques \\
+    \hand{} \code{hands\_on\_day5\_matrix\_factorization.R}
+  \end{itemize}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Syntagmatic \vs paradigmatic information}
+
+\begin{frame}
+ \frametitle{Syntagmatic \vs paradigmatic}
+
+ \centering\ungap[1]
+ \only<beamer:2| handout:1>{\includegraphics[width=8cm]{img/FAST_correl_EAT_dsm0_mi2}}%
+ \only<beamer:3| handout:2>{\includegraphics[width=8cm]{img/FAST_correl_USF_dsm0_mi2}}%
+\end{frame}
+
+\begin{frame}
+ \frametitle{Syntagmatic \vs paradigmatic}
+  \framesubtitle{\First-order = syntagmatic \vs \Second-order = paradigmatic?}
+ 
+ \begin{itemize}
+ \item \First- and \Second-order models less complementary than expected\\
+   \So relatively small benefit from combination
+ \item But intuition not completely wrong (L2/R2):
+   \begin{itemize}
+   \item DSM: \emph{duckling} $\to$ \emph{piglet, chick, duck, cygnet, hatchling, \ldots}
+   \item MI$^2$: \emph{duckling} $\to$ \emph{\primary{ugly}, chick, duck, swan, fluffy, roast, \ldots}
+   \end{itemize}
+ \end{itemize}
+
+ \gap[1]\onslide<2->
+ Possible explanation for the overlap under (many) simplifying assumptions (sentence span, raw cooc freqs, \ldots)
+ \begin{itemize}
+ \item Consider a term-context matrix $\mathbf{F}$ with very small contexts
+   \begin{itemize}
+   \item e.g.\ \hh{tweets}, sentences, paragraphs
+   \item or aligned sentence pairs \citep{Sahlgren:Karlgren:05}
+   \end{itemize}
+ \item No feature weighting or normalisation
+ \item[\So] $\mathbf{F}$ is binary, i.e.\ $f_{ij} \in \set{0, 1}$
+ \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Excursus: Similarity in term-context DSM}
+
+  \begin{itemize}
+  \item What is the cosine similarity of $\vf_i$ and $\vf_j$?
+    \begin{align*}
+      \vf_i &= \begin{bmatrix}
+        0 & 0 & 1 & 0 & 1 & 0 & 0 & 1 & 0 & 1 & 0 & 0 
+      \end{bmatrix}\\
+      \vf_j &= \begin{bmatrix}
+        1 & 0 & 1 & 1 & 0 & 0 & 1 & 1 & 0 & 1 & 1 & 1 
+      \end{bmatrix}
+    \end{align*}
+    \ungap[1]
+    \begin{itemize}
+    \item<2-> $\vf_i^T \vf_j = O$ = co-occurrence frequency
+    \item<3-> $\norm[2]{\vf_i} = \sqrt{R}$ = marginal frequency of term $i$
+    \item<4-> $\norm[2]{\vf_j} = \sqrt{C}$ = marginal frequency of term $j$
+    \item[]
+    \end{itemize}
+  \item<5-> Cosine similarity in $\mathbf{F}$ = \h{first-order association}
+    \[
+      \cos \alpha = \frac{ \vf_i^T \vf_j }{ \norm[2]{\vf_i}\cdot \norm[2]{\vf_j} }
+      = \frac{O}{\sqrt{R C}}
+      \sim \sqrt{\text{MI}^2}
+    \]
+  \end{itemize}
+\end{frame}
+
+\begin{frame}<beamer:0| handout:1>
+  \frametitle{Excursus: Distance in term-context DSM}
+
+  \newcommand{\fracR}{{\textstyle\frac1R}}
+  \newcommand{\fracC}{{\textstyle\frac1C}}
+  \newcommand{\N}{\,0\,\,}
+  \begin{itemize}
+  \item What is the Manhattan distance between $\vf_i$ and $\vf_j$?
+    \begin{align*}
+      \only<beamer:1-3| handout:0>{
+      \vf_i &= \begin{bmatrix}
+        0 & 0 & 1 & 0 & 1 & 0 & 0 & 1 & 0 & 1 & 0 & 0 
+      \end{bmatrix}\\
+      \vf_j &= \begin{bmatrix}
+        1 & 0 & 1 & 1 & 0 & 0 & 1 & 1 & 0 & 1 & 1 & 1 
+      \end{bmatrix}}%
+      \only<beamer:4-| handout:1>{                                                    
+      \vf_i' &= \begin{bmatrix}
+        \N & \N & \fracR & \N & \fracR & \N & \N & \fracR & \N & \fracR & \N & \N 
+      \end{bmatrix}\\
+      \vf_j' &= \begin{bmatrix}
+        \fracC & \N & \fracC & \fracC & \N & \N & \fracC & \fracC & \N & \fracC & \fracC & \fracC 
+      \end{bmatrix}}
+    \end{align*}
+    \ungap[1]
+    \begin{itemize}
+    \item<2-> $\norm[1]{\vf_i} = R$ = marginal frequency of term $i$
+    \item<3-> $\norm[1]{\vf_j} = C$ = marginal frequency of term $j$
+    \item<4-> normalised: $\vf_i' = \vf_i / R$ and $\vf_j' = \vf_j / C$
+    \item[]
+    \end{itemize}
+  \item<5-> Manhattan distance in $\mathbf{F}$ = \h{first-order association}
+    \begin{align*}
+      \dist[1]{\vf_i}{\vf_j}
+      &= O\cdot \abs{\fracR - \fracC} + (R - O)\cdot \fracR + (C - O)\cdot \fracC \\
+      \visible<6->{&= 2 - O\cdot \bigl( \fracR + \fracC - \abs{\fracR - \fracC} \bigr) \\}
+      \visible<7->{&= 2 - 2O\cdot \min \set{\fracR, \fracC}
+        = 2 - 2\cdot \underbrace{\min \setscale{\frac{O}{R}, \frac{O}{C}}}_{\text{\secondary{minimum sensitivity}}}}
+    \end{align*}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Excursus: Term-context \vs term-term DSM}
+
+  \begin{itemize}
+  \item Construct a term-term DSM with textual context = tweet
+  \item Recall: co-occurrence frequency $m_{ij} = \vf_i^T \vf_j$
+  \item<2-> Symmetric co-occurrence matrix $\mathbf{M}$ can be derived from $\mathbf{F}$:
+    \[
+      \mathbf{M} = \mathbf{F} \mathbf{F}^T
+    \]
+  \item<3-> Compare SVD of the two matrices
+    \begin{align*}
+      \mathbf{F} &= \mathbf{U} \Msigma \mathbf{V}^T
+      & \mathbf{M} &= \mathbf{F} \mathbf{F}^T = \mathbf{U} \Msigma \mathbf{V}^T \mathbf{V} \Msigma \mathbf{U}^T \\
+      && &= \mathbf{U} \Msigma^2 \mathbf{U}^T 
+    \end{align*}
+  \item<4->[\So] $\mathbf{M}$ is power-scaled version of $\mathbf{F}$
+    \begin{itemize}
+    \item dimensionality reduction: $P_r(\mathbf{F}) = \mathbf{U}_r \Msigma_r$ vs.\ $P_r(\mathbf{M}) = \mathbf{U}_r \Msigma_r^2$
+    \item $\mathbf{F}$ is equivalent to $\mathbf{M}$ with Caron $P = \frac12$
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Mathematical investigations}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Warming up}
+
+\begin{frame}
+  \frametitle{What is the difference between PCA and SVD?}
+
+  \begin{itemize}
+  \item PCA-based projection preserves squared Euclidean distances, i.e.\ it minimizes the relative projection error
+    \[
+      \frac{
+        \sum_{i,j} \bigl( \norm{\mathbf{P}(\vm_i - \vm_j)}^2 - \norm{\vm_i - \vm_j}^2 \bigr)
+      }{
+        \sum_{i,j} \norm{\vm_i - \vm_j}^2
+      }
+      = \frac{
+        \sum_{i,j} \norm{\mathbf{Q}(\vm_i - \vm_j)}^2
+      }{
+        \sum_{i,j} \norm{\vm_i - \vm_j}^2
+      }
+    \]
+  \item<2-> Because of centering ($\sum_i \vm_i = \vnull$) this is equal to
+    \[
+      \frac{ \norm[F]{\mathbf{M}\mathbf{Q}}^2 }{ \norm[F]{\mathbf{M}}^2 }
+      = \frac{ \norm[F]{\mathbf{M}\mathbf{P} - \mathbf{M}}^2 }{ \norm[F]{\mathbf{M}}^2 }
+    \]
+    i.e.\ the PCA projection into $r$ dimensions is the best rank-$r$ approximation of $\mathbf{M}$ wrt.\ the Frobenius norm
+  \item<3-> Corresponds to truncated SVD: $\mathbf{M}\mathbf{P} = \mathbf{U}_r\Msigma_r$
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{What is the difference between PCA and SVD?}
+
+  \begin{itemize}
+  \item In practice, $\mathbf{M}$ is usually not centered but row-normalised according to the Euclidean norm \so cosine similarities $\mathbf{M} \mathbf{M}^T$
+  \item<2-> Insert the (non-truncated) SVD $\mathbf{M} = \mathbf{U} \Msigma \mathbf{V}^T$:
+    \[
+      \mathbf{M} \mathbf{M}^T
+      = \mathbf{U} \Msigma \secondary{\underbrace{\mathbf{V}^T \mathbf{V}}_{= \mathbf{I}_m}} \Msigma \mathbf{U}^T
+      = \mathbf{U} \Msigma^2 \mathbf{U}^T
+    \]
+  \item<3-> This is the (unique) SVD of $\mathbf{M} \mathbf{M}^T$
+    \begin{itemize}
+    \item[\hand] same left and right singular vectors because $\mathbf{M} \mathbf{M}^T$ symmetric
+    \end{itemize}
+  \item<4-> Inner products of SVD-based projection $\mathbf{M}_r = \mathbf{U}_r \Msigma_r \mathbf{V}^T_r$ are
+    \[
+      \mathbf{M}_r \mathbf{M}^T_r = \mathbf{U}_r \Msigma^2_r \mathbf{U}^T_r
+    \]
+    \ungap[1]
+    \begin{itemize}
+    \item[\So] SVD gives least-squares approximation of inner products $\vm_i^T \vm_j$
+    \item[\So] preserves cosine similarities if we ``forget'' to re-normalise
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+\subsection{Connections}
+
+\begin{frame}
+  \frametitle{A special case}
+
+  \begin{itemize}
+  \item Consider a term-context matrix $\mathbf{F}$ with very small contexts
+    \begin{itemize}
+    \item e.g.\ \hh{tweets}, sentences, paragraphs
+    \item or aligned sentence pairs \citep{Sahlgren:Karlgren:05}
+    \end{itemize}
+  \item No feature weighting or normalisation
+  \item[\So] $\mathbf{F}$ is binary, i.e.\ $f_{ij} \in \set{0, 1}$
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Similarity in term-context DSM}
+
+  \begin{itemize}
+  \item What is the cosine similarity of $\vf_i$ and $\vf_j$?
+    \begin{align*}
+      \vf_i &= \begin{bmatrix}
+        0 & 0 & 1 & 0 & 1 & 0 & 0 & 1 & 0 & 1 & 0 & 0 
+      \end{bmatrix}\\
+      \vf_j &= \begin{bmatrix}
+        1 & 0 & 1 & 1 & 0 & 0 & 1 & 1 & 0 & 1 & 1 & 1 
+      \end{bmatrix}
+    \end{align*}
+    \ungap[1]
+    \begin{itemize}
+    \item<2-> $\vf_i^T \vf_j = O$ = co-occurrence frequency
+    \item<3-> $\norm[2]{\vf_i} = \sqrt{R}$ = marginal frequency of term $i$
+    \item<4-> $\norm[2]{\vf_j} = \sqrt{C}$ = marginal frequency of term $j$
+    \item[]
+    \end{itemize}
+  \item<5-> Cosine similarity in $\mathbf{F}$ = \h{first-order association}
+    \[
+      \cos \alpha = \frac{ \vf_i^T \vf_j }{ \norm[2]{\vf_i}\cdot \norm[2]{\vf_j} }
+      = \frac{O}{\sqrt{R C}}
+      \sim \sqrt{\text{MI}^2}
+    \]
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Distance in term-context DSM}
+
+  \newcommand{\fracR}{{\textstyle\frac1R}}
+  \newcommand{\fracC}{{\textstyle\frac1C}}
+  \newcommand{\N}{\,0\,\,}
+  \begin{itemize}
+  \item What is the Manhattan distance between $\vf_i$ and $\vf_j$?
+    \begin{align*}
+      \only<beamer:1-3| handout:0>{
+      \vf_i &= \begin{bmatrix}
+        0 & 0 & 1 & 0 & 1 & 0 & 0 & 1 & 0 & 1 & 0 & 0 
+      \end{bmatrix}\\
+      \vf_j &= \begin{bmatrix}
+        1 & 0 & 1 & 1 & 0 & 0 & 1 & 1 & 0 & 1 & 1 & 1 
+      \end{bmatrix}}%
+      \only<beamer:4-| handout:1>{                                                    
+      \vf_i' &= \begin{bmatrix}
+        \N & \N & \fracR & \N & \fracR & \N & \N & \fracR & \N & \fracR & \N & \N 
+      \end{bmatrix}\\
+      \vf_j' &= \begin{bmatrix}
+        \fracC & \N & \fracC & \fracC & \N & \N & \fracC & \fracC & \N & \fracC & \fracC & \fracC 
+      \end{bmatrix}}
+    \end{align*}
+    \ungap[1]
+    \begin{itemize}
+    \item<2-> $\norm[1]{\vf_i} = R$ = marginal frequency of term $i$
+    \item<3-> $\norm[1]{\vf_j} = C$ = marginal frequency of term $j$
+    \item<4-> normalised: $\vf_i' = \vf_i / R$ and $\vf_j' = \vf_j / C$
+    \item[]
+    \end{itemize}
+  \item<5-> Manhattan distance in $\mathbf{F}$ = \h{first-order association}
+    \begin{align*}
+      \dist[1]{\vf_i}{\vf_j}
+      &= O\cdot \abs{\fracR - \fracC} + (R - O)\cdot \fracR + (C - O)\cdot \fracC \\
+      \visible<6->{&= 2 - O\cdot \bigl( \fracR + \fracC - \abs{\fracR - \fracC} \bigr) \\}
+      \visible<7->{&= 2 - 2O\cdot \min \set{\fracR, \fracC} = 2 - 2\cdot \min \setscale{\frac{O}{R}, \frac{O}{C}}}
+    \end{align*}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Term-context \vs term-term DSM}
+
+  \begin{itemize}
+  \item Construct a term-term DSM with textual context = tweet
+  \item Recall: co-occurrence frequency $m_{ij} = \vf_i^T \vf_j$
+  \item<2-> Symmetric co-occurrence matrix $\mathbf{M}$ can be derived from $\mathbf{F}$:
+    \[
+      \mathbf{M} = \mathbf{F} \mathbf{F}^T
+    \]
+  \item<3-> Compare SVD of the two matrices
+    \begin{align*}
+      \mathbf{F} &= \mathbf{U} \Msigma \mathbf{V}^T
+      & \mathbf{M} &= \mathbf{U} \Msigma^2 \mathbf{U}^T
+    \end{align*}
+  \item<4->[\So] $\mathbf{M}$ is power-scaled version of $\mathbf{F}$
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Context vectors}
+
+  \begin{itemize}
+  \item Context vectors $\vc_j$ for tweets based on embeddings $\vm_i$
+    \begin{align*}
+      \vc_j &= \sum_i f_{ij}\cdot \vm_i \\
+      \visible<2->{\mathbf{C}^T &= \mathbf{M} \mathbf{F}}
+    \end{align*}
+  \item<3-> Apply SVD of $\mathbf{F}$:
+    \[
+      \mathbf{C}^T = \mathbf{U} \Msigma^2  \mathbf{U}^T \mathbf{U} \Msigma \mathbf{V}^T
+      = \mathbf{U} \Msigma^3 \mathbf{V}^T
+    \]
+  \end{itemize}
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Alternatives to SVD}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Matrix factorization}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Topic models}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Neural embeddings}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% \section{}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1173,12 +1683,12 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% References (if any)
 
-% \frame[allowframebreaks]{
-%   \frametitle{References}
-%   \bibliographystyle{natbib-stefan}
-%   \begin{scriptsize}
-%     \bibliography{dsm}
-%   \end{scriptsize}
-% }
+\frame[allowframebreaks]{
+  \frametitle{References}
+  \bibliographystyle{natbib-stefan}
+  \begin{scriptsize}
+    \bibliography{dsm}
+  \end{scriptsize}
+}
 
 \end{document}
